@@ -1,6 +1,6 @@
 package mocha.game.world.gfx;
 
-import mocha.game.mocha.game.gfx.Renderable;
+import mocha.game.gfx.Renderable;
 import mocha.game.world.Map;
 import mocha.game.world.Tile;
 

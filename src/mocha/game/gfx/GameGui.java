@@ -1,4 +1,4 @@
-package mocha.game.mocha.game.gfx;
+package mocha.game.gfx;
 
 import javax.swing.*;
 

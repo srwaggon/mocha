@@ -1,8 +1,8 @@
 package mocha.main;
 
 import mocha.game.Game;
-import mocha.game.mocha.game.gfx.GameGui;
-import mocha.game.mocha.game.gfx.GameView;
+import mocha.game.gfx.GameGui;
+import mocha.game.gfx.GameView;
 
 
 public class Main {
