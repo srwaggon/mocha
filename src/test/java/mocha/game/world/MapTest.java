@@ -1,5 +1,7 @@
-package mocha.game.world;
+package game.world;
 
+import mocha.game.world.Map;
+import mocha.game.world.Tile;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.Mob;
 import org.junit.Before;

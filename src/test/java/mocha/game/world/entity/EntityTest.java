@@ -1,5 +1,6 @@
-package mocha.game.world.entity;
+package game.world.entity;
 
+import mocha.game.world.entity.Entity;
 import org.junit.Before;
 import org.junit.Test;
 

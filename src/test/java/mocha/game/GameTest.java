@@ -1,5 +1,6 @@
-package mocha.game;
+package game;
 
+import mocha.game.Game;
 import mocha.game.world.Map;
 import org.junit.Test;
 
