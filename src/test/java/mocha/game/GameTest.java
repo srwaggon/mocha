@@ -1,7 +1,7 @@
-package game;
+package mocha.game;
 
-import mocha.game.Game;
-import mocha.game.world.Map;
+import mocha.game.world.World;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -11,11 +11,8 @@ public class GameTest {
   private Game testObject = new Game();
 
   @Test public void getWorld_ReturnsMappingOfMaps() {
-    Map expected = new Map(1, 0, 0);
-    testObject.put(expected);
+    World world = testObject.getWorld();
 
-    Map actual = testObject.getWorld().get(expected.getId());
-
-    assertSame(expected, actual);
+    assertNotNull(world);
   }
 }

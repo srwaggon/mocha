@@ -24,7 +24,7 @@ public class MapView implements Renderable {
     }
   }
 
-  @Override public void paint(Graphics graphics) {
+  public void paint(Graphics graphics) {
     for(TileView tileView : tileViews) {
       tileView.paint(graphics);
     }

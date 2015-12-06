@@ -7,6 +7,8 @@ import mocha.game.gfx.GameView;
 
 public class Main {
   public static void main(String[] args) {
-    new GameGui(new GameView(new Game()));
+    Game game = new Game();
+    GameView gameView = new GameView(game);
+    new GameGui(gameView);
   }
 }

@@ -1,24 +1,17 @@
 package mocha.game;
 
 import mocha.game.world.Map;
-
-import java.util.HashMap;
+import mocha.game.world.World;
 
 public class Game {
 
-  private HashMap<Integer, Map> world;
+  private World world = new World();
 
   public Game() {
-    world = new HashMap<Integer, Map>();
-    Map map = new Map(1, 10, 6);
-    world.put(map.getId(), map);
+    world.addMap(new Map(1, 10, 6));
   }
 
-  public HashMap<Integer, Map> getWorld() {
+  public World getWorld() {
     return world;
-  }
-
-  public void put(Map map) {
-    world.put(map.getId(), map);
   }
 }
