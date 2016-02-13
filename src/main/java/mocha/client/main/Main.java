@@ -1,4 +1,4 @@
-package mocha.main;
+package mocha.client.main;
 
 import mocha.game.Game;
 import mocha.game.gfx.GameGui;
@@ -11,4 +11,5 @@ public class Main {
     GameView gameView = new GameView(game);
     new GameGui(gameView);
   }
+
 }
