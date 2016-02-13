@@ -13,7 +13,7 @@ public class GameView extends JPanel {
     mapView = new MapView(game.getWorld().getMapById(1));
   }
 
-  @Override public void paint(Graphics graphics) {
+  public void paint(Graphics graphics) {
     super.paint(graphics);
 
     mapView.paint(graphics);

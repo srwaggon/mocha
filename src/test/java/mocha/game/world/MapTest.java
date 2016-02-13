@@ -1,13 +1,9 @@
-package game.world;
+package mocha.game.world;
 
-import mocha.game.world.Map;
-import mocha.game.world.Tile;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.Mob;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;

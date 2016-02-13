@@ -1,10 +1,9 @@
-package game.world.entity;
+package mocha.game.world.entity;
 
-import mocha.game.world.entity.Entity;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class EntityTest {
 
@@ -52,7 +51,6 @@ public class EntityTest {
   @Test
   public void getId_ReturnsId() {
     assertEquals(1, testObject.getId());
-    assertEquals(10, new Entity(10).getId());
   }
 
 }
