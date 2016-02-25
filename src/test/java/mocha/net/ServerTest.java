@@ -46,11 +46,14 @@ public class ServerTest {
 
     Connection connection1 = new Connection(new Socket("localhost", port));
     Connection connection2 = new Connection(new Socket("localhost", port));
+    Connection connection3 = new Connection(new Socket("localhost", port));
 
     connection1.send("connection1");
     connection2.send("connection2");
+    connection2.send("connection3");
 
     assertEquals("connection1", connection1.readLine());
     assertEquals("connection2", connection2.readLine());
+    assertEquals("connection3", connection2.readLine());
   }
 }

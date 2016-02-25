@@ -29,21 +29,12 @@ public class Server {
   }
 
   private void acceptConnection(Socket socket) {
-    threadPool.submit((Runnable) () -> {
-      System.out.println("Receiving connection from " + socket.getInetAddress().toString());
-
-      Connection connection = new Connection(socket);
-
-      while(connection.isConnected()) {
-        if (connection.hasLine()) {
-          connection.send(connection.readLine());
-        }
-      }
-    });
-
+    System.out.println("Receiving connection from " + socket.getInetAddress().toString());
+    threadPool.submit(new PacketListener(new Connection(socket)));
   }
 
   public void shutdown() throws IOException {
+    threadPool.shutdown();
     server.close();
   }
 }
