@@ -1,4 +1,4 @@
-package mocha.server;
+package mocha.net;
 
 import java.io.IOException;
 import java.net.ServerSocket;

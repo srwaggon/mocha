@@ -1,14 +1,12 @@
 package mocha.game.world.gfx;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.scene.canvas.GraphicsContext;
 import mocha.game.gfx.Renderable;
 import mocha.game.world.Map;
 import mocha.game.world.Tile;
-
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MapView implements Renderable {
 

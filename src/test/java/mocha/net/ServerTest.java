@@ -1,18 +1,13 @@
-package mocha.server;
+package mocha.net;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Inet4Address;
-import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Scanner;
 
 import mocha.net.Connection;
+import mocha.net.Server;
 
 import static org.junit.Assert.*;
 
