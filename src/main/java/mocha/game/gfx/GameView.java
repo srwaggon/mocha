@@ -1,21 +1,17 @@
 package mocha.game.gfx;
 
+import javafx.scene.canvas.GraphicsContext;
 import mocha.game.Game;
 import mocha.game.world.gfx.MapView;
 
-import javax.swing.*;
-import java.awt.*;
-
-public class GameView extends JPanel {
+public class GameView {
   MapView mapView;
 
   public GameView(Game game) {
     mapView = new MapView(game.getWorld().getMapById(1));
   }
 
-  public void paint(Graphics graphics) {
-    super.paint(graphics);
-
+  public void paint(GraphicsContext graphics) {
     mapView.paint(graphics);
   }
 }

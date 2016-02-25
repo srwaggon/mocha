@@ -1,15 +1,21 @@
 package mocha.game.gfx;
 
-import javax.swing.*;
+import javafx.stage.Stage;
 
 public class GameGui {
 
   public GameGui(GameView gameView) {
-    JFrame frame = new JFrame();
-    frame.setSize(600, 400);
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    Stage frame = new Stage();
+    setDimensions(frame);
     frame.setResizable(false);
-    frame.setVisible(true);
-    frame.setContentPane(gameView);
+//    frame.setScene(gameView);
+    frame.show();
+  }
+
+  private void setDimensions(Stage frame) {
+    frame.setMaxWidth(600);
+    frame.setMinWidth(600);
+    frame.setMaxHeight(400);
+    frame.setMinHeight(400);
   }
 }

@@ -1,5 +1,6 @@
 package mocha.game.world.gfx;
 
+import javafx.scene.canvas.GraphicsContext;
 import mocha.game.gfx.Renderable;
 import mocha.game.world.Map;
 import mocha.game.world.Tile;
@@ -12,7 +13,7 @@ import java.util.List;
 public class MapView implements Renderable {
 
   private Map map;
-  private List<TileView> tileViews = new ArrayList<TileView>();
+  private List<TileView> tileViews = new ArrayList<>();
 
   public MapView(Map map) {
     this.map = map;
@@ -24,7 +25,7 @@ public class MapView implements Renderable {
     }
   }
 
-  public void paint(Graphics graphics) {
+  public void paint(GraphicsContext graphics) {
     for(TileView tileView : tileViews) {
       tileView.paint(graphics);
     }

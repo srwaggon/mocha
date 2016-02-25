@@ -1,8 +1,8 @@
 package mocha.game.gfx;
 
-import java.awt.*;
+import javafx.scene.canvas.GraphicsContext;
 
 public interface Renderable {
 
-  void paint(Graphics graphics);
+  void paint(GraphicsContext graphics);
 }

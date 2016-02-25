@@ -1,9 +1,10 @@
 package mocha.game.world.gfx;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import mocha.game.gfx.Renderable;
 import mocha.game.world.Tile;
 
-import java.awt.*;
 
 public class TileView implements Renderable {
 
@@ -17,8 +18,11 @@ public class TileView implements Renderable {
     this.y = y;
   }
 
-  @Override public void paint(Graphics graphics) {
-    graphics.setColor(Color.BLACK);
-    graphics.drawRect(x * Tile.SIZE, y * Tile.SIZE, Tile.SIZE, Tile.SIZE);
+  @Override public void paint(GraphicsContext graphics) {
+    graphics.setFill(Color.BLACK);
+    graphics.fillRect(x * Tile.SIZE, y * Tile.SIZE, Tile.SIZE, Tile.SIZE);
+
+    graphics.setStroke(Color.GREEN);
+    graphics.strokeRect(x * Tile.SIZE, y * Tile.SIZE, Tile.SIZE, Tile.SIZE);
   }
 }
