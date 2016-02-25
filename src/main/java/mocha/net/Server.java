@@ -3,34 +3,47 @@ package mocha.net;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import mocha.net.Connection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
 
-  ServerSocket server;
+  private ServerSocket server;
+  private ExecutorService threadPool = Executors.newCachedThreadPool();
 
   public Server(int port) throws IOException {
     server = new ServerSocket(port);
   }
 
   public void run() {
-    try {
-      System.out.println("Awaiting connections...");
+    while (true) {
+      try {
+        System.out.println("Awaiting connections...");
+          acceptConnection(server.accept());
 
-      acceptConnection(server.accept());
-    } catch (IOException e) {
-      e.printStackTrace();
+      } catch (IOException ioexception) {
+        ioexception.printStackTrace();
+        System.exit(-1);
+      }
     }
   }
 
   private void acceptConnection(Socket socket) {
-    System.out.println("Receiving connection from " + socket.getInetAddress().toString());
+    threadPool.submit((Runnable) () -> {
+      System.out.println("Receiving connection from " + socket.getInetAddress().toString());
 
-    Connection connection = new Connection(socket);
+      Connection connection = new Connection(socket);
 
-    while(connection.hasLine()) {
-      connection.send(connection.readLine());
-    }
+      while(connection.isConnected()) {
+        if (connection.hasLine()) {
+          connection.send(connection.readLine());
+        }
+      }
+    });
+
+  }
+
+  public void shutdown() throws IOException {
+    server.close();
   }
 }
