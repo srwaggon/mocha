@@ -8,7 +8,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import mocha.net.packet.GlobalMessagePacket;
 import mocha.net.packet.Packet;
-import mocha.net.packet.PacketCode;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertTrue;

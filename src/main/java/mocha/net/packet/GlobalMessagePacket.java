@@ -1,33 +1,24 @@
 package mocha.net.packet;
 
-import static mocha.net.packet.PacketCode.*;
+import static mocha.net.packet.PacketType.*;
 
-public class GlobalMessagePacket implements Packet {
+public class GlobalMessagePacket extends AbstractPacket implements Packet {
 
   private String message;
-
-  public GlobalMessagePacket() {
-
-  }
 
   public GlobalMessagePacket(String message) {
     this.message = message;
   }
 
   @Override
-  public PacketCode getCode() {
+  public PacketType getType() {
     return GLOBAL_MESSAGE;
-  }
-
-  @Override
-  public String construct() {
-    return getCode().name() + SEPARATOR + message;
   }
 
   @Override
   public String[] getData() {
     String[] data = new String[2];
-    data[0] = getCode().name();
+    data[0] = getType().name();
     data[1] = message;
     return data;
   }

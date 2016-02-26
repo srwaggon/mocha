@@ -3,7 +3,7 @@ package mocha.game.world.gfx;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import mocha.game.gfx.Renderable;
-import mocha.game.world.Tile;
+import mocha.game.world.tile.Tile;
 
 
 public class TileView implements Renderable {

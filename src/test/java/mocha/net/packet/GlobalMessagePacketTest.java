@@ -8,7 +8,7 @@ public class GlobalMessagePacketTest {
 
   @Test
   public void getCode_ReturnsGlobalMessageCode() {
-    assertEquals(PacketCode.GLOBAL_MESSAGE, new GlobalMessagePacket("test").getCode());
+    assertEquals(PacketType.GLOBAL_MESSAGE, new GlobalMessagePacket("test").getType());
   }
 
   @Test

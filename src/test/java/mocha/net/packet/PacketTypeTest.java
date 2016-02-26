@@ -4,14 +4,14 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class PacketCodeTest {
+public class PacketTypeTest {
 
   @Test
   public void testResolve() throws Exception {
     GlobalMessagePacket expectedPacket = new GlobalMessagePacket("yoyo");
     String expected = expectedPacket.construct();
 
-    Packet packet = PacketCode.resolve(expectedPacket);
+    Packet packet = PacketType.resolve(expectedPacket);
 
     assertEquals(expected, packet.construct());
   }

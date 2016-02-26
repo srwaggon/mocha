@@ -25,7 +25,7 @@ public class UnknownPacketTest {
 
   @Test
   public void getCode_ReturnsIdForData() throws Exception {
-    assertEquals(PacketCode.GLOBAL_MESSAGE, testObject.getCode());
+    assertEquals(PacketType.GLOBAL_MESSAGE, testObject.getType());
   }
 
   @Test

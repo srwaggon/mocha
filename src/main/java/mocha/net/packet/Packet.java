@@ -4,7 +4,7 @@ public interface Packet {
 
   void build(String[] data);
 
-  PacketCode getCode();
+  PacketType getType();
 
   String[] getData();
 

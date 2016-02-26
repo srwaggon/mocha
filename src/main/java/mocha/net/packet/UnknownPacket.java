@@ -5,7 +5,7 @@ public class UnknownPacket implements Packet {
   private String[] data;
 
   public UnknownPacket(String data) {
-    this.data = data.split(PacketCode.SEPARATOR);
+    this.data = data.split(PacketType.SEPARATOR);
   }
 
   @Override
@@ -14,8 +14,8 @@ public class UnknownPacket implements Packet {
   }
 
   @Override
-  public PacketCode getCode() {
-    return PacketCode.valueOf(data[0]);
+  public PacketType getType() {
+    return PacketType.valueOf(data[0]);
   }
 
   @Override
@@ -25,6 +25,6 @@ public class UnknownPacket implements Packet {
 
   @Override
   public String construct() {
-    return String.join(PacketCode.SEPARATOR, data);
+    return String.join(PacketType.SEPARATOR, data);
   }
 }

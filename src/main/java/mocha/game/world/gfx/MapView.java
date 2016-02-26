@@ -6,7 +6,7 @@ import java.util.List;
 import javafx.scene.canvas.GraphicsContext;
 import mocha.game.gfx.Renderable;
 import mocha.game.world.Map;
-import mocha.game.world.Tile;
+import mocha.game.world.tile.Tile;
 
 public class MapView implements Renderable {
 

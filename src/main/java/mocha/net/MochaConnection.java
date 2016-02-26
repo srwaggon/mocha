@@ -1,7 +1,7 @@
 package mocha.net;
 
 import mocha.net.packet.Packet;
-import mocha.net.packet.PacketCode;
+import mocha.net.packet.PacketType;
 import mocha.net.packet.UnknownPacket;
 
 public class MochaConnection {
@@ -21,6 +21,6 @@ public class MochaConnection {
   }
 
   public Packet readPacket() {
-    return PacketCode.resolve(new UnknownPacket(connection.readLine()));
+    return PacketType.resolve(new UnknownPacket(connection.readLine()));
   }
 }

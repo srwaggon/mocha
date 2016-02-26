@@ -1,7 +1,7 @@
 package mocha.game.world;
 
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.Mob;
+import mocha.game.world.tile.Tile;
 
 import java.util.HashMap;
 
@@ -9,15 +9,15 @@ public class Map {
 
   private Tile[][] tiles;
   private final int id;
-  private HashMap<Integer, Entity> entities = new HashMap<Integer, Entity>();
+  private HashMap<Integer, Entity> entities = new HashMap<>();
 
-  public Map(int id, int rows, int columns) {
+  public Map(int id, int columns, int rows) {
     this.id = id;
 
     tiles = new Tile[rows][columns];
-    for (int x = 0; x < rows; x++) {
-      for (int y = 0; y < columns; y++) {
-        tiles[x][y] = new Tile();
+    for (int y = 0; y < rows; y++) {
+      for (int x = 0; x < columns; x++) {
+        tiles[y][x] = new Tile();
       }
     }
   }
@@ -27,7 +27,7 @@ public class Map {
   }
 
   public Tile getTile(int x, int y) {
-    return tiles[x][y];
+    return tiles[y][x];
   }
 
   public int getId() {
@@ -40,5 +40,13 @@ public class Map {
 
   public HashMap<Integer, Entity> getEntities() {
     return entities;
+  }
+
+  public int getColumnCount() {
+    return tiles[0].length;
+  }
+
+  public int getRowCount() {
+    return tiles.length;
   }
 }
