@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import mocha.game.world.Map;
+import mocha.game.world.tile.Tile;
 
 import static org.junit.Assert.*;
 
@@ -26,13 +27,13 @@ public class MapPacketTest {
   }
 
   @Test
-  public void construct_ContainsMapCode_AsFirstPhrase() {
+  public void construct_ContainsMapCode_AsZeroethPhrase() {
     assertEquals(PacketType.MAP.name(), subject.getData()[0]);
     assertEquals(PacketType.MAP.name(), getPhrase(0));
   }
 
   @Test
-  public void construct_ContainsMapId_AsSecondPhrase() {
+  public void construct_ContainsMapId_AsFirstPhrase() {
     int index = 1;
 
     assertEquals(testMap.getId(), Integer.parseInt(subject.getData()[index]));
@@ -40,7 +41,7 @@ public class MapPacketTest {
   }
 
   @Test
-  public void construct_ContainsColumnCount_AsThirdPhrase() {
+  public void construct_ContainsColumnCount_AsSecondPhrase() {
     int index = 2;
 
     assertEquals(testMap.getColumnCount(), Integer.parseInt(subject.getData()[index]));
@@ -48,11 +49,25 @@ public class MapPacketTest {
   }
 
   @Test
-  public void construct_ContainsRowCount_AsFourthPhrase() {
+  public void construct_ContainsRowCount_AsThirdPhrase() {
     int index = 3;
 
     assertEquals(testMap.getRowCount(), Integer.parseInt(subject.getData()[index]));
     assertEquals(testMap.getRowCount(), getPhraseAsInt(index));
+  }
+
+  @Test
+  public void construct_ContainsTileData_AsFourthPhrase() {
+    int index = 4;
+
+    StringBuilder tilesBuilder = new StringBuilder();
+    for (Tile[] row : testMap.getTiles()) {
+      for (Tile tile : row) {
+        tilesBuilder.append(tile.getSymbol());
+      }
+    }
+
+    assertEquals(tilesBuilder.toString(), getPhrase(index));
   }
 
   private String getPhrase(int index) {

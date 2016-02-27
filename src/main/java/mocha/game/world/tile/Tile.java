@@ -16,4 +16,8 @@ public class Tile {
   public TileType getTileType() {
     return tileType;
   }
+
+  public String getSymbol() {
+    return getTileType().getSymbol();
+  }
 }

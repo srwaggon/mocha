@@ -18,4 +18,11 @@ public class TileTest {
     assertEquals(type, new Tile(type).getTileType());
   }
 
+  @Test
+  public void getSymbol_ReturnsTileTypeSymbol() {
+    TileType type = TileType.DIRT;
+
+    assertEquals(type.getSymbol(), new Tile(type).getSymbol());
+  }
+
 }
