@@ -1,6 +1,9 @@
 package mocha.game.world.entity;
 
-public class Entity {
+import javafx.scene.canvas.GraphicsContext;
+import mocha.game.gfx.Renderable;
+
+public class Entity implements Renderable {
   private int id;
   private int x;
   private int y;
@@ -27,5 +30,9 @@ public class Entity {
 
   public int getId() {
     return id;
+  }
+
+  @Override
+  public void render(GraphicsContext graphics) {
   }
 }

@@ -1,10 +1,12 @@
 package mocha.game;
 
+import javafx.scene.canvas.GraphicsContext;
+import mocha.game.gfx.Renderable;
 import mocha.game.world.Map;
 import mocha.game.world.World;
 import mocha.game.world.entity.Mob;
 
-public class Game {
+public class Game implements Renderable {
 
   private World world = new World();
 
@@ -14,7 +16,7 @@ public class Game {
   }
 
   private void addEntities() {
-    new Mob(0);
+    world.getMapById(1).addEntity(new Mob(0));
   }
 
   private void addMaps() {
@@ -23,5 +25,10 @@ public class Game {
 
   public World getWorld() {
     return world;
+  }
+
+  @Override
+  public void render(GraphicsContext graphics) {
+    world.getMapById(1).render(graphics);
   }
 }

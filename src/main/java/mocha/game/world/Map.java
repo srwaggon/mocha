@@ -1,11 +1,13 @@
 package mocha.game.world;
 
+import java.util.HashMap;
+
+import javafx.scene.canvas.GraphicsContext;
+import mocha.game.gfx.Renderable;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.tile.Tile;
 
-import java.util.HashMap;
-
-public class Map {
+public class Map implements Renderable {
 
   private Tile[][] tiles;
   private final int id;
@@ -17,7 +19,7 @@ public class Map {
     tiles = new Tile[rows][columns];
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < columns; x++) {
-        tiles[y][x] = new Tile();
+        tiles[y][x] = new Tile(x, y);
       }
     }
   }
@@ -48,5 +50,18 @@ public class Map {
 
   public int getRowCount() {
     return tiles.length;
+  }
+
+  @Override
+  public void render(GraphicsContext graphics) {
+    for (Tile[] row : tiles) {
+      for (Tile tile : row) {
+        tile.render(graphics);
+      }
+    }
+
+    for (Entity entity: getEntities().values()) {
+      entity.render(graphics);
+    }
   }
 }

@@ -8,21 +8,21 @@ public class TileTest {
 
   @Test
   public void tileConstructor_ConstructsDirtTileByDefault() {
-    assertEquals(TileType.DIRT, new Tile().getTileType());
+    assertEquals(TileType.DIRT, new Tile(0, 0).getTileType());
   }
 
   @Test
   public void getTileType_ReturnsTheTypeThatWasSet_UponConstruction() {
     TileType type = TileType.DIRT;
 
-    assertEquals(type, new Tile(type).getTileType());
+    assertEquals(type, new Tile(0, 0, type).getTileType());
   }
 
   @Test
   public void getSymbol_ReturnsTileTypeSymbol() {
     TileType type = TileType.DIRT;
 
-    assertEquals(type.getSymbol(), new Tile(type).getSymbol());
+    assertEquals(type.getSymbol(), new Tile(0, 0, type).getSymbol());
   }
 
 }
