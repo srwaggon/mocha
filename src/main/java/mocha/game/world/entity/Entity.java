@@ -5,26 +5,26 @@ import mocha.game.gfx.Renderable;
 
 public class Entity implements Renderable {
   private int id;
-  private int x;
-  private int y;
+  private double x;
+  private double y;
 
-  public Entity(int id) {
+  Entity(int id) {
     this.id = id;
   }
 
-  public int getX() {
+  double getX() {
     return x;
   }
 
-  public void setX(int x) {
+  void setX(double x) {
     this.x = x;
   }
 
-  public int getY() {
+  double getY() {
     return y;
   }
 
-  public void setY(int y) {
+  void setY(double y) {
     this.y = y;
   }
 
@@ -34,5 +34,9 @@ public class Entity implements Renderable {
 
   @Override
   public void render(GraphicsContext graphics) {
+  }
+
+  public void tick() {
+    this.x += 1;
   }
 }

@@ -13,4 +13,8 @@ public class  World {
   public Map getMapById(int mapId) {
     return world.get(mapId);
   }
+
+  public void tick() {
+    world.values().stream().forEach(Map::tick);
+  }
 }

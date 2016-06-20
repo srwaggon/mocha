@@ -1,5 +1,6 @@
 package mocha.game.world;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -28,7 +29,7 @@ public class Map implements Renderable {
     return tiles;
   }
 
-  public Tile getTile(int x, int y) {
+  Tile getTile(int x, int y) {
     return tiles[y][x];
   }
 
@@ -40,7 +41,7 @@ public class Map implements Renderable {
     entities.put(entity.getId(), entity);
   }
 
-  public HashMap<Integer, Entity> getEntities() {
+  HashMap<Integer, Entity> getEntities() {
     return entities;
   }
 
@@ -54,14 +55,11 @@ public class Map implements Renderable {
 
   @Override
   public void render(GraphicsContext graphics) {
-    for (Tile[] row : tiles) {
-      for (Tile tile : row) {
-        tile.render(graphics);
-      }
-    }
+    Arrays.stream(tiles).forEach((row) -> Arrays.stream(row).forEach((tile) -> tile.render(graphics)));
+    getEntities().values().stream().forEach((entity) -> entity.render(graphics));
+  }
 
-    for (Entity entity: getEntities().values()) {
-      entity.render(graphics);
-    }
+  void tick() {
+    getEntities().values().stream().forEach(Entity::tick);
   }
 }

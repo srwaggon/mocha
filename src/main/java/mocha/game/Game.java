@@ -31,4 +31,8 @@ public class Game implements Renderable {
   public void render(GraphicsContext graphics) {
     world.getMapById(1).render(graphics);
   }
+
+  void tick() {
+    world.tick();
+  }
 }

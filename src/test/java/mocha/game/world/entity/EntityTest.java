@@ -16,41 +16,40 @@ public class EntityTest {
 
   @Test
   public void getX_ReturnsXLocation() {
-    assertEquals(0, testObject.getX());
+    assertEquals(0, testObject.getX(), 0);
   }
 
   @Test
   public void setX_changesXLocation() {
-    int rand1 = (int) (Math.random() * 10);
-    int rand2 = (int) (Math.random() * 10);
+    double rand1 = Math.random() * 10;
+    double rand2 = Math.random() * 10;
 
     testObject.setX(rand1);
-    assertEquals(rand1, testObject.getX());
+    assertEquals(rand1, testObject.getX(), 0);
 
     testObject.setX(rand2);
-    assertEquals(rand2, testObject.getX());
+    assertEquals(rand2, testObject.getX(), 0);
   }
 
   @Test
   public void getY_ReturnsXLocation() {
-    assertEquals(0, testObject.getY());
+    assertEquals(0.0, testObject.getY(), 0);
   }
 
   @Test
   public void setY_changesYLocation() {
-    int rand1 = (int) (Math.random() * 10);
-    int rand2 = (int) (Math.random() * 10);
+    double rand1 = Math.random() * 10;
+    double rand2 = Math.random() * 10;
 
     testObject.setY(rand1);
-    assertEquals(rand1, testObject.getY());
+    assertEquals(rand1, testObject.getY(), 0);
 
     testObject.setY(rand2);
-    assertEquals(rand2, testObject.getY());
+    assertEquals(rand2, testObject.getY(), 0);
   }
 
   @Test
   public void getId_ReturnsId() {
     assertEquals(1, testObject.getId());
   }
-
 }
