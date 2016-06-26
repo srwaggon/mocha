@@ -1,5 +1,6 @@
 package mocha.game;
 
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 
@@ -38,10 +39,10 @@ public class GameLoop extends AnimationTimer {
   }
 
   private void processTicks() {
-    while (unprocessed > 0) {
+    while (unprocessed >= 1) {
       game.tick();
-      System.out.println(unprocessed);
-      unprocessed -= 1;
+      InputKey.tickAll();
+      unprocessed -= 1.0;
     }
   }
 }

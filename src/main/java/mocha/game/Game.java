@@ -1,22 +1,41 @@
 package mocha.game;
 
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+
 import javafx.scene.canvas.GraphicsContext;
 import mocha.game.gfx.Renderable;
 import mocha.game.world.Map;
 import mocha.game.world.World;
-import mocha.game.world.entity.Mob;
+import mocha.game.world.entity.PlayerMob;
 
+@Component
 public class Game implements Renderable {
 
-  private World world = new World();
+  @Inject
+  private World world;
+  @Inject
+  private PlayerMob player;
 
-  public Game() {
+  @PostConstruct
+  public void init() {
     addMaps();
     addEntities();
   }
 
+  public Game() {
+
+  }
+
+  public Game(World world, PlayerMob player) {
+    this.world = world;
+    this.player = player;
+  }
+
   private void addEntities() {
-    world.getMapById(1).addEntity(new Mob(0));
+    world.getMapById(1).addEntity(player);
   }
 
   private void addMaps() {

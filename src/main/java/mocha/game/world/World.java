@@ -1,7 +1,10 @@
 package mocha.game.world;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 
+@Component
 public class  World {
 
   private HashMap<Integer, Map> world = new HashMap<>();
