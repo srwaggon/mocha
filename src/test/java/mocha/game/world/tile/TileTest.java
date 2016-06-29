@@ -2,6 +2,9 @@ package mocha.game.world.tile;
 
 import org.junit.Test;
 
+import mocha.game.world.tile.item.Stone;
+import mocha.game.world.tile.item.TileItem;
+
 import static org.junit.Assert.*;
 
 public class TileTest {
@@ -12,17 +15,23 @@ public class TileTest {
   }
 
   @Test
-  public void getTileType_ReturnsTheTypeThatWasSet_UponConstruction() {
-    TileType type = TileType.DIRT;
+  public void getSymbol_ReturnsTileTypeSymbol() {
+    Tile testObject = new Tile(0, 0);
+    TileType type = TileType.GRASS;
 
-    assertEquals(type, new Tile(0, 0, type).getTileType());
+    testObject.setTileType(type);
+
+    assertEquals(type.getSymbol(), testObject.getSymbol());
   }
 
   @Test
-  public void getSymbol_ReturnsTileTypeSymbol() {
-    TileType type = TileType.DIRT;
+  public void getTileItem_ReturnsHeldTileItem() {
+    Tile testObject = new Tile(0, 0);
+    TileItem tileItem = new Stone();
 
-    assertEquals(type.getSymbol(), new Tile(0, 0, type).getSymbol());
+    testObject.setTileItem(tileItem);
+
+    assertEquals(tileItem, testObject.getTileItem());
   }
 
 }

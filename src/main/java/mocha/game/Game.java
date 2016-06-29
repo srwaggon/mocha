@@ -26,7 +26,6 @@ public class Game implements Renderable {
   }
 
   public Game() {
-
   }
 
   public Game(World world, PlayerMob player) {

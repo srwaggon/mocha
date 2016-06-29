@@ -6,8 +6,7 @@ import mocha.game.gfx.Renderable;
 public class Entity implements Renderable {
   private static int lastId = 0;
   private int id;
-  private double x;
-  private double y;
+  private Location location = new Location();
 
   Entity() {
     this.id = ++lastId;
@@ -16,22 +15,6 @@ public class Entity implements Renderable {
   Entity(int id) {
     this.id = id;
     lastId = id > lastId ? id : lastId;
-  }
-
-  double getX() {
-    return x;
-  }
-
-  void setX(double x) {
-    this.x = x;
-  }
-
-  double getY() {
-    return y;
-  }
-
-  void setY(double y) {
-    this.y = y;
   }
 
   public int getId() {
@@ -43,5 +26,20 @@ public class Entity implements Renderable {
   }
 
   public void tick() {
+    move();
   }
+
+  public void move() {
+    this.location.applyDx();
+    this.location.applyDy();
+  }
+
+  public Location getLocation() {
+    return this.location;
+  }
+
+  public void setLocation(Location location) {
+    this.location = location;
+  }
+
 }

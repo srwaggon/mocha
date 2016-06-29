@@ -5,9 +5,9 @@ import javafx.scene.paint.Color;
 
 public class Mob extends Entity {
 
-  private int width = 32;
-  private int height = 32;
-  private double speed = 1;
+  private double width = 32;
+  private double height = 32;
+  private double speed = 1.0;
 
   public Mob() {
     super();
@@ -20,7 +20,7 @@ public class Mob extends Entity {
   @Override
   public void render(GraphicsContext graphics) {
     graphics.setFill(Color.RED);
-    graphics.fillRect(getX(), getY(), width, height);
+    graphics.fillRect(getLocation().getX(), getLocation().getY(), width, height);
   }
 
   public double getSpeed() {

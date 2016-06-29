@@ -15,41 +15,33 @@ public class EntityTest {
   }
 
   @Test
-  public void getX_ReturnsXLocation() {
-    assertEquals(0, testObject.getX(), 0);
-  }
-
-  @Test
-  public void setX_changesXLocation() {
-    double rand1 = Math.random() * 10;
-    double rand2 = Math.random() * 10;
-
-    testObject.setX(rand1);
-    assertEquals(rand1, testObject.getX(), 0);
-
-    testObject.setX(rand2);
-    assertEquals(rand2, testObject.getX(), 0);
-  }
-
-  @Test
-  public void getY_ReturnsXLocation() {
-    assertEquals(0.0, testObject.getY(), 0);
-  }
-
-  @Test
-  public void setY_changesYLocation() {
-    double rand1 = Math.random() * 10;
-    double rand2 = Math.random() * 10;
-
-    testObject.setY(rand1);
-    assertEquals(rand1, testObject.getY(), 0);
-
-    testObject.setY(rand2);
-    assertEquals(rand2, testObject.getY(), 0);
-  }
-
-  @Test
   public void getId_ReturnsId() {
     assertEquals(1, testObject.getId());
+  }
+
+  @Test
+  public void tick_MovesTheEntityByX() {
+    Location location = new Location();
+    double x = location.getX();
+    double dx = 1.0;
+    location.setDx(dx);
+    testObject.setLocation(location);
+
+    testObject.tick();
+
+    assertEquals(x + dx, location.getX(), 0.0);
+  }
+
+  @Test
+  public void tick_MovesTheEntityByY() {
+    Location location = new Location();
+    double y = location.getY();
+    double dy = 2.0;
+    location.setDy(dy);
+    testObject.setLocation(location);
+
+    testObject.tick();
+
+    assertEquals(y + dy, location.getY(), 0.0);
   }
 }
