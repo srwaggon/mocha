@@ -14,7 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import mocha.game.Game;
 import mocha.game.GameLoop;
-import mocha.game.InputHandlerProvider;
+import mocha.game.InputHandler;
 
 @SpringBootApplication
 @ComponentScan("mocha")
@@ -38,7 +38,7 @@ public class Main extends Application {
 
     Scene scene = new Scene(root, 600, 400);
 
-    InputHandlerProvider input = context.getBean(InputHandlerProvider.class);
+    InputHandler input = context.getBean(InputHandler.class);
     addInputHandlers(scene, input);
     stage.setScene(scene);
 
@@ -50,8 +50,8 @@ public class Main extends Application {
     stage.show();
   }
 
-  private void addInputHandlers(Scene scene, InputHandlerProvider input) {
-    scene.addEventHandler(KeyEvent.KEY_PRESSED, input.getKeyDownHandler());
-    scene.addEventHandler(KeyEvent.KEY_RELEASED, input.getKeyUpHandler());
+  private void addInputHandlers(Scene scene, InputHandler input) {
+    scene.addEventHandler(KeyEvent.KEY_PRESSED, input.getKeyPressedHandler());
+    scene.addEventHandler(KeyEvent.KEY_RELEASED, input.getKeyReleasedHandler());
   }
 }
