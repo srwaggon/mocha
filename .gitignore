@@ -13,3 +13,10 @@ hs_err_pid*
 
 # Ignore IntelliJ Projects 
 .idea/
+*.iml
+
+# Ignore gradle files
+.gradle/
+gradle/
+
+build/
