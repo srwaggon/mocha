@@ -10,10 +10,11 @@ import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import mocha.game.Game;
-import mocha.game.GameLoop;
 import mocha.game.InputHandler;
 
 @SpringBootApplication
@@ -32,20 +33,34 @@ public class Main extends Application {
 
     stage.setTitle("Mocha");
     Canvas canvas = new Canvas(600, 400);
+    Image image = new Image("sprites.png");
+    WritableImage writableImage = new WritableImage(600, 400);
+    for (int y = 0; y < 400; y++) {
+      for (int x = 0; x < 512; x++) {
+        int argb = image.getPixelReader().getArgb(x, y);
+        writableImage.getPixelWriter().setArgb(x, y, argb);
+      }
+    }
+
+    canvas.getGraphicsContext2D().drawImage(writableImage, 0, 0);
+
 
     Group root = new Group();
     root.getChildren().add(canvas);
 
-    Scene scene = new Scene(root, 600, 400);
-
     InputHandler input = context.getBean(InputHandler.class);
-    addInputHandlers(scene, input);
+
+    Scene scene = new Scene(root, 600, 400);
     stage.setScene(scene);
+    addInputHandlers(scene, input);
 
     Game game = context.getBean(Game.class);
-    new GameLoop(game, canvas).start();
+//    new GameLoop(game, canvas).start();
 
-    stage.setOnCloseRequest(event -> {Platform.exit(); System.exit(0);});
+    stage.setOnCloseRequest(event -> {
+      Platform.exit();
+      System.exit(0);
+    });
 
     stage.show();
   }
