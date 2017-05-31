@@ -1,4 +1,5 @@
 *.class
+build/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -14,9 +15,9 @@ hs_err_pid*
 # Ignore IntelliJ Projects 
 .idea/
 *.iml
+*.ipr
+*.iws
 
 # Ignore gradle files
 .gradle/
 gradle/
-
-build/
