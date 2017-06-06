@@ -1,22 +1,20 @@
 package mocha.game;
 
 
-import javafx.animation.AnimationTimer;
-import javafx.scene.canvas.Canvas;
+import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+
+import javafx.animation.AnimationTimer;
+
+@Component
 public class GameLoop extends AnimationTimer {
   private static final double NANOSECONDS_PER_SECOND = 1000000000.0;
   private static final int TICKS_PER_SECOND = 60;
-  private final Game game;
-  private final Canvas canvas;
+  @Inject
+  private Game game;
   private long previousTime;
-  private double unprocessed;
-
-  public GameLoop(Game game, Canvas canvas) {
-    this.game = game;
-    this.canvas = canvas;
-    unprocessed = 0;
-  }
+  private double unprocessed = 0.0;
 
   private double getTimestepInNanoseconds() {
     return NANOSECONDS_PER_SECOND / TICKS_PER_SECOND;
@@ -31,7 +29,6 @@ public class GameLoop extends AnimationTimer {
     accumulateUnprocessedTicks(now);
     previousTime = now;
     processTicks();
-    game.render(canvas.getGraphicsContext2D());
   }
 
   private void accumulateUnprocessedTicks(long now) {

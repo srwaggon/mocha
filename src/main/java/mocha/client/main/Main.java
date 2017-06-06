@@ -1,6 +1,7 @@
 package mocha.client.main;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,11 +15,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import mocha.game.Game;
+import mocha.client.main.gfx.RenderLoop;
+import mocha.game.GameLoop;
 import mocha.game.InputHandler;
 
 @SpringBootApplication
 @ComponentScan("mocha")
+@EnableAutoConfiguration
 public class Main extends Application {
   private static String[] args;
 
@@ -32,18 +35,17 @@ public class Main extends Application {
     ApplicationContext context = SpringApplication.run(Main.class, args);
 
     stage.setTitle("Mocha");
-    Canvas canvas = new Canvas(600, 400);
+    Canvas canvas = context.getBean(Canvas.class);
     Image image = new Image("sprites.png");
     WritableImage writableImage = new WritableImage(600, 400);
-    for (int y = 0; y < 400; y++) {
-      for (int x = 0; x < 512; x++) {
+    for (int y = 0; y < 16; y++) {
+      for (int x = 0; x < 16; x++) {
         int argb = image.getPixelReader().getArgb(x, y);
         writableImage.getPixelWriter().setArgb(x, y, argb);
       }
     }
 
     canvas.getGraphicsContext2D().drawImage(writableImage, 0, 0);
-
 
     Group root = new Group();
     root.getChildren().add(canvas);
@@ -54,8 +56,8 @@ public class Main extends Application {
     stage.setScene(scene);
     addInputHandlers(scene, input);
 
-    Game game = context.getBean(Game.class);
-//    new GameLoop(game, canvas).start();
+    context.getBean(GameLoop.class).start();
+    context.getBean(RenderLoop.class).start();
 
     stage.setOnCloseRequest(event -> {
       Platform.exit();
