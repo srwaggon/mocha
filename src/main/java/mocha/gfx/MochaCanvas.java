@@ -13,13 +13,14 @@ public class MochaCanvas extends Canvas {
 
   private int width = 600;
   private int height = 400;
-  private final double DEFAULT_SCALE = 1.0;
-
+  private double canvasScale = 1.0;
 
   @Inject
   private SpriteSheet spriteSheet;
 
-  private final WritableImage writableImage = new WritableImage(width, height);
+  private final WritableImage writableImage = new WritableImage(
+      width, height
+  );
 
   public MochaCanvas() {
     super(600, 400);
@@ -34,7 +35,8 @@ public class MochaCanvas extends Canvas {
   }
 
   public void drawSprite(int spriteIndex, int x, int y) {
-    drawSprite(spriteIndex, x, y, DEFAULT_SCALE);
+    double defaultScale = 1.0;
+    drawSprite(spriteIndex, x, y, defaultScale);
   }
 
   public void drawSprite(int spriteIndex, int x, int y, double scale) {
@@ -44,6 +46,6 @@ public class MochaCanvas extends Canvas {
   public void render() {
     getGraphicsContext2D().drawImage(writableImage,
         0, 0, writableImage.getWidth(), writableImage.getHeight(),
-        0, 0, width, height);
+        0, 0, width * canvasScale, height * canvasScale);
   }
 }

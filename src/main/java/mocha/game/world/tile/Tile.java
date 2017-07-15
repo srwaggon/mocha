@@ -30,7 +30,12 @@ public class Tile implements Drawable {
 
   @Override
   public void draw(MochaCanvas mochaCanvas) {
-      mochaCanvas.drawSprite(1, x * SIZE / 2 * 3, y * SIZE / 2 * 3, 3);
+    double scale = 2.0;
+    mochaCanvas.drawSprite(1,
+        (int) (x * 16 * scale),
+        (int) (y * 16 * scale),
+        scale
+    );
   }
 
   public void setTileItem(TileItem tileItem) {

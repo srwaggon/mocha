@@ -18,7 +18,8 @@ public class Mob extends Entity {
 
   @Override
   public void draw(MochaCanvas mochaCanvas) {
-    mochaCanvas.drawSprite(130, getLocation(), 3);
+    double scale = 2.0;
+    mochaCanvas.drawSprite(130, getLocation(), scale);
   }
 
   public double getSpeed() {
