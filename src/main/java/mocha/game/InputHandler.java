@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -14,27 +15,27 @@ import javafx.scene.input.KeyEvent;
 public class InputHandler {
   private final Map<KeyCode, InputKey> keyMap = Maps.newHashMap();
 
-  public InputHandler() {
+  InputHandler() {
     keyMap.put(KeyCode.UP, InputKey.UP);
     keyMap.put(KeyCode.RIGHT, InputKey.RIGHT);
     keyMap.put(KeyCode.DOWN, InputKey.DOWN);
     keyMap.put(KeyCode.LEFT, InputKey.LEFT);
   }
 
-  public void put(KeyCode keyCode, InputKey inputKey) {
+  void put(KeyCode keyCode, InputKey inputKey) {
     keyMap.put(keyCode, inputKey);
   }
 
-  public InputKey getKey(KeyCode keyCode) {
-    return keyMap.get(keyCode);
+  void down(KeyCode keyCode) {
+    Optional.ofNullable(keyMap.get(keyCode))
+        .orElse(InputKey.UNBOUND)
+        .down();
   }
 
-  public void down(KeyCode keyCode) {
-    keyMap.get(keyCode).down();
-  }
-
-  public void up(KeyCode keyCode) {
-    keyMap.get(keyCode).up();
+  void up(KeyCode keyCode) {
+    Optional.ofNullable(keyMap.get(keyCode))
+        .orElse(InputKey.UNBOUND)
+        .up();
   }
 
   public boolean isDown(InputKey inputKey) {

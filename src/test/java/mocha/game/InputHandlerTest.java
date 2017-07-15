@@ -17,11 +17,6 @@ public class InputHandlerTest {
   }
 
   @Test
-  public void getKey_ReturnsTheGameKeyAssociatedWithTheSystemKey() {
-    testObject.getKey(KeyCode.UP);
-  }
-
-  @Test
   public void isDown_ReturnsFalseByDefault() {
     assertFalse(testObject.isDown(InputKey.UP));
   }

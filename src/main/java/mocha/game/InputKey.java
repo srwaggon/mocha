@@ -1,26 +1,19 @@
 package mocha.game;
 
-import com.google.common.collect.Lists;
+import java.util.Arrays;
 
-import java.util.Collection;
+public enum InputKey {
 
-public class InputKey {
+  UNBOUND,
+  LEFT,
+  RIGHT,
+  UP,
+  DOWN;
 
-  public static final Collection<InputKey> ALL_KEYS = Lists.newArrayList();
   private boolean isDown;
   private boolean pressed;
   private int clicks;
   private boolean isClicked;
-
-
-  public InputKey() {
-    ALL_KEYS.add(this);
-  }
-
-  public final static InputKey LEFT = new InputKey();
-  public final static InputKey RIGHT = new InputKey();
-  public final static InputKey UP = new InputKey();
-  public final static InputKey DOWN = new InputKey();
 
   public boolean isDown() {
     return isDown;
@@ -46,6 +39,6 @@ public class InputKey {
   }
 
   public static void tickAll() {
-    ALL_KEYS.stream().forEach(InputKey::tick);
+    Arrays.stream(InputKey.values()).forEach(InputKey::tick);
   }
 }

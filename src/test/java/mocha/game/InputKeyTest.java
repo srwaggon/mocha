@@ -1,9 +1,11 @@
 package mocha.game;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class InputKeyTest {
 
@@ -11,19 +13,27 @@ public class InputKeyTest {
 
   @Before
   public void setUp() throws Exception {
-    testObject = new InputKey();
+    testObject = InputKey.UNBOUND;
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    testObject.up();
+    for (int i = 0; i < 10; i++) {
+      testObject.tick();
+    }
   }
 
   @Test
   public void key_StartUp() {
-    assertFalse(testObject.isDown());
+    assertThat(testObject.isDown()).isFalse();
   }
 
   @Test
   public void key_StaysUpEvenWhenPressed() {
     testObject.down();
 
-    assertFalse(testObject.isDown());
+    assertThat(testObject.isDown()).isFalse();
   }
 
   @Test
@@ -32,7 +42,7 @@ public class InputKeyTest {
 
     testObject.tick();
 
-    assertTrue(testObject.isDown());
+    assertThat(testObject.isDown()).isTrue();
   }
 
   @Test
@@ -42,7 +52,7 @@ public class InputKeyTest {
 
     testObject.up();
 
-    assertTrue(testObject.isDown());
+    assertThat(testObject.isDown()).isTrue();
   }
 
   @Test
@@ -53,7 +63,7 @@ public class InputKeyTest {
 
     testObject.tick();
 
-    assertFalse(testObject.isDown());
+    assertThat(testObject.isDown()).isFalse();
   }
 
   @Test
@@ -62,7 +72,7 @@ public class InputKeyTest {
     testObject.up();
     testObject.tick();
 
-    assertTrue(testObject.isDown());
+    assertThat(testObject.isDown()).isTrue();
   }
 
   @Test
@@ -72,7 +82,7 @@ public class InputKeyTest {
     testObject.tick();
     testObject.tick();
 
-    assertFalse(testObject.isDown());
+    assertThat(testObject.isDown()).isFalse();
   }
 
   @Test
@@ -82,12 +92,12 @@ public class InputKeyTest {
     testObject.tick();
     testObject.tick();
 
-    assertTrue(testObject.isDown());
+    assertThat(testObject.isDown()).isTrue();
   }
 
   @Test
   public void isClicked_ReturnsFalse() {
-    assertFalse(testObject.isClicked());
+    assertThat(testObject.isClicked()).isFalse();
   }
 
   @Test
@@ -95,7 +105,7 @@ public class InputKeyTest {
     testObject.down();
     testObject.tick();
 
-    assertTrue(testObject.isClicked());
+    assertThat(testObject.isClicked()).isTrue();
   }
 
   @Test
@@ -104,7 +114,7 @@ public class InputKeyTest {
     testObject.tick();
     testObject.tick();
 
-    assertFalse(testObject.isClicked());
+    assertThat(testObject.isClicked()).isFalse();
   }
 
   @Test
@@ -115,7 +125,7 @@ public class InputKeyTest {
     testObject.tick();
     testObject.tick();
 
-    assertTrue(testObject.isClicked());
+    assertThat(testObject.isClicked()).isTrue();
   }
 
   @Test
@@ -127,7 +137,7 @@ public class InputKeyTest {
     testObject.tick();
     testObject.tick();
 
-    assertFalse(testObject.isClicked());
+    assertThat(testObject.isClicked()).isFalse();
   }
 
 }

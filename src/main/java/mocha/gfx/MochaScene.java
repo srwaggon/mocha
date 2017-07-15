@@ -18,9 +18,6 @@ public class MochaScene extends Scene {
 
     addEventHandler(KeyEvent.KEY_PRESSED, inputHandler.getKeyPressedHandler());
     addEventHandler(KeyEvent.KEY_RELEASED, inputHandler.getKeyReleasedHandler());
-
   }
-
-
 
 }
