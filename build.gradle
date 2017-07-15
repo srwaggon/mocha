@@ -34,11 +34,12 @@ repositories {
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile("com.google.guava:guava:19.0")
     compile("com.google.inject:guice:4.0")
     compile("commons-io:commons-io:2.4")
-    compile("org.slf4j:slf4j-api:1.7.21")
+//    compile("org.slf4j:slf4j-api:1.7.21")
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compileOnly "org.projectlombok:lombok:1.16.16"
     testCompile("junit:junit:4.12")
     testCompile("org.mockito:mockito-all:1.9.5")
 }

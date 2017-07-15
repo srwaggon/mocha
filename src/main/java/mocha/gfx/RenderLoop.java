@@ -1,11 +1,10 @@
-package mocha.client.main.gfx;
+package mocha.gfx;
 
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
 import javafx.animation.AnimationTimer;
-import javafx.scene.canvas.Canvas;
 import mocha.game.Game;
 
 @Component
@@ -18,7 +17,7 @@ public class RenderLoop extends AnimationTimer {
   @Inject
   private Game game;
   @Inject
-  private Canvas canvas;
+  private MochaCanvas mochaCanvas;
 
   private long last = 0L;
   private int renders;
@@ -34,13 +33,16 @@ public class RenderLoop extends AnimationTimer {
     if (!shouldRender(now)) {
       return;
     }
-    game.render(canvas.getGraphicsContext2D());
+    game.draw(mochaCanvas);
+
+    mochaCanvas.render();
+
     last = now;
   }
 
   private void printFramesPerSecond(long now) {
     if (now - lastSecond >= NANOSECONDS_PER_SECOND) {
-      System.out.println(renders);
+      System.out.printf("FPS: %d\n", renders);
       renders = 0;
       lastSecond = now;
     }

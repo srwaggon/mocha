@@ -1,12 +1,12 @@
 package mocha.game.world.entity;
 
-import javafx.scene.canvas.GraphicsContext;
-import mocha.game.gfx.Renderable;
+import mocha.gfx.Drawable;
 import mocha.game.world.Location;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.SimpleMovement;
+import mocha.gfx.MochaCanvas;
 
-public class Entity implements Renderable {
+public class Entity implements Drawable {
   private static int lastId = 0;
   private int id;
   private Location location = new Location();
@@ -25,8 +25,8 @@ public class Entity implements Renderable {
     return id;
   }
 
-  @Override
-  public void render(GraphicsContext graphics) {
+  public void draw(MochaCanvas mochaCanvas) {
+    mochaCanvas.drawSprite(2, location);
   }
 
   public void tick() {

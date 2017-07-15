@@ -1,10 +1,10 @@
 package mocha.game.world.tile;
 
-import javafx.scene.canvas.GraphicsContext;
-import mocha.game.gfx.Renderable;
+import mocha.gfx.Drawable;
 import mocha.game.world.tile.item.TileItem;
+import mocha.gfx.MochaCanvas;
 
-public class Tile implements Renderable {
+public class Tile implements Drawable {
 
   public static final int SIZE = 32;
   private final int x, y;
@@ -29,11 +29,9 @@ public class Tile implements Renderable {
   }
 
   @Override
-  public void render(GraphicsContext graphics) {
-    graphics.setFill(getTileType().getColor());
-    graphics.fillRect(x * Tile.SIZE, y * Tile.SIZE, Tile.SIZE, Tile.SIZE);
+  public void draw(MochaCanvas mochaCanvas) {
+    mochaCanvas.drawSprite(1, x * SIZE / 2, y * SIZE / 2);
   }
-
 
   public void setTileItem(TileItem tileItem) {
     this.tileItem = tileItem;

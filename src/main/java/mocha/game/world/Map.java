@@ -3,12 +3,12 @@ package mocha.game.world;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import javafx.scene.canvas.GraphicsContext;
-import mocha.game.gfx.Renderable;
+import mocha.gfx.Drawable;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.tile.Tile;
+import mocha.gfx.MochaCanvas;
 
-public class Map implements Renderable {
+public class Map implements Drawable {
 
   private Tile[][] tiles;
   private final int id;
@@ -54,12 +54,12 @@ public class Map implements Renderable {
   }
 
   @Override
-  public void render(GraphicsContext graphics) {
-    Arrays.stream(tiles).forEach((row) -> Arrays.stream(row).forEach((tile) -> tile.render(graphics)));
-    getEntities().values().stream().forEach((entity) -> entity.render(graphics));
+  public void draw(MochaCanvas mochaCanvas) {
+    Arrays.stream(tiles).forEach((row) -> Arrays.stream(row).forEach((tile) -> tile.draw(mochaCanvas)));
+    getEntities().values().forEach((entity) -> entity.draw(mochaCanvas));
   }
 
   void tick() {
-    getEntities().values().stream().forEach(Entity::tick);
+    getEntities().values().forEach(Entity::tick);
   }
 }

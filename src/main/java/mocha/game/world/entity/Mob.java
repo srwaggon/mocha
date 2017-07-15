@@ -1,7 +1,6 @@
 package mocha.game.world.entity;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import mocha.gfx.MochaCanvas;
 
 public class Mob extends Entity {
 
@@ -18,9 +17,8 @@ public class Mob extends Entity {
   }
 
   @Override
-  public void render(GraphicsContext graphics) {
-    graphics.setFill(Color.RED);
-    graphics.fillRect(getLocation().getX(), getLocation().getY(), width, height);
+  public void draw(MochaCanvas mochaCanvas) {
+    mochaCanvas.drawSprite(130, getLocation());
   }
 
   public double getSpeed() {

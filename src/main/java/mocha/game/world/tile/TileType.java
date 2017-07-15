@@ -2,9 +2,9 @@ package mocha.game.world.tile;
 
 import javafx.scene.paint.Color;
 
-import static mocha.game.gfx.Colors.DIRT_BROWN;
-import static mocha.game.gfx.Colors.GRASS_GREEN;
-import static mocha.game.gfx.Colors.STONE_GREY;
+import static mocha.gfx.Colors.DIRT_BROWN;
+import static mocha.gfx.Colors.GRASS_GREEN;
+import static mocha.gfx.Colors.STONE_GREY;
 
 
 enum TileType {

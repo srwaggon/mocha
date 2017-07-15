@@ -5,14 +5,14 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import javafx.scene.canvas.GraphicsContext;
-import mocha.game.gfx.Renderable;
 import mocha.game.world.Map;
 import mocha.game.world.World;
 import mocha.game.world.entity.PlayerMob;
+import mocha.gfx.Drawable;
+import mocha.gfx.MochaCanvas;
 
 @Component
-public class Game implements Renderable {
+public class Game implements Drawable {
 
   @Inject
   private World world;
@@ -46,8 +46,8 @@ public class Game implements Renderable {
   }
 
   @Override
-  public void render(GraphicsContext graphics) {
-    world.getMapById(1).render(graphics);
+  public void draw(MochaCanvas mochaCanvas) {
+    world.getMapById(1).draw(mochaCanvas);
   }
 
   void tick() {

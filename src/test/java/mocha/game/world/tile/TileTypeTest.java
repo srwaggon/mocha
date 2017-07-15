@@ -2,7 +2,7 @@ package mocha.game.world.tile;
 
 import org.junit.Test;
 
-import mocha.game.gfx.Colors;
+import mocha.gfx.Colors;
 
 import static org.junit.Assert.*;
 
