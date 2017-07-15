@@ -1,0 +1,3 @@
+spring.main.web-environment: false
+
+mocha.server.port: 8080

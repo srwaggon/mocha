@@ -7,9 +7,7 @@ import org.springframework.context.ApplicationContext;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import mocha.game.GameLoop;
 import mocha.gfx.MochaScene;
-import mocha.gfx.RenderLoop;
 
 @SpringBootApplication
 public class Main extends Application {
@@ -26,9 +24,6 @@ public class Main extends Application {
 
     stage.setTitle("Mocha");
     stage.setScene(context.getBean(MochaScene.class));
-
-    context.getBean(RenderLoop.class).start();
-    context.getBean(GameLoop.class).start();
 
     closeOnExit(stage);
     stage.show();
