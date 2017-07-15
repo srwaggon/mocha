@@ -13,22 +13,25 @@ public class SpriteSheet {
 
   private final int PURE_BLACK = -16777216;
 
-  public void drawSprite(int spriteIndex, int canvasX, int canvasY, WritableImage destinationImage) {
+  public void drawSprite(int spriteIndex, int canvasX, int canvasY, double scale, WritableImage destinationImage) {
     int spritesPerRow = (int) (sourceImage.getWidth() / spriteSize);
     int spriteX = spriteSize * (spriteIndex % spritesPerRow);
     int spriteRow = spriteIndex / spritesPerRow;
     int spriteY = spriteRow * spriteSize;
 
-    for (int x = 0; x < spriteSize; x++) {
-      for (int y = 0; y < spriteSize; y++) {
-        if (!isWithinRectangle(spriteX + x, spriteY + y, sourceImage.getWidth(), sourceImage.getHeight())) {
-          continue;
-        }
+    for (int x = 0; x < spriteSize * scale; x++) {
+      for (int y = 0; y < spriteSize * scale; y++) {
         if (!isWithinRectangle(canvasX + x, canvasY + y, destinationImage.getWidth(), destinationImage.getHeight())) {
           continue;
         }
-        int argb = sourceImage.getPixelReader().getArgb(spriteX + x, spriteY + y);
 
+        double spriteSheetX = spriteX + (x / scale);
+        double spriteSheetY = spriteY + (y / scale);
+        if (!isWithinRectangle(spriteSheetX, spriteSheetY, sourceImage.getWidth(), sourceImage.getHeight())) {
+          continue;
+        }
+
+        int argb = sourceImage.getPixelReader().getArgb((int) spriteSheetX, (int) spriteSheetY);
         if (argb == PURE_BLACK) {
           continue;
         }
