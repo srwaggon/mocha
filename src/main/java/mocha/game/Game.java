@@ -1,5 +1,6 @@
 package mocha.game;
 
+import mocha.game.world.entity.Foods;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -35,6 +36,8 @@ public class Game implements Drawable {
 
   private void addEntities() {
     world.getMapById(1).addEntity(player);
+    Foods newFoods = new Foods();
+    world.getMapById(1).addEntity(newFoods);
   }
 
   private void addMaps() {
