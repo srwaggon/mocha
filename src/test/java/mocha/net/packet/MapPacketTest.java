@@ -63,7 +63,7 @@ public class MapPacketTest {
     StringBuilder tilesBuilder = new StringBuilder();
     for (Tile[] row : testMap.getTiles()) {
       for (Tile tile : row) {
-        tilesBuilder.append(tile.getSymbol());
+        tilesBuilder.append(tile.getTileType().getSymbol());
       }
     }
 

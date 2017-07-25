@@ -46,8 +46,8 @@ public class Game implements Drawable {
   }
 
   @Override
-  public void draw(MochaCanvas mochaCanvas) {
-    world.getMapById(1).draw(mochaCanvas);
+  public void draw(MochaCanvas mochaCanvas, int x, int y) {
+    world.getMapById(1).draw(mochaCanvas, -1, -1);
   }
 
   void tick() {

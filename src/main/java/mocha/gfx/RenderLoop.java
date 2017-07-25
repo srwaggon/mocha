@@ -35,7 +35,7 @@ public class RenderLoop extends AnimationTimer {
     if (!shouldRender(now)) {
       return;
     }
-    game.draw(mochaCanvas);
+    game.draw(mochaCanvas, -1, -1);
 
     mochaCanvas.render();
 

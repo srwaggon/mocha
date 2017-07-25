@@ -1,6 +1,5 @@
 package mocha.net;
 
-import org.junit.After;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -15,17 +14,14 @@ public class ServerTest {
   private static int port = 8026;
 
   private void startServer(int port) {
-    new Thread() {
-      @Override
-      public void run() {
-        try {
-          testObject = new Server(port);
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+    new Thread(() -> {
+      try {
+        testObject = new Server(port);
         testObject.run();
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-    }.start();
+    }).start();
   }
 
   @Test

@@ -11,22 +11,12 @@ public class TileTest {
 
   @Test
   public void tileConstructor_ConstructsDirtTileByDefault() {
-    assertEquals(TileType.DIRT, new Tile(0, 0).getTileType());
-  }
-
-  @Test
-  public void getSymbol_ReturnsTileTypeSymbol() {
-    Tile testObject = new Tile(0, 0);
-    TileType type = TileType.GRASS;
-
-    testObject.setTileType(type);
-
-    assertEquals(type.getSymbol(), testObject.getSymbol());
+    assertEquals(TileType.DIRT, new Tile().getTileType());
   }
 
   @Test
   public void getTileItem_ReturnsHeldTileItem() {
-    Tile testObject = new Tile(0, 0);
+    Tile testObject = new Tile();
     TileItem tileItem = new Stone();
 
     testObject.setTileItem(tileItem);

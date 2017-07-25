@@ -25,7 +25,7 @@ public class Entity implements Drawable {
     return id;
   }
 
-  public void draw(MochaCanvas mochaCanvas) {
+  public void draw(MochaCanvas mochaCanvas, int x, int y) {
     mochaCanvas.drawSprite(2, location);
   }
 
