@@ -1,43 +1,13 @@
 package mocha.game.world.entity.movement;
 
-import org.springframework.stereotype.Component;
+import lombok.Data;
 
-import mocha.game.world.Location;
+@Data
+public class MomentumMovement extends SimpleMovement {
 
-@Component
-public class MomentumMovement implements Movement {
-  private double speed;
-  private Location location;
+  private double speed = 1.0;
   private double dx;
   private double dy;
-
-  public double getSpeed() {
-    return speed;
-  }
-
-  public void setSpeed(double speed) {
-    this.speed = speed;
-  }
-
-  public void setLocation(Location location) {
-    this.location = location;
-  }
-
-  public void setDx(double dx) {
-    this.dx = dx;
-  }
-
-  public double getDx() {
-    return dx;
-  }
-
-  public void setDy(double dy) {
-    this.dy = dy;
-  }
-
-  public double getDy() {
-    return dy;
-  }
 
   public void applyDx() {
     location.setX(location.getX() + getDx());

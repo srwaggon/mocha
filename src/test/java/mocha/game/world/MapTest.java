@@ -2,6 +2,7 @@ package mocha.game.world;
 
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.Mob;
+import mocha.game.world.map.Map;
 import mocha.game.world.tile.Tile;
 
 import org.junit.Before;

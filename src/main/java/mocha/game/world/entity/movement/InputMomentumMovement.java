@@ -1,43 +1,30 @@
 package mocha.game.world.entity.movement;
 
-import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
-
 import mocha.game.InputHandler;
 import mocha.game.InputKey;
-import mocha.game.world.Location;
 
-@Component
-public class InputMomentumMovement implements Movement {
+public class InputMomentumMovement extends MomentumMovement {
 
-  @Inject
-  private MomentumMovement momentumMovement;
-  @Inject
-  private InputHandler input;
+  private InputHandler inputHandler;
+
+  InputMomentumMovement(InputHandler inputHandler) {
+    this.inputHandler = inputHandler;
+  }
 
   @Override
   public void tick() {
-    if (input.isDown(InputKey.UP)) {
-      momentumMovement.up();
+    if (inputHandler.isDown(InputKey.UP)) {
+      this.up();
     }
-    if (input.isDown(InputKey.DOWN)) {
-      momentumMovement.down();
+    if (inputHandler.isDown(InputKey.DOWN)) {
+      this.down();
     }
-    if (input.isDown(InputKey.LEFT)) {
-      momentumMovement.left();
+    if (inputHandler.isDown(InputKey.LEFT)) {
+      this.left();
     }
-    if (input.isDown(InputKey.RIGHT)) {
-      momentumMovement.right();
+    if (inputHandler.isDown(InputKey.RIGHT)) {
+      this.right();
     }
-    momentumMovement.tick();
-  }
-
-  public void setLocation(Location location) {
-    momentumMovement.setLocation(location);
-  }
-
-  public void setSpeed(double speed) {
-    momentumMovement.setSpeed(speed);
+    super.tick();
   }
 }

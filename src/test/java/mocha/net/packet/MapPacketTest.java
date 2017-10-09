@@ -3,7 +3,7 @@ package mocha.net.packet;
 import org.junit.Before;
 import org.junit.Test;
 
-import mocha.game.world.Map;
+import mocha.game.world.map.Map;
 import mocha.game.world.tile.Tile;
 
 import static org.junit.Assert.*;

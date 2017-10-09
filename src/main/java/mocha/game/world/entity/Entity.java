@@ -1,15 +1,13 @@
 package mocha.game.world.entity;
 
-import mocha.gfx.Drawable;
-import mocha.game.world.Location;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.SimpleMovement;
+import mocha.gfx.Drawable;
 import mocha.gfx.MochaCanvas;
 
 public class Entity implements Drawable {
   private static int lastId = 0;
   private int id;
-  private Location location = new Location();
   protected Movement movementComponent = new SimpleMovement();
 
   Entity() {
@@ -26,23 +24,15 @@ public class Entity implements Drawable {
   }
 
   public void draw(MochaCanvas mochaCanvas, int x, int y) {
-    mochaCanvas.drawSprite(2, location);
+    mochaCanvas.drawSprite(2, movementComponent.getLocation());
   }
 
   public void tick() {
     move();
   }
 
-  public void move() {
+  private void move() {
     this.getMovementComponent().tick();
-  }
-
-  public Location getLocation() {
-    return this.location;
-  }
-
-  public void setLocation(Location location) {
-    this.location = location;
   }
 
   public Movement getMovementComponent() {

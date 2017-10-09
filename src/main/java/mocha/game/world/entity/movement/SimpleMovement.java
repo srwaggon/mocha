@@ -1,8 +1,11 @@
 package mocha.game.world.entity.movement;
 
-public class SimpleMovement implements Movement {
-  @Override
-  public void tick() {
+import lombok.Data;
+import mocha.game.world.Location;
 
-  }
+@Data
+public class SimpleMovement implements Movement {
+
+  protected Location location = new Location();
+
 }

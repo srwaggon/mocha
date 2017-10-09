@@ -3,7 +3,7 @@ package mocha.net.packet;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-import mocha.game.world.Map;
+import mocha.game.world.map.Map;
 import mocha.game.world.tile.Tile;
 
 public class MapPacket extends AbstractPacket implements Packet {

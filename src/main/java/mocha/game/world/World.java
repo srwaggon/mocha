@@ -4,8 +4,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
+import mocha.game.world.map.Map;
+
 @Component
-public class  World {
+public class World {
 
   private HashMap<Integer, Map> world = new HashMap<>();
 

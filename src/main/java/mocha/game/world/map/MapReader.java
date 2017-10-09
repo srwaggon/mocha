@@ -1,4 +1,4 @@
-package mocha.game.world;
+package mocha.game.world.map;
 
 import org.springframework.stereotype.Component;
 

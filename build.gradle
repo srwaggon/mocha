@@ -10,12 +10,14 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M3'
     }
 }
 
+apply plugin: 'application'
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'application'
+apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'spring-boot'
 
 jar {
@@ -28,6 +30,22 @@ targetCompatibility = 1.8
 
 mainClassName = "mocha.server.main.Main"
 
+junitPlatform {
+    // platformVersion '1.0.0-SNAPSHOT'
+    engines {
+        // include 'junit-jupiter', 'junit-vintage'
+        // exclude 'custom-engine'
+    }
+    tags {
+        // include 'fast'
+        exclude 'slow'
+    }
+    includeClassNamePattern '.*Test'
+    // enableStandardTestTask true
+    // reportsDir file('build/test-results/junit-platform') // this is the default
+    logManager 'org.apache.logging.log4j.jul.LogManager'
+}
+
 repositories {
     jcenter()
     mavenCentral()
@@ -38,8 +56,9 @@ dependencies {
     compile("com.google.inject:guice:4.0")
     compile("commons-io:commons-io:2.4")
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+
     compileOnly "org.projectlombok:lombok:1.16.16"
-    testCompile("junit:junit:4.12")
+
     testCompile("org.mockito:mockito-all:1.9.5")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
