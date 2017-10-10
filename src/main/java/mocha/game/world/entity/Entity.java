@@ -2,13 +2,11 @@ package mocha.game.world.entity;
 
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.SimpleMovement;
-import mocha.gfx.Drawable;
-import mocha.gfx.MochaCanvas;
 
-public class Entity implements Drawable {
+public class Entity {
   private static int lastId = 0;
   private int id;
-  protected Movement movementComponent = new SimpleMovement();
+  Movement movementComponent = new SimpleMovement();
 
   Entity() {
     this.id = ++lastId;
@@ -23,10 +21,6 @@ public class Entity implements Drawable {
     return id;
   }
 
-  public void draw(MochaCanvas mochaCanvas, int x, int y) {
-    mochaCanvas.drawSprite(2, movementComponent.getLocation());
-  }
-
   public void tick() {
     move();
   }
@@ -37,6 +31,14 @@ public class Entity implements Drawable {
 
   public Movement getMovementComponent() {
     return movementComponent;
+  }
+
+  public int getSpriteId() {
+    return 2;
+  }
+
+  public double getScale() {
+    return 1.0;
   }
 
 }

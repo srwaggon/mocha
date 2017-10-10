@@ -3,18 +3,14 @@ package mocha.game.world.map;
 import com.google.common.base.Preconditions;
 
 import java.util.HashMap;
-import java.util.function.IntConsumer;
-import java.util.stream.IntStream;
 
 import lombok.Data;
-import mocha.game.world.tile.TileType;
-import mocha.gfx.Drawable;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.tile.Tile;
-import mocha.gfx.MochaCanvas;
+import mocha.game.world.tile.TileType;
 
 @Data
-public class Map implements Drawable {
+public class Map {
 
   private Tile[][] tiles;
   private int id;
@@ -31,7 +27,7 @@ public class Map implements Drawable {
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < columns; x++) {
         Tile tile = new Tile();
-        if (x + y % 2 == 0) {
+        if (x + y % (id + 1) == 0) {
           tile.setTileType(TileType.WATER);
         }
         tiles[y][x] = tile;
@@ -53,29 +49,6 @@ public class Map implements Drawable {
 
   public int getRowCount() {
     return tiles.length;
-  }
-
-  @Override
-  public void draw(MochaCanvas mochaCanvas, int x, int y) {
-    drawTiles(mochaCanvas);
-    drawEntities(mochaCanvas);
-  }
-
-  private void drawTiles(MochaCanvas mochaCanvas) {
-    IntConsumer drawRow = (y) -> IntStream.range(0, tiles[0].length).forEach((x) -> drawTile(mochaCanvas, x, y));
-    IntStream.range(0, tiles.length).forEach(drawRow);
-  }
-
-  private void drawTile(MochaCanvas mochaCanvas, int x, int y) {
-    int spriteId = tiles[y][x].getTileType().getSprite();
-    double scale = 2.0;
-    int spriteX = (int) (x * 16 * scale);
-    int spriteY = (int) (y * 16 * scale);
-    mochaCanvas.drawSprite(spriteId, spriteX, spriteY, scale);
-  }
-
-  private void drawEntities(MochaCanvas mochaCanvas) {
-    getEntities().values().forEach((entity) -> entity.draw(mochaCanvas, -1, -1));
   }
 
   public void tick() {
