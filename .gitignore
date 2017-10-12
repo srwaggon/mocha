@@ -19,9 +19,5 @@ hs_err_pid*
 *.ipr
 *.iws
 
-# Ignore gradle files
-.gradle/
-gradle/
-
 # Project specific
 data/
