@@ -15,24 +15,24 @@ import javafx.scene.input.KeyEvent;
 public class InputHandler {
   private final Map<KeyCode, InputKey> keyMap = Maps.newHashMap();
 
-  InputHandler() {
+  public InputHandler() {
     keyMap.put(KeyCode.UP, InputKey.UP);
     keyMap.put(KeyCode.RIGHT, InputKey.RIGHT);
     keyMap.put(KeyCode.DOWN, InputKey.DOWN);
     keyMap.put(KeyCode.LEFT, InputKey.LEFT);
   }
 
-  void put(KeyCode keyCode, InputKey inputKey) {
+  public void put(KeyCode keyCode, InputKey inputKey) {
     keyMap.put(keyCode, inputKey);
   }
 
-  void down(KeyCode keyCode) {
+  public void down(KeyCode keyCode) {
     Optional.ofNullable(keyMap.get(keyCode))
         .orElse(InputKey.UNBOUND)
         .down();
   }
 
-  void up(KeyCode keyCode) {
+  public void up(KeyCode keyCode) {
     Optional.ofNullable(keyMap.get(keyCode))
         .orElse(InputKey.UNBOUND)
         .up();

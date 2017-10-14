@@ -2,8 +2,7 @@ package mocha.game;
 
 import mocha.game.world.World;
 import mocha.game.world.entity.EntityFactory;
-import mocha.game.world.entity.PlayerMob;
-import mocha.game.world.entity.movement.InputMomentumMovement;
+import mocha.game.world.entity.Mob;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +20,7 @@ public class GameTest {
   @Mock
   private EntityFactory entityFactory;
   @Mock
-  private PlayerMob playerMob;
+  private Mob playerMob;
 
   @Before
   public void setUp() throws Exception {

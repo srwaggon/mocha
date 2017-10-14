@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import mocha.game.world.World;
 import mocha.game.world.entity.EntityFactory;
-import mocha.game.world.entity.PlayerMob;
+import mocha.game.world.entity.Mob;
 import mocha.game.world.map.Map;
 
 @Component
@@ -29,7 +29,7 @@ public class Game {
   }
 
   private void addEntities() {
-    PlayerMob player = entityFactory.createPlayer();
+    Mob player = entityFactory.createPlayer();
     world.getMapById(0).addEntity(player);
   }
 

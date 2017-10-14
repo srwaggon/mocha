@@ -28,4 +28,8 @@ public class MovementFactory {
   public SimpleMovement newSimpleMovement() {
     return new SimpleMovement();
   }
+
+  public SmoothingMovement newSmoothingMovement() {
+    return new SmoothingMovement();
+  }
 }
