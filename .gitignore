@@ -19,5 +19,8 @@ hs_err_pid*
 *.ipr
 *.iws
 
+# Gradle
+.gradle/
+
 # Project specific
 data/
