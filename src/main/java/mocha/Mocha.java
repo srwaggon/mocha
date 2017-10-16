@@ -23,6 +23,7 @@ public class Mocha {
   public void init() {
     gameLoop.start();
     renderLoop.start();
+    server.start();
   }
 
 }
