@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class MomentumMovement extends SimpleMovement {
 
-  private double speed = 1.0;
+  private double speed = 4.0;
   private double dx;
   private double dy;
 

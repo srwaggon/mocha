@@ -22,24 +22,16 @@ public class InputHandler {
     keyMap.put(KeyCode.LEFT, InputKey.LEFT);
   }
 
-  public void put(KeyCode keyCode, InputKey inputKey) {
-    keyMap.put(keyCode, inputKey);
-  }
-
-  public void down(KeyCode keyCode) {
+  private void down(KeyCode keyCode) {
     Optional.ofNullable(keyMap.get(keyCode))
         .orElse(InputKey.UNBOUND)
         .down();
   }
 
-  public void up(KeyCode keyCode) {
+  private void up(KeyCode keyCode) {
     Optional.ofNullable(keyMap.get(keyCode))
         .orElse(InputKey.UNBOUND)
         .up();
-  }
-
-  public boolean isDown(InputKey inputKey) {
-    return inputKey.isDown();
   }
 
   public EventHandler<KeyEvent> getKeyPressedHandler() {

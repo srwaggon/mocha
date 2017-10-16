@@ -2,7 +2,6 @@ package mocha.gfx;
 
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import mocha.game.Game;
@@ -17,14 +16,11 @@ public class GameView implements Drawable {
 
   private MapView mapView = new MapView();
 
-  @PostConstruct
-  public void init() {
-    Map displayedMap = game.getWorld().getMapById(0);
-    this.mapView.setMap(displayedMap);
-  }
-
   @Override
   public void draw(MochaCanvas mochaCanvas, int x, int y) {
+    int playerMapId = game.getPlayer().getMapId();
+    Map map = game.getWorld().getMapById(playerMapId);
+    this.mapView.setMap(map);
     mapView.draw(mochaCanvas, 0, 0);
   }
 }

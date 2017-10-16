@@ -1,20 +1,23 @@
 package mocha.game.world.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.SimpleMovement;
 
 @Data
+@EqualsAndHashCode
 public class Entity {
   private static int lastId = 0;
   private final int id;
   private Movement movementComponent = new SimpleMovement();
+  private int mapId;
 
-  Entity() {
+  public Entity() {
     this.id = ++lastId;
   }
 
-  Entity(int id) {
+  public Entity(int id) {
     this.id = id;
     lastId = id > lastId ? id : lastId;
   }
@@ -35,4 +38,11 @@ public class Entity {
     return 1.0;
   }
 
+  public String toString() {
+    return "{" +
+        "\"id\": " + id + ", " +
+        "\"map\": " + this.mapId + ", " +
+        "\"location\": " + this.getMovementComponent().getLocation() +
+        "}";
+  }
 }

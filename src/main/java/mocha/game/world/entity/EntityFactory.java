@@ -19,7 +19,7 @@ public class EntityFactory {
   private MovementFactory movementFactory;
 
   public Mob createPlayer() {
-    Movement movement = movementFactory.newSmoothingMovement();
+    Movement movement = movementFactory.newInputMomentumMovement();
     Mob mob = new Mob();
     mob.setMovementComponent(movement);
     return mob;

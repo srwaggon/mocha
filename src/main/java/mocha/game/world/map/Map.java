@@ -1,8 +1,9 @@
 package mocha.game.world.map;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 
-import java.util.HashMap;
+import java.util.Set;
 
 import lombok.Data;
 import mocha.game.world.entity.Entity;
@@ -12,10 +13,9 @@ import mocha.game.world.tile.TileType;
 @Data
 public class Map {
 
-  private Tile[][] tiles;
   private int id;
-
-  private HashMap<Integer, Entity> entities = new HashMap<>();
+  private Tile[][] tiles;
+  private Set<Entity> entities = Sets.newIdentityHashSet();
 
   public Map(int id, int columns, int rows) {
     Preconditions.checkArgument(columns > 0);
@@ -39,8 +39,13 @@ public class Map {
     return tiles[y][x];
   }
 
-  public void addEntity(Entity entity) {
-    entities.put(entity.getId(), entity);
+  public void add(Entity entity) {
+    entities.add(entity);
+    entity.setMapId(this.id);
+  }
+
+  public void remove(Entity entity) {
+    entities.remove(entity);
   }
 
   public int getColumnCount() {
@@ -52,6 +57,6 @@ public class Map {
   }
 
   public void tick() {
-    getEntities().values().forEach(Entity::tick);
+    getEntities().forEach(Entity::tick);
   }
 }

@@ -3,17 +3,15 @@ package mocha.game.world.map;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
+import lombok.Setter;
 import mocha.game.world.entity.EntityView;
 import mocha.gfx.Drawable;
 import mocha.gfx.MochaCanvas;
 
 public class MapView implements Drawable {
 
+  @Setter
   private Map map;
-
-  public void setMap(Map map) {
-    this.map = map;
-  }
 
   @Override
   public void draw(MochaCanvas mochaCanvas, int x, int y) {
@@ -35,6 +33,6 @@ public class MapView implements Drawable {
   }
 
   private void drawEntities(MochaCanvas mochaCanvas) {
-    map.getEntities().values().forEach((entity) -> new EntityView(entity).draw(mochaCanvas, 0, 0));
+    map.getEntities().forEach((entity) -> new EntityView(entity).draw(mochaCanvas, 0, 0));
   }
 }

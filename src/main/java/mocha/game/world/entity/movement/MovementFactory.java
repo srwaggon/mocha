@@ -6,19 +6,14 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.InputHandler;
-
 @Component
 public class MovementFactory {
 
   @Inject
   private EventBus eventBus;
 
-  @Inject
-  private InputHandler inputHandler;
-
   public InputMomentumMovement newInputMomentumMovement() {
-    return new InputMomentumMovement(inputHandler);
+    return new InputMomentumMovement();
   }
 
   public MomentumMovement newMomentumMovement() {
