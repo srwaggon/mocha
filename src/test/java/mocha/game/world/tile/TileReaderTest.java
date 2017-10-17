@@ -16,7 +16,7 @@ public class TileReaderTest {
 
   @Test
   public void tileReader_ReturnsANewGridTile() throws Exception {
-    Tile actual = testObject.read(" ");
+    Tile actual = testObject.read(TileType.GRID.getSymbol());
 
     assertThat(actual.getTileType()).isEqualTo(TileType.GRID);
   }

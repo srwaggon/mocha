@@ -10,7 +10,7 @@ import static mocha.gfx.Colors.VOID_PINK;
 
 public enum TileType {
 
-  GRID(" ", VOID_PINK, 0),
+  GRID("x", VOID_PINK, 0),
   DIRT(".", DIRT_BROWN, 1),
   STONE("o", STONE_GREY, 4),
   GRASS("w", GRASS_GREEN, 160),
@@ -37,5 +37,13 @@ public enum TileType {
 
   public int getSprite() {
     return this.spriteIndex;
+  }
+
+  public static int count() {
+    return values().length;
+  }
+
+  public static TileType random() {
+    return values()[(int) ((TileType.count()-1) * Math.random()) + 1];
   }
 }

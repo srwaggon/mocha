@@ -40,9 +40,8 @@ public class MapFactory {
 
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < columns; x++) {
-        boolean isWater = x + y % (mapId + 1) == 0;
         tiles[y][x] = Tile.builder()
-            .tileType(isWater ? TileType.WATER : TileType.DIRT)
+            .tileType(TileType.random())
             .build();
       }
     }

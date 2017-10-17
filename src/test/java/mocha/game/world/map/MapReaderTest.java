@@ -33,7 +33,7 @@ public class MapReaderTest {
         .id(17)
         .columns(3)
         .rows(3)
-        .tiles("         ")
+        .tiles("xxxxxxxxx")
         .build();
 
     Map readMap = testObject.read(mapDescription);
@@ -68,7 +68,7 @@ public class MapReaderTest {
         .id(17)
         .columns(2)
         .rows(2)
-        .tiles(" .ow") // grid, grass, stone, grass
+        .tiles("x.ow") // grid, grass, stone, grass
         .build();
 
     Map actual = testObject.read(mapDescription);
