@@ -1,40 +1,24 @@
 package mocha.game.world.map;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Sets;
-
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import mocha.game.Tickable;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.tile.Tile;
-import mocha.game.world.tile.TileType;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Map implements Tickable {
 
   private int id;
   private Tile[][] tiles;
-  private Set<Entity> entities = Sets.newIdentityHashSet();
-
-  public Map(int id, int columns, int rows) {
-    Preconditions.checkArgument(columns > 0);
-    Preconditions.checkArgument(rows > 0);
-
-    this.id = id;
-
-    tiles = new Tile[rows][columns];
-    for (int y = 0; y < rows; y++) {
-      for (int x = 0; x < columns; x++) {
-        Tile tile = new Tile();
-        if (x + y % (id + 1) == 0) {
-          tile.setTileType(TileType.WATER);
-        }
-        tiles[y][x] = tile;
-      }
-    }
-  }
+  private Set<Entity> entities;
 
   public Tile getTile(int x, int y) {
     return tiles[y][x];
@@ -47,6 +31,7 @@ public class Map implements Tickable {
 
   public void remove(Entity entity) {
     entities.remove(entity);
+    entity.setMapId(-1);
   }
 
   public int getColumnCount() {

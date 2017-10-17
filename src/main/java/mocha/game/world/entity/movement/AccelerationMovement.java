@@ -3,11 +3,13 @@ package mocha.game.world.entity.movement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Setter;
 
 @Builder
 @Data
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class AccelerationMovement extends VelocityMovement {
 
   @Setter

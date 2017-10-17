@@ -20,7 +20,8 @@ public class WorldTest {
   @Test
   public void getMapById_ReturnsMap_ByThatId() {
     int expectedMapId = 0;
-    testObject.addMap(new Map(expectedMapId, 1, 1));
+    Map newMap = Map.builder().id(expectedMapId).build();
+    testObject.addMap(newMap);
 
     Map map = testObject.getMapById(expectedMapId);
     int actualMapId = map.getId();
@@ -31,9 +32,9 @@ public class WorldTest {
   @Test
   public void getMapById_ReturnsMap_ByThatId_InductiveCase() {
     int expectedMapId0 = 0;
-    testObject.addMap(new Map(expectedMapId0, 1, 1));
+    testObject.addMap(Map.builder().id(expectedMapId0).build());
     int expectedMapId26 = 26;
-    testObject.addMap(new Map(expectedMapId26, 2, 2));
+    testObject.addMap(Map.builder().id(expectedMapId26).build());
 
     assertEquals(expectedMapId0, testObject.getMapById(expectedMapId0).getId());
     assertEquals(expectedMapId26, testObject.getMapById(expectedMapId26).getId());

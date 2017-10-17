@@ -17,6 +17,7 @@ import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.brain.InputBrain;
 import mocha.game.world.map.Map;
+import mocha.game.world.map.MapFactory;
 import mocha.game.world.tile.Tile;
 
 @Data
@@ -28,6 +29,8 @@ public class Game implements Tickable {
   private World world;
   @Inject
   private EntityFactory entityFactory;
+  @Inject
+  private MapFactory mapFactory;
 
   private Entity player;
 
@@ -65,10 +68,10 @@ public class Game implements Tickable {
   }
 
   private void addMaps() {
-    world.addMap(new Map(0, 18, 12));
-    world.addMap(new Map(1, 18, 12));
-    world.addMap(new Map(2, 18, 12));
-    world.addMap(new Map(3, 18, 12));
+    world.addMap(mapFactory.newDefault());
+    world.addMap(mapFactory.newDefault());
+    world.addMap(mapFactory.newDefault());
+    world.addMap(mapFactory.newDefault());
   }
 
   public World getWorld() {

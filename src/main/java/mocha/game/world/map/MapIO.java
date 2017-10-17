@@ -16,10 +16,6 @@ public class MapIO {
   private File dataDirectory = new File("data");
   private File mapsDirectory = new File(dataDirectory, "maps");
 
-  public Map readMap() {
-    return new Map(0, 13, 13);
-  }
-
   void saveMap(Map map) {
 
     ensureMapsDirectory();

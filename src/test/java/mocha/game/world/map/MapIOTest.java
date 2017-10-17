@@ -8,6 +8,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
+import mocha.game.world.tile.Tile;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -30,7 +32,10 @@ public class MapIOTest {
 
   @Test
   public void saveMap_CreatesAFileOnDiskRepresentingTheSavedMap() {
-    Map map = new Map(12, 10, 10);
+    Map map = Map.builder()
+        .id(12)
+        .tiles(new Tile[10][10])
+        .build();
 
     testObject.saveMap(map);
 
@@ -40,7 +45,10 @@ public class MapIOTest {
 
   @Test
   public void saveMap_CreatesAMapDirectoryIfItDoesNotExist() throws IOException {
-    Map map = new Map(12, 10, 10);
+    Map map = Map.builder()
+        .id(12)
+        .tiles(new Tile[10][10])
+        .build();
     assertFalse(mapsDirectory.exists());
 
     testObject.saveMap(map);

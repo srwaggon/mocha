@@ -1,8 +1,10 @@
 package mocha.game.world.entity.movement;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class VelocityMovement extends SimpleMovement {
 
   private double speed = 4.0;

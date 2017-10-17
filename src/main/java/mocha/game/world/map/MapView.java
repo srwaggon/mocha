@@ -5,6 +5,7 @@ import java.util.stream.IntStream;
 
 import lombok.Setter;
 import mocha.game.world.entity.EntityView;
+import mocha.game.world.tile.Tile;
 import mocha.gfx.Drawable;
 import mocha.gfx.MochaCanvas;
 
@@ -25,11 +26,22 @@ public class MapView implements Drawable {
   }
 
   private void drawTile(MochaCanvas mochaCanvas, int x, int y) {
-    int spriteId = map.getTile(x, y).getTileType().getSprite();
+    int spriteId = getSpriteId(x, y);
     double scale = 2.0;
     int spriteX = (int) (x * 16 * scale);
     int spriteY = (int) (y * 16 * scale);
     mochaCanvas.drawSprite(spriteId, spriteX, spriteY, scale);
+  }
+
+  private int getSpriteId(int x, int y) {
+    Tile tile = map.getTile(x, y);
+
+//    Tile up = map.getTile(x, y - 1);
+//    Tile down = map.getTile(x, y + 1);
+//    Tile left = map.getTile(x - 1, y);
+//    Tile right = map.getTile(x + 1, y);
+
+    return tile.getTileType().getSprite();
   }
 
   private void drawEntities(MochaCanvas mochaCanvas) {

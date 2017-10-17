@@ -1,5 +1,7 @@
 package mocha.game.world;
 
+import com.google.common.collect.Sets;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -28,7 +31,12 @@ public class MapTest {
 
   @Before
   public void setUp() {
-    testObject = new Map(0, 10, 6);
+    Tile[][] tiles = new Tile[6][10];
+    testObject = Map.builder()
+        .id(0)
+        .entities(Sets.newHashSet())
+        .tiles(tiles)
+        .build();
   }
 
   @Test
@@ -41,8 +49,9 @@ public class MapTest {
 
   @Test
   public void getTile_ReturnsTileAtProperLocation() {
-    Tile[][] tiles = testObject.getTiles();
-    Tile expected = tiles[3][3];
+    Tile mockTile = mock(Tile.class);
+    testObject.getTiles()[3][3] = mockTile;
+    Tile expected = mockTile;
     Tile actual = testObject.getTile(3, 3);
 
     assertSame(expected, actual);

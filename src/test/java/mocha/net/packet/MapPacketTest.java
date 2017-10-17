@@ -4,9 +4,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import mocha.game.world.map.Map;
+import mocha.game.world.map.MapFactory;
 import mocha.game.world.tile.Tile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MapPacketTest {
 
@@ -16,7 +17,8 @@ public class MapPacketTest {
 
   @Before
   public void setUp() {
-    testMap = new Map(10, 11, 12);
+    testMap = new MapFactory().newDefault(12, 11);
+    testMap.setId(10);
 
     subject = new MapPacket(testMap);
   }
