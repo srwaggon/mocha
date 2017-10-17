@@ -18,7 +18,6 @@ public class SlidingMovement extends SimpleMovement {
     this.duration = duration;
     this.distance = distance / duration;
     Preconditions.checkArgument(duration > 0, "Duration must be greater than 0.");
-    timeStep = duration;
   }
 
   private Queue<Runnable> turns = Lists.newLinkedList();
