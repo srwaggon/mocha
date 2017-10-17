@@ -9,11 +9,11 @@ public class VelocityMovement extends SimpleMovement {
   private double xVelocity;
   private double yVelocity;
 
-  public void applyXVelocity() {
+  private void applyXVelocity() {
     location.addX(getXVelocity());
   }
 
-  public void applyDy() {
+  private void applyYVelocity() {
     location.addY(getYVelocity());
   }
 
@@ -36,7 +36,7 @@ public class VelocityMovement extends SimpleMovement {
   @Override
   public void tick(long now) {
     applyXVelocity();
-    applyDy();
+    applyYVelocity();
     setXVelocity(0.0);
     setYVelocity(0.0);
   }

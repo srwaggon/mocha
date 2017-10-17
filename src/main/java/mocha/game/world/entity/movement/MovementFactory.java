@@ -25,4 +25,12 @@ public class MovementFactory {
   public SlidingMovement newSlidingMovement() {
     return new SlidingMovement(Tile.SIZE, 15);
   }
+
+  public AccelerationMovement newAccelerationMovement() {
+    return AccelerationMovement.builder()
+        .accelerationRate(.1)
+        .maxXVelocity(2.0)
+        .maxYVelocity(2.0)
+        .build();
+  }
 }

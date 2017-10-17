@@ -1,12 +1,11 @@
-package mocha.game.world.entity;
+package mocha.game.world.entity.movement;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import mocha.game.world.Location;
-import mocha.game.world.entity.movement.VelocityMovement;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class VelocityMovementTest {
   private double speed = 6;
@@ -51,6 +50,7 @@ public class VelocityMovementTest {
 
     assertEquals(-speed, testObject.getXVelocity(), 0);
   }
+
   @Test
   public void right_IncreasesTheDXBySpeed() {
     testObject.right();
@@ -77,23 +77,23 @@ public class VelocityMovementTest {
   }
 
   @Test
-  public void applyDx_UpdatesXByDifferenceInX() throws Exception {
+  public void tick_UpdatesXByDifferenceInX() throws Exception {
     double x = location.getX();
     double dx = 1.0;
     testObject.setXVelocity(dx);
 
-    testObject.applyXVelocity();
+    testObject.tick(now);
 
     assertEquals(x + dx, location.getX(), 0.0);
   }
 
   @Test
-  public void applyDy_UpdatesYByDifferenceInY() throws Exception {
+  public void tick_UpdatesYByDifferenceInY() throws Exception {
     double y = location.getY();
     double dy = 1.0;
     testObject.setYVelocity(dy);
 
-    testObject.applyDy();
+    testObject.tick(now);
 
     assertEquals(y + dy, location.getY(), 0.0);
   }
@@ -101,7 +101,6 @@ public class VelocityMovementTest {
   @Test
   public void tick_ResetsDxAfterMoving() {
     testObject.setXVelocity(1.0);
-    testObject.applyXVelocity();
 
     testObject.tick(now);
 
@@ -111,7 +110,6 @@ public class VelocityMovementTest {
   @Test
   public void tick_ResetsDyAfterMoving() {
     testObject.setYVelocity(1.0);
-    testObject.applyDy();
 
     testObject.tick(now);
 

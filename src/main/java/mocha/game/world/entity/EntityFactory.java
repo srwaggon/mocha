@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.world.entity.brain.InputBrain;
 import mocha.game.world.entity.brain.RandomBrain;
 import mocha.game.world.entity.movement.MovementFactory;
 
@@ -19,20 +18,6 @@ public class EntityFactory {
   @Inject
   private MovementFactory movementFactory;
 
-  public Entity createInputSlider() {
-    Entity playerEntity = new Entity();
-    playerEntity.setBrain(new InputBrain(playerEntity));
-    playerEntity.setMovement(movementFactory.newSlidingMovement());
-    return playerEntity;
-  }
-
-  public Entity createInputEntity() {
-    Entity playerEntity = new Entity();
-    playerEntity.setBrain(new InputBrain(playerEntity));
-    playerEntity.setMovement(movementFactory.newVelocityMovement());
-    return playerEntity;
-  }
-
   public Entity createRandomSlider() {
     Entity entity = new Entity();
     entity.setBrain(new RandomBrain(entity));
@@ -44,6 +29,13 @@ public class EntityFactory {
     Entity entity = new Entity();
     entity.setBrain(new RandomBrain(entity));
     entity.setMovement(movementFactory.newVelocityMovement());
+    return entity;
+  }
+
+  public Entity createRandomAccelerating() {
+    Entity entity = new Entity();
+    entity.setBrain(new RandomBrain(entity));
+    entity.setMovement(movementFactory.newAccelerationMovement());
     return entity;
   }
 }

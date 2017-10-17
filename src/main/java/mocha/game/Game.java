@@ -15,6 +15,7 @@ import mocha.game.world.Location;
 import mocha.game.world.World;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
+import mocha.game.world.entity.brain.InputBrain;
 import mocha.game.world.map.Map;
 import mocha.game.world.tile.Tile;
 
@@ -44,15 +45,17 @@ public class Game implements Tickable {
   }
 
   private void addEntities() {
-    addPlayer(entityFactory.createInputSlider());
+    addPlayer(entityFactory.createRandom());
     for (int i = 0; i < 10; i++) {
-      addEntity(entityFactory.createRandomSlider());
       addEntity(entityFactory.createRandom());
+      addEntity(entityFactory.createRandomSlider());
+      addEntity(entityFactory.createRandomAccelerating());
     }
   }
 
   private void addPlayer(Entity entity) {
     this.player = entity;
+    entity.setBrain(new InputBrain(entity));
     addEntity(entity);
   }
 
