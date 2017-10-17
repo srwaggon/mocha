@@ -10,11 +10,11 @@ public class MomentumMovement extends SimpleMovement {
   private double dy;
 
   public void applyDx() {
-    location.setX(location.getX() + getDx());
+    location.addX(getDx());
   }
 
   public void applyDy() {
-    location.setY(location.getY() + getDy());
+    location.addY(getDy());
   }
 
   public void up() {
@@ -33,10 +33,11 @@ public class MomentumMovement extends SimpleMovement {
     setDx(getSpeed());
   }
 
-  public void tick() {
+  @Override
+  public void tick(long now) {
     applyDx();
-    this.dx = 0.0;
     applyDy();
-    this.dy = 0.0;
+    setDx(0.0);
+    setDy(0.0);
   }
 }

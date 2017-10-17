@@ -13,6 +13,8 @@ public class MomentumMovementTest {
   private Location location;
   private MomentumMovement testObject;
 
+  private long now = 0L;
+
   @Before
   public void setUp() throws Exception {
     location = new Location();
@@ -101,7 +103,7 @@ public class MomentumMovementTest {
     testObject.setDx(1.0);
     testObject.applyDx();
 
-    testObject.tick();
+    testObject.tick(now);
 
     assertEquals(0.0, testObject.getDx(), 0.0);
   }
@@ -111,7 +113,7 @@ public class MomentumMovementTest {
     testObject.setDy(1.0);
     testObject.applyDy();
 
-    testObject.tick();
+    testObject.tick(now);
 
     assertEquals(0.0, testObject.getDy(), 0.0);
   }

@@ -6,9 +6,8 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.world.entity.brain.Brain;
 import mocha.game.world.entity.brain.InputBrain;
-import mocha.game.world.entity.movement.Movement;
+import mocha.game.world.entity.brain.RandomBrain;
 import mocha.game.world.entity.movement.MovementFactory;
 
 @Component
@@ -20,12 +19,31 @@ public class EntityFactory {
   @Inject
   private MovementFactory movementFactory;
 
-  public Entity createPlayer() {
-    Movement movement = movementFactory.newSlidingMovement();
+  public Entity createInputSlider() {
     Entity playerEntity = new Entity();
-    Brain inputBrain = new InputBrain(playerEntity);
-    playerEntity.setBrain(inputBrain);
-    playerEntity.setMovement(movement);
+    playerEntity.setBrain(new InputBrain(playerEntity));
+    playerEntity.setMovement(movementFactory.newSlidingMovement());
     return playerEntity;
+  }
+
+  public Entity createInputEntity() {
+    Entity playerEntity = new Entity();
+    playerEntity.setBrain(new InputBrain(playerEntity));
+    playerEntity.setMovement(movementFactory.newMomentumMovement());
+    return playerEntity;
+  }
+
+  public Entity createRandomSlider() {
+    Entity entity = new Entity();
+    entity.setBrain(new RandomBrain(entity));
+    entity.setMovement(movementFactory.newSlidingMovement());
+    return entity;
+  }
+
+  public Entity createRandom() {
+    Entity entity = new Entity();
+    entity.setBrain(new RandomBrain(entity));
+    entity.setMovement(movementFactory.newMomentumMovement());
+    return entity;
   }
 }

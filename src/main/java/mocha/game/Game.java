@@ -1,6 +1,10 @@
 package mocha.game;
 
+import com.google.common.collect.Lists;
+
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -26,6 +30,8 @@ public class Game implements Tickable {
 
   private Entity player;
 
+  private List<Entity> entities = Lists.newArrayList();
+
   public Game(World world, EntityFactory entityFactory) {
     this.world = world;
     this.entityFactory = entityFactory;
@@ -38,8 +44,21 @@ public class Game implements Tickable {
   }
 
   private void addEntities() {
-    player = entityFactory.createPlayer();
-    world.getMapById(0).add(player);
+    addPlayer(entityFactory.createInputSlider());
+    for (int i = 0; i < 10; i++) {
+      addEntity(entityFactory.createRandomSlider());
+      addEntity(entityFactory.createRandom());
+    }
+  }
+
+  private void addPlayer(Entity entity) {
+    this.player = entity;
+    addEntity(entity);
+  }
+
+  private void addEntity(Entity entity) {
+    entities.add(entity);
+    world.getMapById(0).add(entity);
   }
 
   private void addMaps() {
@@ -55,40 +74,37 @@ public class Game implements Tickable {
 
   public void tick(long now) {
     world.tick(now);
+    getEntities().forEach(this::moveEntityBetweenMaps);
+  }
 
-    Location playerLocation = player.getMovement().getLocation();
-
-    Map currentMap = world.getMapById(player.getMapId());
+  private void moveEntityBetweenMaps(Entity entity) {
+    Location entityLocation = entity.getMovement().getLocation();
+    Map currentMap = world.getMapById(entity.getMapId());
     int currentMapWidth = currentMap.getColumnCount() * Tile.SIZE;
     int currentMapHeight = currentMap.getRowCount() * Tile.SIZE;
 
-    if (playerLocation.getX() >= currentMapWidth) {
-      currentMap.remove(player);
-      playerLocation.setX(0);
-      Map nextMap = world.getMapById(1);
-      nextMap.add(player);
+    if (entityLocation.getX() >= currentMapWidth) {
+      currentMap.remove(entity);
+      entityLocation.setX(0);
+      world.getMapById(1).add(entity);
     }
 
-    if (playerLocation.getY() >= currentMapHeight) {
-      currentMap.remove(player);
-      Map nextMap = world.getMapById(2);
-      playerLocation.setY(0);
-      nextMap.add(player);
+    if (entityLocation.getY() >= currentMapHeight) {
+      currentMap.remove(entity);
+      entityLocation.setY(0);
+      world.getMapById(2).add(entity);
     }
 
-    if (playerLocation.getX() < 0) {
-      currentMap.remove(player);
-      Map nextMap = world.getMapById(3);
-      playerLocation.setX(nextMap.getColumnCount() * Tile.SIZE - 1);
-      nextMap.add(player);
+    if (entityLocation.getX() < 0) {
+      currentMap.remove(entity);
+      entityLocation.setX(world.getMapById(3).getColumnCount() * Tile.SIZE - 1);
+      world.getMapById(3).add(entity);
     }
 
-    if (playerLocation.getY() < 0) {
-      currentMap.remove(player);
-      Map nextMap = world.getMapById(0);
-      playerLocation.setY(nextMap.getRowCount() * Tile.SIZE - 1);
-      nextMap.add(player);
+    if (entityLocation.getY() < 0) {
+      currentMap.remove(entity);
+      entityLocation.setY(world.getMapById(0).getRowCount() * Tile.SIZE - 1);
+      world.getMapById(0).add(entity);
     }
-
   }
 }
