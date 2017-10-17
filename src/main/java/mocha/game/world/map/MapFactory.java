@@ -4,13 +4,24 @@ import com.google.common.collect.Sets;
 
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import mocha.game.world.tile.Tile;
 import mocha.game.world.tile.TileType;
 
+@Builder
 @Component
+@NoArgsConstructor
+@AllArgsConstructor
 public class MapFactory {
 
   private static int mapId = 0;
+
+  @Inject
+  private MapReader mapReader;
 
   public Map newDefault() {
     return newDefault(18, 12);

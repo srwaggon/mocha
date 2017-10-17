@@ -14,7 +14,8 @@ public class GameView implements Drawable {
   @Inject
   private Game game;
 
-  private MapView mapView = new MapView();
+  @Inject
+  private MapView mapView;
 
   @Override
   public void draw(MochaCanvas mochaCanvas, int x, int y) {

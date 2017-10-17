@@ -13,8 +13,8 @@ public enum TileType {
   GRID(" ", VOID_PINK, 0),
   DIRT(".", DIRT_BROWN, 1),
   STONE("o", STONE_GREY, 4),
-  GRASS("w", GRASS_GREEN, 32),
-  WATER("~", STONE_GREY, 64),
+  GRASS("w", GRASS_GREEN, 160),
+  WATER("~", STONE_GREY, 192),
   ;
 
   private String symbol;
