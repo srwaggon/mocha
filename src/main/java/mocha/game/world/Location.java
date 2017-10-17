@@ -21,6 +21,14 @@ public class Location {
     this.y = y;
   }
 
+  public void addX(double x) {
+    this.x += x;
+  }
+
+  public void addY(double y) {
+    this.y += y;
+  }
+
   @Override
   public String toString() {
     return "{" +

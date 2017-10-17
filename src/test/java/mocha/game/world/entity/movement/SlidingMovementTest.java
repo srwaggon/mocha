@@ -143,4 +143,40 @@ public class SlidingMovementTest {
   }
   // endregion down
 
+  // region up
+
+  @Test
+  public void theMovementBegins_WhenTheUpKeyIsPressed() throws Exception {
+    double timeSteps = 1;
+    double expected = distance * (timeSteps / duration) * -1;
+    InputKey.UP.down();
+    InputKey.tickAll();
+
+    for (int i = 0; i < timeSteps; i++) {
+      testObject.tick();
+    }
+
+    double actual = testObject.getLocation().getY();
+    assertEquals(expected, actual, 0.000001);
+  }
+
+  // endregion up
+
+  // region left
+
+  @Test
+  public void theMovementBegins_WhenTheLeftKeyIsPressed() throws Exception {
+    double timeSteps = 1;
+    double expected = distance * (timeSteps / duration) * -1;
+    InputKey.LEFT.down();
+    InputKey.tickAll();
+
+    for (int i = 0; i < timeSteps; i++) {
+      testObject.tick();
+    }
+
+    double actual = testObject.getLocation().getX();
+    assertEquals(expected, actual, 0.000001);
+  }
+  // endregion left
 }
