@@ -65,7 +65,6 @@ public class Game {
     if (playerLocation.getX() >= currentMapWidth) {
       currentMap.remove(player);
       playerLocation.setX(0);
-      playerLocation.setY(playerLocation.getY());
       Map nextMap = world.getMapById(1);
       nextMap.add(player);
     }
@@ -73,7 +72,6 @@ public class Game {
     if (playerLocation.getY() >= currentMapHeight) {
       currentMap.remove(player);
       Map nextMap = world.getMapById(2);
-      playerLocation.setX(playerLocation.getX());
       playerLocation.setY(0);
       nextMap.add(player);
     }
@@ -82,14 +80,12 @@ public class Game {
       currentMap.remove(player);
       Map nextMap = world.getMapById(3);
       playerLocation.setX(nextMap.getColumnCount() * Tile.SIZE - 1);
-      playerLocation.setY(0);
       nextMap.add(player);
     }
 
     if (playerLocation.getY() < 0) {
       currentMap.remove(player);
       Map nextMap = world.getMapById(0);
-      playerLocation.setX(playerLocation.getX());
       playerLocation.setY(nextMap.getRowCount() * Tile.SIZE - 1);
       nextMap.add(player);
     }
