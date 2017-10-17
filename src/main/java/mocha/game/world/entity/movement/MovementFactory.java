@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
+import mocha.game.world.tile.Tile;
+
 @Component
 public class MovementFactory {
 
@@ -24,7 +26,7 @@ public class MovementFactory {
     return new SimpleMovement();
   }
 
-  public SmoothingMovement newSmoothingMovement() {
-    return new SmoothingMovement();
+  public SlidingMovement newSlidingMovement() {
+    return new SlidingMovement(Tile.SIZE, 15);
   }
 }

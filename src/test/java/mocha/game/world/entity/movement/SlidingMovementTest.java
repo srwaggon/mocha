@@ -2,34 +2,47 @@ package mocha.game.world.entity.movement;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.Arrays;
 
 import mocha.game.InputKey;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
-public class SmoothingMovementTest {
+public class SlidingMovementTest {
 
-  private SmoothingMovement testObject;
+  private SlidingMovement testObject;
+  private double distance = 16.0D;
+  private int duration = 15;
 
   @Before
   public void setUp() {
-    testObject = new SmoothingMovement();
+    testObject = new SlidingMovement(distance, duration);
+
+    resetInputKeys();
   }
 
+  private void resetInputKeys() {
+    Arrays.stream(InputKey.values()).forEach(InputKey::up);
+    for (int i = 0; i < 10; i++) {
+      InputKey.tickAll();
+    }
+  }
+
+  // region still
   @Test
   public void thereIsNoMovement_WhenNoKeyIsPressed() {
     assertThat(testObject.getLocation().getX()).isEqualTo(0.0);
     assertThat(testObject.getLocation().getY()).isEqualTo(0.0);
   }
+  // endregion still
 
+  // region right
   @Test
   public void theMovementBegins_WhenTheKeyRightIsPressed() {
-    int timeSteps = 1;
-    double expected = 16 * (timeSteps / 15.0D);
+    double timeSteps = 1;
+    double expected = distance * (timeSteps / duration);
     InputKey.RIGHT.down();
     InputKey.tickAll();
 
@@ -44,7 +57,7 @@ public class SmoothingMovementTest {
   @Test
   public void theMovementContinues_WhenTheKeyRightIsPressed() throws Exception {
     double timeSteps = 10.0D;
-    Double expected = (16.0D - 0.0D) * (timeSteps / 15.0D);
+    Double expected = distance * (timeSteps / duration);
     InputKey.RIGHT.down();
     InputKey.tickAll();
 
@@ -58,8 +71,8 @@ public class SmoothingMovementTest {
 
   @Test
   public void theMovementContinues_EvenWhenTheKeyIsReleased() {
-    int timeSteps = 15;
-    double expected = 16 * (timeSteps / 15.0D);
+    double timeSteps = 15;
+    double expected = distance * (timeSteps / duration);
     InputKey.RIGHT.down();
     InputKey.tickAll();
     testObject.tick();
@@ -76,8 +89,8 @@ public class SmoothingMovementTest {
 
   @Test
   public void theMovementStops_WhenItHasTravelledAFullTile_GivenTheKeyHasBeenReleased() {
-    int timeSteps = 120;
-    double expected = 16 * (15.0D / 15.0D);
+    double timeSteps = 30;
+    double expected = distance * (duration / duration);
     InputKey.RIGHT.down();
     InputKey.tickAll();
     testObject.tick();
@@ -94,7 +107,7 @@ public class SmoothingMovementTest {
 
   @Test
   public void theMovementWillContinue_WhenToldToMoveAgain() {
-    double expected = 0 + 16 + 16 * (1.0 / 15.0D);
+    double expected = 0 + distance + distance * (1.0 / duration);
     InputKey.RIGHT.down();
     InputKey.tickAll();
     testObject.tick();
@@ -111,4 +124,23 @@ public class SmoothingMovementTest {
     double actual = testObject.getLocation().getX();
     assertEquals(expected, actual, 0.000001);
   }
+  // endregion right
+
+  // region down
+  @Test
+  public void theMovementBegins_WhenTheKeyDownIsPressed() {
+    double timeSteps = 1;
+    double expected = distance * (timeSteps / duration);
+    InputKey.DOWN.down();
+    InputKey.tickAll();
+
+    for (int i = 0; i < timeSteps; i++) {
+      testObject.tick();
+    }
+
+    double actual = testObject.getLocation().getY();
+    assertEquals(expected, actual, 0.000001);
+  }
+  // endregion down
+
 }
