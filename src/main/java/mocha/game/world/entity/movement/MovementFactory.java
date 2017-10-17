@@ -14,8 +14,8 @@ public class MovementFactory {
   @Inject
   private EventBus eventBus;
 
-  public MomentumMovement newMomentumMovement() {
-    return new MomentumMovement();
+  public VelocityMovement newVelocityMovement() {
+    return new VelocityMovement();
   }
 
   public SimpleMovement newSimpleMovement() {

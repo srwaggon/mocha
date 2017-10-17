@@ -29,7 +29,7 @@ public class EntityFactory {
   public Entity createInputEntity() {
     Entity playerEntity = new Entity();
     playerEntity.setBrain(new InputBrain(playerEntity));
-    playerEntity.setMovement(movementFactory.newMomentumMovement());
+    playerEntity.setMovement(movementFactory.newVelocityMovement());
     return playerEntity;
   }
 
@@ -43,7 +43,7 @@ public class EntityFactory {
   public Entity createRandom() {
     Entity entity = new Entity();
     entity.setBrain(new RandomBrain(entity));
-    entity.setMovement(movementFactory.newMomentumMovement());
+    entity.setMovement(movementFactory.newVelocityMovement());
     return entity;
   }
 }
