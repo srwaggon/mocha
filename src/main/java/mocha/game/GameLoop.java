@@ -28,16 +28,16 @@ public class GameLoop extends AnimationTimer {
     }
     accumulateUnprocessedTicks(now);
     previousTime = now;
-    processTicks();
+    processTicks(now);
   }
 
   private void accumulateUnprocessedTicks(long now) {
     unprocessed += (now - previousTime) / getTimestepInNanoseconds();
   }
 
-  private void processTicks() {
+  private void processTicks(long now) {
     while (unprocessed >= 1) {
-      game.tick();
+      game.tick(now);
       InputKey.tickAll();
       unprocessed -= 1.0;
     }

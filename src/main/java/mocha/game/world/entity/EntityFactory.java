@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
+import mocha.game.world.entity.brain.Brain;
+import mocha.game.world.entity.brain.InputBrain;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 
@@ -18,10 +20,12 @@ public class EntityFactory {
   @Inject
   private MovementFactory movementFactory;
 
-  public Mob createPlayer() {
+  public Entity createPlayer() {
     Movement movement = movementFactory.newSlidingMovement();
-    Mob mob = new Mob();
-    mob.setMovementComponent(movement);
-    return mob;
+    Entity playerEntity = new Entity();
+    Brain inputBrain = new InputBrain(playerEntity);
+    playerEntity.setBrain(inputBrain);
+    playerEntity.setMovement(movement);
+    return playerEntity;
   }
 }

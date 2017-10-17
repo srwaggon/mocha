@@ -4,10 +4,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
+import mocha.game.Tickable;
 import mocha.game.world.map.Map;
 
 @Component
-public class World {
+public class World implements Tickable {
 
   private HashMap<Integer, Map> world = new HashMap<>();
 
@@ -19,7 +20,9 @@ public class World {
     return world.get(mapId);
   }
 
-  public void tick() {
-    world.values().stream().forEach(Map::tick);
+  public void tick(long now) {
+    for (Map map : world.values()) {
+      map.tick(now);
+    }
   }
 }

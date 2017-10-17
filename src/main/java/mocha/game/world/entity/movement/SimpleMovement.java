@@ -27,4 +27,9 @@ public class SimpleMovement implements Movement {
   public void right() {
 
   }
+
+  @Override
+  public void tick(long now) {
+
+  }
 }

@@ -9,7 +9,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Set;
 
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.Mob;
 import mocha.game.world.map.Map;
 import mocha.game.world.tile.Tile;
 
@@ -70,7 +69,7 @@ public class MapTest {
 
   @Test
   public void add_TracksTheEntity() throws Exception {
-    Mob expected = new Mob(1);
+    Entity expected = new Entity(1);
 
     testObject.add(expected);
 
@@ -93,9 +92,9 @@ public class MapTest {
 
   @Test
   public void add_CanTrackMoreThanOneEntity() throws Exception {
-    Mob expected0 = new Mob(0);
-    Mob expected1 = new Mob(1);
-    Mob expected2 = new Mob(2);
+    Entity expected0 = new Entity(0);
+    Entity expected1 = new Entity(1);
+    Entity expected2 = new Entity(2);
 
     testObject.add(expected0);
     testObject.add(expected1);

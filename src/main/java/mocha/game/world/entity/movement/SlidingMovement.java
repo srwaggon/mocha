@@ -22,7 +22,7 @@ public class SlidingMovement extends SimpleMovement {
   private Queue<Runnable> turns = Lists.newLinkedList();
 
   @Override
-  public void tick() {
+  public void tick(long now) {
     if (!turns.isEmpty()) {
       turns.poll().run();
     }

@@ -3,10 +3,6 @@ package mocha.game.world.entity.movement;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-
-import mocha.game.InputKey;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
@@ -15,6 +11,7 @@ public class SlidingMovementTest {
   private SlidingMovement testObject;
   private double distance = 16.0D;
   private int duration = 15;
+  private long now = 0L;
 
   @Before
   public void setUp() {
@@ -37,7 +34,7 @@ public class SlidingMovementTest {
     testObject.right();
 
     for (int i = 0; i < timeSteps; i++) {
-      testObject.tick();
+      testObject.tick(now);
     }
 
     double actual = testObject.getLocation().getX();
@@ -51,7 +48,7 @@ public class SlidingMovementTest {
     testObject.right();
 
     for (int i = 0; i < timeSteps; i++) {
-      testObject.tick();
+      testObject.tick(now);
     }
 
     double actual = testObject.getLocation().getX();
@@ -65,7 +62,7 @@ public class SlidingMovementTest {
     testObject.right();
 
     for (int i = 0; i < timeSteps; i++) {
-      testObject.tick();
+      testObject.tick(now);
     }
 
     double actual = testObject.getLocation().getX();
@@ -77,10 +74,10 @@ public class SlidingMovementTest {
     double timeSteps = 30;
     double expected = distance;
     testObject.right();
-    testObject.tick();
+    testObject.tick(now);
 
     for (int i = 1; i < timeSteps; i++) {
-      testObject.tick();
+      testObject.tick(now);
     }
 
     double actual = testObject.getLocation().getX();
@@ -92,10 +89,10 @@ public class SlidingMovementTest {
     double expected = distance + distance * (1.0 / duration);
     testObject.right();
     for (int i = 0; i < 120; i++) {
-      testObject.tick();
+      testObject.tick(now);
     }
     testObject.right();
-    testObject.tick();
+    testObject.tick(now);
 
     double actual = testObject.getLocation().getX();
     assertEquals(expected, actual, 0.000001);
@@ -108,7 +105,7 @@ public class SlidingMovementTest {
     double expected = distance * (1.0 / duration);
     testObject.down();
 
-    testObject.tick();
+    testObject.tick(now);
 
     double actual = testObject.getLocation().getY();
     assertEquals(expected, actual, 0.000001);
@@ -122,7 +119,7 @@ public class SlidingMovementTest {
     double expected = distance * (1.0 / duration) * -1;
     testObject.up();
 
-    testObject.tick();
+    testObject.tick(now);
 
     double actual = testObject.getLocation().getY();
     assertEquals(expected, actual, 0.000001);
@@ -137,7 +134,7 @@ public class SlidingMovementTest {
     double expected = distance * (1.0 / duration) * -1;
     testObject.left();
 
-    testObject.tick();
+    testObject.tick(now);
 
     double actual = testObject.getLocation().getX();
     assertEquals(expected, actual, 0.000001);

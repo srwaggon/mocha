@@ -6,12 +6,13 @@ import com.google.common.collect.Sets;
 import java.util.Set;
 
 import lombok.Data;
+import mocha.game.Tickable;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.tile.Tile;
 import mocha.game.world.tile.TileType;
 
 @Data
-public class Map {
+public class Map implements Tickable {
 
   private int id;
   private Tile[][] tiles;
@@ -56,7 +57,7 @@ public class Map {
     return tiles.length;
   }
 
-  public void tick() {
-    getEntities().forEach(Entity::tick);
+  public void tick(long now) {
+    getEntities().forEach(entity -> entity.tick(now));
   }
 }

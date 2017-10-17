@@ -9,22 +9,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import mocha.game.world.Location;
 import mocha.game.world.World;
+import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
-import mocha.game.world.entity.Mob;
 import mocha.game.world.map.Map;
 import mocha.game.world.tile.Tile;
 
 @Data
 @Component
 @NoArgsConstructor
-public class Game {
+public class Game implements Tickable {
 
   @Inject
   private World world;
   @Inject
   private EntityFactory entityFactory;
 
-  private Mob player;
+  private Entity player;
 
   public Game(World world, EntityFactory entityFactory) {
     this.world = world;
@@ -53,10 +53,10 @@ public class Game {
     return world;
   }
 
-  void tick() {
-    world.tick();
+  public void tick(long now) {
+    world.tick(now);
 
-    Location playerLocation = player.getMovementComponent().getLocation();
+    Location playerLocation = player.getMovement().getLocation();
 
     Map currentMap = world.getMapById(player.getMapId());
     int currentMapWidth = currentMap.getColumnCount() * Tile.SIZE;
