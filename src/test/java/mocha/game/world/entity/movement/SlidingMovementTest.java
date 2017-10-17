@@ -19,15 +19,6 @@ public class SlidingMovementTest {
   @Before
   public void setUp() {
     testObject = new SlidingMovement(distance, duration);
-
-    resetInputKeys();
-  }
-
-  private void resetInputKeys() {
-    Arrays.stream(InputKey.values()).forEach(InputKey::up);
-    for (int i = 0; i < 10; i++) {
-      InputKey.tickAll();
-    }
   }
 
   // region still
@@ -43,8 +34,7 @@ public class SlidingMovementTest {
   public void theMovementBegins_WhenTheKeyRightIsPressed() {
     double timeSteps = 1;
     double expected = distance * (timeSteps / duration);
-    InputKey.RIGHT.down();
-    InputKey.tickAll();
+    testObject.right();
 
     for (int i = 0; i < timeSteps; i++) {
       testObject.tick();
@@ -58,8 +48,7 @@ public class SlidingMovementTest {
   public void theMovementContinues_WhenTheKeyRightIsPressed() throws Exception {
     double timeSteps = 10.0D;
     Double expected = distance * (timeSteps / duration);
-    InputKey.RIGHT.down();
-    InputKey.tickAll();
+    testObject.right();
 
     for (int i = 0; i < timeSteps; i++) {
       testObject.tick();
@@ -73,13 +62,9 @@ public class SlidingMovementTest {
   public void theMovementContinues_EvenWhenTheKeyIsReleased() {
     double timeSteps = 15;
     double expected = distance * (timeSteps / duration);
-    InputKey.RIGHT.down();
-    InputKey.tickAll();
-    testObject.tick();
-    InputKey.RIGHT.up();
-    InputKey.tickAll();
+    testObject.right();
 
-    for (int i = 1; i < timeSteps; i++) {
+    for (int i = 0; i < timeSteps; i++) {
       testObject.tick();
     }
 
@@ -90,12 +75,9 @@ public class SlidingMovementTest {
   @Test
   public void theMovementStops_WhenItHasTravelledAFullTile_GivenTheKeyHasBeenReleased() {
     double timeSteps = 30;
-    double expected = distance * (duration / duration);
-    InputKey.RIGHT.down();
-    InputKey.tickAll();
+    double expected = distance;
+    testObject.right();
     testObject.tick();
-    InputKey.RIGHT.up();
-    InputKey.tickAll();
 
     for (int i = 1; i < timeSteps; i++) {
       testObject.tick();
@@ -107,18 +89,12 @@ public class SlidingMovementTest {
 
   @Test
   public void theMovementWillContinue_WhenToldToMoveAgain() {
-    double expected = 0 + distance + distance * (1.0 / duration);
-    InputKey.RIGHT.down();
-    InputKey.tickAll();
-    testObject.tick();
-    InputKey.RIGHT.up();
-    InputKey.tickAll();
-    for (int i = 1; i < 120; i++) {
+    double expected = distance + distance * (1.0 / duration);
+    testObject.right();
+    for (int i = 0; i < 120; i++) {
       testObject.tick();
     }
-    InputKey.RIGHT.down();
-    InputKey.tickAll();
-
+    testObject.right();
     testObject.tick();
 
     double actual = testObject.getLocation().getX();
@@ -128,15 +104,11 @@ public class SlidingMovementTest {
 
   // region down
   @Test
-  public void theMovementBegins_WhenTheKeyDownIsPressed() {
-    double timeSteps = 1;
-    double expected = distance * (timeSteps / duration);
-    InputKey.DOWN.down();
-    InputKey.tickAll();
+  public void theMovementBegins_WhenMovingDown() {
+    double expected = distance * (1.0 / duration);
+    testObject.down();
 
-    for (int i = 0; i < timeSteps; i++) {
-      testObject.tick();
-    }
+    testObject.tick();
 
     double actual = testObject.getLocation().getY();
     assertEquals(expected, actual, 0.000001);
@@ -146,15 +118,11 @@ public class SlidingMovementTest {
   // region up
 
   @Test
-  public void theMovementBegins_WhenTheUpKeyIsPressed() throws Exception {
-    double timeSteps = 1;
-    double expected = distance * (timeSteps / duration) * -1;
-    InputKey.UP.down();
-    InputKey.tickAll();
+  public void theMovementBegins_WhenMovingUp() throws Exception {
+    double expected = distance * (1.0 / duration) * -1;
+    testObject.up();
 
-    for (int i = 0; i < timeSteps; i++) {
-      testObject.tick();
-    }
+    testObject.tick();
 
     double actual = testObject.getLocation().getY();
     assertEquals(expected, actual, 0.000001);
@@ -165,15 +133,11 @@ public class SlidingMovementTest {
   // region left
 
   @Test
-  public void theMovementBegins_WhenTheLeftKeyIsPressed() throws Exception {
-    double timeSteps = 1;
-    double expected = distance * (timeSteps / duration) * -1;
-    InputKey.LEFT.down();
-    InputKey.tickAll();
+  public void theMovementBegins_WhenMovingLeft() throws Exception {
+    double expected = distance * (1.0 / duration) * -1;
+    testObject.left();
 
-    for (int i = 0; i < timeSteps; i++) {
-      testObject.tick();
-    }
+    testObject.tick();
 
     double actual = testObject.getLocation().getX();
     assertEquals(expected, actual, 0.000001);

@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 
 import java.util.Queue;
 
-import mocha.game.InputKey;
 import mocha.game.world.Direction;
 
 public class SlidingMovement extends SimpleMovement {
@@ -24,35 +23,39 @@ public class SlidingMovement extends SimpleMovement {
 
   @Override
   public void tick() {
-    startMoving();
-
     if (!turns.isEmpty()) {
       turns.poll().run();
     }
   }
 
-  private void startMoving() {
-    if (!turns.isEmpty()) {
-      return;
-    }
-
-    if (InputKey.RIGHT.isDown()) {
-      direction = Direction.EAST;
-      addMoves();
-    }
-
-    if (InputKey.DOWN.isDown()) {
-      direction = Direction.SOUTH;
-      addMoves();
-    }
-
-    if (InputKey.UP.isDown()) {
+  @Override
+  public void up() {
+    if (turns.isEmpty()) {
       direction = Direction.NORTH;
       addMoves();
     }
+  }
 
-    if (InputKey.LEFT.isDown()) {
+  @Override
+  public void down() {
+    if (turns.isEmpty()) {
+      direction = Direction.SOUTH;
+      addMoves();
+    }
+  }
+
+  @Override
+  public void left() {
+    if (turns.isEmpty()) {
       direction = Direction.WEST;
+      addMoves();
+    }
+  }
+
+  @Override
+  public void right() {
+    if (turns.isEmpty()) {
+      direction = Direction.EAST;
       addMoves();
     }
   }
