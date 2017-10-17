@@ -18,9 +18,12 @@ public class GameView implements Drawable {
 
   @Override
   public void draw(MochaCanvas mochaCanvas, int x, int y) {
-    int playerMapId = game.getPlayer().getMapId();
-    Map map = game.getWorld().getMapById(playerMapId);
-    this.mapView.setMap(map);
+    this.mapView.setMap(getPlayersCurrentMap());
     mapView.draw(mochaCanvas, 0, 0);
+  }
+
+  private Map getPlayersCurrentMap() {
+    int playerMapId = game.getPlayer().getMapId();
+    return game.getWorld().getMapById(playerMapId);
   }
 }
