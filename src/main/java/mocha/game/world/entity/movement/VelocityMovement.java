@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class VelocityMovement extends SimpleMovement {
 
-  private double speed = 4.0;
+  private double speed = 2.0;
   private double xVelocity;
   private double yVelocity;
 

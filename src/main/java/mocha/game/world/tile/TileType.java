@@ -6,15 +6,16 @@ import static mocha.gfx.Colors.DIRT_BROWN;
 import static mocha.gfx.Colors.GRASS_GREEN;
 import static mocha.gfx.Colors.STONE_GREY;
 import static mocha.gfx.Colors.VOID_PINK;
+import static mocha.gfx.Colors.WATER_BLUE;
 
 
 public enum TileType {
 
   GRID("x", VOID_PINK, 0),
   DIRT(".", DIRT_BROWN, 1),
-  STONE("o", STONE_GREY, 4),
+  STONE("o", STONE_GREY, 256),
   GRASS("w", GRASS_GREEN, 160),
-  WATER("~", STONE_GREY, 192),
+  WATER("~", WATER_BLUE, 192),
   ;
 
   private String symbol;

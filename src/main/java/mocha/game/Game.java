@@ -49,6 +49,11 @@ public class Game implements Tickable {
 
   private void addEntities() {
     addPlayer(entityFactory.createRandom());
+
+    addNpcs();
+  }
+
+  private void addNpcs() {
     for (int i = 0; i < 10; i++) {
       addEntity(entityFactory.createRandom());
       addEntity(entityFactory.createRandomSlider());
