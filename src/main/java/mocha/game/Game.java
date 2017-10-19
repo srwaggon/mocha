@@ -73,10 +73,10 @@ public class Game implements Tickable {
   }
 
   private void addMaps() {
-    world.addMap(mapFactory.newDefault());
-    world.addMap(mapFactory.newDefault());
-    world.addMap(mapFactory.newDefault());
-    world.addMap(mapFactory.newDefault());
+    world.addMap(mapFactory.newRandomDefault());
+    world.addMap(mapFactory.newRandomDefault());
+    world.addMap(mapFactory.newRandomDefault());
+    world.addMap(mapFactory.newRandomDefault());
   }
 
   public World getWorld() {

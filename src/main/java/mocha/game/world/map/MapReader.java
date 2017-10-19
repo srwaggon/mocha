@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import mocha.game.world.tile.Tile;
-import mocha.game.world.tile.TileReader;
+import mocha.game.world.tile.TileFactory;
 
 @Builder
 @Component
@@ -17,7 +17,7 @@ import mocha.game.world.tile.TileReader;
 public class MapReader {
 
   @Inject
-  private TileReader tileReader;
+  private TileFactory tileFactory;
 
   public Map read(MapDescription mapDescription) {
 
@@ -28,7 +28,7 @@ public class MapReader {
     for (int i = 0; i < mapDescription.getTiles().length(); i++) {
       int x = i % columns;
       int y = i / columns;
-      tiles[y][x] = tileReader.read("" + mapDescription.getTiles().charAt(i));
+      tiles[y][x] = tileFactory.newTile("" + mapDescription.getTiles().charAt(i));
     }
 
     return Map.builder()

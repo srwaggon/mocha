@@ -5,20 +5,18 @@ import org.junit.Test;
 
 import mocha.game.world.Location;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 public class VelocityMovementTest {
   private double speed = 6;
-  private Location location;
   private VelocityMovement testObject;
 
   private long now = 0L;
 
   @Before
   public void setUp() throws Exception {
-    location = new Location();
     testObject = new VelocityMovement();
-    testObject.setLocation(location);
     testObject.setSpeed(speed);
   }
 
@@ -60,6 +58,7 @@ public class VelocityMovementTest {
 
   @Test
   public void setDx_DoesNotUpdateX() {
+    Location location = testObject.getLocation();
     double x = location.getX();
 
     testObject.setXVelocity(1.0);
@@ -69,6 +68,7 @@ public class VelocityMovementTest {
 
   @Test
   public void setDy_DoesNotUpdateY() {
+    Location location = testObject.getLocation();
     double y = location.getY();
 
     testObject.setYVelocity(1.0);
@@ -77,7 +77,8 @@ public class VelocityMovementTest {
   }
 
   @Test
-  public void tick_UpdatesXByDifferenceInX() throws Exception {
+  public void tick_UpdatesXByTheXVelocity() throws Exception {
+    Location location = testObject.getLocation();
     double x = location.getX();
     double dx = 1.0;
     testObject.setXVelocity(dx);
@@ -88,7 +89,8 @@ public class VelocityMovementTest {
   }
 
   @Test
-  public void tick_UpdatesYByDifferenceInY() throws Exception {
+  public void tick_UpdatesYByTheYVelocity() throws Exception {
+    Location location = testObject.getLocation();
     double y = location.getY();
     double dy = 1.0;
     testObject.setYVelocity(dy);
@@ -115,6 +117,69 @@ public class VelocityMovementTest {
 
     assertEquals(0.0, testObject.getYVelocity(), 0.0);
   }
+
+  // region corners
+
+  // region topLeft()
+
+  @Test
+  public void topLeft_ReturnsTheCurrentLocationOfTheMovement() throws Exception {
+    Location expected = new Location(0, 0);
+
+    Location actual = testObject.topLeft();
+
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  // endregion topLeft()
+
+  // region topRight()
+
+  @Test
+  public void topRight_passIfTopRightCoordinatesMatchExpectedLocation() {
+    testObject.getLocation().setY(81);
+    testObject.setWidth(50);
+    Location expected = new Location(50, 81);
+
+    Location actual = testObject.topRight();
+
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  // endregion topRight()
+
+  // region bottomLeft()
+
+  @Test
+  public void bottomLeft_ReturnsALocationWhereTheYIsOffsetByTheHeight() {
+    testObject.setLocation(new Location(32, 21));
+    testObject.setHeight(55);
+    Location expected = new Location(32, 76);
+
+    Location actual = testObject.bottomLeft();
+
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  // endregion bottomLeft()
+
+  // region bottomRight()
+
+  @Test
+  public void bottomRight_ReturnsALocationWhereTheXIsOffsetByTheWidthAndTheYIsOffsetByTheHeight() {
+    testObject.setLocation(new Location(32, 21));
+    testObject.setHeight(55);
+    testObject.setWidth(50);
+    Location expected = new Location(82, 76);
+
+    Location actual = testObject.bottomRight();
+
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  // endregion bottomRight()
+
+  // endregion corners
 
 
 }

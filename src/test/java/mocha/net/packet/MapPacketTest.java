@@ -17,7 +17,7 @@ public class MapPacketTest {
 
   @Before
   public void setUp() {
-    testMap = new MapFactory().newDefault(12, 11);
+    testMap = new MapFactory().newRandomDefault(12, 11);
     testMap.setId(10);
 
     subject = new MapPacket(testMap);

@@ -2,6 +2,9 @@ package mocha.game.world;
 
 import com.google.common.collect.Sets;
 
+import mocha.game.world.map.MapDescription;
+import mocha.game.world.map.MapReader;
+import mocha.game.world.tile.TileFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +17,8 @@ import mocha.game.world.entity.Entity;
 import mocha.game.world.map.Map;
 import mocha.game.world.tile.Tile;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.eq;
@@ -33,10 +37,10 @@ public class MapTest {
   public void setUp() {
     Tile[][] tiles = new Tile[6][10];
     testObject = Map.builder()
-        .id(0)
-        .entities(Sets.newHashSet())
-        .tiles(tiles)
-        .build();
+      .id(0)
+      .entities(Sets.newHashSet())
+      .tiles(tiles)
+      .build();
   }
 
   @Test
@@ -84,7 +88,7 @@ public class MapTest {
 
     Set<Entity> entities = testObject.getEntities();
     assertThat(entities).hasSize(1);
-    assertThat(entities).containsExactlyInAnyOrder(expected);
+    assertThat(entities).containsExactly(expected);
   }
 
   @Test
@@ -96,7 +100,7 @@ public class MapTest {
 
     Set<Entity> entities = testObject.getEntities();
     assertThat(entities).hasSize(1);
-    assertThat(entities).containsExactlyInAnyOrder(onlyOnce);
+    assertThat(entities).containsExactly(onlyOnce);
   }
 
   @Test
@@ -111,7 +115,9 @@ public class MapTest {
 
     Set<Entity> entities = testObject.getEntities();
     assertThat(entities).hasSize(3);
-    assertThat(entities).containsExactlyInAnyOrder(expected0, expected1, expected2);
+    assertThat(entities).contains(expected0);
+    assertThat(entities).contains(expected1);
+    assertThat(entities).contains(expected2);
   }
 
   @Test
@@ -148,7 +154,120 @@ public class MapTest {
     Set<Entity> entities = testObject.getEntities();
     assertThat(entities).isNotEmpty();
     assertThat(entities).doesNotContain(toBeRemoved);
-    assertThat(entities).containsExactlyInAnyOrder(remains);
+    assertThat(entities).containsExactly(remains);
   }
   // endregion remove()
+
+  // region getTileAt()
+
+  @Test
+  public void getTileAt_ReturnsATile_WhenThePointIsInThatTile() throws Exception {
+    String tileString = "" +
+      "..." +
+      "..." +
+      "...";
+    MapDescription mapDescription = MapDescription.builder()
+      .id(0)
+      .columns(3)
+      .rows(3)
+      .tiles(tileString)
+      .build();
+
+    MapReader mapReader = MapReader.builder().tileFactory(new TileFactory()).build();
+    Map testObject = mapReader.read(mapDescription);
+    Tile expected = testObject.getTile(0, 0);
+
+    Tile actual = testObject.getTileAt(0, 0);
+
+    assertThat(actual).isSameAs(expected);
+  }
+
+  @Test
+  public void getTileAt_ReturnsATile_WhenThePointIsStillWithinThatTile() throws Exception {
+    String tileString = "" +
+      "..." +
+      "..." +
+      "...";
+    MapDescription mapDescription = MapDescription.builder()
+      .id(0)
+      .columns(3)
+      .rows(3)
+      .tiles(tileString)
+      .build();
+
+    MapReader mapReader = MapReader.builder().tileFactory(new TileFactory()).build();
+    Map testObject = mapReader.read(mapDescription);
+    Tile expected = testObject.getTile(0, 0);
+
+    Tile actual = testObject.getTileAt(1, 0);
+
+    assertThat(actual).isSameAs(expected);
+  }
+
+  @Test
+  public void getTileAt_ReturnsTheNextTile_WhenThePointIsGreaterThanTheTileSize() throws Exception {
+    String tileString = "" +
+      "..." +
+      "..." +
+      "...";
+    MapDescription mapDescription = MapDescription.builder()
+      .id(0)
+      .columns(3)
+      .rows(3)
+      .tiles(tileString)
+      .build();
+
+    MapReader mapReader = MapReader.builder().tileFactory(new TileFactory()).build();
+    Map testObject = mapReader.read(mapDescription);
+    Tile expected = testObject.getTile(1, 0);
+
+    Tile actual = testObject.getTileAt(Tile.SIZE, 0);
+
+    assertThat(actual).isSameAs(expected);
+  }
+
+  @Test
+  public void getTileAt_ReturnsTheNextTile_WhenThePointIsGreaterThanTheTileSize_ForY() throws Exception {
+    String tileString = "" +
+      "..." +
+      "..." +
+      "...";
+    MapDescription mapDescription = MapDescription.builder()
+      .id(0)
+      .columns(3)
+      .rows(3)
+      .tiles(tileString)
+      .build();
+
+    MapReader mapReader = MapReader.builder().tileFactory(new TileFactory()).build();
+    Map testObject = mapReader.read(mapDescription);
+    Tile expected = testObject.getTile(0, 1);
+
+    Tile actual = testObject.getTileAt(0, Tile.SIZE);
+
+    assertThat(actual).isSameAs(expected);
+  }
+
+  @Test
+  public void getTileAt_ThrowsAnOutOfBoundsException_WhenTheCoordinateOutOfBounds() throws Exception {
+    String tileString = "" +
+      "..." +
+      "..." +
+      "...";
+    MapDescription mapDescription = MapDescription.builder()
+      .id(0)
+      .columns(3)
+      .rows(3)
+      .tiles(tileString)
+      .build();
+
+    MapReader mapReader = MapReader.builder().tileFactory(new TileFactory()).build();
+    Map testObject = mapReader.read(mapDescription);
+    int mapWidth = testObject.getColumnCount() * Tile.SIZE;
+
+    assertThatExceptionOfType(IndexOutOfBoundsException.class)
+      .isThrownBy(() -> testObject.getTileAt(mapWidth + 1, 0));
+  }
+
+  // endregion getTileAt()
 }
