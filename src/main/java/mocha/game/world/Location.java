@@ -1,5 +1,12 @@
 package mocha.game.world;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Location {
 
   private double x;
@@ -32,8 +39,14 @@ public class Location {
   @Override
   public String toString() {
     return "{" +
-        "  \"x\": " + x + "," +
-        "  \"y\": " + y + "" +
-        "}";
+      "  \"x\": " + x + "," +
+      "  \"y\": " + y + "" +
+      "}";
+  }
+
+  @Override
+  public boolean equals(Object myObject) {
+    Location thisLocation = (Location) myObject;
+    return thisLocation.getX() == this.getX() && thisLocation.getY() == this.getY();
   }
 }

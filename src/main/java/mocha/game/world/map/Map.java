@@ -45,4 +45,8 @@ public class Map implements Tickable {
   public void tick(long now) {
     getEntities().forEach(entity -> entity.tick(now));
   }
+
+  public Tile getTileAt(int x, int y) {
+    return getTile(x / Tile.SIZE,y / Tile.SIZE);
+  }
 }

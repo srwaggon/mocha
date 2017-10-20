@@ -15,5 +15,4 @@ public class Tile {
   public static final int SIZE = 32;
   private TileType tileType;
   private TileItem tileItem;
-
 }

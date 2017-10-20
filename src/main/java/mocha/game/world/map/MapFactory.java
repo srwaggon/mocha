@@ -23,26 +23,44 @@ public class MapFactory {
   @Inject
   private MapReader mapReader;
 
-  public Map newDefault() {
-    return newDefault(18, 12);
-  }
-
-  public Map newDefault(int columns, int rows) {
+  public Map newGrid() {
     return Map.builder()
-        .tiles(createTiles(columns, rows))
-        .entities(Sets.newIdentityHashSet())
-        .id(mapId++)
-        .build();
+      .id(mapId++)
+      .tiles(createGridTiles(18, 12))
+      .entities(Sets.newIdentityHashSet())
+      .build();
   }
 
-  private Tile[][] createTiles(int columns, int rows) {
+  public Map newRandomDefault() {
+    return newRandomDefault(18, 12);
+  }
+
+  public Map newRandomDefault(int columns, int rows) {
+    return Map.builder()
+      .tiles(createRandomTiles(columns, rows))
+      .entities(Sets.newIdentityHashSet())
+      .id(mapId++)
+      .build();
+  }
+
+  private Tile[][] createGridTiles(int columns, int rows) {
+    Tile[][] tiles = new Tile[rows][columns];
+    for (int y = 0; y < rows; y++) {
+      for (int x = 0; x < columns; x++) {
+        tiles[y][x] = Tile.builder().tileType(TileType.GRID).build();
+      }
+    }
+    return tiles;
+  }
+
+  private Tile[][] createRandomTiles(int columns, int rows) {
     Tile[][] tiles = new Tile[rows][columns];
 
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < columns; x++) {
         tiles[y][x] = Tile.builder()
-            .tileType(TileType.random())
-            .build();
+          .tileType(TileType.random())
+          .build();
       }
     }
     return tiles;

@@ -11,21 +11,23 @@ import static mocha.gfx.Colors.WATER_BLUE;
 
 public enum TileType {
 
-  GRID("x", VOID_PINK, 0),
-  DIRT(".", DIRT_BROWN, 1),
-  STONE("o", STONE_GREY, 256),
-  GRASS("w", GRASS_GREEN, 160),
-  WATER("~", WATER_BLUE, 192),
+  GRID("x", VOID_PINK, 0, false),
+  DIRT(".", DIRT_BROWN, 1, false),
+  STONE("o", STONE_GREY, 256, true),
+  GRASS("w", GRASS_GREEN, 160, false),
+  WATER("~", WATER_BLUE, 192, true),
   ;
 
   private String symbol;
   private Color color;
   private int spriteIndex;
+  private boolean isBlocking;
 
-  TileType(String symbol, Color color, int spriteIndex) {
+  TileType(String symbol, Color color, int spriteIndex, boolean isBlocking) {
     this.color = color;
     this.symbol = symbol;
     this.spriteIndex = spriteIndex;
+    this.isBlocking = isBlocking;
   }
 
   public String getSymbol() {
@@ -40,11 +42,16 @@ public enum TileType {
     return this.spriteIndex;
   }
 
+  public boolean isBlocking() {
+    return isBlocking;
+  }
+
   public static int count() {
     return values().length;
   }
 
   public static TileType random() {
-    return values()[(int) ((TileType.count()-1) * Math.random()) + 1];
+    int chooseRandomExcludingGrid = (int) ((TileType.count() - 1) * Math.random()) + 1;
+    return values()[chooseRandomExcludingGrid];
   }
 }

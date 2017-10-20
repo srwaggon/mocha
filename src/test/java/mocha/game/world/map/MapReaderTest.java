@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import mocha.game.world.tile.TileReader;
+import mocha.game.world.tile.TileFactory;
 import mocha.game.world.tile.TileType;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,12 +18,12 @@ public class MapReaderTest {
   private MapReader testObject;
 
   @Spy
-  private TileReader tileReader = new TileReader();
+  private TileFactory tileFactory = new TileFactory();
 
   @Before
   public void setUp() throws Exception {
     testObject = MapReader.builder()
-        .tileReader(tileReader)
+        .tileFactory(tileFactory)
         .build();
   }
 
@@ -59,7 +59,7 @@ public class MapReaderTest {
 
     testObject.read(mapDescription);
 
-    verify(tileReader).read(" ");
+    verify(tileFactory).newTile(" ");
   }
 
   @Test

@@ -3,7 +3,7 @@ package mocha.game.world.map;
 import org.junit.Before;
 import org.junit.Test;
 
-import mocha.game.world.tile.TileReader;
+import mocha.game.world.tile.TileFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -11,13 +11,13 @@ public class TileSpriteSelectorTest {
 
   private TileSpriteSelector testObject;
 
-  private TileReader tileReader;
+  private TileFactory tileFactory;
   private MapReader mapReader;
 
   @Before
   public void setUp() throws Exception {
-    tileReader = new TileReader();
-    mapReader = MapReader.builder().tileReader(tileReader).build();
+    tileFactory = new TileFactory();
+    mapReader = MapReader.builder().tileFactory(tileFactory).build();
     testObject = new TileSpriteSelector();
   }
 
