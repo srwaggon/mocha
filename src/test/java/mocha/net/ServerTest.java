@@ -1,6 +1,6 @@
 package mocha.net;
 
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,23 +14,18 @@ public class ServerTest {
 
   private static int port = 8026;
 
-  private void startServer(int port) {
-    new Thread() {
-      @Override
-      public void run() {
-        try {
-          testObject = new Server(port);
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-        testObject.run();
-      }
-    }.start();
+  private void startServer(int port) throws IOException {
+    testObject = new Server(port);
+    testObject.start();
+  }
+
+  @Before
+  public void setUp() throws Exception {
+    port++;
   }
 
   @Test
   public void run_AcceptsAnIncomingConnection() throws IOException {
-    int port = ServerTest.port++;
     startServer(port);
 
     Connection connection = new Connection(new Socket("localhost", port));
@@ -41,19 +36,20 @@ public class ServerTest {
 
   @Test
   public void run_AcceptsMultipleIncomingConnections() throws IOException {
-    int port = ServerTest.port++;
     startServer(port);
-
     Connection connection1 = new Connection(new Socket("localhost", port));
     Connection connection2 = new Connection(new Socket("localhost", port));
     Connection connection3 = new Connection(new Socket("localhost", port));
 
     connection1.send("connection1");
     connection2.send("connection2");
-    connection2.send("connection3");
+    connection3.send("connection3");
+    connection2.send("connection2 again");
 
     assertEquals("connection1", connection1.readLine());
     assertEquals("connection2", connection2.readLine());
-    assertEquals("connection3", connection2.readLine());
+    assertEquals("connection3", connection3.readLine());
+    assertEquals("connection2 again", connection2.readLine());
   }
+
 }

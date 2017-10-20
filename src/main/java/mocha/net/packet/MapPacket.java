@@ -1,6 +1,9 @@
 package mocha.net.packet;
 
-import mocha.game.world.Map;
+import java.util.Arrays;
+import java.util.function.Consumer;
+
+import mocha.game.world.map.Map;
 import mocha.game.world.tile.Tile;
 
 public class MapPacket extends AbstractPacket implements Packet {
@@ -18,11 +21,10 @@ public class MapPacket extends AbstractPacket implements Packet {
 
   private String buildTileData(Map map) {
     StringBuilder tilesBuilder = new StringBuilder();
-    for (Tile[] row : map.getTiles()) {
-      for (Tile tile : row) {
-        tilesBuilder.append(tile.getSymbol());
-      }
-    }
+    Consumer<Tile[]> collectRow = row -> Arrays.stream(row)
+        .map(tile -> tile.getTileType().getSymbol())
+        .forEach(tilesBuilder::append);
+    Arrays.stream(map.getTiles()).forEach(collectRow);
     return tilesBuilder.toString();
   }
 

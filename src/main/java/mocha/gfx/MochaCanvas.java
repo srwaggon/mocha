@@ -11,9 +11,9 @@ import mocha.game.world.Location;
 @Component
 public class MochaCanvas extends Canvas {
 
+  private double canvasScale = 1.0;
   private int width = 600;
   private int height = 400;
-  private double canvasScale = 1.0;
 
   @Inject
   private SpriteSheet spriteSheet;

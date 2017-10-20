@@ -1,6 +1,20 @@
 package mocha.game.world.entity.movement;
 
-public interface Movement {
+import mocha.game.Tickable;
+import mocha.game.world.Location;
 
-  void tick();
+public interface Movement extends Tickable {
+
+  Location getLocation();
+
+  void setLocation(Location location);
+
+  void up();
+
+  void down();
+
+  void left();
+
+  void right();
+
 }

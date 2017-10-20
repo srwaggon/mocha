@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import javafx.animation.AnimationTimer;
 import lombok.extern.slf4j.Slf4j;
-import mocha.game.Game;
 
 @Component
 @Slf4j
@@ -17,7 +16,7 @@ public class RenderLoop extends AnimationTimer {
   private static final double FRAME_LIFESPAN = NANOSECONDS_PER_SECOND / FRAMES_PER_SECOND;
 
   @Inject
-  private Game game;
+  private GameView gameView;
   @Inject
   private MochaCanvas mochaCanvas;
 
@@ -35,7 +34,7 @@ public class RenderLoop extends AnimationTimer {
     if (!shouldRender(now)) {
       return;
     }
-    game.draw(mochaCanvas);
+    gameView.draw(mochaCanvas, 0, 0);
 
     mochaCanvas.render();
 

@@ -3,10 +3,11 @@ package mocha.net.packet;
 import org.junit.Before;
 import org.junit.Test;
 
-import mocha.game.world.Map;
+import mocha.game.world.map.Map;
+import mocha.game.world.map.MapFactory;
 import mocha.game.world.tile.Tile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MapPacketTest {
 
@@ -16,7 +17,8 @@ public class MapPacketTest {
 
   @Before
   public void setUp() {
-    testMap = new Map(10, 11, 12);
+    testMap = new MapFactory().newRandomDefault(12, 11);
+    testMap.setId(10);
 
     subject = new MapPacket(testMap);
   }
@@ -63,7 +65,7 @@ public class MapPacketTest {
     StringBuilder tilesBuilder = new StringBuilder();
     for (Tile[] row : testMap.getTiles()) {
       for (Tile tile : row) {
-        tilesBuilder.append(tile.getSymbol());
+        tilesBuilder.append(tile.getTileType().getSymbol());
       }
     }
 

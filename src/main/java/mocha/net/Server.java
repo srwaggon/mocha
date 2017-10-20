@@ -15,27 +15,33 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class Server {
+public class Server implements Runnable {
 
   private ServerSocket server;
   private ExecutorService threadPool = Executors.newCachedThreadPool();
 
   @Inject
   Server(@Value("${mocha.server.port}") int port) throws IOException {
+    log.info("Staring server on port {}", port);
     server = new ServerSocket(port);
-    log.info("Server started on port {}", port);
   }
 
-  void run() {
+  public void start() {
+    threadPool.submit(this);
+  }
+
+  @Override
+  public void run() {
+    awaitConnections();
+  }
+
+  private void awaitConnections() {
     while (true) {
       try {
         log.info("Awaiting connections...");
         acceptConnection(server.accept());
-
       } catch (IOException ioexception) {
         log.error("IOException while awaiting connections: ", ioexception);
-        ioexception.printStackTrace();
-        System.exit(-1);
       }
     }
   }
