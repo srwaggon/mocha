@@ -30,19 +30,30 @@ public class ChunkReaderTest {
   @Test
   public void read_ProducesABaseMap_FromADescription() throws Exception {
     ChunkDescription chunkDescription = ChunkDescription.builder()
-        .id(17)
-        .columns(3)
-        .rows(3)
-        .tiles("xxxxxxxxx")
+        .tiles("" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx" +
+            "xxxxxxxxxxxxxxxx"
+        )
         .build();
 
     Chunk readChunk = testObject.read(chunkDescription);
 
-    assertThat(readChunk.getId()).isEqualTo(17);
-    assertThat(readChunk.getRowCount()).isEqualTo(3);
-    assertThat(readChunk.getColumnCount()).isEqualTo(3);
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
+    for (int i = 0; i < Chunk.SIZE; i++) {
+      for (int j = 0; j < Chunk.SIZE; j++) {
         assertThat(readChunk.getTile(j, i).getTileType()).isEqualTo(TileType.GRID);
       }
     }
@@ -51,9 +62,6 @@ public class ChunkReaderTest {
   @Test
   public void read_DelegatesToTheTileReaderForTiles() throws Exception {
     ChunkDescription chunkDescription = ChunkDescription.builder()
-        .id(17)
-        .columns(1)
-        .rows(1)
         .tiles(" ")
         .build();
 
@@ -65,9 +73,6 @@ public class ChunkReaderTest {
   @Test
   public void read_idkTilesInTheRightPlacesButThisMessageIsBetter() throws Exception {
     ChunkDescription chunkDescription = ChunkDescription.builder()
-        .id(17)
-        .columns(2)
-        .rows(2)
         .tiles("x.ow") // grid, grass, stone, grass
         .build();
 
@@ -75,7 +80,7 @@ public class ChunkReaderTest {
 
     assertThat(actual.getTile(0, 0).getTileType()).isEqualTo(TileType.GRID);
     assertThat(actual.getTile(1, 0).getTileType()).isEqualTo(TileType.DIRT);
-    assertThat(actual.getTile(0, 1).getTileType()).isEqualTo(TileType.STONE);
-    assertThat(actual.getTile(1, 1).getTileType()).isEqualTo(TileType.GRASS);
+    assertThat(actual.getTile(2, 0).getTileType()).isEqualTo(TileType.STONE);
+    assertThat(actual.getTile(3, 0).getTileType()).isEqualTo(TileType.GRASS);
   }
 }

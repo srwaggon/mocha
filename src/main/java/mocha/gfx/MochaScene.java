@@ -8,14 +8,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import mocha.game.InputHandler;
-import mocha.game.world.tile.Tile;
+import mocha.game.world.chunk.Chunk;
 
 @Component
 public class MochaScene extends Scene {
 
   @Inject
   public MochaScene(Parent root, InputHandler inputHandler) {
-    super(root, Tile.SIZE * 18, Tile.SIZE * 12);
+    super(root, Chunk.getWidth(), Chunk.getHeight());
 
     addEventHandler(KeyEvent.KEY_PRESSED, inputHandler.getKeyPressedHandler());
     addEventHandler(KeyEvent.KEY_RELEASED, inputHandler.getKeyReleasedHandler());

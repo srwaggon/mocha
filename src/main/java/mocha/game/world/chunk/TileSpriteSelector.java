@@ -16,8 +16,8 @@ public class TileSpriteSelector {
   private int getSpriteOffset(Chunk chunk, int x, int y, TileType type) {
     int offset = 0;
     boolean north = y == 0 || chunk.getTile(x, y - 1).getTileType().equals(type);
-    boolean east = x == chunk.getColumnCount() - 1 || chunk.getTile(x + 1, y).getTileType().equals(type);
-    boolean south = y == chunk.getRowCount() - 1 || chunk.getTile(x, y + 1).getTileType().equals(type);
+    boolean east = x == Chunk.SIZE - 1 || chunk.getTile(x + 1, y).getTileType().equals(type);
+    boolean south = y == Chunk.SIZE - 1 || chunk.getTile(x, y + 1).getTileType().equals(type);
     boolean west = x == 0 || chunk.getTile(x - 1, y).getTileType().equals(type);
     offset += north ? 1 : 0;
     offset += east ? 2 : 0;

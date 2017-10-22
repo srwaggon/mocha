@@ -20,7 +20,7 @@ public class ChunkIO {
 
     ensureMapsDirectory();
 
-    File file = new File(mapsDirectory, chunk.getId() + ".chunk");
+    File file = new File(mapsDirectory, "0_0.chunk");
 
     try {
       Files.touch(file);

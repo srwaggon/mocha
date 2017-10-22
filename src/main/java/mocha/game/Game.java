@@ -14,12 +14,12 @@ import lombok.NoArgsConstructor;
 import mocha.game.rule.BrainRule;
 import mocha.game.rule.GameRule;
 import mocha.game.rule.MovementRule;
-import mocha.game.rule.TransitionBetweenMapsRule;
 import mocha.game.world.World;
+import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.brain.InputBrain;
-import mocha.game.world.chunk.ChunkFactory;
 
 @Data
 @Component
@@ -27,28 +27,34 @@ import mocha.game.world.chunk.ChunkFactory;
 public class Game implements Tickable {
 
   @Inject
-  private World world;
-  @Inject
   private EntityFactory entityFactory;
   @Inject
   private ChunkFactory chunkFactory;
 
+  private World world;
   private Entity player;
-
   private List<Entity> entities = Lists.newArrayList();
-
   private List<GameRule> gameRules = Lists.newArrayList();
-
-  public Game(World world, EntityFactory entityFactory) {
-    this.world = world;
-    this.entityFactory = entityFactory;
-  }
 
   @PostConstruct
   void init() {
-    addMaps();
+    addWorld();
     addEntities();
     addRules();
+  }
+
+  private void addWorld() {
+    world = new World(createChunks());
+  }
+
+  private Chunk[][] createChunks() {
+    Chunk[][] chunks = new Chunk[16][16];
+    for (int y = 0; y < 16; y++) {
+      for (int x = 0; x < 16; x++) {
+        chunks[y][x] = chunkFactory.newRandomDefault();
+      }
+    }
+    return chunks;
   }
 
   private void addEntities() {
@@ -59,7 +65,6 @@ public class Game implements Tickable {
   private void addRules() {
     gameRules.add(new BrainRule());
     gameRules.add(new MovementRule());
-    gameRules.add(new TransitionBetweenMapsRule());
   }
 
   private void addNpcs() {
@@ -78,14 +83,6 @@ public class Game implements Tickable {
 
   private void addEntity(Entity entity) {
     entities.add(entity);
-    world.getMapById(0).add(entity);
-  }
-
-  private void addMaps() {
-    world.addMap(chunkFactory.newRandomDefault());
-    world.addMap(chunkFactory.newRandomDefault());
-    world.addMap(chunkFactory.newRandomDefault());
-    world.addMap(chunkFactory.newRandomDefault());
   }
 
   public World getWorld() {

@@ -4,8 +4,10 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
+import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkView;
+import mocha.game.world.entity.EntityView;
 import mocha.gfx.Drawable;
 import mocha.gfx.MochaCanvas;
 
@@ -20,12 +22,10 @@ public class GameView implements Drawable {
 
   @Override
   public void draw(MochaCanvas mochaCanvas, int x, int y) {
-    this.chunkView.setChunk(getPlayersCurrentMap());
+    Location playerLocation = game.getPlayer().getMovement().getLocation();
+    Chunk playerChunk = game.getWorld().getChunkAt(playerLocation);
+    chunkView.setChunk(playerChunk);
     chunkView.draw(mochaCanvas, 0, 0);
-  }
-
-  private Chunk getPlayersCurrentMap() {
-    int playerChunkId = game.getPlayer().getChunkId();
-    return game.getWorld().getMapById(playerChunkId);
+    game.getEntities().forEach((entity) -> new EntityView(entity).draw(mochaCanvas, 0, 0));
   }
 }

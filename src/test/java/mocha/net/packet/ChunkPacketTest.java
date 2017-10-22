@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
+import mocha.game.world.chunk.ChunkReader;
 import mocha.game.world.tile.Tile;
 
 import static org.junit.Assert.assertEquals;
@@ -17,8 +18,9 @@ public class ChunkPacketTest {
 
   @Before
   public void setUp() {
-    testChunk = new ChunkFactory().newRandomDefault(12, 11);
-    testChunk.setId(10);
+    ChunkReader chunkReader = ChunkReader.builder().build();
+    ChunkFactory chunkFactory = ChunkFactory.builder().chunkReader(chunkReader).build();
+    testChunk = chunkFactory.newRandomDefault(16, 16);
 
     subject = new ChunkPacket(testChunk);
   }
@@ -35,27 +37,19 @@ public class ChunkPacketTest {
   }
 
   @Test
-  public void construct_ContainsMapId_AsFirstPhrase() {
-    int index = 1;
-
-    assertEquals(testChunk.getId(), Integer.parseInt(subject.getData()[index]));
-    assertEquals(testChunk.getId(), getPhraseAsInt(index));
-  }
-
-  @Test
   public void construct_ContainsColumnCount_AsSecondPhrase() {
     int index = 2;
 
-    assertEquals(testChunk.getColumnCount(), Integer.parseInt(subject.getData()[index]));
-    assertEquals(testChunk.getColumnCount(), getPhraseAsInt(index));
+    assertEquals(Chunk.SIZE, Integer.parseInt(subject.getData()[index]));
+    assertEquals(Chunk.SIZE, getPhraseAsInt(index));
   }
 
   @Test
   public void construct_ContainsRowCount_AsThirdPhrase() {
     int index = 3;
 
-    assertEquals(testChunk.getRowCount(), Integer.parseInt(subject.getData()[index]));
-    assertEquals(testChunk.getRowCount(), getPhraseAsInt(index));
+    assertEquals(Chunk.SIZE, Integer.parseInt(subject.getData()[index]));
+    assertEquals(Chunk.SIZE, getPhraseAsInt(index));
   }
 
   @Test

@@ -7,13 +7,14 @@ import javax.inject.Inject;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.WritableImage;
 import mocha.game.world.Location;
+import mocha.game.world.chunk.Chunk;
 
 @Component
 public class MochaCanvas extends Canvas {
 
   private double canvasScale = 1.0;
-  private int width = 600;
-  private int height = 400;
+  private int width = Chunk.getWidth();
+  private int height = Chunk.getHeight();
 
   @Inject
   private SpriteSheet spriteSheet;
@@ -23,7 +24,9 @@ public class MochaCanvas extends Canvas {
   );
 
   public MochaCanvas() {
-    super(600, 400);
+    super();
+    super.setHeight(height);
+    super.setWidth(width);
   }
 
   public void drawSprite(int spriteIndex, Location location) {

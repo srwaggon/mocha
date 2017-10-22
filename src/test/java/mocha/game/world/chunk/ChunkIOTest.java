@@ -33,20 +33,18 @@ public class ChunkIOTest {
   @Test
   public void saveMap_CreatesAFileOnDiskRepresentingTheSavedMap() {
     Chunk chunk = Chunk.builder()
-        .id(12)
         .tiles(new Tile[10][10])
         .build();
 
     testObject.saveMap(chunk);
 
-    File mapFile = new File(mapsDirectory, "12.chunk");
+    File mapFile = new File(mapsDirectory, "0_0.chunk");
     assertTrue(mapFile.exists());
   }
 
   @Test
   public void saveMap_CreatesAMapDirectoryIfItDoesNotExist() throws IOException {
     Chunk chunk = Chunk.builder()
-        .id(12)
         .tiles(new Tile[10][10])
         .build();
     assertFalse(mapsDirectory.exists());

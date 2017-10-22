@@ -6,13 +6,11 @@ import javax.inject.Inject;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 import mocha.game.world.tile.Tile;
 import mocha.game.world.tile.TileFactory;
 
 @Builder
 @Component
-@NoArgsConstructor
 @AllArgsConstructor
 public class ChunkReader {
 
@@ -20,9 +18,8 @@ public class ChunkReader {
   private TileFactory tileFactory;
 
   public Chunk read(ChunkDescription chunkDescription) {
-
-    int rows = chunkDescription.getRows();
-    int columns = chunkDescription.getColumns();
+    int rows = Chunk.SIZE;
+    int columns = Chunk.SIZE;
     Tile[][] tiles = new Tile[rows][columns];
 
     for (int i = 0; i < chunkDescription.getTiles().length(); i++) {
@@ -31,9 +28,6 @@ public class ChunkReader {
       tiles[y][x] = tileFactory.newTile("" + chunkDescription.getTiles().charAt(i));
     }
 
-    return Chunk.builder()
-        .id(chunkDescription.getId())
-        .tiles(tiles)
-        .build();
+    return Chunk.builder().tiles(tiles).build();
   }
 }

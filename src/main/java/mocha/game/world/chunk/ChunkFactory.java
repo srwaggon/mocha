@@ -1,20 +1,16 @@
 package mocha.game.world.chunk;
 
-import com.google.common.collect.Sets;
-
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 import mocha.game.world.tile.Tile;
 import mocha.game.world.tile.TileType;
 
 @Builder
 @Component
-@NoArgsConstructor
 @AllArgsConstructor
 public class ChunkFactory {
 
@@ -25,22 +21,18 @@ public class ChunkFactory {
 
   public Chunk newGrid() {
     return Chunk.builder()
-      .id(mapId++)
-      .tiles(createGridTiles(18, 12))
-      .entities(Sets.newIdentityHashSet())
-      .build();
+        .tiles(createGridTiles(18, 12))
+        .build();
   }
 
   public Chunk newRandomDefault() {
-    return newRandomDefault(18, 12);
+    return newRandomDefault(16, 16);
   }
 
   public Chunk newRandomDefault(int columns, int rows) {
     return Chunk.builder()
-      .tiles(createRandomTiles(columns, rows))
-      .entities(Sets.newIdentityHashSet())
-      .id(mapId++)
-      .build();
+        .tiles(createRandomTiles(columns, rows))
+        .build();
   }
 
   private Tile[][] createGridTiles(int columns, int rows) {
@@ -59,8 +51,8 @@ public class ChunkFactory {
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < columns; x++) {
         tiles[y][x] = Tile.builder()
-          .tileType(TileType.random())
-          .build();
+            .tileType(TileType.random())
+            .build();
       }
     }
     return tiles;

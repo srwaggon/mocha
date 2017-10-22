@@ -13,9 +13,9 @@ public class ChunkPacket extends AbstractPacket implements Packet {
   public ChunkPacket(Chunk chunk) {
     data = new String[5];
     data[0] = getType().name();
-    data[1] = String.valueOf(chunk.getId());
-    data[2] = String.valueOf(chunk.getColumnCount());
-    data[3] = String.valueOf(chunk.getRowCount());
+//    data[1] = String.valueOf(chunk.getId());
+    data[2] = String.valueOf(Chunk.SIZE);
+    data[3] = String.valueOf(Chunk.SIZE);
     data[4] = buildTileData(chunk);
   }
 
