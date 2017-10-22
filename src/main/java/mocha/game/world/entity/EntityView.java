@@ -12,6 +12,6 @@ public class EntityView implements Drawable {
   }
 
   public void draw(MochaCanvas mochaCanvas, int x, int y) {
-    mochaCanvas.drawSprite(entity.getSpriteId(), entity.getMovement().getLocation(), entity.getScale());
+    mochaCanvas.drawSprite(entity.getSpriteId(), x, y, entity.getScale());
   }
 }
