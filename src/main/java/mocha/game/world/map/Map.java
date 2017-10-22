@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mocha.game.Tickable;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.tile.Tile;
 
@@ -14,7 +13,7 @@ import mocha.game.world.tile.Tile;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Map implements Tickable {
+public class Map {
 
   private int id;
   private Tile[][] tiles;
@@ -42,11 +41,7 @@ public class Map implements Tickable {
     return tiles.length;
   }
 
-  public void tick(long now) {
-    getEntities().forEach(entity -> entity.tick(now));
-  }
-
   public Tile getTileAt(int x, int y) {
-    return getTile(x / Tile.SIZE,y / Tile.SIZE);
+    return getTile(x / Tile.SIZE, y / Tile.SIZE);
   }
 }

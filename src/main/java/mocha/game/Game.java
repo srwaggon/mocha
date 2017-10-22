@@ -11,14 +11,15 @@ import javax.inject.Inject;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mocha.game.world.Location;
+import mocha.game.rule.BrainRule;
+import mocha.game.rule.GameRule;
+import mocha.game.rule.MovementRule;
+import mocha.game.rule.TransitionBetweenMapsRule;
 import mocha.game.world.World;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.brain.InputBrain;
-import mocha.game.world.map.Map;
 import mocha.game.world.map.MapFactory;
-import mocha.game.world.tile.Tile;
 
 @Data
 @Component
@@ -36,6 +37,8 @@ public class Game implements Tickable {
 
   private List<Entity> entities = Lists.newArrayList();
 
+  private List<GameRule> gameRules = Lists.newArrayList();
+
   public Game(World world, EntityFactory entityFactory) {
     this.world = world;
     this.entityFactory = entityFactory;
@@ -45,12 +48,18 @@ public class Game implements Tickable {
   void init() {
     addMaps();
     addEntities();
+    addRules();
   }
 
   private void addEntities() {
-    addPlayer(entityFactory.createRandom());
-
+    addPlayer();
     addNpcs();
+  }
+
+  private void addRules() {
+    gameRules.add(new BrainRule());
+    gameRules.add(new MovementRule());
+    gameRules.add(new TransitionBetweenMapsRule());
   }
 
   private void addNpcs() {
@@ -61,10 +70,10 @@ public class Game implements Tickable {
     }
   }
 
-  private void addPlayer(Entity entity) {
-    this.player = entity;
-    entity.setBrain(new InputBrain(entity));
-    addEntity(entity);
+  private void addPlayer() {
+    this.player = entityFactory.createRandom();
+    this.player.setBrain(new InputBrain(this.player));
+    addEntity(this.player);
   }
 
   private void addEntity(Entity entity) {
@@ -84,38 +93,6 @@ public class Game implements Tickable {
   }
 
   public void tick(long now) {
-    world.tick(now);
-    getEntities().forEach(this::moveEntityBetweenMaps);
-  }
-
-  private void moveEntityBetweenMaps(Entity entity) {
-    Location entityLocation = entity.getMovement().getLocation();
-    Map currentMap = world.getMapById(entity.getMapId());
-    int currentMapWidth = currentMap.getColumnCount() * Tile.SIZE;
-    int currentMapHeight = currentMap.getRowCount() * Tile.SIZE;
-
-    if (entityLocation.getX() >= currentMapWidth) {
-      currentMap.remove(entity);
-      entityLocation.setX(0);
-      world.getMapById(1).add(entity);
-    }
-
-    if (entityLocation.getY() >= currentMapHeight) {
-      currentMap.remove(entity);
-      entityLocation.setY(0);
-      world.getMapById(2).add(entity);
-    }
-
-    if (entityLocation.getX() < 0) {
-      currentMap.remove(entity);
-      entityLocation.setX(world.getMapById(3).getColumnCount() * Tile.SIZE - 1);
-      world.getMapById(3).add(entity);
-    }
-
-    if (entityLocation.getY() < 0) {
-      currentMap.remove(entity);
-      entityLocation.setY(world.getMapById(0).getRowCount() * Tile.SIZE - 1);
-      world.getMapById(0).add(entity);
-    }
+    gameRules.forEach(gameRule -> gameRule.apply(this));
   }
 }

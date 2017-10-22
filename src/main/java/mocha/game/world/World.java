@@ -4,11 +4,22 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
-import mocha.game.Tickable;
-import mocha.game.world.map.Map;
+import javax.inject.Inject;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import mocha.game.world.map.Map;
+import mocha.game.world.map.MapFactory;
+
+@Builder
 @Component
-public class World implements Tickable {
+@NoArgsConstructor
+@AllArgsConstructor
+public class World {
+
+  @Inject
+  private MapFactory mapFactory;
 
   private HashMap<Integer, Map> world = new HashMap<>();
 
@@ -18,11 +29,5 @@ public class World implements Tickable {
 
   public Map getMapById(int mapId) {
     return world.get(mapId);
-  }
-
-  public void tick(long now) {
-    for (Map map : world.values()) {
-      map.tick(now);
-    }
   }
 }

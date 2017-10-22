@@ -1,20 +1,25 @@
 package mocha.game.world;
 
 
+import com.google.common.collect.Maps;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import mocha.game.world.map.Map;
 
 import static org.junit.Assert.assertEquals;
 
+@RunWith(MockitoJUnitRunner.class)
 public class WorldTest {
 
   private World testObject;
 
   @Before
   public void setUp() throws Exception {
-    this.testObject = new World();
+    this.testObject = World.builder().world(Maps.newHashMap()).build();
   }
 
   @Test

@@ -1,12 +1,13 @@
-package mocha.gfx;
+package mocha.game;
 
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.Game;
 import mocha.game.world.map.Map;
 import mocha.game.world.map.MapView;
+import mocha.gfx.Drawable;
+import mocha.gfx.MochaCanvas;
 
 @Component
 public class GameView implements Drawable {

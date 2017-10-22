@@ -2,7 +2,6 @@ package mocha.game.world.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import mocha.game.Tickable;
 import mocha.game.world.entity.brain.Brain;
 import mocha.game.world.entity.brain.SimpleBrain;
 import mocha.game.world.entity.movement.Movement;
@@ -10,7 +9,7 @@ import mocha.game.world.entity.movement.SimpleMovement;
 
 @Data
 @EqualsAndHashCode
-public class Entity implements Tickable {
+public class Entity {
   private static int lastId = 0;
   private final int id;
   private Movement movement = new SimpleMovement();
@@ -24,11 +23,6 @@ public class Entity implements Tickable {
   public Entity(int id) {
     this.id = id;
     lastId = id > lastId ? id : lastId;
-  }
-
-  public void tick(long now) {
-    this.getBrain().tick(now);
-    this.getMovement().tick(now);
   }
 
   public int getSpriteId() {
