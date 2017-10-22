@@ -4,8 +4,8 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.world.map.Map;
-import mocha.game.world.map.MapView;
+import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkView;
 import mocha.gfx.Drawable;
 import mocha.gfx.MochaCanvas;
 
@@ -16,16 +16,16 @@ public class GameView implements Drawable {
   private Game game;
 
   @Inject
-  private MapView mapView;
+  private ChunkView chunkView;
 
   @Override
   public void draw(MochaCanvas mochaCanvas, int x, int y) {
-    this.mapView.setMap(getPlayersCurrentMap());
-    mapView.draw(mochaCanvas, 0, 0);
+    this.chunkView.setChunk(getPlayersCurrentMap());
+    chunkView.draw(mochaCanvas, 0, 0);
   }
 
-  private Map getPlayersCurrentMap() {
-    int playerMapId = game.getPlayer().getMapId();
-    return game.getWorld().getMapById(playerMapId);
+  private Chunk getPlayersCurrentMap() {
+    int playerChunkId = game.getPlayer().getChunkId();
+    return game.getWorld().getMapById(playerChunkId);
   }
 }

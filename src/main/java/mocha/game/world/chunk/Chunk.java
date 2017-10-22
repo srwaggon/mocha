@@ -1,4 +1,4 @@
-package mocha.game.world.map;
+package mocha.game.world.chunk;
 
 import java.util.Set;
 
@@ -13,7 +13,7 @@ import mocha.game.world.tile.Tile;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Map {
+public class Chunk {
 
   private int id;
   private Tile[][] tiles;
@@ -25,12 +25,12 @@ public class Map {
 
   public void add(Entity entity) {
     entities.add(entity);
-    entity.setMapId(this.id);
+    entity.setChunkId(this.id);
   }
 
   public void remove(Entity entity) {
     entities.remove(entity);
-    entity.setMapId(-1);
+    entity.setChunkId(-1);
   }
 
   public int getColumnCount() {

@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import mocha.game.world.map.Map;
+import mocha.game.world.chunk.Chunk;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,11 +25,11 @@ public class WorldTest {
   @Test
   public void getMapById_ReturnsMap_ByThatId() {
     int expectedMapId = 0;
-    Map newMap = Map.builder().id(expectedMapId).build();
-    testObject.addMap(newMap);
+    Chunk newChunk = Chunk.builder().id(expectedMapId).build();
+    testObject.addMap(newChunk);
 
-    Map map = testObject.getMapById(expectedMapId);
-    int actualMapId = map.getId();
+    Chunk chunk = testObject.getMapById(expectedMapId);
+    int actualMapId = chunk.getId();
 
     assertEquals(expectedMapId, actualMapId);
   }
@@ -37,9 +37,9 @@ public class WorldTest {
   @Test
   public void getMapById_ReturnsMap_ByThatId_InductiveCase() {
     int expectedMapId0 = 0;
-    testObject.addMap(Map.builder().id(expectedMapId0).build());
+    testObject.addMap(Chunk.builder().id(expectedMapId0).build());
     int expectedMapId26 = 26;
-    testObject.addMap(Map.builder().id(expectedMapId26).build());
+    testObject.addMap(Chunk.builder().id(expectedMapId26).build());
 
     assertEquals(expectedMapId0, testObject.getMapById(expectedMapId0).getId());
     assertEquals(expectedMapId26, testObject.getMapById(expectedMapId26).getId());

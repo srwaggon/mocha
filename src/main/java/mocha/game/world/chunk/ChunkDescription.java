@@ -1,4 +1,4 @@
-package mocha.game.world.map;
+package mocha.game.world.chunk;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MapDescription {
+public class ChunkDescription {
   private int id;
   private int columns;
   private int rows;

@@ -14,7 +14,7 @@ public class Entity {
   private final int id;
   private Movement movement = new SimpleMovement();
   private Brain brain = new SimpleBrain();
-  private int mapId;
+  private int chunkId;
 
   public Entity() {
     this.id = ++lastId;
@@ -36,7 +36,7 @@ public class Entity {
   public String toString() {
     return "{" +
         "\"id\": " + id + ", " +
-        "\"map\": " + this.mapId + ", " +
+        "\"chunk\": " + this.chunkId + ", " +
         "\"location\": " + this.getMovement().getLocation() +
         "}";
   }

@@ -19,7 +19,7 @@ import mocha.game.world.World;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.brain.InputBrain;
-import mocha.game.world.map.MapFactory;
+import mocha.game.world.chunk.ChunkFactory;
 
 @Data
 @Component
@@ -31,7 +31,7 @@ public class Game implements Tickable {
   @Inject
   private EntityFactory entityFactory;
   @Inject
-  private MapFactory mapFactory;
+  private ChunkFactory chunkFactory;
 
   private Entity player;
 
@@ -82,10 +82,10 @@ public class Game implements Tickable {
   }
 
   private void addMaps() {
-    world.addMap(mapFactory.newRandomDefault());
-    world.addMap(mapFactory.newRandomDefault());
-    world.addMap(mapFactory.newRandomDefault());
-    world.addMap(mapFactory.newRandomDefault());
+    world.addMap(chunkFactory.newRandomDefault());
+    world.addMap(chunkFactory.newRandomDefault());
+    world.addMap(chunkFactory.newRandomDefault());
+    world.addMap(chunkFactory.newRandomDefault());
   }
 
   public World getWorld() {

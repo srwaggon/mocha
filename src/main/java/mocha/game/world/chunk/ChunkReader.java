@@ -1,4 +1,4 @@
-package mocha.game.world.map;
+package mocha.game.world.chunk;
 
 import org.springframework.stereotype.Component;
 
@@ -14,25 +14,25 @@ import mocha.game.world.tile.TileFactory;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class MapReader {
+public class ChunkReader {
 
   @Inject
   private TileFactory tileFactory;
 
-  public Map read(MapDescription mapDescription) {
+  public Chunk read(ChunkDescription chunkDescription) {
 
-    int rows = mapDescription.getRows();
-    int columns = mapDescription.getColumns();
+    int rows = chunkDescription.getRows();
+    int columns = chunkDescription.getColumns();
     Tile[][] tiles = new Tile[rows][columns];
 
-    for (int i = 0; i < mapDescription.getTiles().length(); i++) {
+    for (int i = 0; i < chunkDescription.getTiles().length(); i++) {
       int x = i % columns;
       int y = i / columns;
-      tiles[y][x] = tileFactory.newTile("" + mapDescription.getTiles().charAt(i));
+      tiles[y][x] = tileFactory.newTile("" + chunkDescription.getTiles().charAt(i));
     }
 
-    return Map.builder()
-        .id(mapDescription.getId())
+    return Chunk.builder()
+        .id(chunkDescription.getId())
         .tiles(tiles)
         .build();
   }

@@ -24,18 +24,18 @@ public class GameEventHandler {
   }
 
   @Subscribe
-  public void handleMapChange(MapChangeEvent mapChangeEvent) {
-    log.debug("handling map change");
+  public void handleChunkChange(ChunkChangeEvent chunkChangeEvent) {
+    log.debug("handling chunk change");
   }
 }
 
-interface MapChangeEvent {
+interface ChunkChangeEvent {
 
   Direction getDirection();
 
 }
 
-class NorthMapChangeEvent implements MapChangeEvent {
+class NorthChunkChangeEvent implements ChunkChangeEvent {
 
   @Override
   public Direction getDirection() {

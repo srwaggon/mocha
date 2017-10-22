@@ -3,24 +3,24 @@ package mocha.net.packet;
 import org.junit.Before;
 import org.junit.Test;
 
-import mocha.game.world.map.Map;
-import mocha.game.world.map.MapFactory;
+import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.tile.Tile;
 
 import static org.junit.Assert.assertEquals;
 
-public class MapPacketTest {
+public class ChunkPacketTest {
 
-  private MapPacket subject;
+  private ChunkPacket subject;
 
-  private Map testMap;
+  private Chunk testChunk;
 
   @Before
   public void setUp() {
-    testMap = new MapFactory().newRandomDefault(12, 11);
-    testMap.setId(10);
+    testChunk = new ChunkFactory().newRandomDefault(12, 11);
+    testChunk.setId(10);
 
-    subject = new MapPacket(testMap);
+    subject = new ChunkPacket(testChunk);
   }
 
   @Test
@@ -38,24 +38,24 @@ public class MapPacketTest {
   public void construct_ContainsMapId_AsFirstPhrase() {
     int index = 1;
 
-    assertEquals(testMap.getId(), Integer.parseInt(subject.getData()[index]));
-    assertEquals(testMap.getId(), getPhraseAsInt(index));
+    assertEquals(testChunk.getId(), Integer.parseInt(subject.getData()[index]));
+    assertEquals(testChunk.getId(), getPhraseAsInt(index));
   }
 
   @Test
   public void construct_ContainsColumnCount_AsSecondPhrase() {
     int index = 2;
 
-    assertEquals(testMap.getColumnCount(), Integer.parseInt(subject.getData()[index]));
-    assertEquals(testMap.getColumnCount(), getPhraseAsInt(index));
+    assertEquals(testChunk.getColumnCount(), Integer.parseInt(subject.getData()[index]));
+    assertEquals(testChunk.getColumnCount(), getPhraseAsInt(index));
   }
 
   @Test
   public void construct_ContainsRowCount_AsThirdPhrase() {
     int index = 3;
 
-    assertEquals(testMap.getRowCount(), Integer.parseInt(subject.getData()[index]));
-    assertEquals(testMap.getRowCount(), getPhraseAsInt(index));
+    assertEquals(testChunk.getRowCount(), Integer.parseInt(subject.getData()[index]));
+    assertEquals(testChunk.getRowCount(), getPhraseAsInt(index));
   }
 
   @Test
@@ -63,7 +63,7 @@ public class MapPacketTest {
     int index = 4;
 
     StringBuilder tilesBuilder = new StringBuilder();
-    for (Tile[] row : testMap.getTiles()) {
+    for (Tile[] row : testChunk.getTiles()) {
       for (Tile tile : row) {
         tilesBuilder.append(tile.getTileType().getSymbol());
       }

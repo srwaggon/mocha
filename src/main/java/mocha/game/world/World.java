@@ -9,8 +9,8 @@ import javax.inject.Inject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import mocha.game.world.map.Map;
-import mocha.game.world.map.MapFactory;
+import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkFactory;
 
 @Builder
 @Component
@@ -19,15 +19,15 @@ import mocha.game.world.map.MapFactory;
 public class World {
 
   @Inject
-  private MapFactory mapFactory;
+  private ChunkFactory chunkFactory;
 
-  private HashMap<Integer, Map> world = new HashMap<>();
+  private HashMap<Integer, Chunk> world = new HashMap<>();
 
-  public void addMap(Map map) {
-    world.put(map.getId(), map);
+  public void addMap(Chunk chunk) {
+    world.put(chunk.getId(), chunk);
   }
 
-  public Map getMapById(int mapId) {
+  public Chunk getMapById(int mapId) {
     return world.get(mapId);
   }
 }

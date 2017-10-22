@@ -1,4 +1,4 @@
-package mocha.game.world.map;
+package mocha.game.world.chunk;
 
 import com.google.common.collect.Sets;
 
@@ -16,27 +16,27 @@ import mocha.game.world.tile.TileType;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class MapFactory {
+public class ChunkFactory {
 
   private static int mapId = 0;
 
   @Inject
-  private MapReader mapReader;
+  private ChunkReader chunkReader;
 
-  public Map newGrid() {
-    return Map.builder()
+  public Chunk newGrid() {
+    return Chunk.builder()
       .id(mapId++)
       .tiles(createGridTiles(18, 12))
       .entities(Sets.newIdentityHashSet())
       .build();
   }
 
-  public Map newRandomDefault() {
+  public Chunk newRandomDefault() {
     return newRandomDefault(18, 12);
   }
 
-  public Map newRandomDefault(int columns, int rows) {
-    return Map.builder()
+  public Chunk newRandomDefault(int columns, int rows) {
+    return Chunk.builder()
       .tiles(createRandomTiles(columns, rows))
       .entities(Sets.newIdentityHashSet())
       .id(mapId++)

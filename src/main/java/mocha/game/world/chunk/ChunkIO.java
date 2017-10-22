@@ -1,4 +1,4 @@
-package mocha.game.world.map;
+package mocha.game.world.chunk;
 
 import com.google.common.io.Files;
 
@@ -11,21 +11,21 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class MapIO {
+public class ChunkIO {
 
   private File dataDirectory = new File("data");
   private File mapsDirectory = new File(dataDirectory, "maps");
 
-  void saveMap(Map map) {
+  void saveMap(Chunk chunk) {
 
     ensureMapsDirectory();
 
-    File file = new File(mapsDirectory, map.getId() + ".map");
+    File file = new File(mapsDirectory, chunk.getId() + ".chunk");
 
     try {
       Files.touch(file);
     } catch (IOException ioException) {
-      log.error("Error occurred while creating map file on disk.", ioException);
+      log.error("Error occurred while creating chunk file on disk.", ioException);
     }
   }
 
