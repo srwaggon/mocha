@@ -17,6 +17,10 @@ public class World {
   private Map<Location, Chunk> chunks = Maps.newHashMap();
 
   public Chunk getChunkAt(Location location) {
-    return chunks.get(location.getChunkLocation());
+    return chunks.get(location.getChunkIndex());
+  }
+
+  public Chunk getChunk(Location location) {
+    return chunks.get(location);
   }
 }

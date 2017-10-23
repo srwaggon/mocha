@@ -21,7 +21,7 @@ public class ChunkFactory {
 
   public Chunk newGrid() {
     return Chunk.builder()
-        .tiles(createGridTiles(18, 12))
+        .tiles(createGridTiles(16, 16))
         .build();
   }
 

@@ -1,10 +1,7 @@
 package mocha.game.world.chunk;
 
-import org.springframework.stereotype.Component;
-
 import mocha.game.world.tile.TileType;
 
-@Component
 public class TileSpriteSelector {
   public int selectSprite(Chunk chunk, int x, int y) {
     TileType type = chunk.getTile(x, y).getTileType();

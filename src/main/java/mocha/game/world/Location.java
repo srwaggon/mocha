@@ -47,7 +47,7 @@ public class Location {
         "}";
   }
 
-  public Location getChunkLocation() {
+  public Location getChunkIndex() {
     return new Location(getChunkX(), getChunkY());
   }
 

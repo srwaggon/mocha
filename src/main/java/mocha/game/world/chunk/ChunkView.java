@@ -1,40 +1,36 @@
 package mocha.game.world.chunk;
 
-import org.springframework.stereotype.Component;
-
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
-import javax.inject.Inject;
-
-import lombok.Setter;
 import mocha.gfx.Drawable;
 import mocha.gfx.MochaCanvas;
 
-@Component
 public class ChunkView implements Drawable {
 
-  @Inject
-  private TileSpriteSelector tileSpriteSelector;
+  private TileSpriteSelector tileSpriteSelector = new TileSpriteSelector();
 
-  @Setter
   private Chunk chunk;
 
-  @Override
-  public void draw(MochaCanvas mochaCanvas, int x, int y) {
-    drawTiles(mochaCanvas);
+  public ChunkView(Chunk chunk) {
+    this.chunk = chunk;
   }
 
-  private void drawTiles(MochaCanvas mochaCanvas) {
-    IntConsumer drawRow = (y) -> IntStream.range(0, Chunk.SIZE).forEach((x) -> drawTile(mochaCanvas, x, y));
+  @Override
+  public void draw(MochaCanvas mochaCanvas, int xOffset, int yOffset) {
+    drawTiles(mochaCanvas, xOffset, yOffset);
+  }
+
+  private void drawTiles(MochaCanvas mochaCanvas, int xOffset, int yOffset) {
+    IntConsumer drawRow = (yIndex) -> IntStream.range(0, Chunk.SIZE).forEach((xIndex) -> drawTile(mochaCanvas, xIndex, yIndex, xOffset, yOffset));
     IntStream.range(0, Chunk.SIZE).forEach(drawRow);
   }
 
-  private void drawTile(MochaCanvas mochaCanvas, int x, int y) {
-    int spriteId = tileSpriteSelector.selectSprite(chunk, x, y);
+  private void drawTile(MochaCanvas mochaCanvas, int xIndex, int yIndex, int xOffset, int yOffset) {
+    int spriteId = tileSpriteSelector.selectSprite(chunk, xIndex, yIndex);
     double scale = 2.0;
-    int spriteX = (int) (x * 16 * scale);
-    int spriteY = (int) (y * 16 * scale);
+    int spriteX = (int) (xIndex * 16 * scale) + xOffset;
+    int spriteY = (int) (yIndex * 16 * scale) + yOffset;
     mochaCanvas.drawSprite(spriteId, spriteX, spriteY, scale);
   }
 }
