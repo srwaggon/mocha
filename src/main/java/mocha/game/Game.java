@@ -1,10 +1,12 @@
 package mocha.game;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -14,6 +16,7 @@ import lombok.NoArgsConstructor;
 import mocha.game.rule.BrainRule;
 import mocha.game.rule.GameRule;
 import mocha.game.rule.MovementRule;
+import mocha.game.world.Location;
 import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
@@ -44,18 +47,21 @@ public class Game implements Tickable {
   }
 
   private void addWorld() {
-    world = new World(createChunks());
+    world = new World(createchunks());
   }
 
-  private Chunk[][] createChunks() {
-    Chunk[][] chunks = new Chunk[16][16];
-    for (int y = 0; y < 16; y++) {
-      for (int x = 0; x < 16; x++) {
-        chunks[y][x] = chunkFactory.newRandomDefault();
+  private Map<Location, Chunk> createchunks() {
+    Map<Location, Chunk> chunks = Maps.newHashMap();
+    for (int y = -16; y < 16; y++) {
+      for (int x = -16; x < 16; x++) {
+        Location location = new Location(x, y);
+        Chunk chunk = chunkFactory.newRandomDefault();
+        chunks.put(location, chunk);
       }
     }
     return chunks;
   }
+
 
   private void addEntities() {
     addPlayer();

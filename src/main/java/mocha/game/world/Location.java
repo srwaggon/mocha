@@ -2,11 +2,14 @@ package mocha.game.world;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import mocha.game.world.chunk.Chunk;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Location {
 
   private double x;
@@ -39,14 +42,24 @@ public class Location {
   @Override
   public String toString() {
     return "{" +
-      "  \"x\": " + x + "," +
-      "  \"y\": " + y + "" +
-      "}";
+        "  \"x\": " + x + "," +
+        "  \"y\": " + y + "" +
+        "}";
   }
 
-  @Override
-  public boolean equals(Object myObject) {
-    Location thisLocation = (Location) myObject;
-    return thisLocation.getX() == this.getX() && thisLocation.getY() == this.getY();
+  public Location getChunkLocation() {
+    return new Location(getChunkX(), getChunkY());
+  }
+
+  private int getChunkX() {
+    return getX() < 0
+        ? (int) (getX() / Chunk.getWidth()) - 1
+        : (int) (getX() / Chunk.getWidth());
+  }
+
+  private int getChunkY()  {
+    return getY() < 0
+        ? (int) (getY() / Chunk.getHeight()) - 1
+        : (int) (getY() / Chunk.getHeight());
   }
 }
