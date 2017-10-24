@@ -53,13 +53,13 @@ public class Location {
 
   private int getChunkX() {
     return getX() < 0
-        ? (int) (getX() / Chunk.getWidth()) - 1
+        ? (int) ((getX() + 1) / Chunk.getWidth()) - 1
         : (int) (getX() / Chunk.getWidth());
   }
 
   private int getChunkY()  {
     return getY() < 0
-        ? (int) (getY() / Chunk.getHeight()) - 1
+        ? (int) ((getY() + 1) / Chunk.getHeight()) - 1
         : (int) (getY() / Chunk.getHeight());
   }
 }
