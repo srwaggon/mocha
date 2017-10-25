@@ -2,6 +2,8 @@ package mocha.game;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 import javax.inject.Inject;
 
 import mocha.game.world.Location;
@@ -29,8 +31,11 @@ public class GameView implements Drawable {
     for (int y = -1; y <= 1; y++) {
       for (int x = -1; x <= 1; x++) {
         Location chunkIndex = new Location(playerChunkIndex.getX() + x, playerChunkIndex.getY() + y);
-        Chunk chunk = game.getWorld().getChunk(chunkIndex);
-        drawChunk(mochaCanvas, x, y, chunk);
+        Optional<Chunk> chunkOptional = game.getWorld().getChunk(chunkIndex);
+        if (!chunkOptional.isPresent()) {
+          continue;
+        }
+        drawChunk(mochaCanvas, x, y, chunkOptional.get());
       }
     }
   }

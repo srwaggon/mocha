@@ -3,6 +3,7 @@ package mocha.game.world;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +21,7 @@ public class World {
     return chunks.get(location.getChunkIndex());
   }
 
-  public Chunk getChunk(Location location) {
-    return chunks.get(location);
+  public Optional<Chunk> getChunk(Location location) {
+    return Optional.ofNullable(chunks.get(location));
   }
 }
