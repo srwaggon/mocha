@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import mocha.game.world.Location;
+import mocha.game.world.entity.movement.collision.SimpleCollision;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -22,6 +23,7 @@ public class SlidingMovementTest {
     testObject = SlidingMovement.builder()
         .location(new Location())
         .distance(distance)
+        .collision(new SimpleCollision())
         .duration(duration)
         .turns(Lists.newLinkedList())
         .build();

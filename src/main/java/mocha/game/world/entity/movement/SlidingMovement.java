@@ -74,8 +74,24 @@ public class SlidingMovement extends SimpleMovement {
   }
 
   private void move() {
-    this.getLocation().addX(distance * this.direction.getXMultiplier());
-    this.getLocation().addY(distance * this.direction.getYMultiplier());
+    applyXDelta();
+    applyYDelta();
+  }
+
+  private void applyXDelta() {
+    double xDelta = distance * this.direction.getXMultiplier();
+    Location nextX = this.getLocation().add(xDelta, 0);
+    if (!collision.collides(nextX)) {
+      this.getLocation().addX(xDelta);
+    }
+  }
+
+  private void applyYDelta() {
+    double yDelta = distance * this.direction.getYMultiplier();
+    Location nextY = this.getLocation().add(0, yDelta);
+    if (!collision.collides(nextY)) {
+      this.getLocation().addY(yDelta);
+    }
   }
 
   public static class SlidingMovementBuilder extends SimpleMovementBuilder {

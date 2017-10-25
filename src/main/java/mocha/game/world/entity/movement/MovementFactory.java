@@ -41,7 +41,7 @@ public class MovementFactory {
         .location(new Location())
         .collision(collisionFactory.newHitBoxCollision())
         .distance(Tile.SIZE)
-        .duration(15.0)
+        .duration(30)
         .direction(Direction.EAST)
         .turns(Lists.newLinkedList())
         .build();
