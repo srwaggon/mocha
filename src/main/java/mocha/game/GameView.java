@@ -73,17 +73,18 @@ public class GameView implements Drawable {
   }
 
   private void drawEntities(MochaCanvas mochaCanvas) {
-    game.getEntities().forEach(entity -> {
-      Entity player = game.getPlayer();
-      if (entity.equals(player)) {
-        return;
-      }
-      Location location = entity.getMovement().getLocation();
-      Location playerLocation = player.getMovement().getLocation();
-      int xOffset = location.getXAsInt() - playerLocation.getXAsInt() + getCanvasXOffset(mochaCanvas);
-      int yOffset = location.getYAsInt() - playerLocation.getYAsInt() + getCanvasYOffset(mochaCanvas);
-      new EntityView(entity).draw(mochaCanvas, xOffset, yOffset);
-    });
+    Entity player = game.getPlayer();
+    Location playerLocation = player.getMovement().getLocation();
+    int canvasXOffset = getCanvasXOffset(mochaCanvas);
+    int canvasYOffset = getCanvasYOffset(mochaCanvas);
+    game.getEntities().stream()
+        .filter(entity -> !entity.equals(player))
+        .forEach(entity -> {
+          Location location = entity.getMovement().getLocation();
+          int xOffset = location.getXAsInt() - playerLocation.getXAsInt() + canvasXOffset;
+          int yOffset = location.getYAsInt() - playerLocation.getYAsInt() + canvasYOffset;
+          new EntityView(entity).draw(mochaCanvas, xOffset, yOffset);
+        });
   }
 
   private void drawPlayer(MochaCanvas mochaCanvas) {

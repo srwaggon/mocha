@@ -17,6 +17,7 @@ public class AccelerationMovementTest {
   public void setUp() throws Exception {
     double accelerationRate = 2.0D;
     testObject = AccelerationMovement.builder()
+        .location(new Location())
         .accelerationRate(accelerationRate)
         .build();
   }

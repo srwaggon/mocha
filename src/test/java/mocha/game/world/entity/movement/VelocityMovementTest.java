@@ -16,8 +16,7 @@ public class VelocityMovementTest {
 
   @Before
   public void setUp() throws Exception {
-    testObject = new VelocityMovement();
-    testObject.setSpeed(speed);
+    testObject = VelocityMovement.builder().location(new Location()).speed(speed).build();
   }
 
   @Test

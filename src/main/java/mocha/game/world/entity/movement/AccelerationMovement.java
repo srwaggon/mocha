@@ -1,14 +1,13 @@
 package mocha.game.world.entity.movement;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
+import mocha.game.world.Location;
+import mocha.game.world.entity.movement.collision.Collision;
 
-@Builder
 @Data
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class AccelerationMovement extends VelocityMovement {
 
@@ -21,6 +20,16 @@ public class AccelerationMovement extends VelocityMovement {
 
   private double yAcceleration;
   private double xAcceleration;
+
+  @Builder
+  protected AccelerationMovement(Location location, Collision collision, double speed, double xVelocity, double yVelocity, int width, int height, double accelerationRate, double maxXVelocity, double maxYVelocity, double yAcceleration, double xAcceleration) {
+    super(location, collision, speed, xVelocity, yVelocity, width, height);
+    this.accelerationRate = accelerationRate;
+    this.maxXVelocity = maxXVelocity;
+    this.maxYVelocity = maxYVelocity;
+    this.yAcceleration = yAcceleration;
+    this.xAcceleration = xAcceleration;
+  }
 
   private void addXVelocity(double xVelocity) {
     this.setXVelocity(this.getXVelocity() + xVelocity);
@@ -68,5 +77,11 @@ public class AccelerationMovement extends VelocityMovement {
     double futureYVelocity = this.getYVelocity() + yAcceleration;
     this.addYVelocity(this.getMaxYVelocity() != 0.0 && this.getMaxYVelocity() < Math.abs(futureYVelocity) ? 0.0 : yAcceleration);
     this.getLocation().addY(this.getYVelocity());
+  }
+
+  public static class AccelerationMovementBuilder extends VelocityMovementBuilder {
+    public AccelerationMovementBuilder() {
+      super();
+    }
   }
 }

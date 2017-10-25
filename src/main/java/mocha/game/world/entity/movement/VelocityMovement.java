@@ -1,8 +1,10 @@
 package mocha.game.world.entity.movement;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import mocha.game.world.Location;
+import mocha.game.world.entity.movement.collision.Collision;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -13,6 +15,16 @@ public class VelocityMovement extends SimpleMovement {
   private double yVelocity;
   private int width;
   private int height;
+
+  @Builder
+  protected VelocityMovement(Location location, Collision collision, double speed, double xVelocity, double yVelocity, int width, int height) {
+    super(location, collision);
+    this.speed = speed;
+    this.xVelocity = xVelocity;
+    this.yVelocity = yVelocity;
+    this.width = width;
+    this.height = height;
+  }
 
   private void applyXVelocity() {
     location.addX(getXVelocity());
@@ -72,5 +84,11 @@ public class VelocityMovement extends SimpleMovement {
     applyYVelocity();
     setXVelocity(0.0);
     setYVelocity(0.0);
+  }
+
+  public static class VelocityMovementBuilder extends SimpleMovementBuilder {
+    public VelocityMovementBuilder() {
+      super();
+    }
   }
 }

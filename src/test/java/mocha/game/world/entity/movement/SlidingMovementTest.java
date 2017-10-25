@@ -1,7 +1,11 @@
 package mocha.game.world.entity.movement;
 
+import com.google.common.collect.Lists;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import mocha.game.world.Location;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -15,7 +19,12 @@ public class SlidingMovementTest {
 
   @Before
   public void setUp() {
-    testObject = new SlidingMovement(distance, duration);
+    testObject = SlidingMovement.builder()
+        .location(new Location())
+        .distance(distance)
+        .duration(duration)
+        .turns(Lists.newLinkedList())
+        .build();
   }
 
   // region still

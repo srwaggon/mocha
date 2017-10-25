@@ -5,7 +5,10 @@ import com.google.common.collect.Lists;
 
 import java.util.Queue;
 
+import lombok.Builder;
 import mocha.game.world.Direction;
+import mocha.game.world.Location;
+import mocha.game.world.entity.movement.collision.Collision;
 
 public class SlidingMovement extends SimpleMovement {
 
@@ -13,9 +16,14 @@ public class SlidingMovement extends SimpleMovement {
   private double duration;
   private Direction direction;
 
-  public SlidingMovement(double distance, int duration) {
+  @Builder
+  private SlidingMovement(Location location, Collision collision, double distance, double duration, Direction direction, Queue<Runnable> turns) {
+    super(location, collision);
+//    this.distance = distance;
     this.duration = duration;
+    this.direction = direction;
     this.distance = distance / duration;
+    this.turns = turns;
     Preconditions.checkArgument(duration > 0, "Duration must be greater than 0.");
   }
 
@@ -69,6 +77,12 @@ public class SlidingMovement extends SimpleMovement {
   private void move() {
     this.getLocation().addX(distance * this.direction.getXMultiplier());
     this.getLocation().addY(distance * this.direction.getYMultiplier());
+  }
+
+  public static class SlidingMovementBuilder extends SimpleMovementBuilder {
+    public SlidingMovementBuilder() {
+      super();
+    }
   }
 
 }
