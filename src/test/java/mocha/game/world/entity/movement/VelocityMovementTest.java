@@ -4,8 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import mocha.game.world.Location;
+import mocha.game.world.entity.movement.collision.Collision;
+import mocha.game.world.entity.movement.collision.SimpleCollision;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 public class VelocityMovementTest {
@@ -16,7 +17,12 @@ public class VelocityMovementTest {
 
   @Before
   public void setUp() throws Exception {
-    testObject = VelocityMovement.builder().location(new Location()).speed(speed).build();
+    Collision collision = new SimpleCollision();
+    testObject = VelocityMovement.builder()
+        .location(new Location())
+        .speed(speed)
+        .collision(collision)
+        .build();
   }
 
   @Test
@@ -116,69 +122,5 @@ public class VelocityMovementTest {
 
     assertEquals(0.0, testObject.getYVelocity(), 0.0);
   }
-
-  // region corners
-
-  // region topLeft()
-
-  @Test
-  public void topLeft_ReturnsTheCurrentLocationOfTheMovement() throws Exception {
-    Location expected = new Location(0, 0);
-
-    Location actual = testObject.topLeft();
-
-    assertThat(actual).isEqualTo(expected);
-  }
-
-  // endregion topLeft()
-
-  // region topRight()
-
-  @Test
-  public void topRight_passIfTopRightCoordinatesMatchExpectedLocation() {
-    testObject.getLocation().setY(81);
-    testObject.setWidth(50);
-    Location expected = new Location(50, 81);
-
-    Location actual = testObject.topRight();
-
-    assertThat(actual).isEqualTo(expected);
-  }
-
-  // endregion topRight()
-
-  // region bottomLeft()
-
-  @Test
-  public void bottomLeft_ReturnsALocationWhereTheYIsOffsetByTheHeight() {
-    testObject.setLocation(new Location(32, 21));
-    testObject.setHeight(55);
-    Location expected = new Location(32, 76);
-
-    Location actual = testObject.bottomLeft();
-
-    assertThat(actual).isEqualTo(expected);
-  }
-
-  // endregion bottomLeft()
-
-  // region bottomRight()
-
-  @Test
-  public void bottomRight_ReturnsALocationWhereTheXIsOffsetByTheWidthAndTheYIsOffsetByTheHeight() {
-    testObject.setLocation(new Location(32, 21));
-    testObject.setHeight(55);
-    testObject.setWidth(50);
-    Location expected = new Location(82, 76);
-
-    Location actual = testObject.bottomRight();
-
-    assertThat(actual).isEqualTo(expected);
-  }
-
-  // endregion bottomRight()
-
-  // endregion corners
-
 
 }

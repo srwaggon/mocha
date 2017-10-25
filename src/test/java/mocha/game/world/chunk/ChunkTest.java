@@ -6,11 +6,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Optional;
+
 import mocha.game.world.entity.Entity;
 import mocha.game.world.tile.Tile;
 import mocha.game.world.tile.TileFactory;
 
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
@@ -60,7 +61,7 @@ public class ChunkTest {
     Chunk testObject = chunkFactory.read(chunkDescription);
     Tile expected = testObject.getTile(0, 0);
 
-    Tile actual = testObject.getTileAt(0, 0);
+    Tile actual = testObject.getTileAt(0, 0).get();
 
     assertThat(actual).isSameAs(expected);
   }
@@ -78,7 +79,7 @@ public class ChunkTest {
     Chunk testObject = chunkFactory.read(chunkDescription);
     Tile expected = testObject.getTile(0, 0);
 
-    Tile actual = testObject.getTileAt(1, 0);
+    Tile actual = testObject.getTileAt(1, 0).get();
 
     assertThat(actual).isSameAs(expected);
   }
@@ -96,7 +97,7 @@ public class ChunkTest {
     Chunk testObject = chunkFactory.read(chunkDescription);
     Tile expected = testObject.getTile(1, 0);
 
-    Tile actual = testObject.getTileAt(Tile.SIZE, 0);
+    Tile actual = testObject.getTileAt(Tile.SIZE, 0).get();
 
     assertThat(actual).isSameAs(expected);
   }
@@ -104,9 +105,9 @@ public class ChunkTest {
   @Test
   public void getTileAt_ReturnsTheNextTile_WhenThePointIsGreaterThanTheTileSize_ForY() throws Exception {
     String tileString = "" +
-        "..." +
-        "..." +
-        "...";
+        "................" +
+        "................" +
+        "................";
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tileString)
         .build();
@@ -114,13 +115,13 @@ public class ChunkTest {
     Chunk testObject = chunkFactory.read(chunkDescription);
     Tile expected = testObject.getTile(0, 1);
 
-    Tile actual = testObject.getTileAt(0, Tile.SIZE);
+    Tile actual = testObject.getTileAt(0, Tile.SIZE).get();
 
     assertThat(actual).isSameAs(expected);
   }
 
   @Test
-  public void getTileAt_ThrowsAnOutOfBoundsException_WhenTheCoordinateOutOfBounds() throws Exception {
+  public void getTileAt_ReturnsAnEmptyOptional_WhenTheCoordinateOutOfBounds() throws Exception {
     String tileString = "" +
         "..." +
         "..." +
@@ -132,9 +133,9 @@ public class ChunkTest {
     Chunk testObject = chunkFactory.read(chunkDescription);
     int mapWidth = Chunk.SIZE * Tile.SIZE;
 
-    assertThatExceptionOfType(IndexOutOfBoundsException.class)
-        .isThrownBy(() -> testObject.getTileAt(mapWidth + 1, 0));
-  }
+    Optional<Tile> actual = testObject.getTileAt(mapWidth + 1, 0);
 
+    assertThat(actual).isEmpty();
+  }
   // endregion getTileAt()
 }

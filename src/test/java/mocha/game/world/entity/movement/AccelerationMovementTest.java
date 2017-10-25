@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import mocha.game.world.Location;
+import mocha.game.world.entity.movement.collision.SimpleCollision;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,6 +18,7 @@ public class AccelerationMovementTest {
   public void setUp() throws Exception {
     double accelerationRate = 2.0D;
     testObject = AccelerationMovement.builder()
+        .collision(new SimpleCollision())
         .location(new Location())
         .accelerationRate(accelerationRate)
         .build();
