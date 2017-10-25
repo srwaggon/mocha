@@ -19,23 +19,26 @@ public class EntityFactory {
   private MovementFactory movementFactory;
 
   public Entity createRandomSlider() {
-    Entity entity = new Entity();
+    Entity entity = Entity.builder()
+        .movement(movementFactory.newSlidingMovement())
+        .build();
     entity.setBrain(new RandomBrain(entity));
-    entity.setMovement(movementFactory.newSlidingMovement());
     return entity;
   }
 
   public Entity createRandom() {
-    Entity entity = new Entity();
+    Entity entity = Entity.builder()
+        .movement(movementFactory.newVelocityMovement())
+        .build();
     entity.setBrain(new RandomBrain(entity));
-    entity.setMovement(movementFactory.newVelocityMovement());
     return entity;
   }
 
   public Entity createRandomAccelerating() {
-    Entity entity = new Entity();
+    Entity entity = Entity.builder()
+        .movement(movementFactory.newAccelerationMovement())
+        .build();
     entity.setBrain(new RandomBrain(entity));
-    entity.setMovement(movementFactory.newAccelerationMovement());
     return entity;
   }
 }

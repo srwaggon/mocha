@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkView;
+import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityView;
 import mocha.gfx.Drawable;
 import mocha.gfx.MochaCanvas;
@@ -73,8 +74,12 @@ public class GameView implements Drawable {
 
   private void drawEntities(MochaCanvas mochaCanvas) {
     game.getEntities().forEach(entity -> {
+      Entity player = game.getPlayer();
+      if (entity.equals(player)) {
+        return;
+      }
       Location location = entity.getMovement().getLocation();
-      Location playerLocation = game.getPlayer().getMovement().getLocation();
+      Location playerLocation = player.getMovement().getLocation();
       int xOffset = location.getXAsInt() - playerLocation.getXAsInt();
       int yOffset = location.getYAsInt() - playerLocation.getYAsInt();
       new EntityView(entity).draw(mochaCanvas, xOffset, yOffset);
