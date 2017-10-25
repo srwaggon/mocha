@@ -3,6 +3,7 @@ package mocha.game.world.entity.brain;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
@@ -10,26 +11,26 @@ import mocha.game.world.entity.movement.Movement;
 
 public class RandomBrain extends SimpleBrain {
 
+  private static Map<Direction, Consumer<Movement>> directionMap = buildDirectionMap();
+
   private Entity entity;
 
   public RandomBrain(Entity entity) {
     this.entity = entity;
   }
 
-  private Map<Direction, Runnable> buildDirectionMap() {
-    Movement movement = entity.getMovement();
-    Map<Direction, Runnable> directionMap = Maps.newConcurrentMap();
-    directionMap.put(Direction.NORTH, movement::up);
-    directionMap.put(Direction.EAST, movement::right);
-    directionMap.put(Direction.SOUTH, movement::down);
-    directionMap.put(Direction.WEST, movement::left);
+  private static Map<Direction, Consumer<Movement>> buildDirectionMap() {
+    Map<Direction, Consumer<Movement>> directionMap = Maps.newConcurrentMap();
+    directionMap.put(Direction.NORTH, Movement::up);
+    directionMap.put(Direction.EAST, Movement::right);
+    directionMap.put(Direction.SOUTH, Movement::down);
+    directionMap.put(Direction.WEST, Movement::left);
     return directionMap;
   }
 
   @Override
   public void tick(long now) {
-    Map<Direction, Runnable> directionMap = buildDirectionMap();
-    directionMap.get(Direction.random()).run();
+    directionMap.get(Direction.random()).accept(entity.getMovement());
   }
 
 }
