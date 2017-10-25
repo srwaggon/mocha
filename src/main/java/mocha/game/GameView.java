@@ -23,6 +23,8 @@ public class GameView implements Drawable {
   public void draw(MochaCanvas mochaCanvas, int xOffset, int yOffset) {
     drawChunks(mochaCanvas);
 
+    drawEntities(mochaCanvas);
+
     drawPlayer(mochaCanvas);
   }
 
@@ -48,14 +50,14 @@ public class GameView implements Drawable {
   }
 
   private int getChunkXOffset(MochaCanvas mochaCanvas, int x) {
-    int playerX = (int) (game.getPlayer().getMovement().getLocation().getX() % Chunk.getWidth());
+    int playerX = game.getPlayer().getMovement().getLocation().getXAsInt() % Chunk.getWidth();
     int playerOffsetX = -1 * ((Chunk.getWidth() + playerX) % Chunk.getWidth());
     int xOffset = x * Chunk.getWidth() + getCanvasXOffset(mochaCanvas);
     return playerOffsetX + xOffset;
   }
 
   private int getChunkYOffset(MochaCanvas mochaCanvas, int y) {
-    int playerY = (int) (game.getPlayer().getMovement().getLocation().getY() % Chunk.getHeight());
+    int playerY = game.getPlayer().getMovement().getLocation().getYAsInt() % Chunk.getHeight();
     int playerOffsetY = -1 * ((Chunk.getHeight() + playerY) % Chunk.getHeight());
     int yOffset = y * Chunk.getHeight() + getCanvasYOffset(mochaCanvas);
     return playerOffsetY + yOffset;
@@ -67,6 +69,16 @@ public class GameView implements Drawable {
 
   private int getCanvasYOffset(MochaCanvas mochaCanvas) {
     return (int) (mochaCanvas.getHeight() / 2);
+  }
+
+  private void drawEntities(MochaCanvas mochaCanvas) {
+    game.getEntities().forEach(entity -> {
+      Location location = entity.getMovement().getLocation();
+      Location playerLocation = game.getPlayer().getMovement().getLocation();
+      int xOffset = location.getXAsInt() - playerLocation.getXAsInt();
+      int yOffset = location.getYAsInt() - playerLocation.getYAsInt();
+      new EntityView(entity).draw(mochaCanvas, xOffset, yOffset);
+    });
   }
 
   private void drawPlayer(MochaCanvas mochaCanvas) {

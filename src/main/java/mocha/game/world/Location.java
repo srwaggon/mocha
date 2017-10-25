@@ -19,6 +19,14 @@ public class Location {
     return x;
   }
 
+  public int getXAsInt() {
+    return (int) x;
+  }
+
+  public int getYAsInt() {
+    return (int) y;
+  }
+
   public void setX(double x) {
     this.x = x;
   }
