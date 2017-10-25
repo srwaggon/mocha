@@ -12,12 +12,12 @@ public class TileSpriteSelectorTest {
   private TileSpriteSelector testObject;
 
   private TileFactory tileFactory;
-  private ChunkReader chunkReader;
+  private ChunkFactory chunkFactory;
 
   @Before
   public void setUp() throws Exception {
     tileFactory = new TileFactory();
-    chunkReader = ChunkReader.builder().tileFactory(tileFactory).build();
+    chunkFactory = ChunkFactory.builder().tileFactory(tileFactory).build();
     testObject = new TileSpriteSelector();
   }
 
@@ -30,7 +30,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(160);
   }
@@ -44,7 +44,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(161);
   }
@@ -58,7 +58,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(162);
   }
@@ -72,7 +72,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(163);
   }
@@ -86,7 +86,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(164);
   }
@@ -100,7 +100,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(165);
   }
@@ -114,7 +114,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(166);
   }
@@ -128,7 +128,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(167);
   }
@@ -142,7 +142,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(168);
   }
@@ -156,7 +156,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(169);
   }
@@ -170,7 +170,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(170);
   }
@@ -184,7 +184,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(171);
   }
@@ -198,7 +198,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(172);
   }
@@ -212,7 +212,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(173);
   }
@@ -226,7 +226,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(174);
   }
@@ -240,7 +240,7 @@ public class TileSpriteSelectorTest {
     ChunkDescription chunkDescription = ChunkDescription.builder()
         .tiles(tilesString)
         .build();
-    Chunk chunk = chunkReader.read(chunkDescription);
+    Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(175);
   }

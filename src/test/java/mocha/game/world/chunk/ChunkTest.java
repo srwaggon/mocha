@@ -23,12 +23,16 @@ public class ChunkTest {
   @Mock
   private Entity mockEntity;
 
+  ChunkFactory chunkFactory;
+
   @Before
   public void setUp() {
     Tile[][] tiles = new Tile[6][10];
     testObject = Chunk.builder()
         .tiles(tiles)
         .build();
+
+    chunkFactory = ChunkFactory.builder().tileFactory(new TileFactory()).build();
   }
 
   @Test
@@ -53,8 +57,7 @@ public class ChunkTest {
         .tiles(tileString)
         .build();
 
-    ChunkReader chunkReader = ChunkReader.builder().tileFactory(new TileFactory()).build();
-    Chunk testObject = chunkReader.read(chunkDescription);
+    Chunk testObject = chunkFactory.read(chunkDescription);
     Tile expected = testObject.getTile(0, 0);
 
     Tile actual = testObject.getTileAt(0, 0);
@@ -72,8 +75,7 @@ public class ChunkTest {
         .tiles(tileString)
         .build();
 
-    ChunkReader chunkReader = ChunkReader.builder().tileFactory(new TileFactory()).build();
-    Chunk testObject = chunkReader.read(chunkDescription);
+    Chunk testObject = chunkFactory.read(chunkDescription);
     Tile expected = testObject.getTile(0, 0);
 
     Tile actual = testObject.getTileAt(1, 0);
@@ -91,8 +93,7 @@ public class ChunkTest {
         .tiles(tileString)
         .build();
 
-    ChunkReader chunkReader = ChunkReader.builder().tileFactory(new TileFactory()).build();
-    Chunk testObject = chunkReader.read(chunkDescription);
+    Chunk testObject = chunkFactory.read(chunkDescription);
     Tile expected = testObject.getTile(1, 0);
 
     Tile actual = testObject.getTileAt(Tile.SIZE, 0);
@@ -110,8 +111,7 @@ public class ChunkTest {
         .tiles(tileString)
         .build();
 
-    ChunkReader chunkReader = ChunkReader.builder().tileFactory(new TileFactory()).build();
-    Chunk testObject = chunkReader.read(chunkDescription);
+    Chunk testObject = chunkFactory.read(chunkDescription);
     Tile expected = testObject.getTile(0, 1);
 
     Tile actual = testObject.getTileAt(0, Tile.SIZE);
@@ -129,8 +129,7 @@ public class ChunkTest {
         .tiles(tileString)
         .build();
 
-    ChunkReader chunkReader = ChunkReader.builder().tileFactory(new TileFactory()).build();
-    Chunk testObject = chunkReader.read(chunkDescription);
+    Chunk testObject = chunkFactory.read(chunkDescription);
     int mapWidth = Chunk.SIZE * Tile.SIZE;
 
     assertThatExceptionOfType(IndexOutOfBoundsException.class)

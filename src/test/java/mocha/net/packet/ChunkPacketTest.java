@@ -5,8 +5,8 @@ import org.junit.Test;
 
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
-import mocha.game.world.chunk.ChunkReader;
 import mocha.game.world.tile.Tile;
+import mocha.game.world.tile.TileFactory;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,8 +18,8 @@ public class ChunkPacketTest {
 
   @Before
   public void setUp() {
-    ChunkReader chunkReader = ChunkReader.builder().build();
-    ChunkFactory chunkFactory = ChunkFactory.builder().chunkReader(chunkReader).build();
+    TileFactory tileFactory = new TileFactory();
+    ChunkFactory chunkFactory = ChunkFactory.builder().tileFactory(tileFactory).build();
     testChunk = chunkFactory.newRandomDefault(16, 16);
 
     subject = new ChunkPacket(testChunk);

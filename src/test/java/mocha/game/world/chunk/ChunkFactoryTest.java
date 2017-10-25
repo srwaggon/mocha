@@ -13,16 +13,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ChunkReaderTest {
+public class ChunkFactoryTest {
 
-  private ChunkReader testObject;
+  private ChunkFactory testObject;
 
   @Spy
   private TileFactory tileFactory = new TileFactory();
 
   @Before
   public void setUp() throws Exception {
-    testObject = ChunkReader.builder()
+    testObject = ChunkFactory.builder()
         .tileFactory(tileFactory)
         .build();
   }
@@ -83,4 +83,5 @@ public class ChunkReaderTest {
     assertThat(actual.getTile(2, 0).getTileType()).isEqualTo(TileType.STONE);
     assertThat(actual.getTile(3, 0).getTileType()).isEqualTo(TileType.GRASS);
   }
+
 }
