@@ -19,9 +19,7 @@ public class MochaCanvas extends Canvas {
   @Inject
   private SpriteSheet spriteSheet;
 
-  private final WritableImage writableImage = new WritableImage(
-      width, height
-  );
+  private final WritableImage writableImage = new WritableImage(width, height);
 
   public MochaCanvas() {
     super();

@@ -80,8 +80,8 @@ public class GameView implements Drawable {
       }
       Location location = entity.getMovement().getLocation();
       Location playerLocation = player.getMovement().getLocation();
-      int xOffset = location.getXAsInt() - playerLocation.getXAsInt();
-      int yOffset = location.getYAsInt() - playerLocation.getYAsInt();
+      int xOffset = location.getXAsInt() - playerLocation.getXAsInt() + getCanvasXOffset(mochaCanvas);
+      int yOffset = location.getYAsInt() - playerLocation.getYAsInt() + getCanvasYOffset(mochaCanvas);
       new EntityView(entity).draw(mochaCanvas, xOffset, yOffset);
     });
   }
