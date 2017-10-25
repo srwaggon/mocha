@@ -19,7 +19,6 @@ public class SlidingMovement extends SimpleMovement {
   @Builder
   private SlidingMovement(Location location, Collision collision, double distance, double duration, Direction direction, Queue<Runnable> turns) {
     super(location, collision);
-//    this.distance = distance;
     this.duration = duration;
     this.direction = direction;
     this.distance = distance / duration;

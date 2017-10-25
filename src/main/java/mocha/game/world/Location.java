@@ -39,12 +39,16 @@ public class Location {
     this.y = y;
   }
 
+  public Location add(double x, double y) {
+    return new Location(this.getX() + x, this.getY() + y);
+  }
+
   public void addX(double x) {
-    this.x += x;
+    this.setX(this.getX() + x);
   }
 
   public void addY(double y) {
-    this.y += y;
+    this.setY(this.getY() + y);
   }
 
   @Override

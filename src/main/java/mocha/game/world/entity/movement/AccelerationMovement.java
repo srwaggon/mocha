@@ -3,7 +3,6 @@ package mocha.game.world.entity.movement;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Setter;
 import mocha.game.world.Location;
 import mocha.game.world.entity.movement.collision.Collision;
 
@@ -11,19 +10,15 @@ import mocha.game.world.entity.movement.collision.Collision;
 @EqualsAndHashCode(callSuper = true)
 public class AccelerationMovement extends VelocityMovement {
 
-  @Setter
   private double accelerationRate;
-  @Setter
   private double maxXVelocity;
-  @Setter
   private double maxYVelocity;
-
   private double yAcceleration;
   private double xAcceleration;
 
   @Builder
-  protected AccelerationMovement(Location location, Collision collision, double speed, double xVelocity, double yVelocity, int width, int height, double accelerationRate, double maxXVelocity, double maxYVelocity, double yAcceleration, double xAcceleration) {
-    super(location, collision, speed, xVelocity, yVelocity, width, height);
+  protected AccelerationMovement(Location location, Collision collision, double speed, double xVelocity, double yVelocity, double accelerationRate, double maxXVelocity, double maxYVelocity, double yAcceleration, double xAcceleration) {
+    super(location, collision, speed, xVelocity, yVelocity);
     this.accelerationRate = accelerationRate;
     this.maxXVelocity = maxXVelocity;
     this.maxYVelocity = maxYVelocity;
@@ -61,8 +56,8 @@ public class AccelerationMovement extends VelocityMovement {
 
   @Override
   public void tick(long now) {
-    applyXAcceleration();
-    applyYAcceleration();
+    this.applyXAcceleration();
+    this.applyYAcceleration();
     this.setXAcceleration(0.0);
     this.setYAcceleration(0.0);
   }
@@ -70,13 +65,13 @@ public class AccelerationMovement extends VelocityMovement {
   private void applyXAcceleration() {
     double futureXVelocity = this.getXVelocity() + xAcceleration;
     this.addXVelocity(this.getMaxXVelocity() != 0.0 && this.getMaxXVelocity() < Math.abs(futureXVelocity) ? 0.0 : xAcceleration);
-    this.getLocation().addX(this.getXVelocity());
+    this.applyXVelocityIfNotColliding();
   }
 
   private void applyYAcceleration() {
     double futureYVelocity = this.getYVelocity() + yAcceleration;
     this.addYVelocity(this.getMaxYVelocity() != 0.0 && this.getMaxYVelocity() < Math.abs(futureYVelocity) ? 0.0 : yAcceleration);
-    this.getLocation().addY(this.getYVelocity());
+    this.applyYVelocityIfNotColliding();
   }
 
   public static class AccelerationMovementBuilder extends VelocityMovementBuilder {

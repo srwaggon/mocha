@@ -1,8 +1,11 @@
 package mocha.game.world.chunk;
 
+import java.util.Optional;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import mocha.game.world.Location;
 import mocha.game.world.tile.Tile;
 
 @Data
@@ -17,6 +20,10 @@ public class Chunk {
     return tiles[y][x];
   }
 
+  private boolean inBounds(int value) {
+    return 0 <= value && value < SIZE;
+  }
+
   public static int getWidth() {
     return SIZE * Tile.SIZE;
   }
@@ -25,7 +32,15 @@ public class Chunk {
     return SIZE * Tile.SIZE;
   }
 
-  public Tile getTileAt(int x, int y) {
-    return getTile(x / Tile.SIZE, y / Tile.SIZE);
+  public Optional<Tile> getTileAt(int x, int y) {
+    int xIndex = x / Tile.SIZE;
+    int yIndex = y / Tile.SIZE;
+    return inBounds(xIndex) && inBounds(yIndex)
+        ? Optional.of(getTile(xIndex, yIndex))
+        : Optional.empty();
+  }
+
+  public Optional<Tile> getTileAt(Location location) {
+    return getTileAt(location.getXAsInt(), location.getYAsInt());
   }
 }

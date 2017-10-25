@@ -19,8 +19,8 @@ public class World {
 
   private Map<Location, Chunk> chunks = Maps.newHashMap();
 
-  public Chunk getChunkAt(Location location) {
-    return chunks.get(location.getChunkIndex());
+  public Optional<Chunk> getChunkAt(Location location) {
+    return Optional.ofNullable(chunks.get(location.getChunkIndex()));
   }
 
   public Optional<Chunk> getChunk(Location location) {

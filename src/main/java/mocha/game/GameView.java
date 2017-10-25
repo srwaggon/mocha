@@ -2,6 +2,7 @@ package mocha.game;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -25,8 +26,6 @@ public class GameView implements Drawable {
     drawChunks(mochaCanvas);
 
     drawEntities(mochaCanvas);
-
-    drawPlayer(mochaCanvas);
   }
 
   private void drawChunks(MochaCanvas mochaCanvas) {
@@ -78,8 +77,11 @@ public class GameView implements Drawable {
     int canvasXOffset = getCanvasXOffset(mochaCanvas);
     int canvasYOffset = getCanvasYOffset(mochaCanvas);
     game.getEntities().stream()
-        .filter(entity -> !entity.equals(player))
+        .sorted(Comparator.comparingInt(entity -> entity.getMovement().getLocation().getYAsInt()))
         .forEach(entity -> {
+          if (entity.equals(player)) {
+            new EntityView(game.getPlayer()).draw(mochaCanvas, canvasXOffset, canvasYOffset);
+          }
           Location location = entity.getMovement().getLocation();
           int xOffset = location.getXAsInt() - playerLocation.getXAsInt() + canvasXOffset;
           int yOffset = location.getYAsInt() - playerLocation.getYAsInt() + canvasYOffset;
@@ -87,10 +89,4 @@ public class GameView implements Drawable {
         });
   }
 
-  private void drawPlayer(MochaCanvas mochaCanvas) {
-    int canvasXOffset = getCanvasXOffset(mochaCanvas);
-    int canvasYOffset = getCanvasYOffset(mochaCanvas);
-    EntityView entityView = new EntityView(game.getPlayer());
-    entityView.draw(mochaCanvas, canvasXOffset, canvasYOffset);
-  }
 }

@@ -13,13 +13,21 @@ public class CollisionFactory {
 
   private World world;
 
-  public Collision newSimpleCollision() {
+  public SimpleCollision newSimpleCollision() {
     return new SimpleCollision();
   }
 
-  public Collision newTileCollision() {
+  public TileCollision newTileCollision() {
     return TileCollision.builder()
         .world(world)
+        .build();
+  }
+
+  public HitBoxCollision newHitBoxCollision() {
+    return HitBoxCollision.builder()
+        .width(24)
+        .height(24)
+        .tileCollision(newTileCollision())
         .build();
   }
 }

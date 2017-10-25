@@ -24,9 +24,7 @@ public class MovementFactory {
   public VelocityMovement newVelocityMovement() {
     return VelocityMovement.builder()
         .location(new Location())
-        .collision(collisionFactory.newTileCollision())
-        .height(32)
-        .width(32)
+        .collision(collisionFactory.newHitBoxCollision())
         .speed(2)
         .build();
   }
@@ -41,7 +39,7 @@ public class MovementFactory {
   public SlidingMovement newSlidingMovement() {
     return SlidingMovement.builder()
         .location(new Location())
-        .collision(collisionFactory.newTileCollision())
+        .collision(collisionFactory.newHitBoxCollision())
         .distance(Tile.SIZE)
         .duration(15.0)
         .direction(Direction.EAST)
@@ -52,7 +50,7 @@ public class MovementFactory {
   public AccelerationMovement newAccelerationMovement() {
     return AccelerationMovement.builder()
         .location(new Location())
-        .collision(collisionFactory.newTileCollision())
+        .collision(collisionFactory.newHitBoxCollision())
         .accelerationRate(.1)
         .maxXVelocity(2.0)
         .maxYVelocity(2.0)
