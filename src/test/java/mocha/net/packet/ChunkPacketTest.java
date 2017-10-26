@@ -7,6 +7,7 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.tile.Tile;
 import mocha.game.world.tile.TileFactory;
+import mocha.game.world.tile.item.TileItemFactory;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,9 +19,11 @@ public class ChunkPacketTest {
 
   @Before
   public void setUp() {
-    TileFactory tileFactory = new TileFactory();
-    ChunkFactory chunkFactory = ChunkFactory.builder().tileFactory(tileFactory).build();
-    testChunk = chunkFactory.newRandomDefault(16, 16);
+    ChunkFactory chunkFactory = ChunkFactory.builder()
+        .tileItemFactory(new TileItemFactory())
+        .tileFactory(new TileFactory())
+        .build();
+    testChunk = chunkFactory.newRandomDefault();
 
     subject = new ChunkPacket(testChunk);
   }

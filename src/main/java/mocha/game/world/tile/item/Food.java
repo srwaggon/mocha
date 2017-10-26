@@ -1,18 +1,24 @@
 package mocha.game.world.tile.item;
 
-public class Stone extends TileItem {
+import lombok.Data;
+
+@Data
+public class Food extends TileItem {
+
+  private boolean isConsumed;
+
   @Override
   public boolean blocksMove() {
-    return true;
+    return false;
   }
 
   @Override
   public TileItemType getTileItemType() {
-    return TileItemType.OTHER;
+    return TileItemType.FOOD;
   }
 
   @Override
   public int getSpriteId() {
-    return 4;
+    return 11;
   }
 }

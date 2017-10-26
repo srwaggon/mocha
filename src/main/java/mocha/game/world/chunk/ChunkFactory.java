@@ -9,6 +9,8 @@ import lombok.Builder;
 import mocha.game.world.tile.Tile;
 import mocha.game.world.tile.TileFactory;
 import mocha.game.world.tile.TileType;
+import mocha.game.world.tile.item.TileItem;
+import mocha.game.world.tile.item.TileItemFactory;
 
 @Builder
 @Component
@@ -19,6 +21,9 @@ public class ChunkFactory {
 
   @Inject
   private TileFactory tileFactory;
+
+  @Inject
+  private TileItemFactory tileItemFactory;
 
   public Chunk newGrid() {
     return Chunk.builder()
@@ -51,9 +56,11 @@ public class ChunkFactory {
 
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < columns; x++) {
-        TileType random = x == y ? TileType.DIRT : TileType.random();
+        TileType randomTileType = x == y ? TileType.DIRT : TileType.random();
+        TileItem tileItem = !randomTileType.isBlocking() && (int) (Math.random() * 8) == 0 ? tileItemFactory.newStone() : null;
         tiles[y][x] = Tile.builder()
-            .tileType(random)
+            .tileType(randomTileType)
+            .tileItem(tileItem)
             .build();
       }
     }

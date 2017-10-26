@@ -15,7 +15,7 @@ public enum TileType {
   DIRT(".", DIRT_BROWN, 1, false),
   STONE("o", STONE_GREY, 224, true),
   GRASS("w", GRASS_GREEN, 160, false),
-  WATER("~", WATER_BLUE, 192, true),
+  WATER("~", WATER_BLUE, 192, false),
   ;
 
   private String symbol;

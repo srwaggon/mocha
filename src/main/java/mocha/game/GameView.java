@@ -11,11 +11,12 @@ import javax.inject.Inject;
 
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
-import mocha.gfx.TileSpriteSelector;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityView;
+import mocha.game.world.tile.item.TileItem;
 import mocha.gfx.Drawable;
 import mocha.gfx.MochaCanvas;
+import mocha.gfx.TileSpriteSelector;
 
 @Component
 public class GameView implements Drawable {
@@ -99,12 +100,16 @@ public class GameView implements Drawable {
   }
 
   private void drawTile(MochaCanvas mochaCanvas, Chunk chunk, int xIndex, int yIndex, int xOffset, int yOffset) {
-
     int spriteId = tileSpriteSelector.selectSprite(chunk, xIndex, yIndex);
     double scale = 2.0;
     int spriteX = (int) (xIndex * 16 * scale) + xOffset;
     int spriteY = (int) (yIndex * 16 * scale) + yOffset;
     mochaCanvas.drawSprite(spriteId, spriteX, spriteY, scale);
+
+    TileItem tileItem = chunk.getTile(xIndex, yIndex).getTileItem();
+    if (tileItem != null) {
+      mochaCanvas.drawSprite(tileItem.getSpriteId(), spriteX, spriteY, scale);
+    }
   }
 
 }

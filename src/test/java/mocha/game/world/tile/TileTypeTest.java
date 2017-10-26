@@ -66,8 +66,8 @@ public class TileTypeTest {
   }
 
   @Test
-  public void waterIsBlocking() {
-    assertTrue(TileType.WATER.isBlocking());
+  public void waterIsNotBlocking() {
+    assertFalse(TileType.WATER.isBlocking());
   }
   // endregion isBlocking
 
