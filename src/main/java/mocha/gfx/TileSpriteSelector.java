@@ -1,13 +1,24 @@
-package mocha.game.world.chunk;
+package mocha.gfx;
 
+import org.springframework.stereotype.Component;
+
+import mocha.game.world.chunk.Chunk;
 import mocha.game.world.tile.TileType;
 
+@Component
 public class TileSpriteSelector {
   public int selectSprite(Chunk chunk, int x, int y) {
     TileType type = chunk.getTile(x, y).getTileType();
 
-    int offset = type.equals(TileType.GRASS) || type.equals(TileType.WATER) ? getSpriteOffset(chunk, x, y, type) : 0;
-    return type.getSprite() + offset;
+    return isConnectedTileSprite(type)
+        ? type.getSprite() + getSpriteOffset(chunk, x, y, type)
+        : type.getSprite();
+  }
+
+  private boolean isConnectedTileSprite(TileType type) {
+    return type.equals(TileType.GRASS)
+        || type.equals(TileType.WATER)
+        || type.equals(TileType.STONE);
   }
 
   private int getSpriteOffset(Chunk chunk, int x, int y, TileType type) {

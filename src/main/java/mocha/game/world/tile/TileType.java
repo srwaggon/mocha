@@ -13,7 +13,7 @@ public enum TileType {
 
   GRID("x", VOID_PINK, 0, false),
   DIRT(".", DIRT_BROWN, 1, false),
-  STONE("o", STONE_GREY, 256, true),
+  STONE("o", STONE_GREY, 224, true),
   GRASS("w", GRASS_GREEN, 160, false),
   WATER("~", WATER_BLUE, 192, true),
   ;

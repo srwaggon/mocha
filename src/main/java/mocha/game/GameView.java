@@ -4,12 +4,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.function.IntConsumer;
+import java.util.stream.IntStream;
 
 import javax.inject.Inject;
 
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.chunk.ChunkView;
+import mocha.gfx.TileSpriteSelector;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityView;
 import mocha.gfx.Drawable;
@@ -20,6 +22,9 @@ public class GameView implements Drawable {
 
   @Inject
   private Game game;
+
+  @Inject
+  private TileSpriteSelector tileSpriteSelector;
 
   @Override
   public void draw(MochaCanvas mochaCanvas, int xOffset, int yOffset) {
@@ -37,16 +42,15 @@ public class GameView implements Drawable {
         if (!chunkOptional.isPresent()) {
           continue;
         }
-        drawChunk(mochaCanvas, x, y, chunkOptional.get());
+        drawChunk(mochaCanvas, chunkOptional.get(), x, y);
       }
     }
   }
 
-  private void drawChunk(MochaCanvas mochaCanvas, int x, int y, Chunk chunk) {
-    ChunkView chunkView = new ChunkView(chunk);
+  private void drawChunk(MochaCanvas mochaCanvas, Chunk chunkIndex, int x, int y) {
     int chunkXOffset = getChunkXOffset(mochaCanvas, x);
     int chunkYOffset = getChunkYOffset(mochaCanvas, y);
-    chunkView.draw(mochaCanvas, chunkXOffset, chunkYOffset);
+    drawTiles(mochaCanvas, chunkIndex, chunkXOffset, chunkYOffset);
   }
 
   private int getChunkXOffset(MochaCanvas mochaCanvas, int x) {
@@ -87,6 +91,20 @@ public class GameView implements Drawable {
           int yOffset = location.getYAsInt() - playerLocation.getYAsInt() + canvasYOffset;
           new EntityView(entity).draw(mochaCanvas, xOffset, yOffset);
         });
+  }
+
+  private void drawTiles(MochaCanvas mochaCanvas, Chunk chunk, int xOffset, int yOffset) {
+    IntConsumer drawRow = (yIndex) -> IntStream.range(0, Chunk.SIZE).forEach((xIndex) -> drawTile(mochaCanvas, chunk, xIndex, yIndex, xOffset, yOffset));
+    IntStream.range(0, Chunk.SIZE).forEach(drawRow);
+  }
+
+  private void drawTile(MochaCanvas mochaCanvas, Chunk chunk, int xIndex, int yIndex, int xOffset, int yOffset) {
+
+    int spriteId = tileSpriteSelector.selectSprite(chunk, xIndex, yIndex);
+    double scale = 2.0;
+    int spriteX = (int) (xIndex * 16 * scale) + xOffset;
+    int spriteY = (int) (yIndex * 16 * scale) + yOffset;
+    mochaCanvas.drawSprite(spriteId, spriteX, spriteY, scale);
   }
 
 }

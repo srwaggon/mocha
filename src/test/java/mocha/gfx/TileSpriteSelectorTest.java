@@ -1,8 +1,11 @@
-package mocha.game.world.chunk;
+package mocha.gfx;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkDescription;
+import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.tile.TileFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
