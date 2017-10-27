@@ -5,19 +5,19 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.Movement;
 
+@Builder
+@AllArgsConstructor
 public class RandomBrain extends SimpleBrain {
 
   private static Map<Direction, Consumer<Movement>> directionMap = buildDirectionMap();
 
   private Entity entity;
-
-  public RandomBrain(Entity entity) {
-    this.entity = entity;
-  }
 
   private static Map<Direction, Consumer<Movement>> buildDirectionMap() {
     Map<Direction, Consumer<Movement>> directionMap = Maps.newConcurrentMap();

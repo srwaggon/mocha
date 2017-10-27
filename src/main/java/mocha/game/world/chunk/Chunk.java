@@ -41,6 +41,10 @@ public class Chunk {
   }
 
   public Optional<Tile> getTileAt(Location location) {
-    return getTileAt(location.getXAsInt(), location.getYAsInt());
+    // TODO: Test
+    int x = (Chunk.getWidth() + location.getXAsInt() % Chunk.getWidth()) % Chunk.getWidth();
+    int y = (Chunk.getHeight() + location.getYAsInt() % Chunk.getHeight()) % Chunk.getHeight();
+    Location locationInChunk = new Location(x, y);
+    return getTileAt(locationInChunk.getXAsInt(), locationInChunk.getYAsInt());
   }
 }

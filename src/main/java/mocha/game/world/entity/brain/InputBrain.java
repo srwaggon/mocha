@@ -1,33 +1,43 @@
 package mocha.game.world.entity.brain;
 
+import com.google.common.eventbus.EventBus;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import mocha.game.InputKey;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.movement.Movement;
 
+@Builder
+@AllArgsConstructor
 public class InputBrain implements Brain {
 
   private Entity entity;
-
-  public InputBrain(Entity entity) {
-    this.entity = entity;
-  }
+  private EventBus eventBus;
 
   public void tick(long now) {
-    Movement movement = entity.getMovement();
+    move();
+    pickUpItems();
+  }
+
+  private void move() {
     if (InputKey.UP.isDown()) {
-      movement.up();
+      entity.getMovement().up();
     }
-
     if (InputKey.DOWN.isDown()) {
-      movement.down();
+      entity.getMovement().down();
     }
-
     if (InputKey.LEFT.isDown()) {
-      movement.left();
+      entity.getMovement().left();
     }
-
     if (InputKey.RIGHT.isDown()) {
-      movement.right();
+      entity.getMovement().right();
     }
   }
+
+  private void pickUpItems() {
+    if (InputKey.PICKUP.isDown()) {
+      eventBus.post(new PickUpItemEvent(entity));
+    }
+  }
+
 }

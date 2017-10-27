@@ -1,5 +1,7 @@
 package mocha.game.world.entity.brain;
 
+import com.google.common.eventbus.EventBus;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,13 +29,19 @@ public class InputBrainTest {
   @Mock
   private Movement movement;
 
+  @Mock
+  private EventBus eventBus;
+
   private long now = 0L;
 
   @Before
   public void setUp() throws Exception {
     when(entity.getMovement()).thenReturn(movement);
 
-    testObject = new InputBrain(entity);
+    testObject = InputBrain.builder()
+        .eventBus(eventBus)
+        .entity(entity)
+        .build();
 
     resetInput();
   }

@@ -4,7 +4,8 @@ Mocha is currently a tile based game template, with simple hitbox collision.
 
 # Backlog
 ## Bugs
-No currently known bugs.
+1. The player's sprite is not centered on the screen. It is in the SE quadrant of the center.
+1. The player's sprite is not centered on its entity's hitbox. The right and bottom sides overhang by any difference in size.
 
 ## Stories / Epics
 These represent units of work **to be done.**
@@ -18,6 +19,7 @@ These represent units of work **to be done.**
 1. A player can open their inventory and view its contents.
 
 ### World
+1. Tiles have inventory instead of items.
 1. Bushes exist in the world.
 1. Bushes disappear when struck by a sword.
 1. Stones disappear when struck by a pickaxe.

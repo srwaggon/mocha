@@ -12,9 +12,10 @@ import java.util.List;
 import mocha.game.rule.BrainRule;
 import mocha.game.rule.GameRule;
 import mocha.game.rule.MovementRule;
+import mocha.game.rule.PickUpItemRule;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
-import mocha.game.world.entity.brain.InputBrain;
+import mocha.game.world.entity.brain.BrainFactory;
 
 @Configuration
 public class MochaConfig {
@@ -26,9 +27,9 @@ public class MochaConfig {
 
   @Bean
   @Qualifier("player")
-  public Entity getPlayer(EntityFactory entityFactory) {
+  public Entity getPlayer(EntityFactory entityFactory, BrainFactory brainFactory) {
     Entity player = entityFactory.createRandom();
-    player.setBrain(new InputBrain(player));
+    player.setBrain(brainFactory.newInputBrain(player));
     return player;
   }
 
@@ -46,8 +47,11 @@ public class MochaConfig {
   }
 
   @Bean
-  public List<GameRule> getRules() {
-    return Lists.newArrayList(new BrainRule(), new MovementRule());
+
+  public List<GameRule> getRules(EventBus eventBus) {
+    PickUpItemRule pickUpItemRule = new PickUpItemRule();
+    eventBus.register(pickUpItemRule);
+    return Lists.newArrayList(new BrainRule(), new MovementRule(), pickUpItemRule);
   }
 
 }

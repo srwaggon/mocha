@@ -8,7 +8,9 @@ public enum InputKey {
   LEFT,
   RIGHT,
   UP,
-  DOWN;
+  DOWN,
+  PICKUP
+  ;
 
   private boolean isDown;
   private boolean pressed;
