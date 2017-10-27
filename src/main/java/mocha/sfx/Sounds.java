@@ -1,9 +1,9 @@
 package mocha.sfx;
 
 public class Sounds {
-  public static final Sound BUZZ = new Sound("BUZZ.wav");
+  public static final Sound BUZZ = new Sound("BUZZ.WAV");
   public static final Sound COIN = new Sound("coin.wav");
-  public static final Sound ENEMY_DIE = new Sound("La_Enemy_Die.wav");
+  public static final Sound ENEMY_DIE = new Sound("LA_Enemy_Die.wav");
   public static final Sound HURT = new Sound("LA_Enemy_Hit.wav");
   public static final Sound ITEM = new Sound("item.wav");
   public static final Sound JUMP = new Sound("LA_Link_Jump.wav");

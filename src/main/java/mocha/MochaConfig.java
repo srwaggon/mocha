@@ -38,7 +38,7 @@ public class MochaConfig {
   public List<Entity> getEntities(EntityFactory entityFactory, @Qualifier("player") Entity player) {
     List<Entity> entities = Lists.newArrayList();
     entities.add(player);
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 1; i++) {
       entities.add(entityFactory.createRandom());
       entities.add(entityFactory.createRandomSlider());
       entities.add(entityFactory.createRandomAccelerating());
