@@ -6,14 +6,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
 @Component
-public class SpriteSheet {
+class SpriteSheet {
 
   private final Image sourceImage = new Image("sprites.png");
-  public final int spriteSize = 16;
+  private final int spriteSize = 16;
 
-  private final int PURE_BLACK = -16777216;
-
-  public void drawSprite(int spriteIndex, int canvasX, int canvasY, double scale, WritableImage destinationImage) {
+  void drawSprite(int spriteIndex, int canvasX, int canvasY, double scale, WritableImage destinationImage) {
     int spritesPerRow = (int) (sourceImage.getWidth() / spriteSize);
     int spriteX = spriteSize * (spriteIndex % spritesPerRow);
     int spriteRow = spriteIndex / spritesPerRow;
@@ -32,12 +30,15 @@ public class SpriteSheet {
         }
 
         int argb = sourceImage.getPixelReader().getArgb((int) spriteSheetX, (int) spriteSheetY);
-        if (argb == PURE_BLACK) {
-          continue;
+        if (!isPixelTransparent(argb)) {
+          destinationImage.getPixelWriter().setArgb(canvasX + x, canvasY + y, argb);
         }
-        destinationImage.getPixelWriter().setArgb(canvasX + x, canvasY + y, argb);
       }
     }
+  }
+
+  private boolean isPixelTransparent(int argb) {
+    return argb >> 24 == 0;
   }
 
   private boolean isWithinRectangle(double x, double y, double width, double height) {

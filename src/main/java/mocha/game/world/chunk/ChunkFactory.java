@@ -57,7 +57,7 @@ public class ChunkFactory {
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < columns; x++) {
         TileType randomTileType = x == y ? TileType.DIRT : TileType.random();
-        TileItem tileItem = !randomTileType.isBlocking() && (int) (Math.random() * 8) == 0 ? tileItemFactory.newStone() : null;
+        TileItem tileItem = !randomTileType.isBlocking() && (int) (Math.random() * 8) == 0 ? tileItemFactory.newFood() : null;
         tiles[y][x] = Tile.builder()
             .tileType(randomTileType)
             .tileItem(tileItem)
