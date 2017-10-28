@@ -1,4 +1,4 @@
-package mocha.game;
+package mocha.gfx;
 
 import org.springframework.stereotype.Component;
 
@@ -9,14 +9,11 @@ import java.util.stream.IntStream;
 
 import javax.inject.Inject;
 
+import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityView;
 import mocha.game.world.tile.item.TileItem;
-import mocha.gfx.Drawable;
-import mocha.gfx.MochaCanvas;
-import mocha.gfx.TileSpriteSelector;
 
 @Component
 public class GameView implements Drawable {

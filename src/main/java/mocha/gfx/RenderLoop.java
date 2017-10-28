@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import javafx.animation.AnimationTimer;
 import lombok.extern.slf4j.Slf4j;
-import mocha.game.GameView;
 
 @Component
 @Slf4j

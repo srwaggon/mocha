@@ -1,7 +1,6 @@
-package mocha.game.world.entity;
+package mocha.gfx;
 
-import mocha.gfx.Drawable;
-import mocha.gfx.MochaCanvas;
+import mocha.game.world.entity.Entity;
 
 public class EntityView implements Drawable {
 
