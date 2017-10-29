@@ -21,14 +21,14 @@ import mocha.gfx.view.ChunkView;
 public class BackgroundLayer extends Group {
 
   private final Game game;
-  private final SpriteSheet spriteSheet;
+  private SpriteSheetFactory spriteSheetFactory;
   private TileSpriteSelector tileSpriteSelector;
   private Map<Location, ChunkView> chunkViews = Maps.newConcurrentMap();
 
   @Inject
   public BackgroundLayer(Game game, SpriteSheetFactory spriteSheetFactory, TileSpriteSelector tileSpriteSelector) {
     this.game = game;
-    spriteSheet = spriteSheetFactory.newSpriteSheet();
+    this.spriteSheetFactory = spriteSheetFactory;
     this.tileSpriteSelector = tileSpriteSelector;
   }
 
@@ -70,7 +70,12 @@ public class BackgroundLayer extends Group {
     if (chunkViews.containsKey(chunkIndex)) {
       return chunkViews.get(chunkIndex);
     }
-    ChunkView chunkView = new ChunkView(chunk, game, spriteSheet, tileSpriteSelector);
+    SpriteSheet spriteSheet = spriteSheetFactory.newSpriteSheet();
+    SpriteSheet dirtTiles = spriteSheetFactory.newDirtTiles();
+    SpriteSheet grassTiles = spriteSheetFactory.newGrassTiles();
+    SpriteSheet waterTiles = spriteSheetFactory.newWaterTiles();
+    SpriteSheet stoneTiles = spriteSheetFactory.newStoneTiles();
+    ChunkView chunkView = new ChunkView(chunk, game, spriteSheet, dirtTiles, grassTiles, waterTiles, stoneTiles, tileSpriteSelector);
     chunkViews.put(chunkIndex, chunkView);
     getChildren().add(chunkView);
     return chunkView;

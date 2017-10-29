@@ -11,8 +11,8 @@ public class TileSpriteSelector {
     TileType type = chunk.getTile(x, y);
 
     return isConnectedTileSprite(type)
-        ? type.getSprite() + getSpriteOffset(chunk, x, y, type)
-        : type.getSprite();
+        ? getSpriteOffset(chunk, x, y, type)
+        : 0;
   }
 
   private boolean isConnectedTileSprite(TileType type) {

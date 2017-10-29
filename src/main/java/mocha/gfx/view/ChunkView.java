@@ -5,22 +5,30 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import mocha.game.Game;
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.tile.item.TileItem;
+import mocha.game.world.tile.TileType;
 import mocha.gfx.TileSpriteSelector;
 import mocha.gfx.sprite.SpriteSheet;
 
 public class ChunkView extends Group {
 
-  private final Chunk chunk;
-  private final Game game;
-  private final SpriteSheet spriteSheet;
-  private final TileSpriteSelector tileSpriteSelector;
-  private final Canvas tileCanvas;
+  private Chunk chunk;
+  private Game game;
+  private SpriteSheet spriteSheet;
+  private SpriteSheet dirtTiles;
+  private SpriteSheet grassTiles;
+  private SpriteSheet waterTiles;
+  private SpriteSheet stoneTiles;
+  private TileSpriteSelector tileSpriteSelector;
+  private Canvas tileCanvas;
 
-  public ChunkView(Chunk chunk, Game game, SpriteSheet spriteSheet, TileSpriteSelector tileSpriteSelector) {
+  public ChunkView(Chunk chunk, Game game, SpriteSheet spriteSheet, SpriteSheet dirtTiles, SpriteSheet grassTiles, SpriteSheet waterTiles, SpriteSheet stoneTiles, TileSpriteSelector tileSpriteSelector) {
     this.chunk = chunk;
     this.game = game;
+    this.dirtTiles = dirtTiles;
     this.spriteSheet = spriteSheet;
+    this.grassTiles = grassTiles;
+    this.waterTiles = waterTiles;
+    this.stoneTiles = stoneTiles;
     this.tileSpriteSelector = tileSpriteSelector;
 
     tileCanvas = new Canvas();
@@ -70,7 +78,20 @@ public class ChunkView extends Group {
   }
 
   private Image getSprite(int xIndex, int yIndex) {
+    TileType tile = chunk.getTile(xIndex, yIndex);
     int spriteId = tileSpriteSelector.selectSprite(chunk, xIndex, yIndex);
+    if (tile == TileType.DIRT) {
+      return dirtTiles.getSprite(spriteId, getScale());
+    }
+    if (tile == TileType.GRASS) {
+      return grassTiles.getSprite(spriteId, getScale());
+    }
+    if (tile == TileType.WATER) {
+      return waterTiles.getSprite(spriteId, getScale());
+    }
+    if (tile == TileType.STONE) {
+      return stoneTiles.getSprite(spriteId, getScale());
+    }
     return spriteSheet.getSprite(spriteId, getScale());
   }
 

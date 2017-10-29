@@ -8,8 +8,24 @@ import javafx.scene.image.Image;
 public class SpriteSheetFactory {
 
   public SpriteSheet newSpriteSheet() {
-    Image image = new Image("sprites.png");
-    int spriteSize = 16;
-    return new CachingSpriteSheet(image, spriteSize);
+    return new CachingSpriteSheet(new Image("gfx/sprites.png"), 16);
   }
+
+  public SpriteSheet newDirtTiles() {
+    return new CachingSpriteSheet(new Image("gfx/tiles/dirt.png"), 16);
+  }
+
+  public SpriteSheet newGrassTiles() {
+    return new CachingSpriteSheet(new Image("gfx/tiles/grass.png"), 16);
+  }
+
+  public SpriteSheet newWaterTiles() {
+    return new CachingSpriteSheet(new Image("gfx/tiles/water.png"), 16);
+  }
+
+  public SpriteSheet newStoneTiles() {
+    return new CachingSpriteSheet(new Image("gfx/tiles/stone.png"), 16);
+  }
+
+
 }
