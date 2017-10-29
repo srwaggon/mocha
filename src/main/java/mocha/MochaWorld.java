@@ -27,8 +27,8 @@ public class MochaWorld extends World {
 
   private Map<Location, Chunk> createchunks() {
     Map<Location, Chunk> chunks = Maps.newHashMap();
-    for (int y = -1; y < 1; y++) {
-      for (int x = -1; x < 1; x++) {
+    for (int y = -16; y < 16; y++) {
+      for (int x = -16; x < 16; x++) {
         Location location = new Location(x, y);
         Chunk chunk = chunkFactory.newRandomDefault();
         chunks.put(location, chunk);

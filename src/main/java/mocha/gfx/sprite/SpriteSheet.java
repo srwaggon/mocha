@@ -1,17 +1,27 @@
-package mocha.gfx;
-
-import org.springframework.stereotype.Component;
+package mocha.gfx.sprite;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
-@Component
-class SpriteSheet {
+public class SpriteSheet {
 
-  private final Image sourceImage = new Image("sprites.png");
-  private final int spriteSize = 16;
+  private Image sourceImage;
+  private int spriteSize;
 
-  void drawSprite(int spriteIndex, int canvasX, int canvasY, double scale, WritableImage destinationImage) {
+  public SpriteSheet(Image sourceImage, int spriteSize) {
+    this.sourceImage = sourceImage;
+    this.spriteSize = spriteSize;
+  }
+
+  public Image getSprite(int spriteIndex, double scale) {
+    int spriteWidth = (int) (this.spriteSize * scale);
+    int spriteHeight = (int) (spriteSize * scale);
+    WritableImage spriteImage = new WritableImage(spriteWidth, spriteHeight);
+    drawSprite(spriteIndex, 0, 0, scale, spriteImage);
+    return spriteImage;
+  }
+
+  public void drawSprite(int spriteIndex, int canvasX, int canvasY, double scale, WritableImage destinationImage) {
     int spritesPerRow = (int) (sourceImage.getWidth() / spriteSize);
     int spriteX = spriteSize * (spriteIndex % spritesPerRow);
     int spriteRow = spriteIndex / spritesPerRow;

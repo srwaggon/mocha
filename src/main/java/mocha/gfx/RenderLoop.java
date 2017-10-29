@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import javafx.animation.AnimationTimer;
 import lombok.extern.slf4j.Slf4j;
+import mocha.gfx.view.GameView;
 
 @Component
 @Slf4j
@@ -17,8 +18,6 @@ public class RenderLoop extends AnimationTimer {
 
   @Inject
   private GameView gameView;
-  @Inject
-  private MochaCanvas mochaCanvas;
 
   private long last = 0L;
   private int renders;
@@ -34,9 +33,8 @@ public class RenderLoop extends AnimationTimer {
     if (!shouldRender(now)) {
       return;
     }
-    gameView.draw(mochaCanvas, 0, 0);
 
-    mochaCanvas.render();
+    gameView.render();
 
     last = now;
   }

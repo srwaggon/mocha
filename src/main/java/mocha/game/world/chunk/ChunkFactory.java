@@ -57,7 +57,7 @@ public class ChunkFactory {
     for (int y = 0; y < rows; y++) {
       for (int x = 0; x < columns; x++) {
         TileType randomTileType = x == y ? TileType.DIRT : TileType.random();
-        TileItem tileItem = !randomTileType.isBlocking() && (int) (Math.random() * 8) == 0 ? tileItemFactory.newFood() : null;
+        TileItem tileItem = canPlaceStone(randomTileType) && (int) (Math.random() * 8) == 0 ? tileItemFactory.newStone() : null;
         tiles[y][x] = Tile.builder()
             .tileType(randomTileType)
             .tileItem(tileItem)
@@ -65,6 +65,10 @@ public class ChunkFactory {
       }
     }
     return tiles;
+  }
+
+  private boolean canPlaceStone(TileType randomTileType) {
+    return randomTileType == TileType.DIRT || randomTileType == TileType.GRASS;
   }
 
   public Chunk read(ChunkDescription chunkDescription) {

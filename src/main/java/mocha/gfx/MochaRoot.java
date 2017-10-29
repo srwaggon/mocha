@@ -2,20 +2,23 @@ package mocha.gfx;
 
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
 
 @Component
 public class MochaRoot extends Group {
 
-  private final Canvas canvas;
+  @Inject
+  private BackgroundLayer backgroundLayer;
 
   @Inject
-  public MochaRoot(Canvas canvas, Node... children) {
-    super(children);
-    this.canvas = canvas;
+  private SpriteLayer spriteLayer;
+
+  @PostConstruct
+  public void init() {
+    this.getChildren().add(backgroundLayer);
+    this.getChildren().add(spriteLayer);
   }
 }
