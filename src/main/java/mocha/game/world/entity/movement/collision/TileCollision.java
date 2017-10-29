@@ -7,7 +7,7 @@ import lombok.Builder;
 import mocha.game.world.Location;
 import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.tile.Tile;
+import mocha.game.world.tile.TileType;
 
 @Builder
 @AllArgsConstructor
@@ -24,7 +24,7 @@ public class TileCollision extends SimpleCollision {
     int x = (Chunk.getWidth() + location.getXAsInt() % Chunk.getWidth()) % Chunk.getWidth();
     int y = (Chunk.getHeight() + location.getYAsInt() % Chunk.getHeight()) % Chunk.getHeight();
     Location locationInChunk = new Location(x, y);
-    Optional<Tile> tileMaybe = chunkMaybe.get().getTileAt(locationInChunk);
-    return tileMaybe.map(tile -> tile.getTileType().isBlocking()).orElse(false);
+    Optional<TileType> tileMaybe = chunkMaybe.get().getTileAt(locationInChunk);
+    return tileMaybe.map(TileType::isBlocking).orElse(false);
   }
 }

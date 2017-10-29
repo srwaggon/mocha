@@ -10,13 +10,11 @@ public class EntityView extends Canvas {
   private Entity entity;
   private Entity player;
   private SpriteSheet spriteSheet;
-  private double scale;
 
-  public EntityView(Entity entity, Entity player, SpriteSheet spriteSheet, double scale) {
+  public EntityView(Entity entity, Entity player, SpriteSheet spriteSheet) {
     this.entity = entity;
     this.player = player;
     this.spriteSheet = spriteSheet;
-    this.scale = scale;
     this.setOnMouseClicked(event -> System.out.println(this.entity + " clicked!"));
   }
 
@@ -25,7 +23,7 @@ public class EntityView extends Canvas {
     this.setLayoutY(getYOffset());
     this.setWidth(32);
     this.setHeight(32);
-    Image sprite = spriteSheet.getSprite(entity.getSpriteId(), scale);
+    Image sprite = spriteSheet.getSprite(entity.getSpriteId(), entity.getScale());
     this.getGraphicsContext2D().drawImage(sprite, 0, 0);
   }
 

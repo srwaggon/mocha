@@ -39,7 +39,7 @@ public class SpriteLayer extends Group {
     this.entityViews = game.getEntities().stream()
         .filter(entity -> !entity.equals(game.getPlayer()))
         .sorted(Comparator.comparingInt(entity -> entity.getMovement().getLocation().getYAsInt()))
-        .map(entity -> new EntityView(entity, game.getPlayer(), spriteSheet, 2.0))
+        .map(entity -> new EntityView(entity, game.getPlayer(), spriteSheet))
         .collect(Collectors.toList());
     getChildren().addAll(entityViews);
   }

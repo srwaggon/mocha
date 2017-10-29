@@ -6,17 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import mocha.game.world.Location;
-import mocha.game.world.tile.Tile;
+import mocha.game.world.tile.TileType;
 
 @Data
 @Builder
 @AllArgsConstructor
 public class Chunk {
 
-  private Tile[][] tiles;
+  private TileType[][] tiles;
   public final static int SIZE = 16;
 
-  public Tile getTile(int x, int y) {
+  public TileType getTile(int x, int y) {
     return tiles[y][x];
   }
 
@@ -25,22 +25,22 @@ public class Chunk {
   }
 
   public static int getWidth() {
-    return SIZE * Tile.SIZE;
+    return SIZE * TileType.SIZE;
   }
 
   public static int getHeight() {
-    return SIZE * Tile.SIZE;
+    return SIZE * TileType.SIZE;
   }
 
-  public Optional<Tile> getTileAt(int x, int y) {
-    int xIndex = x / Tile.SIZE;
-    int yIndex = y / Tile.SIZE;
+  public Optional<TileType> getTileAt(int x, int y) {
+    int xIndex = x / TileType.SIZE;
+    int yIndex = y / TileType.SIZE;
     return inBounds(xIndex) && inBounds(yIndex)
         ? Optional.of(getTile(xIndex, yIndex))
         : Optional.empty();
   }
 
-  public Optional<Tile> getTileAt(Location location) {
+  public Optional<TileType> getTileAt(Location location) {
     // TODO: Test
     int x = (Chunk.getWidth() + location.getXAsInt() % Chunk.getWidth()) % Chunk.getWidth();
     int y = (Chunk.getHeight() + location.getYAsInt() % Chunk.getHeight()) % Chunk.getHeight();

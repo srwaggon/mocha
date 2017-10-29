@@ -61,21 +61,12 @@ public class ChunkView extends Group {
     for (int tileY = 0; tileY < Chunk.SIZE; tileY++) {
       for (int tileX = 0; tileX < Chunk.SIZE; tileX++) {
         drawTile(tileX, tileY);
-        drawTileItem(tileX, tileY);
       }
     }
   }
 
   private void drawTile(int xIndex, int yIndex) {
     tileCanvas.getGraphicsContext2D().drawImage(getSprite(xIndex, yIndex), getSpriteX(xIndex), getSpriteY(yIndex));
-  }
-
-  private void drawTileItem(int xIndex, int yIndex) {
-    TileItem tileItem = chunk.getTile(xIndex, yIndex).getTileItem();
-    if (tileItem != null) {
-      Image tileItemSprite = spriteSheet.getSprite(tileItem.getSpriteId(), getScale());
-      tileCanvas.getGraphicsContext2D().drawImage(tileItemSprite, getSpriteX(xIndex), getSpriteY(yIndex));
-    }
   }
 
   private Image getSprite(int xIndex, int yIndex) {

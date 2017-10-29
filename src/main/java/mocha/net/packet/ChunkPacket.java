@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.tile.Tile;
+import mocha.game.world.tile.TileType;
 
 public class ChunkPacket extends AbstractPacket implements Packet {
 
@@ -21,8 +21,8 @@ public class ChunkPacket extends AbstractPacket implements Packet {
 
   private String buildTileData(Chunk chunk) {
     StringBuilder tilesBuilder = new StringBuilder();
-    Consumer<Tile[]> collectRow = row -> Arrays.stream(row)
-        .map(tile -> tile.getTileType().getSymbol())
+    Consumer<TileType[]> collectRow = row -> Arrays.stream(row)
+        .map(TileType::getSymbol)
         .forEach(tilesBuilder::append);
     Arrays.stream(chunk.getTiles()).forEach(collectRow);
     return tilesBuilder.toString();

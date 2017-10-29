@@ -18,9 +18,7 @@ public class TileFactory {
             typeByDescription.put(tileType.getSymbol(), tileType));
   }
 
-  public Tile newTile(String tileTypeSymbol) {
-    return Tile.builder()
-        .tileType(typeByDescription.get(tileTypeSymbol))
-        .build();
+  public TileType newTile(String tileTypeSymbol) {
+    return typeByDescription.get(tileTypeSymbol);
   }
 }

@@ -54,7 +54,7 @@ public class ChunkFactoryTest {
 
     for (int i = 0; i < Chunk.SIZE; i++) {
       for (int j = 0; j < Chunk.SIZE; j++) {
-        assertThat(readChunk.getTile(j, i).getTileType()).isEqualTo(TileType.GRID);
+        assertThat(readChunk.getTile(j, i)).isEqualTo(TileType.GRID);
       }
     }
   }
@@ -78,10 +78,10 @@ public class ChunkFactoryTest {
 
     Chunk actual = testObject.read(chunkDescription);
 
-    assertThat(actual.getTile(0, 0).getTileType()).isEqualTo(TileType.GRID);
-    assertThat(actual.getTile(1, 0).getTileType()).isEqualTo(TileType.DIRT);
-    assertThat(actual.getTile(2, 0).getTileType()).isEqualTo(TileType.STONE);
-    assertThat(actual.getTile(3, 0).getTileType()).isEqualTo(TileType.GRASS);
+    assertThat(actual.getTile(0, 0)).isEqualTo(TileType.GRID);
+    assertThat(actual.getTile(1, 0)).isEqualTo(TileType.DIRT);
+    assertThat(actual.getTile(2, 0)).isEqualTo(TileType.STONE);
+    assertThat(actual.getTile(3, 0)).isEqualTo(TileType.GRASS);
   }
 
 }

@@ -18,6 +18,8 @@ public enum TileType {
   WATER("~", WATER_BLUE, 192, false),
   ;
 
+  public static final int SIZE = 32;
+
   private String symbol;
   private Color color;
   private int spriteIndex;

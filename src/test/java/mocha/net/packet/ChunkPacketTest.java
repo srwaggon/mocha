@@ -5,9 +5,8 @@ import org.junit.Test;
 
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
-import mocha.game.world.tile.Tile;
 import mocha.game.world.tile.TileFactory;
-import mocha.game.world.tile.item.TileItemFactory;
+import mocha.game.world.tile.TileType;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,10 +19,9 @@ public class ChunkPacketTest {
   @Before
   public void setUp() {
     ChunkFactory chunkFactory = ChunkFactory.builder()
-        .tileItemFactory(new TileItemFactory())
         .tileFactory(new TileFactory())
         .build();
-    testChunk = chunkFactory.newRandomDefault();
+    testChunk = chunkFactory.newRandomDefault(0, 0);
 
     subject = new ChunkPacket(testChunk);
   }
@@ -60,9 +58,9 @@ public class ChunkPacketTest {
     int index = 4;
 
     StringBuilder tilesBuilder = new StringBuilder();
-    for (Tile[] row : testChunk.getTiles()) {
-      for (Tile tile : row) {
-        tilesBuilder.append(tile.getTileType().getSymbol());
+    for (TileType[] row : testChunk.getTiles()) {
+      for (TileType tile : row) {
+        tilesBuilder.append(tile.getSymbol());
       }
     }
 

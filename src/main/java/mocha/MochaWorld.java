@@ -22,15 +22,15 @@ public class MochaWorld extends World {
 
   @PostConstruct
   public void init() {
-    this.setChunks(createchunks());
+    this.setChunks(createChunks());
   }
 
-  private Map<Location, Chunk> createchunks() {
+  private Map<Location, Chunk> createChunks() {
     Map<Location, Chunk> chunks = Maps.newHashMap();
     for (int y = -16; y < 16; y++) {
       for (int x = -16; x < 16; x++) {
         Location location = new Location(x, y);
-        Chunk chunk = chunkFactory.newRandomDefault();
+        Chunk chunk = chunkFactory.newRandomDefault(x, y);
         chunks.put(location, chunk);
       }
     }
