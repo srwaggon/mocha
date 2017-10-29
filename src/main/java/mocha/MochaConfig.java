@@ -42,6 +42,7 @@ public class MochaConfig {
       entities.add(entityFactory.createRandomSlider());
       entities.add(entityFactory.createRandomAccelerating());
     }
+    entities.add(entityFactory.newPickaxe());
     return entities;
   }
 

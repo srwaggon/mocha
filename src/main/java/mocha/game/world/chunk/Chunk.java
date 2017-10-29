@@ -13,8 +13,9 @@ import mocha.game.world.tile.TileType;
 @AllArgsConstructor
 public class Chunk {
 
-  private TileType[][] tiles;
   public final static int SIZE = 16;
+
+  private TileType[][] tiles;
 
   public TileType getTile(int x, int y) {
     return tiles[y][x];
@@ -41,7 +42,6 @@ public class Chunk {
   }
 
   public Optional<TileType> getTileAt(Location location) {
-    // TODO: Test
     int x = (Chunk.getWidth() + location.getXAsInt() % Chunk.getWidth()) % Chunk.getWidth();
     int y = (Chunk.getHeight() + location.getYAsInt() % Chunk.getHeight()) % Chunk.getHeight();
     Location locationInChunk = new Location(x, y);

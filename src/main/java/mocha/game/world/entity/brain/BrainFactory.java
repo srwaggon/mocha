@@ -14,6 +14,10 @@ public class BrainFactory {
   @Inject
   private EventBus eventBus;
 
+  public SimpleBrain newSimpleBrain() {
+    return new SimpleBrain();
+  }
+
   public RandomBrain newRandomBrain(Entity entity) {
     return RandomBrain.builder()
         .entity(entity)

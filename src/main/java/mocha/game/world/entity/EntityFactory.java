@@ -1,7 +1,5 @@
 package mocha.game.world.entity;
 
-import com.google.common.eventbus.EventBus;
-
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -14,9 +12,6 @@ public class EntityFactory {
 
   @Inject
   private BrainFactory brainFactory;
-
-  @Inject
-  private EventBus eventBus;
 
   @Inject
   private MovementFactory movementFactory;
@@ -43,5 +38,9 @@ public class EntityFactory {
         .build();
     entity.setBrain(brainFactory.newRandomBrain(entity));
     return entity;
+  }
+
+  public Pickaxe newPickaxe() {
+    return new Pickaxe(movementFactory.newSimpleMovement(), brainFactory.newSimpleBrain());
   }
 }
