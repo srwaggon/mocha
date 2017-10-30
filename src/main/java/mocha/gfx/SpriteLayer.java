@@ -26,17 +26,12 @@ public class SpriteLayer extends Group {
   public SpriteLayer(Game game, SpriteSheetFactory spriteSheetFactory) {
     SpriteSheet spriteSheet = spriteSheetFactory.newSpriteSheet();
 
-    addTileItemViews();
     addEntityViews(game, spriteSheet);
     addPlayerView(game, spriteSheet);
   }
 
-  private void addTileItemViews() {
-
-  }
-
   private void addEntityViews(Game game, SpriteSheet spriteSheet) {
-    this.entityViews = game.getEntities().stream()
+    this.entityViews = game.getActiveEntities().stream()
         .filter(entity -> !entity.equals(game.getPlayer()))
         .sorted(Comparator.comparingInt(entity -> entity.getMovement().getLocation().getYAsInt()))
         .map(entity -> new EntityView(entity, game.getPlayer(), spriteSheet))

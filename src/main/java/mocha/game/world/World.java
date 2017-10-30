@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mocha.game.world.chunk.Chunk;
+import mocha.game.world.entity.Entity;
 
 @Data
 @Builder
@@ -25,5 +26,13 @@ public class World {
 
   public Optional<Chunk> getChunk(Location location) {
     return Optional.ofNullable(chunks.get(location));
+  }
+
+  public void add(Entity entity) {
+    Optional<Chunk> chunkMaybe = getChunkAt(entity.getMovement().getLocation());
+    if (!chunkMaybe.isPresent()) {
+      return;
+    }
+    chunkMaybe.get().add(entity);
   }
 }

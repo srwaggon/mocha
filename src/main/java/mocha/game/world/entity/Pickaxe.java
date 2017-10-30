@@ -5,7 +5,9 @@ import mocha.game.world.entity.movement.Movement;
 
 public class Pickaxe extends Entity {
   public Pickaxe(Movement movement, Brain brain) {
-    super(movement, brain);
+    super();
+    this.setMovement(movement);
+    this.setBrain(brain);
   }
 
   @Override

@@ -1,5 +1,7 @@
 package mocha.game.world.entity.movement;
 
+import com.google.common.eventbus.EventBus;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,21 +15,25 @@ public class VelocityMovement extends SimpleMovement {
   private double speed = 2.0;
   private double xVelocity;
   private double yVelocity;
+  private EventBus eventBus;
+  private Location nextLocation;
 
   @Builder
-  protected VelocityMovement(Location location, Collision collision, double speed, double xVelocity, double yVelocity) {
+  protected VelocityMovement(Location location, Collision collision, double speed, double xVelocity, double yVelocity, EventBus eventBus) {
     super(location, collision);
+    this.eventBus = eventBus;
     this.speed = speed;
     this.xVelocity = xVelocity;
     this.yVelocity = yVelocity;
+    nextLocation = location;
   }
 
   protected void applyXVelocity() {
-    location.addX(getXVelocity());
+    nextLocation = nextLocation.add(getXVelocity(), 0);
   }
 
   protected void applyYVelocity() {
-    location.addY(getYVelocity());
+    nextLocation = nextLocation.add(0, getYVelocity());
   }
 
   public void up() {
@@ -50,6 +56,7 @@ public class VelocityMovement extends SimpleMovement {
   public void tick(long now) {
     applyXVelocityIfNotColliding();
     applyYVelocityIfNotColliding();
+    eventBus.post(new MovementEvent(this, nextLocation));
     setXVelocity(0.0);
     setYVelocity(0.0);
   }

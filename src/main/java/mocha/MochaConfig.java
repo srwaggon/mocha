@@ -12,6 +12,8 @@ import java.util.List;
 import mocha.game.rule.BrainRule;
 import mocha.game.rule.GameRule;
 import mocha.game.rule.MovementRule;
+import mocha.game.rule.PickUpItemsRule;
+import mocha.game.rule.RemoveEntityRule;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.brain.BrainFactory;
@@ -33,22 +35,17 @@ public class MochaConfig {
   }
 
   @Bean
-  @Qualifier("entities")
-  public List<Entity> getEntities(EntityFactory entityFactory, @Qualifier("player") Entity player) {
-    List<Entity> entities = Lists.newArrayList();
-    entities.add(player);
-    for (int i = 0; i < 1; i++) {
-      entities.add(entityFactory.createRandom());
-      entities.add(entityFactory.createRandomSlider());
-      entities.add(entityFactory.createRandomAccelerating());
-    }
-    entities.add(entityFactory.newPickaxe());
-    return entities;
-  }
+  public List<GameRule> getRules(MochaWorld mochaWorld, EventBus eventBus) {
+    MovementRule movementRule = new MovementRule();
+    eventBus.register(movementRule);
 
-  @Bean
-  public List<GameRule> getRules() {
-    return Lists.newArrayList(new BrainRule(), new MovementRule());
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(mochaWorld, eventBus);
+    eventBus.register(pickUpItemsRule);
+
+    RemoveEntityRule removeEntityRule = new RemoveEntityRule(mochaWorld);
+    eventBus.register(removeEntityRule);
+
+    return Lists.newArrayList(new BrainRule(), movementRule, pickUpItemsRule, removeEntityRule);
   }
 
 }

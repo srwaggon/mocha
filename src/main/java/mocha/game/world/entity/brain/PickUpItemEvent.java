@@ -7,5 +7,5 @@ import mocha.game.world.entity.Entity;
 @Data
 @AllArgsConstructor
 public class PickUpItemEvent {
-  private Entity entity;
+  private Entity pickingUpEntity;
 }

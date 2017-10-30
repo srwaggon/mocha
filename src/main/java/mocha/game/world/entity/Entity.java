@@ -3,11 +3,13 @@ package mocha.game.world.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import mocha.game.world.entity.brain.Brain;
 import mocha.game.world.entity.movement.Movement;
 
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class Entity {
   private Movement movement;

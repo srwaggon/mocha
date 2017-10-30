@@ -35,7 +35,7 @@ public class InputBrain implements Brain {
   }
 
   private void pickUpItems() {
-    if (InputKey.PICKUP.isDown()) {
+    if (InputKey.PICKUP.isClicked()) {
       eventBus.post(new PickUpItemEvent(entity));
     }
   }

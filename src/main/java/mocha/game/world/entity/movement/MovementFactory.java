@@ -1,6 +1,7 @@
 package mocha.game.world.entity.movement;
 
 import com.google.common.collect.Lists;
+import com.google.common.eventbus.EventBus;
 
 import org.springframework.stereotype.Component;
 
@@ -17,10 +18,14 @@ public class MovementFactory {
   @Inject
   private CollisionFactory collisionFactory;
 
+  @Inject
+  private EventBus eventBus;
+
   public VelocityMovement newVelocityMovement() {
     return VelocityMovement.builder()
         .location(new Location())
         .collision(collisionFactory.newHitBoxCollision())
+        .eventBus(eventBus)
         .speed(2)
         .build();
   }
@@ -36,6 +41,7 @@ public class MovementFactory {
     return SlidingMovement.builder()
         .location(new Location())
         .collision(collisionFactory.newHitBoxCollision())
+        .eventBus(eventBus)
         .distance(TileType.SIZE)
         .duration(30)
         .direction(Direction.EAST)
@@ -47,6 +53,7 @@ public class MovementFactory {
     return AccelerationMovement.builder()
         .location(new Location())
         .collision(collisionFactory.newHitBoxCollision())
+        .eventBus(eventBus)
         .accelerationRate(.1)
         .maxXVelocity(2.0)
         .maxYVelocity(2.0)

@@ -1,5 +1,7 @@
 package mocha.game.world.entity.movement;
 
+import com.google.common.eventbus.EventBus;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,8 +19,8 @@ public class AccelerationMovement extends VelocityMovement {
   private double xAcceleration;
 
   @Builder
-  protected AccelerationMovement(Location location, Collision collision, double speed, double xVelocity, double yVelocity, double accelerationRate, double maxXVelocity, double maxYVelocity, double yAcceleration, double xAcceleration) {
-    super(location, collision, speed, xVelocity, yVelocity);
+  protected AccelerationMovement(Location location, Collision collision, double speed, double xVelocity, double yVelocity, double accelerationRate, double maxXVelocity, double maxYVelocity, double yAcceleration, double xAcceleration, EventBus eventBus) {
+    super(location, collision, speed, xVelocity, yVelocity, eventBus);
     this.accelerationRate = accelerationRate;
     this.maxXVelocity = maxXVelocity;
     this.maxYVelocity = maxYVelocity;
