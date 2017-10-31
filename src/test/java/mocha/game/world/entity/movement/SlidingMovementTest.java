@@ -1,6 +1,7 @@
 package mocha.game.world.entity.movement;
 
 import com.google.common.collect.Lists;
+import com.google.common.eventbus.EventBus;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,12 +19,15 @@ public class SlidingMovementTest {
   private int duration = 15;
   private long now = 0L;
 
+  private EventBus eventBus = new EventBus();
+
   @Before
   public void setUp() {
     testObject = SlidingMovement.builder()
         .location(new Location())
-        .distance(distance)
         .collision(new SimpleCollision())
+        .eventBus(eventBus)
+        .distance(distance)
         .duration(duration)
         .turns(Lists.newLinkedList())
         .build();

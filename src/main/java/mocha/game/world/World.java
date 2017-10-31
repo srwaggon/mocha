@@ -29,10 +29,6 @@ public class World {
   }
 
   public void add(Entity entity) {
-    Optional<Chunk> chunkMaybe = getChunkAt(entity.getMovement().getLocation());
-    if (!chunkMaybe.isPresent()) {
-      return;
-    }
-    chunkMaybe.get().add(entity);
+    getChunkAt(entity.getMovement().getLocation()).ifPresent(chunk -> chunk.add(entity));
   }
 }

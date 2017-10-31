@@ -1,5 +1,7 @@
 package mocha.game.world.entity.movement;
 
+import com.google.common.eventbus.EventBus;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,12 +16,15 @@ public class AccelerationMovementTest {
   private AccelerationMovement testObject;
   long now = 0L;
 
+  private EventBus eventBus = new EventBus();
+
   @Before
   public void setUp() throws Exception {
     double accelerationRate = 2.0D;
     testObject = AccelerationMovement.builder()
         .collision(new SimpleCollision())
         .location(new Location())
+        .eventBus(eventBus)
         .accelerationRate(accelerationRate)
         .build();
   }

@@ -3,6 +3,7 @@ package mocha.game.rule;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 
+import java.util.List;
 import java.util.Queue;
 
 import mocha.game.Game;
@@ -15,19 +16,28 @@ public class MovementRule implements GameRule {
 
   @Override
   public void apply(Game game) {
-    while(!movementEvents.isEmpty()) {
-      move(movementEvents.poll());
-    }
 
-    game.getActiveEntities().stream()
+    List<Entity> activeEntities = game.getActiveEntities();
+
+    activeEntities.stream()
         .filter(entity -> !entity.equals(game.getPlayer()))
         .map(Entity::getMovement)
         .forEach(movement -> movement.tick(0L));
     game.getPlayer().getMovement().tick(0L);
-  }
 
-  private void move(MovementEvent movementEvent) {
-    movementEvent.getMovement().setLocation(movementEvent.getLocation());
+
+    activeEntities.forEach(entity ->
+        game.getWorld().getChunkAt(entity.getMovement().getLocation())
+            .ifPresent(chunk -> chunk.remove(entity)));
+
+    while (!movementEvents.isEmpty()) {
+      MovementEvent movementEvent = movementEvents.poll();
+      movementEvent.getMovement().setLocation(movementEvent.getLocation());
+    }
+
+    activeEntities.forEach(entity ->
+        game.getWorld().getChunkAt(entity.getMovement().getLocation())
+            .ifPresent(chunk -> chunk.add(entity)));
   }
 
   @Subscribe

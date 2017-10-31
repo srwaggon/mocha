@@ -1,5 +1,7 @@
 package mocha.game.world.entity.movement;
 
+import com.google.common.eventbus.EventBus;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,10 +17,13 @@ public class VelocityMovementTest {
 
   private long now = 0L;
 
+  private EventBus eventBus = new EventBus();
+
   @Before
   public void setUp() throws Exception {
     Collision collision = new SimpleCollision();
     testObject = VelocityMovement.builder()
+        .eventBus(eventBus)
         .location(new Location())
         .speed(speed)
         .collision(collision)

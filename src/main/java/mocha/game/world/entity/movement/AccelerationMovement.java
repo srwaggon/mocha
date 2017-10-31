@@ -58,22 +58,23 @@ public class AccelerationMovement extends VelocityMovement {
 
   @Override
   public void tick(long now) {
-    this.applyXAcceleration();
-    this.applyYAcceleration();
+    Location afterXAcceleration = this.applyXAcceleration(this.getLocation());
+    Location afterYAcceleration = this.applyYAcceleration(afterXAcceleration);
+    postNextLocation(afterYAcceleration);
     this.setXAcceleration(0.0);
     this.setYAcceleration(0.0);
   }
 
-  private void applyXAcceleration() {
+  private Location applyXAcceleration(Location location) {
     double futureXVelocity = this.getXVelocity() + xAcceleration;
     this.addXVelocity(this.getMaxXVelocity() != 0.0 && this.getMaxXVelocity() < Math.abs(futureXVelocity) ? 0.0 : xAcceleration);
-    this.applyXVelocityIfNotColliding();
+    return this.applyXVelocityIfNotColliding(location);
   }
 
-  private void applyYAcceleration() {
+  private Location applyYAcceleration(Location location) {
     double futureYVelocity = this.getYVelocity() + yAcceleration;
     this.addYVelocity(this.getMaxYVelocity() != 0.0 && this.getMaxYVelocity() < Math.abs(futureYVelocity) ? 0.0 : yAcceleration);
-    this.applyYVelocityIfNotColliding();
+    return this.applyYVelocityIfNotColliding(location);
   }
 
   public static class AccelerationMovementBuilder extends VelocityMovementBuilder {

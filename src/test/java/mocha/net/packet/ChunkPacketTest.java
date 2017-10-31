@@ -58,10 +58,8 @@ public class ChunkPacketTest {
     int index = 4;
 
     StringBuilder tilesBuilder = new StringBuilder();
-    for (TileType[] row : testChunk.getTiles()) {
-      for (TileType tile : row) {
-        tilesBuilder.append(tile.getSymbol());
-      }
+    for (TileType tile : testChunk.getTiles()) {
+      tilesBuilder.append(tile.getSymbol());
     }
 
     assertEquals(tilesBuilder.toString(), getPhrase(index));

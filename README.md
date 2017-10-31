@@ -4,9 +4,6 @@ Mocha is currently a tile based game template, with simple hitbox collision.
 
 # Backlog
 ## Bugs
-1. Removed entities are still rendered
-1. Items appear to be able to be picked up multiple times?
-1. Entities do not update which tile they are on.
 1. The player's sprite is not centered on the screen. It is in the SE quadrant of the center.
 1. The player's sprite is not centered on its pickingUpEntity's hitbox. The right and bottom sides overhang by any difference in size.
 
@@ -14,15 +11,15 @@ Mocha is currently a tile based game template, with simple hitbox collision.
 These represent units of work **to be done.**
 
 ### Inventory
+[x] Pickaxe sprite.
+[x] Pickaxes exist in the world.
+[x] Swords / Pickaxes can be picked up and disappear from the world when picked up.
 1. Swords exist in the world.
-1. Pickaxe sprite.
-1. Pickaxes exist in the world.
-1. Swords / Pickaxes can be picked up and disappear from the world when picked up.
 1. Swords / Pickaxes can be dropped by the player and appear in the world when dropped.
 1. A player can open their inventory and view its contents.
 
 ### World
-1. Tiles have inventory instead of items.
+[x] Tiles have inventory instead of items.
 1. Bushes exist in the world.
 1. Bushes disappear when struck by a sword.
 1. Stones disappear when struck by a pickaxe.
@@ -39,6 +36,7 @@ These represent units of work **to be done.**
 1. Spike: Can I draw directly on the canvas instead of using a writable image?
 
 ### Sounds
+[x] A sound is played when an item is picked up.
 1. A sound is played when a pickaxe is swung.
 1. A sound is played when a stone is struck by a pickaxe.
 1. A sound is played when a sword is swung.

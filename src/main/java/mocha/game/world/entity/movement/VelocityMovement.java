@@ -15,8 +15,7 @@ public class VelocityMovement extends SimpleMovement {
   private double speed = 2.0;
   private double xVelocity;
   private double yVelocity;
-  private EventBus eventBus;
-  private Location nextLocation;
+  protected EventBus eventBus;
 
   @Builder
   protected VelocityMovement(Location location, Collision collision, double speed, double xVelocity, double yVelocity, EventBus eventBus) {
@@ -25,15 +24,14 @@ public class VelocityMovement extends SimpleMovement {
     this.speed = speed;
     this.xVelocity = xVelocity;
     this.yVelocity = yVelocity;
-    nextLocation = location;
   }
 
-  protected void applyXVelocity() {
-    nextLocation = nextLocation.add(getXVelocity(), 0);
+  protected Location applyXVelocity(Location location) {
+    return location.add(getXVelocity(), 0);
   }
 
-  protected void applyYVelocity() {
-    nextLocation = nextLocation.add(0, getYVelocity());
+  protected Location applyYVelocity(Location location) {
+    return location.add(0, getYVelocity());
   }
 
   public void up() {
@@ -54,25 +52,28 @@ public class VelocityMovement extends SimpleMovement {
 
   @Override
   public void tick(long now) {
-    applyXVelocityIfNotColliding();
-    applyYVelocityIfNotColliding();
-    eventBus.post(new MovementEvent(this, nextLocation));
+    Location nextLocation = applyYVelocityIfNotColliding(applyXVelocityIfNotColliding(this.getLocation()));
+    postNextLocation(nextLocation);
     setXVelocity(0.0);
     setYVelocity(0.0);
   }
 
-  protected void applyXVelocityIfNotColliding() {
+  protected void postNextLocation(Location nextLocation) {
+    eventBus.post(new MovementEvent(this, nextLocation));
+  }
+
+  protected Location applyXVelocityIfNotColliding(Location location) {
     if (getCollision().collides(getLocation().add(getXVelocity(), 0))) {
       setXVelocity(0.0);
     }
-    applyXVelocity();
+    return applyXVelocity(location);
   }
 
-  protected void applyYVelocityIfNotColliding() {
+  protected Location applyYVelocityIfNotColliding(Location location) {
     if (getCollision().collides(getLocation().add(0, getYVelocity()))) {
       setYVelocity(0.0);
     }
-    applyYVelocity();
+    return applyYVelocity(location);
   }
 
   public static class VelocityMovementBuilder extends SimpleMovementBuilder {
