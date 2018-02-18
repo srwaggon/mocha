@@ -1,4 +1,4 @@
-group 'tech.srwaggon'
+group 'swagnificent.party'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -8,9 +8,10 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
+}
+
+dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 }
 
 apply plugin: 'application'
@@ -19,7 +20,7 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 jar {
-    baseName = 'mocha'
+    baseName = 'mocha-server'
     version = '0.0.1-SNAPSHOT'
 }
 
