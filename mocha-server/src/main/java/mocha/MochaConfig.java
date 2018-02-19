@@ -17,6 +17,7 @@ import mocha.game.rule.RemoveEntityRule;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.brain.BrainFactory;
+import mocha.net.packet.PacketFactory;
 
 @Configuration
 public class MochaConfig {
@@ -46,6 +47,11 @@ public class MochaConfig {
     eventBus.register(removeEntityRule);
 
     return Lists.newArrayList(new BrainRule(), movementRule, pickUpItemsRule, removeEntityRule);
+  }
+
+  @Bean
+  public PacketFactory getPacketFactory(MochaWorld mochaWorld) {
+    return new PacketFactory(mochaWorld);
   }
 
 }

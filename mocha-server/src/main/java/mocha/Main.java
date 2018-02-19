@@ -7,7 +7,6 @@ import org.springframework.context.ApplicationContext;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import mocha.gfx.MochaScene;
 
 @SpringBootApplication
 public class Main extends Application {

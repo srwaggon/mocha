@@ -13,8 +13,9 @@ import java.util.concurrent.Executors;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import mocha.client.net.Connection;
-import mocha.client.net.PacketListener;
+import mocha.net.Connection;
+import mocha.net.PacketListener;
+import mocha.net.PacketListenerFactory;
 
 @SpringBootApplication
 public class Main extends Application {
@@ -32,9 +33,12 @@ public class Main extends Application {
   public void start(Stage primaryStage) {
     ApplicationContext context = SpringApplication.run(Main.class, args);
 
+    PacketListenerFactory packetListenerFactory = context.getBean(PacketListenerFactory.class);
+
     Socket socket = getSocket();
     Connection connection = new Connection(socket);
-    threadPool.submit(new PacketListener(connection));
+    PacketListener packetListener = packetListenerFactory.newPacketListenerFactory(connection);
+    threadPool.submit(packetListener);
   }
 
   private Socket getSocket() {
