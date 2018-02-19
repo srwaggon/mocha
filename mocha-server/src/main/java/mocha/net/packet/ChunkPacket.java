@@ -13,10 +13,7 @@ public class ChunkPacket extends AbstractPacket implements Packet {
   ChunkPacket(Chunk chunk) {
     data = new String[5];
     data[0] = getType().name();
-//    data[1] = String.valueOf(chunk.getId());
-    data[2] = String.valueOf(Chunk.SIZE);
-    data[3] = String.valueOf(Chunk.SIZE);
-    data[4] = buildTileData(chunk);
+    data[1] = buildTileData(chunk);
   }
 
   private String buildTileData(Chunk chunk) {
@@ -32,7 +29,7 @@ public class ChunkPacket extends AbstractPacket implements Packet {
 
   @Override
   public PacketType getType() {
-    return PacketType.MAP;
+    return PacketType.CHUNK;
   }
 
   @Override

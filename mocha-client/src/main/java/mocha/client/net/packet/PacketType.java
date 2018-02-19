@@ -1,9 +1,9 @@
-package mocha.net.packet;
+package mocha.client.net.packet;
 
 public enum PacketType {
 
   GLOBAL_MESSAGE(GlobalMessagePacket.class),
-  CHUNK(null),
+  MAP(null),
   ;
 
   public static final String SEPARATOR = " ";

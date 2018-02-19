@@ -28,13 +28,13 @@ public class ChunkPacketTest {
 
   @Test
   public void getCode_ReturnsMapCode() {
-    assertEquals(PacketType.MAP, subject.getType());
+    assertEquals(PacketType.CHUNK, subject.getType());
   }
 
   @Test
   public void construct_ContainsMapCode_AsZeroethPhrase() {
-    assertEquals(PacketType.MAP.name(), subject.getData()[0]);
-    assertEquals(PacketType.MAP.name(), getPhrase(0));
+    assertEquals(PacketType.CHUNK.name(), subject.getData()[0]);
+    assertEquals(PacketType.CHUNK.name(), getPhrase(0));
   }
 
   @Test

@@ -21,6 +21,9 @@ public class Server implements Runnable {
   private ExecutorService threadPool = Executors.newCachedThreadPool();
 
   @Inject
+  private PacketListenerFactory packetListenerFactory;
+
+  @Inject
   Server(@Value("${mocha.server.port}") int port) throws IOException {
     log.info("Staring server on port {}", port);
     server = new ServerSocket(port);
@@ -48,7 +51,9 @@ public class Server implements Runnable {
 
   private void acceptConnection(Socket socket) {
     log.info("Receiving connection from " + socket.getInetAddress().toString());
-    threadPool.submit(new PacketListener(new Connection(socket)));
+    Connection connection = new Connection(socket);
+    PacketListener packetListener = packetListenerFactory.newPacketListenerFactory(connection);
+    threadPool.submit(packetListener);
   }
 
   public void shutdown() throws IOException {

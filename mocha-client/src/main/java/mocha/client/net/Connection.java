@@ -1,4 +1,4 @@
-package mocha.net;
+package mocha.client.net;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,7 +12,7 @@ public class Connection {
   private Scanner in;
   private PrintWriter out;
 
-  Connection(Socket socket) {
+  public Connection(Socket socket) {
     try {
       this.socket = socket;
       this.in = new Scanner(new InputStreamReader(socket.getInputStream()));
@@ -48,7 +48,6 @@ public class Connection {
   }
 
   public void send(String message) {
-    System.out.println("sending " + message);
     out.println(message);
     out.flush();
   }
