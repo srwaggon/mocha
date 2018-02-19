@@ -1,7 +1,6 @@
 package mocha.game.world.entity.movement;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 
 import java.util.Queue;

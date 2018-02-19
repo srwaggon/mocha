@@ -16,7 +16,6 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.RemoveEntityEvent;
 import mocha.game.world.entity.brain.PickUpItemEvent;
-import mocha.sfx.Sounds;
 
 public class PickUpItemsRule implements GameRule {
 
@@ -55,7 +54,6 @@ public class PickUpItemsRule implements GameRule {
       return;
     }
     Entity pickedUpEntity = entities.get(entities.size() - 1);
-    Sounds.ITEM.play();
     eventBus.post(new RemoveEntityEvent(pickedUpEntity));
   }
 }
