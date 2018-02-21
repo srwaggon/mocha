@@ -13,11 +13,12 @@ import java.util.concurrent.Executors;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import mocha.game.world.Location;
 import mocha.net.Connection;
 import mocha.net.MochaConnection;
 import mocha.net.PacketListener;
 import mocha.net.PacketListenerFactory;
-import mocha.net.packet.GlobalMessagePacket;
+import mocha.net.packet.world.chunk.ChunkRequestPacket;
 
 @SpringBootApplication
 public class Main extends Application {
@@ -45,7 +46,8 @@ public class Main extends Application {
 
     threadPool.submit(() -> {
       while (mochaConnection.isConnected()) {
-        mochaConnection.sendPacket(new GlobalMessagePacket("This message goes to the server."));
+//        mochaConnection.sendPacket(new GlobalMessagePacket("This message goes to the server."));
+        mochaConnection.sendPacket(new ChunkRequestPacket(new Location(0,0)));
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {

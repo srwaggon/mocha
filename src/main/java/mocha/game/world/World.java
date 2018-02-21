@@ -24,6 +24,7 @@ public class World {
     return Optional.ofNullable(chunks.get(location.getChunkIndex()));
   }
 
+  // TODO: Deprecate, forcing usage of Chunk.getWidth()
   public Optional<Chunk> getChunk(Location location) {
     return Optional.ofNullable(chunks.get(location));
   }

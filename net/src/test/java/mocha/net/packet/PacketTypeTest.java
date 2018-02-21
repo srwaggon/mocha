@@ -2,17 +2,17 @@ package mocha.net.packet;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class PacketTypeTest {
 
   @Test
   public void testResolve() {
     GlobalMessagePacket expectedPacket = new GlobalMessagePacket("yoyo");
-    String expected = expectedPacket.construct();
+    PacketType expected = PacketType.GLOBAL_MESSAGE;
 
     Packet packet = PacketType.resolve(expectedPacket);
 
-    assertEquals(expected, packet.construct());
+    assertThat(packet.getType()).isEqualTo(expected);
   }
 }

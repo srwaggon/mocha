@@ -1,5 +1,6 @@
-package mocha.net.packet;
+package mocha.net.packet.world.chunk;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,12 +8,13 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.tile.TileFactory;
 import mocha.game.world.tile.TileType;
+import mocha.net.packet.PacketType;
 
 import static org.junit.Assert.assertEquals;
 
 public class ChunkPacketTest {
 
-  private ChunkPacket subject;
+  private ChunkPacket testObject;
 
   private Chunk testChunk;
 
@@ -23,22 +25,22 @@ public class ChunkPacketTest {
         .build();
     testChunk = chunkFactory.newRandomDefault(0, 0);
 
-    subject = new ChunkPacket(testChunk);
+    testObject = new ChunkPacket(testChunk);
   }
 
   @Test
   public void getCode_ReturnsMapCode() {
-    assertEquals(PacketType.CHUNK, subject.getType());
+    Assert.assertEquals(PacketType.CHUNK, testObject.getType());
   }
 
   @Test
   public void construct_ContainsMapCode_AsZeroethPhrase() {
-    assertEquals(PacketType.CHUNK.name(), subject.getData()[0]);
+    assertEquals(PacketType.CHUNK.name(), testObject.getData()[0]);
     assertEquals(PacketType.CHUNK.name(), getPhrase(0));
   }
 
   @Test
-  public void construct_ContainsTileData_AsFourthPhrase() {
+  public void construct_ContainsTileData_AsFirstPhrase() {
     int index = 1;
 
     StringBuilder tilesBuilder = new StringBuilder();
@@ -50,12 +52,7 @@ public class ChunkPacketTest {
   }
 
   private String getPhrase(int index) {
-    return subject.construct().split(PacketType.SEPARATOR)[index];
+    return testObject.construct().split(PacketType.SEPARATOR)[index];
   }
-
-  private int getPhraseAsInt(int index) {
-    return Integer.parseInt(getPhrase(index));
-  }
-
 
 }

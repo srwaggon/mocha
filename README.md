@@ -43,8 +43,8 @@ These represent units of work **to be done.**
 1. A sound is played when an pickingUpEntity is struck by a sword.
 
 ### Networking
-1. There is a game client.
-1. The game server responds to chunk requests with the requested chunk's data.
+[x] There is a game client.
+[x] The game server responds to chunk requests with the requested chunk's data.
 1. The game client renders a chunk requested from the server.
 1. The game server responds to pickingUpEntity requests with the requested pickingUpEntity's data.
 1. The game client renders entities requested from the server.

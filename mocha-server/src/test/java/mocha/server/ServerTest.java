@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import mocha.net.Connection;
+import mocha.net.DisconnectedException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,7 +28,7 @@ public class ServerTest {
   }
 
   @Test
-  public void run_AcceptsAnIncomingConnection() throws IOException {
+  public void run_AcceptsAnIncomingConnection() throws IOException, DisconnectedException {
     startServer(port);
 
     Connection connection = new Connection(new Socket("localhost", port));
@@ -37,7 +38,7 @@ public class ServerTest {
   }
 
   @Test
-  public void run_AcceptsMultipleIncomingConnections() throws IOException {
+  public void run_AcceptsMultipleIncomingConnections() throws IOException, DisconnectedException {
     startServer(port);
     Connection connection1 = new Connection(new Socket("localhost", port));
     Connection connection2 = new Connection(new Socket("localhost", port));

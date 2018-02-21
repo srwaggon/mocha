@@ -1,9 +1,13 @@
 package mocha.net.packet;
 
+import mocha.net.packet.world.chunk.ChunkPacket;
+import mocha.net.packet.world.chunk.ChunkRequestPacket;
+
 public enum PacketType {
 
   GLOBAL_MESSAGE(GlobalMessagePacket.class),
-  CHUNK(null),
+  CHUNK_REQUEST(ChunkRequestPacket.class),
+  CHUNK(ChunkPacket.class)
   ;
 
   public static final String SEPARATOR = " ";

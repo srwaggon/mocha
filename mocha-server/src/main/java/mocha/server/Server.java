@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
+import mocha.game.Game;
 import mocha.net.Connection;
 import mocha.net.MochaConnection;
 import mocha.net.PacketListener;
@@ -30,6 +31,8 @@ public class Server implements Runnable {
   private PacketListenerFactory packetListenerFactory;
   @Inject
   private EventBus eventBus;
+  @Inject
+  private Game game;
 
   @Inject
   Server(@Value("${mocha.server.port}") int port) throws IOException {
@@ -62,7 +65,7 @@ public class Server implements Runnable {
     Connection connection = new Connection(socket);
     MochaConnection mochaConnection = new MochaConnection(connection);
     PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection);
-    ClientWorker clientWorker = new ClientWorker();
+    ClientWorker clientWorker = new ClientWorker(mochaConnection, game);
     eventBus.register(clientWorker);
     threadPool.submit(packetListener);
   }

@@ -5,6 +5,7 @@ import java.util.Optional;
 import mocha.game.world.Location;
 import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
+import mocha.net.packet.world.chunk.ChunkPacket;
 
 public class PacketFactory {
 
@@ -16,7 +17,7 @@ public class PacketFactory {
 
   public ChunkPacket newChunkPacket() {
     Location location = new Location(0, 0);
-    Optional<Chunk> chunk = world.getChunk(location);
+    Optional<Chunk> chunk = world.getChunkAt(location);
     return new ChunkPacket(chunk.get());
   }
 }
