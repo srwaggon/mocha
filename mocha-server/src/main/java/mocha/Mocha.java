@@ -14,15 +14,12 @@ public class Mocha {
 
   @Inject
   private GameLoop gameLoop;
-//  @Inject
-//  private RenderLoop renderLoop;
   @Inject
   private Server server;
 
   @PostConstruct
   public void init() {
     gameLoop.start();
-//    renderLoop.start();
     server.start();
   }
 

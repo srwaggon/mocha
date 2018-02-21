@@ -1,4 +1,4 @@
-package mocha.game;
+package mocha.client.input;
 
 import java.util.Arrays;
 

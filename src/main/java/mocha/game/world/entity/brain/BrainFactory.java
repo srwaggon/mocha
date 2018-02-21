@@ -2,17 +2,15 @@ package mocha.game.world.entity.brain;
 
 import com.google.common.eventbus.EventBus;
 
-import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
-
 import mocha.game.world.entity.Entity;
 
-@Component
 public class BrainFactory {
 
-  @Inject
   private EventBus eventBus;
+
+  public BrainFactory(EventBus eventBus) {
+    this.eventBus = eventBus;
+  }
 
   public SimpleBrain newSimpleBrain() {
     return new SimpleBrain();
@@ -24,10 +22,4 @@ public class BrainFactory {
         .build();
   }
 
-  public InputBrain newInputBrain(Entity entity) {
-    return InputBrain.builder()
-        .entity(entity)
-        .eventBus(eventBus)
-        .build();
-  }
 }

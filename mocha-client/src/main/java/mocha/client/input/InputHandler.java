@@ -1,4 +1,4 @@
-package mocha.game;
+package mocha.client.input;
 
 import com.google.common.collect.Maps;
 import com.google.common.eventbus.EventBus;
@@ -17,7 +17,6 @@ import javafx.scene.input.KeyEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import mocha.game.input.KeyDownEvent;
 
 @Builder
 @Component

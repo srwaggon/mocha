@@ -1,4 +1,4 @@
-package mocha.game;
+package mocha.client.input;
 
 import org.junit.After;
 import org.junit.Before;

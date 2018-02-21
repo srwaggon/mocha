@@ -1,20 +1,17 @@
 package mocha.game.world.entity;
 
-import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
-
 import mocha.game.world.entity.brain.BrainFactory;
 import mocha.game.world.entity.movement.MovementFactory;
 
-@Component
 public class EntityFactory {
 
-  @Inject
   private BrainFactory brainFactory;
-
-  @Inject
   private MovementFactory movementFactory;
+
+  public EntityFactory(BrainFactory brainFactory, MovementFactory movementFactory) {
+    this.brainFactory = brainFactory;
+    this.movementFactory = movementFactory;
+  }
 
   public Entity createRandomSlider() {
     Entity entity = Entity.builder()

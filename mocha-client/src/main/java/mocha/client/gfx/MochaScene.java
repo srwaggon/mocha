@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
-import mocha.game.InputHandler;
+import mocha.client.input.InputHandler;
 import mocha.game.world.chunk.Chunk;
 
 @Component

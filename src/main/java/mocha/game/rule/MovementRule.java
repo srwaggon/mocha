@@ -20,11 +20,8 @@ public class MovementRule implements GameRule {
     List<Entity> activeEntities = game.getActiveEntities();
 
     activeEntities.stream()
-        .filter(entity -> !entity.equals(game.getPlayer()))
         .map(Entity::getMovement)
         .forEach(movement -> movement.tick(0L));
-    game.getPlayer().getMovement().tick(0L);
-
 
     activeEntities.forEach(entity ->
         game.getWorld().getChunkAt(entity.getMovement().getLocation())

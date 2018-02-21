@@ -1,16 +1,14 @@
 package mocha.net;
 
-import org.springframework.stereotype.Component;
-
-import javax.inject.Inject;
-
 import mocha.net.packet.PacketFactory;
 
-@Component
 public class PacketListenerFactory {
 
-  @Inject
   private PacketFactory packetFactory;
+
+  public PacketListenerFactory(PacketFactory packetFactory) {
+    this.packetFactory = packetFactory;
+  }
 
   public PacketListener newPacketListenerFactory(Connection connection) {
     return new PacketListener(connection, packetFactory);
