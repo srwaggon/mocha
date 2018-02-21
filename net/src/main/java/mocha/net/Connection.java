@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Connection {
@@ -32,8 +33,13 @@ public class Connection {
     return in.hasNextLine();
   }
 
-  public String readLine() {
-    return in.nextLine();
+  public String readLine() throws DisconnectedException {
+    try {
+      return in.nextLine();
+    } catch (NoSuchElementException e) {
+      this.disconnect();
+      throw new DisconnectedException(e);
+    }
   }
 
   public void disconnect() {

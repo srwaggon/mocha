@@ -8,8 +8,12 @@ public class MochaConnection {
 
   private final Connection connection;
 
-  MochaConnection(Connection connection) {
+  public MochaConnection(Connection connection) {
     this.connection = connection;
+  }
+
+  public boolean isConnected() {
+    return connection.isConnected();
   }
 
   public void sendPacket(Packet packet) {
@@ -20,7 +24,7 @@ public class MochaConnection {
     return connection.hasLine();
   }
 
-  public Packet readPacket() {
+  public Packet readPacket() throws DisconnectedException {
     return PacketType.resolve(new UnknownPacket(connection.readLine()));
   }
 }

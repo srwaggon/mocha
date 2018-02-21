@@ -14,8 +14,10 @@ import java.util.concurrent.Executors;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import mocha.net.Connection;
+import mocha.net.MochaConnection;
 import mocha.net.PacketListener;
 import mocha.net.PacketListenerFactory;
+import mocha.net.packet.GlobalMessagePacket;
 
 @SpringBootApplication
 public class Main extends Application {
@@ -37,8 +39,22 @@ public class Main extends Application {
 
     Socket socket = getSocket();
     Connection connection = new Connection(socket);
-    PacketListener packetListener = packetListenerFactory.newPacketListenerFactory(connection);
+    MochaConnection mochaConnection = new MochaConnection(connection);
+    PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection);
     threadPool.submit(packetListener);
+
+    threadPool.submit(() -> {
+      while (mochaConnection.isConnected()) {
+        mochaConnection.sendPacket(new GlobalMessagePacket("This message goes to the server."));
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+      System.out.println("Lost connection with " + mochaConnection);
+    });
+
   }
 
   private Socket getSocket() {

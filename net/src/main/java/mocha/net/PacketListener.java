@@ -1,26 +1,29 @@
 package mocha.net;
 
-import mocha.net.packet.ChunkPacket;
-import mocha.net.packet.PacketFactory;
+import com.google.common.eventbus.EventBus;
+
+import mocha.net.packet.Packet;
 
 public class PacketListener implements Runnable {
 
-  private final Connection connection;
-  private PacketFactory packetFactory;
+  private MochaConnection mochaConnection;
+  private final EventBus eventBus;
 
-  public PacketListener(Connection connection, PacketFactory packetFactory) {
-    this.connection = connection;
-    this.packetFactory = packetFactory;
+  PacketListener(MochaConnection mochaConnection, EventBus eventBus) {
+    this.mochaConnection = mochaConnection;
+    this.eventBus = eventBus;
   }
 
   @Override
   public void run() {
-    while (connection.isConnected()) {
-      if (connection.hasLine()) {
-        System.out.println(connection.readLine());
+    while (mochaConnection.isConnected()) {
+      try {
+        Packet event = mochaConnection.readPacket();
+        eventBus.post(event);
+      } catch(DisconnectedException disconnectedException) {
+        disconnectedException.printStackTrace();
       }
-      ChunkPacket chunkPacket = packetFactory.newChunkPacket();
-      connection.send(chunkPacket.construct());
     }
+    System.out.println("Disconnected.");
   }
 }

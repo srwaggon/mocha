@@ -54,8 +54,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public PacketListenerFactory packetListenerFactory(PacketFactory packetFactory) {
-    return new PacketListenerFactory(packetFactory);
+  public PacketListenerFactory packetListenerFactory(EventBus eventBus) {
+    return new PacketListenerFactory(eventBus);
   }
 
   @Bean

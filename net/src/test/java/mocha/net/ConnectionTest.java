@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -64,7 +66,7 @@ public class ConnectionTest {
   }
 
   @Test
-  public void readLine_ReturnsLineThatWasRead() throws IOException {
+  public void readLine_ReturnsLineThatWasRead() throws IOException, DisconnectedException {
     String expected = "OK";
     when(socket.getInputStream()).thenReturn(IOUtils.toInputStream(expected));
     testObject = new Connection(socket);
@@ -74,7 +76,7 @@ public class ConnectionTest {
   }
 
   @Test
-  public void readLine_ReturnsLinesInOrder() throws IOException {
+  public void readLine_ReturnsLinesInOrder() throws IOException, DisconnectedException {
     when(socket.getInputStream()).thenReturn(IOUtils.toInputStream("OK1\nOK2\nOK3\n"));
     testObject = new Connection(socket);
 
@@ -93,6 +95,26 @@ public class ConnectionTest {
     testObject.send(expected);
 
     assertEquals(expected + System.lineSeparator(), outputStream.toString());
+  }
+
+  @Test
+  public void readLine_ThrowsAnExceptionWhenTheOtherEndHasDisconnected() throws IOException {
+    when(inputStream.read()).thenThrow(new NoSuchElementException());
+
+    assertThatExceptionOfType(DisconnectedException.class)
+        .isThrownBy(() -> testObject.readLine());
+  }
+
+  @Test
+  public void readLine_MarksTheConnectionAsDisconnected_WhenDetected() throws IOException {
+    when(inputStream.read()).thenThrow(new NoSuchElementException());
+    try {
+      testObject.readLine();
+    } catch(DisconnectedException ignored) {
+
+    }
+
+    assertFalse(testObject.isConnected());
   }
 
 }

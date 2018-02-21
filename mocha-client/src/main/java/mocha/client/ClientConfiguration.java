@@ -28,8 +28,8 @@ import mocha.net.packet.PacketFactory;
 public class ClientConfiguration {
 
   @Bean
-  public PacketListenerFactory packetListenerFactory(PacketFactory packetFactory) {
-    return new PacketListenerFactory(packetFactory);
+  public PacketListenerFactory packetListenerFactory(EventBus eventBus) {
+    return new PacketListenerFactory(eventBus);
   }
 
   @Bean

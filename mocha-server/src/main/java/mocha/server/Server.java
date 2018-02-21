@@ -1,5 +1,7 @@
 package mocha.server;
 
+import com.google.common.eventbus.EventBus;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,7 @@ import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
 import mocha.net.Connection;
+import mocha.net.MochaConnection;
 import mocha.net.PacketListener;
 import mocha.net.PacketListenerFactory;
 
@@ -25,6 +28,8 @@ public class Server implements Runnable {
 
   @Inject
   private PacketListenerFactory packetListenerFactory;
+  @Inject
+  private EventBus eventBus;
 
   @Inject
   Server(@Value("${mocha.server.port}") int port) throws IOException {
@@ -55,7 +60,10 @@ public class Server implements Runnable {
   private void acceptConnection(Socket socket) {
     log.info("Receiving connection from " + socket.getInetAddress().toString());
     Connection connection = new Connection(socket);
-    PacketListener packetListener = packetListenerFactory.newPacketListenerFactory(connection);
+    MochaConnection mochaConnection = new MochaConnection(connection);
+    PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection);
+    ClientWorker clientWorker = new ClientWorker();
+    eventBus.register(clientWorker);
     threadPool.submit(packetListener);
   }
 
