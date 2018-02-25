@@ -17,12 +17,15 @@ import mocha.game.rule.GameRule;
 import mocha.game.rule.MovementRule;
 import mocha.game.rule.PickUpItemsRule;
 import mocha.game.rule.RemoveEntityRule;
+import mocha.game.world.Location;
 import mocha.game.world.World;
+import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.brain.BrainFactory;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
+import mocha.game.world.tile.TileFactory;
 import mocha.net.PacketListenerFactory;
 import mocha.net.PacketSenderFactory;
 import mocha.net.packet.PacketFactory;
@@ -46,8 +49,10 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public World world() {
-    return new World();
+  public World world(ChunkFactory chunkFactory) {
+    World world = new World();
+    world.getChunks().put(new Location(0,0), chunkFactory.newRandomDefault(0,0));
+    return world;
   }
 
   @Bean
@@ -105,6 +110,23 @@ public class ClientConfiguration {
   @Bean
   public ExecutorService executorService() {
     return Executors.newFixedThreadPool(8);
+  }
+
+  @Bean
+  public TileFactory tileFactory() {
+    return new TileFactory();
+  }
+
+  @Bean
+  public ChunkFactory chunkFactory(TileFactory tileFactory) {
+    return new ChunkFactory(tileFactory);
+  }
+
+  @Bean
+  public ClientPacketHandler clientPacketHandler(EventBus eventBus, ChunkFactory chunkFactory, World world) {
+    ClientPacketHandler clientPacketHandler = new ClientPacketHandler(chunkFactory, world);
+    eventBus.register(clientPacketHandler);
+    return clientPacketHandler;
   }
 
 }

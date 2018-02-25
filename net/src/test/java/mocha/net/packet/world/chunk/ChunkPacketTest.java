@@ -25,7 +25,10 @@ public class ChunkPacketTest {
         .build();
     testChunk = chunkFactory.newRandomDefault(0, 0);
 
-    testObject = new ChunkPacket(testChunk);
+    testObject = new ChunkPacket();
+    String[] data = new String[2];
+    data[1] = testChunk.buildTileData();
+    testObject.build(data);
   }
 
   @Test

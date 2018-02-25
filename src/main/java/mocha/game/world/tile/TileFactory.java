@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Map;
 
-@Component
 public class TileFactory {
 
   private Map<String, TileType> typeByDescription = Maps.newHashMap();

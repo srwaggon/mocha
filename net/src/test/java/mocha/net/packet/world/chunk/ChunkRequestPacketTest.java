@@ -14,7 +14,9 @@ public class ChunkRequestPacketTest {
 
   @Before
   public void setUp() {
-    testObject = new ChunkRequestPacket(new Location(32.33, 64.77777));
+    Location location = new Location(32.33, 64.77777);
+    testObject = new ChunkRequestPacket();
+    testObject.build(new String[]{"", "" + location.getXAsInt(), "" + location.getY()});
   }
 
   @Test

@@ -8,7 +8,7 @@ import javafx.animation.AnimationTimer;
 import lombok.extern.slf4j.Slf4j;
 import mocha.client.gfx.view.GameView;
 
-@Component
+//@Component
 @Slf4j
 public class RenderLoop extends AnimationTimer {
 

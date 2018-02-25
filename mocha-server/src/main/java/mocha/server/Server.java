@@ -55,9 +55,18 @@ public class Server implements Runnable {
       try {
         log.info("Awaiting connections...");
         acceptConnection(server.accept());
+        nap();
       } catch (IOException ioexception) {
         log.error("IOException while awaiting connections: ", ioexception);
       }
+    }
+  }
+
+  private void nap() {
+    try {
+      Thread.sleep(100);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
 

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -59,6 +60,11 @@ public class Chunk {
     return new Location(x, y);
   }
 
+  public String buildTileData() {
+    return Arrays.stream(getTiles())
+        .map(TileType::getSymbol)
+        .collect(Collectors.joining());
+  }
 
   public void add(Entity entity) {
     Location entityLocation = boundToChunk(entity.getMovement().getLocation());

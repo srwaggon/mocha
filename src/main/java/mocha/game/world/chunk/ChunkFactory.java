@@ -2,27 +2,23 @@ package mocha.game.world.chunk;
 
 import com.google.common.collect.Lists;
 
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 
-import javax.inject.Inject;
-
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.tile.TileFactory;
 import mocha.game.world.tile.TileType;
 
 @Builder
-@Component
-@AllArgsConstructor
 public class ChunkFactory {
 
   private static int mapId = 0;
 
-  @Inject
   private TileFactory tileFactory;
+
+  public ChunkFactory(TileFactory tileFactory) {
+    this.tileFactory = tileFactory;
+  }
 
   public Chunk newGrid() {
     return Chunk.builder()

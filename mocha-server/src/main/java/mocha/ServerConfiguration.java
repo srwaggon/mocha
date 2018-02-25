@@ -19,11 +19,13 @@ import mocha.game.rule.MovementRule;
 import mocha.game.rule.PickUpItemsRule;
 import mocha.game.rule.RemoveEntityRule;
 import mocha.game.world.World;
+import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.brain.BrainFactory;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
+import mocha.game.world.tile.TileFactory;
 import mocha.net.PacketListenerFactory;
 import mocha.net.PacketSenderFactory;
 import mocha.net.packet.PacketFactory;
@@ -104,6 +106,16 @@ public class ServerConfiguration {
   @Bean
   public PacketSenderFactory packetSenderFactory(EventBus eventBus) {
     return new PacketSenderFactory(eventBus);
+  }
+
+  @Bean
+  public TileFactory tileFactory() {
+    return new TileFactory();
+  }
+
+  @Bean
+  public ChunkFactory chunkFactory(TileFactory tileFactory) {
+    return new ChunkFactory(tileFactory);
   }
 
   @Bean
