@@ -8,22 +8,32 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.tile.TileType;
 
-@Data
 @Builder
-@AllArgsConstructor
 public class Chunk {
 
   public final static int SIZE = 16;
 
   private TileType[] tiles;
-  private List<Entity>[] tileEntities;
+  private List<List<Entity>> entities;
+
+  public Chunk() {
+    tiles = new TileType[Chunk.SIZE * Chunk.SIZE];
+    entities = Lists.newArrayList();
+
+    for (int i = 0; i < Chunk.SIZE * Chunk.SIZE; i++) {
+      entities.add(Lists.newArrayList());
+    }
+  }
+
+  public Chunk(TileType[] tiles, List<List<Entity>> entities) {
+    this.tiles = tiles;
+    this.entities = entities;
+  }
 
   private boolean inBounds(int value) {
     return 0 <= value && value < SIZE;
@@ -61,7 +71,7 @@ public class Chunk {
   }
 
   public String buildTileData() {
-    return Arrays.stream(getTiles())
+    return Arrays.stream(tiles)
         .map(TileType::getSymbol)
         .collect(Collectors.joining());
   }
@@ -70,20 +80,21 @@ public class Chunk {
     Location entityLocation = boundToChunk(entity.getMovement().getLocation());
     int x = entityLocation.getXAsInt() / TileType.SIZE;
     int y = entityLocation.getYAsInt() / TileType.SIZE;
-    tileEntities[x + y * SIZE].add(entity);
+    int tileIndex = x + y * SIZE;
+    entities.get(tileIndex).add(entity);
   }
 
   public void remove(Entity entity) {
     Location entityLocation = boundToChunk(entity.getMovement().getLocation());
     int x = entityLocation.getXAsInt() / TileType.SIZE;
     int y = entityLocation.getYAsInt() / TileType.SIZE;
-    tileEntities[x + y * SIZE].remove(entity);
+    int tileIndex = x + y * SIZE;
+    entities.get(tileIndex).remove(entity);
   }
 
   public List<Entity> getEntities() {
     List<Entity> allEntities = Lists.newArrayList();
-    List<Entity>[] tileEntities = getTileEntities();
-    Arrays.stream(tileEntities).forEach(allEntities::addAll);
+    entities.forEach(allEntities::addAll);
     return allEntities;
   }
 
@@ -101,6 +112,7 @@ public class Chunk {
   }
 
   private List<Entity> getEntities(int x, int y) {
-    return tileEntities[x + y * SIZE];
+    int tileIndex = x + y * SIZE;
+    return entities.get(tileIndex);
   }
 }

@@ -23,23 +23,23 @@ public class ChunkFactory {
   public Chunk newGrid() {
     return Chunk.builder()
         .tiles(createGridTiles(Chunk.SIZE, Chunk.SIZE))
-        .tileEntities(createTileEntities())
+        .entities(createTileEntities())
         .build();
   }
 
   public Chunk newRandomDefault() {
     return Chunk.builder()
         .tiles(createRandomTiles())
-        .tileEntities(createTileEntities())
+        .entities(createTileEntities())
         .build();
   }
 
-  private List<Entity>[] createTileEntities() {
-    List<Entity>[] lists = (List<Entity>[]) new List[Chunk.SIZE * Chunk.SIZE];
-    for (int i = 0; i < lists.length; i++) {
-      lists[i] = Lists.newLinkedList();
+  private List<List<Entity>> createTileEntities() {
+    List<List<Entity>> entities = Lists.newArrayList();
+    for (int i = 0; i < Chunk.SIZE * Chunk.SIZE; i++) {
+      entities.add(Lists.newArrayList());
     }
-    return lists;
+    return entities;
   }
 
   private TileType[] createGridTiles(int columns, int rows) {
@@ -78,7 +78,7 @@ public class ChunkFactory {
 
     return Chunk.builder()
         .tiles(tiles)
-        .tileEntities(createTileEntities())
+        .entities(createTileEntities())
         .build();
   }
 }
