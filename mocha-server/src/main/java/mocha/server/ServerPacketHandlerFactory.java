@@ -23,7 +23,7 @@ public class ServerPacketHandlerFactory {
   private PacketFactory packetFactory;
 
   public void newServerPacketHandler(MochaConnection mochaConnection) {
-    ServerPacketHandler serverPacketHandler = new ServerPacketHandler(mochaConnection, packetFactory);
+    ServerPacketHandler serverPacketHandler = new ServerPacketHandler(mochaConnection, packetFactory, game);
     eventBus.register(serverPacketHandler);
   }
 }

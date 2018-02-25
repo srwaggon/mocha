@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
 import mocha.client.gfx.RenderLoop;
+import mocha.game.world.Location;
 import mocha.net.Connection;
 import mocha.net.MochaConnection;
 import mocha.net.PacketListener;
@@ -71,7 +72,10 @@ public class Client implements Runnable {
   }
 
   private void execute(MochaConnection mochaConnection) {
-    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket()));
+    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(new Location(-1, -1))));
+    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(new Location(-1, 0))));
+    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(new Location(0, -1))));
+    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(new Location(0, 0))));
 
     while (mochaConnection.isConnected()) {
       nap();

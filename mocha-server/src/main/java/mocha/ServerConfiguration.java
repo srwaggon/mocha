@@ -64,8 +64,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public PacketFactory getPacketFactory(MochaWorld mochaWorld) {
-    return new PacketFactory(mochaWorld);
+  public PacketFactory getPacketFactory() {
+    return new PacketFactory();
   }
 
   @Bean

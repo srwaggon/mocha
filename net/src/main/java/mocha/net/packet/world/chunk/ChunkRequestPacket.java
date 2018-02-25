@@ -1,10 +1,20 @@
 package mocha.net.packet.world.chunk;
 
+import mocha.game.world.Location;
 import mocha.net.packet.AbstractPacket;
 import mocha.net.packet.PacketType;
 
 public class ChunkRequestPacket extends AbstractPacket {
   private final String[] data = new String[3];
+
+  public ChunkRequestPacket() {
+  }
+
+  public ChunkRequestPacket(Location location) {
+    this.data[0] = getType().name();
+    data[1] = "" + location.getXAsInt();
+    data[2] = "" + location.getYAsInt();
+  }
 
   @Override
   public void build(String[] data) {
@@ -21,5 +31,11 @@ public class ChunkRequestPacket extends AbstractPacket {
   @Override
   public String[] getData() {
     return data;
+  }
+
+  public Location getLocation() {
+    int x = Integer.parseInt(data[1]);
+    int y = Integer.parseInt(data[2]);
+    return new Location(x, y);
   }
 }

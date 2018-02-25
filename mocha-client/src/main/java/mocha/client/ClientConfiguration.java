@@ -3,9 +3,13 @@ package mocha.client;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -45,8 +49,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public PacketFactory packetFactory(World world) {
-    return new PacketFactory(world);
+  public PacketFactory packetFactory() {
+    return new PacketFactory();
   }
 
   @Bean
@@ -125,10 +129,16 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public ClientPacketHandler clientPacketHandler(EventBus eventBus, ChunkFactory chunkFactory, World world) {
-    ClientPacketHandler clientPacketHandler = new ClientPacketHandler(chunkFactory, world);
+  public ClientPacketHandler clientPacketHandler(EventBus eventBus, ChunkFactory chunkFactory, Game game) {
+    ClientPacketHandler clientPacketHandler = new ClientPacketHandler(chunkFactory, game);
     eventBus.register(clientPacketHandler);
     return clientPacketHandler;
+  }
+
+  @Bean
+  @Scope("prototype")
+  Logger logger(InjectionPoint injectionPoint){
+    return LoggerFactory.getLogger(injectionPoint.getMethodParameter().getContainingClass());
   }
 
 }
