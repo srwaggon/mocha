@@ -13,11 +13,11 @@ import mocha.net.packet.Packet;
 import mocha.net.packet.PacketType;
 import mocha.net.packet.world.chunk.ChunkPacket;
 
-public class ClientWorker implements PacketHandler {
+public class ServerPacketHandler implements PacketHandler {
   private MochaConnection mochaConnection;
   private Game game;
 
-  ClientWorker(MochaConnection mochaConnection, Game game) {
+  ServerPacketHandler(MochaConnection mochaConnection, Game game) {
     this.mochaConnection = mochaConnection;
     this.game = game;
   }

@@ -27,9 +27,9 @@ import static org.mockito.Mockito.verify;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class ClientWorkerTest {
+public class ServerPacketHandlerTest {
 
-  private ClientWorker testObject;
+  private ServerPacketHandler testObject;
   @Mock private MochaConnection mochaConnection;
   @Captor private ArgumentCaptor<Packet> packetArgumentCaptor;
 
@@ -42,7 +42,7 @@ public class ClientWorkerTest {
     world.getChunks().put(location, chunk);
     Game game = new Game(world, Lists.emptyList());
 
-    testObject = new ClientWorker(mochaConnection, game);
+    testObject = new ServerPacketHandler(mochaConnection, game);
   }
 
   @Test

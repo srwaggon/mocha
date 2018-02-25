@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import mocha.game.Game;
 import mocha.game.rule.BrainRule;
@@ -22,10 +24,16 @@ import mocha.game.world.entity.brain.BrainFactory;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.net.PacketListenerFactory;
+import mocha.net.PacketSenderFactory;
 import mocha.net.packet.PacketFactory;
 
 @Configuration
 public class ClientConfiguration {
+
+  @Bean
+  public EventBus eventBus() {
+    return new EventBus();
+  }
 
   @Bean
   public PacketListenerFactory packetListenerFactory(EventBus eventBus) {
@@ -40,11 +48,6 @@ public class ClientConfiguration {
   @Bean
   public World world() {
     return new World();
-  }
-
-  @Bean
-  public EventBus eventBus() {
-    return new EventBus();
   }
 
   @Bean
@@ -92,6 +95,16 @@ public class ClientConfiguration {
     eventBus.register(removeEntityRule);
 
     return Lists.newArrayList(new BrainRule(), movementRule, pickUpItemsRule, removeEntityRule);
+  }
+
+  @Bean
+  public PacketSenderFactory packetSenderFactory(EventBus eventBus) {
+    return new PacketSenderFactory(eventBus);
+  }
+
+  @Bean
+  public ExecutorService executorService() {
+    return Executors.newFixedThreadPool(8);
   }
 
 }

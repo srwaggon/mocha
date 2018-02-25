@@ -9,12 +9,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
-import mocha.game.Game;
 import mocha.net.Connection;
 import mocha.net.MochaConnection;
 import mocha.net.PacketListener;
@@ -25,14 +23,17 @@ import mocha.net.PacketListenerFactory;
 public class Server implements Runnable {
 
   private ServerSocket server;
-  private ExecutorService threadPool = Executors.newCachedThreadPool();
 
   @Inject
   private PacketListenerFactory packetListenerFactory;
   @Inject
   private EventBus eventBus;
+
   @Inject
-  private Game game;
+  private ServerPacketHandlerFactory serverPacketHandlerFactory;
+
+  @Inject
+  private ExecutorService executorService;
 
   @Inject
   Server(@Value("${mocha.server.port}") int port) throws IOException {
@@ -41,7 +42,7 @@ public class Server implements Runnable {
   }
 
   public void start() {
-    threadPool.submit(this);
+    executorService.submit(this);
   }
 
   @Override
@@ -64,14 +65,11 @@ public class Server implements Runnable {
     log.info("Receiving connection from " + socket.getInetAddress().toString());
     Connection connection = new Connection(socket);
     MochaConnection mochaConnection = new MochaConnection(connection);
+
+    serverPacketHandlerFactory.newServerPacketHandler(mochaConnection);
+
     PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection);
-    ClientWorker clientWorker = new ClientWorker(mochaConnection, game);
-    eventBus.register(clientWorker);
-    threadPool.submit(packetListener);
+    executorService.submit(packetListener);
   }
 
-  public void shutdown() throws IOException {
-    threadPool.shutdown();
-    server.close();
-  }
 }

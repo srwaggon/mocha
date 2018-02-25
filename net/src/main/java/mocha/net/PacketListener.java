@@ -2,8 +2,6 @@ package mocha.net;
 
 import com.google.common.eventbus.EventBus;
 
-import mocha.net.packet.Packet;
-
 public class PacketListener implements Runnable {
 
   private MochaConnection mochaConnection;
@@ -18,10 +16,8 @@ public class PacketListener implements Runnable {
   public void run() {
     while (mochaConnection.isConnected()) {
       try {
-        Packet event = mochaConnection.readPacket();
-        eventBus.post(event);
+        eventBus.post(mochaConnection.readPacket());
       } catch(DisconnectedException disconnectedException) {
-        disconnectedException.printStackTrace();
       }
     }
     System.out.println("Disconnected.");

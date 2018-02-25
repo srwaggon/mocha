@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import mocha.game.Game;
 import mocha.game.GameLoop;
@@ -23,6 +25,7 @@ import mocha.game.world.entity.brain.BrainFactory;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.net.PacketListenerFactory;
+import mocha.net.PacketSenderFactory;
 import mocha.net.packet.PacketFactory;
 
 @Configuration
@@ -98,4 +101,13 @@ public class ServerConfiguration {
     return new CollisionFactory(world);
   }
 
+  @Bean
+  public PacketSenderFactory packetSenderFactory(EventBus eventBus) {
+    return new PacketSenderFactory(eventBus);
+  }
+
+  @Bean
+  public ExecutorService executorService() {
+    return Executors.newFixedThreadPool(8);
+  }
 }
