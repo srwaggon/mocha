@@ -1,16 +1,17 @@
-package mocha.net.packet.world.chunk;
+package mocha.net.packet.world.entity;
 
 import mocha.game.world.Location;
 import mocha.net.packet.AbstractPacket;
 import mocha.net.packet.PacketType;
 
-public class RequestChunkPacket extends AbstractPacket {
+public class RequestEntitiesInChunkPacket extends AbstractPacket {
+
   private final String[] data = new String[3];
 
-  public RequestChunkPacket() {
+  public RequestEntitiesInChunkPacket() {
   }
 
-  public RequestChunkPacket(Location location) {
+  public RequestEntitiesInChunkPacket(Location location) {
     this.data[0] = getType().name();
     this.data[1] = "" + location.getXAsInt();
     this.data[2] = "" + location.getYAsInt();
@@ -25,7 +26,7 @@ public class RequestChunkPacket extends AbstractPacket {
 
   @Override
   public PacketType getType() {
-    return PacketType.REQUEST_CHUNK;
+    return PacketType.REQUEST_ENTITIES_IN_CHUNK;
   }
 
   @Override
@@ -38,4 +39,5 @@ public class RequestChunkPacket extends AbstractPacket {
     int y = Integer.parseInt(data[2]);
     return new Location(x, y);
   }
+
 }

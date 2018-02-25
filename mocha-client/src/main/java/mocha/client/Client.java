@@ -79,6 +79,7 @@ public class Client implements Runnable {
     eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(new Location(0, 0))));
 
     while (mochaConnection.isConnected()) {
+      eventBus.post(new SendPacket(packetFactory.newRequestEntitiesInChunkPacket(new Location(0,0))));
       nap();
     }
     log.info("Lost connection with " + mochaConnection);

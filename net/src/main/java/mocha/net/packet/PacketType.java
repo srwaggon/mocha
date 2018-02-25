@@ -2,12 +2,20 @@ package mocha.net.packet;
 
 import mocha.net.packet.world.chunk.ChunkPacket;
 import mocha.net.packet.world.chunk.RequestChunkPacket;
+import mocha.net.packet.world.entity.EntityPacket;
+import mocha.net.packet.world.entity.RequestEntitiesInChunkPacket;
+import mocha.net.packet.world.entity.RequestEntityByIdPacket;
 
 public enum PacketType {
 
   GLOBAL_MESSAGE(GlobalMessagePacket.class),
-  CHUNK_REQUEST(RequestChunkPacket.class),
-  CHUNK(ChunkPacket.class)
+
+  REQUEST_CHUNK(RequestChunkPacket.class),
+  CHUNK(ChunkPacket.class),
+
+  REQUEST_ENTITIES_IN_CHUNK(RequestEntitiesInChunkPacket.class),
+  REQUEST_ENTITY_BY_ID(RequestEntityByIdPacket.class),
+  ENTITY(EntityPacket.class),
   ;
 
   public static final String SEPARATOR = " ";

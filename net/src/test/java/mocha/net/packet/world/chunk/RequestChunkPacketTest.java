@@ -21,12 +21,12 @@ public class RequestChunkPacketTest {
 
   @Test
   public void getType_ReturnsChunkPacketRequest() {
-    assertThat(testObject.getType()).isEqualTo(PacketType.CHUNK_REQUEST);
+    assertThat(testObject.getType()).isEqualTo(PacketType.REQUEST_CHUNK);
   }
 
   @Test
   public void construct_ContainsTheChunkTypeAsTheZeroethPhrase() {
-    String expected = PacketType.CHUNK_REQUEST.name();
+    String expected = PacketType.REQUEST_CHUNK.name();
     String actual = testObject.construct().split(PacketType.SEPARATOR)[0];
     assertThat(actual).isEqualTo(expected);
   }
@@ -47,7 +47,7 @@ public class RequestChunkPacketTest {
 
   @Test
   public void getDate_ReturnsTheChunkTypeAsTheZeroethPhrase() {
-    String expected = PacketType.CHUNK_REQUEST.name();
+    String expected = PacketType.REQUEST_CHUNK.name();
     String actual = testObject.getData()[0];
     assertThat(actual).isEqualTo(expected);
   }

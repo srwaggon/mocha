@@ -7,8 +7,8 @@ import mocha.game.world.Location;
 import mocha.net.MochaConnection;
 import mocha.net.SimplePacketHandler;
 import mocha.net.packet.PacketFactory;
-import mocha.net.packet.world.chunk.ChunkPacket;
 import mocha.net.packet.world.chunk.RequestChunkPacket;
+import mocha.net.packet.world.entity.RequestEntitiesInChunkPacket;
 
 public class ServerPacketHandler extends SimplePacketHandler {
   private MochaConnection mochaConnection;
@@ -22,11 +22,19 @@ public class ServerPacketHandler extends SimplePacketHandler {
   }
 
   @Subscribe
+  @Override
   public void handle(RequestChunkPacket requestChunkPacket) {
     Location location = requestChunkPacket.getLocation();
-    game.getWorld().getChunkAt(location).ifPresent(chunk -> {
-      ChunkPacket chunkPacket = packetFactory.newChunkPacket(location, chunk);
-      mochaConnection.sendPacket(chunkPacket);
-    });
+    game.getWorld().getChunkAt(location).ifPresent(chunk ->
+        mochaConnection.sendPacket(packetFactory.newChunkPacket(location, chunk)));
+  }
+
+  @Subscribe
+  @Override
+  public void handle(RequestEntitiesInChunkPacket requestEntitiesInChunkPacket) {
+    Location location = requestEntitiesInChunkPacket.getLocation();
+    game.getWorld().getChunkAt(location).ifPresent(chunk ->
+        chunk.getEntities().forEach((entity) ->
+            mochaConnection.sendPacket(packetFactory.newEntityPacket(entity))));
   }
 }

@@ -8,6 +8,7 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.net.SimplePacketHandler;
 import mocha.net.packet.world.chunk.ChunkPacket;
+import mocha.net.packet.world.entity.EntityPacket;
 
 public class ClientPacketHandler extends SimplePacketHandler {
 
@@ -25,5 +26,11 @@ public class ClientPacketHandler extends SimplePacketHandler {
     Location location = chunkPacket.getLocation();
     Chunk chunk = chunkFactory.read(chunkPacket.getChunkDescription());
     game.getWorld().put(location, chunk);
+  }
+
+  @Subscribe
+  @Override
+  public void handle(EntityPacket entityPacket) {
+    game.add(entityPacket.getEntity());
   }
 }
