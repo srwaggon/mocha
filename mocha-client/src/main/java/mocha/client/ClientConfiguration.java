@@ -56,8 +56,8 @@ public class ClientConfiguration {
   @Bean
   public World world(ChunkFactory chunkFactory) {
     World world = new World();
-    Chunk chunk = chunkFactory.newRandomDefault(0, 0);
-    world.getChunks().put(new Location(0,0), chunk);
+    Chunk chunk = chunkFactory.newRandomDefault();
+    world.put(new Location(0,0), chunk);
     return world;
   }
 

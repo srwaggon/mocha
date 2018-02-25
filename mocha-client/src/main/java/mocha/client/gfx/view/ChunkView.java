@@ -38,8 +38,8 @@ public class ChunkView extends Group {
   }
 
   public void render(int x, int y) {
-    this.setLayoutX(getChunkXOffset(x));
-    this.setLayoutY(getChunkYOffset(y));
+//    this.setLayoutX(getChunkXOffset(x));
+//    this.setLayoutY(getChunkYOffset(y));
     drawTiles();
   }
 

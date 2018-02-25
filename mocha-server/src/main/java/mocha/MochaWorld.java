@@ -1,10 +1,6 @@
 package mocha;
 
-import com.google.common.collect.Maps;
-
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -22,18 +18,16 @@ public class MochaWorld extends World {
 
   @PostConstruct
   public void init() {
-    this.setChunks(createChunks());
+    createChunks();
   }
 
-  private Map<Location, Chunk> createChunks() {
-    Map<Location, Chunk> chunks = Maps.newHashMap();
+  private void createChunks() {
     for (int y = -16; y < 16; y++) {
       for (int x = -16; x < 16; x++) {
-        Location chunkIndex = new Location(x, y);
-        Chunk chunk = chunkFactory.newRandomDefault(x, y);
-        chunks.put(chunkIndex, chunk);
+        Location chunkIndex = new Location(x * Chunk.getWidth(), y * Chunk.getHeight());
+        Chunk chunk = chunkFactory.newRandomDefault();
+        this.put(chunkIndex, chunk);
       }
     }
-    return chunks;
   }
 }

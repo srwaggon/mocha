@@ -43,19 +43,19 @@ public class Game implements Tickable {
   }
 
   private List<Chunk> getActiveChunks() {
-    Location chunkIndex = getPlayer().getMovement().getLocation().getChunkIndex();
-    World world = getWorld();
+    Location playerLocation = getPlayer().getMovement().getLocation();
     List<Chunk> activeChunks = Lists.newLinkedList();
     for (int y = -1; y <= 1; y++) {
       for (int x = -1; x <= 1; x++) {
-        world.getChunk(chunkIndex.add(x, y)).ifPresent(activeChunks::add);
+        Location chunkLocation = playerLocation.add(x * Chunk.getWidth(), y * Chunk.getHeight());
+        world.getChunkAt(chunkLocation).ifPresent(activeChunks::add);
       }
     }
     return activeChunks;
   }
 
   public List<Entity> getActiveEntities() {
-    return world.getChunks().values().stream()
+    return world.getChunks().stream()
         .map(Chunk::getEntities)
         .flatMap(List::stream)
         .collect(Collectors.toList());

@@ -23,7 +23,7 @@ public class ChunkPacketTest {
     ChunkFactory chunkFactory = ChunkFactory.builder()
         .tileFactory(new TileFactory())
         .build();
-    testChunk = chunkFactory.newRandomDefault(0, 0);
+    testChunk = chunkFactory.newRandomDefault();
 
     testObject = new ChunkPacket();
     String[] data = new String[2];

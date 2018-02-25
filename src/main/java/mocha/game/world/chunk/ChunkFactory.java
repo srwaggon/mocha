@@ -27,9 +27,9 @@ public class ChunkFactory {
         .build();
   }
 
-  public Chunk newRandomDefault(int chunkX, int chunkY) {
+  public Chunk newRandomDefault() {
     return Chunk.builder()
-        .tiles(createRandomTiles(chunkX, chunkY))
+        .tiles(createRandomTiles())
         .tileEntities(createTileEntities())
         .build();
   }
@@ -52,7 +52,7 @@ public class ChunkFactory {
     return tiles;
   }
 
-  private TileType[] createRandomTiles(int chunkX, int chunkY) {
+  private TileType[] createRandomTiles() {
     int rows = Chunk.SIZE;
     int columns = Chunk.SIZE;
     TileType[] tiles = new TileType[rows * columns];

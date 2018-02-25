@@ -24,6 +24,6 @@ public class ClientPacketHandler extends SimplePacketHandler {
   public void handle(ChunkPacket chunkPacket) {
     Location location = chunkPacket.getLocation();
     Chunk chunk = chunkFactory.read(chunkPacket.getChunkDescription());
-    game.getWorld().getChunks().put(location, chunk);
+    game.getWorld().put(location, chunk);
   }
 }

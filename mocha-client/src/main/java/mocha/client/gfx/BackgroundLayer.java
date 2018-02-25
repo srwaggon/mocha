@@ -45,30 +45,30 @@ public class BackgroundLayer extends Group {
         });
   }
 
-  private boolean isChunkOffScreen(Location chunkIndex) {
-    Location playerChunkIndex = game.getPlayer().getMovement().getLocation().getChunkIndex();
-    return chunkIndex.getX() < playerChunkIndex.getX() - 1 ||
-        chunkIndex.getX() > playerChunkIndex.getX() + 1 ||
-        chunkIndex.getY() < playerChunkIndex.getY() - 1 ||
-        chunkIndex.getY() > playerChunkIndex.getY() + 1;
+  private boolean isChunkOffScreen(Location chunkLocation) {
+    Location playerLocation = game.getPlayer().getMovement().getLocation();
+    return chunkLocation.getX() < playerLocation.getX() - Chunk.getWidth() ||
+        chunkLocation.getX() > playerLocation.getX() + Chunk.getWidth() ||
+        chunkLocation.getY() < playerLocation.getY() - Chunk.getHeight() ||
+        chunkLocation.getY() > playerLocation.getY() + Chunk.getHeight();
   }
 
   private void drawChunks() {
-    Location playerChunkIndex = game.getPlayer().getMovement().getLocation().getChunkIndex();
+    Location playerChunk = game.getPlayer().getMovement().getLocation();
     for (int y = -1; y <= 1; y++) {
       for (int x = -1; x <= 1; x++) {
-        Location chunkIndex = new Location(playerChunkIndex.getX() + x, playerChunkIndex.getY() + y);
-        Optional<Chunk> chunkOptional = game.getWorld().getChunk(chunkIndex);
-        if (chunkOptional.isPresent()) {
-          getChunkView(chunkIndex, chunkOptional.get()).render(x, y);
-        }
+        Location chunkLocation = new Location(playerChunk.getX() + x * Chunk.getWidth(), playerChunk.getY() + y * Chunk.getHeight());
+        int finalX = x * Chunk.getWidth();
+        int finalY = y * Chunk.getHeight();
+        game.getWorld().getChunkAt(chunkLocation).ifPresent((chunk) ->
+            getChunkView(chunkLocation, chunk).render(finalX, finalY));
       }
     }
   }
 
-  private ChunkView getChunkView(Location chunkIndex, Chunk chunk) {
-    if (chunkViews.containsKey(chunkIndex)) {
-      return chunkViews.get(chunkIndex);
+  private ChunkView getChunkView(Location chunkLocation, Chunk chunk) {
+    if (chunkViews.containsKey(chunkLocation)) {
+      return chunkViews.get(chunkLocation);
     }
     SpriteSheet spriteSheet = spriteSheetFactory.newSpriteSheet();
     SpriteSheet dirtTiles = spriteSheetFactory.newDirtTiles();
@@ -76,7 +76,7 @@ public class BackgroundLayer extends Group {
     SpriteSheet waterTiles = spriteSheetFactory.newWaterTiles();
     SpriteSheet stoneTiles = spriteSheetFactory.newStoneTiles();
     ChunkView chunkView = new ChunkView(chunk, game, spriteSheet, dirtTiles, grassTiles, waterTiles, stoneTiles, tileSpriteSelector);
-    chunkViews.put(chunkIndex, chunkView);
+    chunkViews.put(chunkLocation, chunkView);
     getChildren().add(chunkView);
     return chunkView;
   }
