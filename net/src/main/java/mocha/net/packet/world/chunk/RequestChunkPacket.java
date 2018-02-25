@@ -4,13 +4,13 @@ import mocha.game.world.Location;
 import mocha.net.packet.AbstractPacket;
 import mocha.net.packet.PacketType;
 
-public class ChunkRequestPacket extends AbstractPacket {
+public class RequestChunkPacket extends AbstractPacket {
   private final String[] data = new String[3];
 
-  public ChunkRequestPacket() {
+  public RequestChunkPacket() {
   }
 
-  public ChunkRequestPacket(Location location) {
+  public RequestChunkPacket(Location location) {
     this.data[0] = getType().name();
     data[1] = "" + location.getXAsInt();
     data[2] = "" + location.getYAsInt();

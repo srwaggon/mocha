@@ -3,7 +3,7 @@ package mocha.net.packet;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.net.packet.world.chunk.ChunkPacket;
-import mocha.net.packet.world.chunk.ChunkRequestPacket;
+import mocha.net.packet.world.chunk.RequestChunkPacket;
 
 public class PacketFactory {
 
@@ -11,7 +11,7 @@ public class PacketFactory {
     return new ChunkPacket(location, chunk);
   }
 
-  public ChunkRequestPacket newChunkRequestPacket(Location location) {
-    return new ChunkRequestPacket(location);
+  public RequestChunkPacket newChunkRequestPacket(Location location) {
+    return new RequestChunkPacket(location);
   }
 }

@@ -1,12 +1,12 @@
 package mocha.net.packet;
 
 import mocha.net.packet.world.chunk.ChunkPacket;
-import mocha.net.packet.world.chunk.ChunkRequestPacket;
+import mocha.net.packet.world.chunk.RequestChunkPacket;
 
 public enum PacketType {
 
   GLOBAL_MESSAGE(GlobalMessagePacket.class),
-  CHUNK_REQUEST(ChunkRequestPacket.class),
+  CHUNK_REQUEST(RequestChunkPacket.class),
   CHUNK(ChunkPacket.class)
   ;
 

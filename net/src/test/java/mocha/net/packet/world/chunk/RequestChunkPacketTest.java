@@ -8,14 +8,14 @@ import mocha.net.packet.PacketType;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ChunkRequestPacketTest {
+public class RequestChunkPacketTest {
 
-  private ChunkRequestPacket testObject;
+  private RequestChunkPacket testObject;
 
   @Before
   public void setUp() {
     Location location = new Location(32.33, 64.77777);
-    testObject = new ChunkRequestPacket();
+    testObject = new RequestChunkPacket();
     testObject.build(new String[]{"", "" + location.getXAsInt(), "" + location.getY()});
   }
 

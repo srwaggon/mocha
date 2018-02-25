@@ -3,13 +3,13 @@ package mocha.net;
 import mocha.net.packet.GlobalMessagePacket;
 import mocha.net.packet.UnknownPacket;
 import mocha.net.packet.world.chunk.ChunkPacket;
-import mocha.net.packet.world.chunk.ChunkRequestPacket;
+import mocha.net.packet.world.chunk.RequestChunkPacket;
 
 public interface PacketHandler {
 
   void handle(ChunkPacket chunkPacket);
 
-  void handle(ChunkRequestPacket chunkRequestPacket);
+  void handle(RequestChunkPacket requestChunkPacket);
 
   void handle(UnknownPacket unknownPacket);
 

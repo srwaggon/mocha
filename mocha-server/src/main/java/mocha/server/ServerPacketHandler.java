@@ -8,7 +8,7 @@ import mocha.net.MochaConnection;
 import mocha.net.SimplePacketHandler;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.world.chunk.ChunkPacket;
-import mocha.net.packet.world.chunk.ChunkRequestPacket;
+import mocha.net.packet.world.chunk.RequestChunkPacket;
 
 public class ServerPacketHandler extends SimplePacketHandler {
   private MochaConnection mochaConnection;
@@ -22,8 +22,8 @@ public class ServerPacketHandler extends SimplePacketHandler {
   }
 
   @Subscribe
-  public void handle(ChunkRequestPacket chunkRequestPacket) {
-    Location location = chunkRequestPacket.getLocation();
+  public void handle(RequestChunkPacket requestChunkPacket) {
+    Location location = requestChunkPacket.getLocation();
     game.getWorld().getChunkAt(location).ifPresent(chunk -> {
       ChunkPacket chunkPacket = packetFactory.newChunkPacket(location, chunk);
       mochaConnection.sendPacket(chunkPacket);

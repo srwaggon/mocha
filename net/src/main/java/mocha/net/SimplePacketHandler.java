@@ -3,7 +3,7 @@ package mocha.net;
 import mocha.net.packet.GlobalMessagePacket;
 import mocha.net.packet.UnknownPacket;
 import mocha.net.packet.world.chunk.ChunkPacket;
-import mocha.net.packet.world.chunk.ChunkRequestPacket;
+import mocha.net.packet.world.chunk.RequestChunkPacket;
 
 public class SimplePacketHandler implements PacketHandler {
   @Override
@@ -12,7 +12,7 @@ public class SimplePacketHandler implements PacketHandler {
   }
 
   @Override
-  public void handle(ChunkRequestPacket chunkRequestPacket) {
+  public void handle(RequestChunkPacket requestChunkPacket) {
 
   }
 
