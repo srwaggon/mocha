@@ -76,6 +76,9 @@ public class ChunkFactory {
       tiles[y * rows + x] = tileFactory.newTile("" + chunkDescription.getTiles().charAt(i));
     }
 
-    return Chunk.builder().tiles(tiles).build();
+    return Chunk.builder()
+        .tiles(tiles)
+        .tileEntities(createTileEntities())
+        .build();
   }
 }

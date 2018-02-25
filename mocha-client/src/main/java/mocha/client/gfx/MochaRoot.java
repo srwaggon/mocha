@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import javafx.scene.Group;
 
-//@Component
+@Component
 public class MochaRoot extends Group {
 
   @Inject

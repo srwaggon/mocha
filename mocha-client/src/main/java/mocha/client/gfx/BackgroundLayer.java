@@ -17,7 +17,7 @@ import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 
-//@Component
+@Component
 public class BackgroundLayer extends Group {
 
   private final Game game;

@@ -19,7 +19,7 @@ import mocha.game.Game;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.RemoveEntityEvent;
 
-//@Component
+@Component
 public class SpriteLayer extends Group {
 
   private final Game game;

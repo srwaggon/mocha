@@ -9,7 +9,7 @@ import javafx.scene.input.KeyEvent;
 import mocha.client.input.InputHandler;
 import mocha.game.world.chunk.Chunk;
 
-//@Component
+@Component
 public class MochaScene extends Scene {
 
   @Inject

@@ -19,6 +19,7 @@ import mocha.game.rule.PickUpItemsRule;
 import mocha.game.rule.RemoveEntityRule;
 import mocha.game.world.Location;
 import mocha.game.world.World;
+import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
@@ -51,7 +52,8 @@ public class ClientConfiguration {
   @Bean
   public World world(ChunkFactory chunkFactory) {
     World world = new World();
-    world.getChunks().put(new Location(0,0), chunkFactory.newRandomDefault(0,0));
+    Chunk chunk = chunkFactory.newRandomDefault(0, 0);
+    world.getChunks().put(new Location(0,0), chunk);
     return world;
   }
 

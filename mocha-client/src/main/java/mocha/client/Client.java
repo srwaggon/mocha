@@ -8,16 +8,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
-import mocha.game.Game;
-import mocha.game.world.Location;
-import mocha.game.world.chunk.Chunk;
+import mocha.client.gfx.RenderLoop;
 import mocha.net.Connection;
 import mocha.net.MochaConnection;
 import mocha.net.PacketListener;
@@ -49,11 +46,12 @@ public class Client implements Runnable {
   private ClientPacketHandler clientPacketHandler;
 
   @Inject
-  private Game game;
+  private RenderLoop renderLoop;
 
   @PostConstruct
   public void init() {
     executorService.submit(this);
+    renderLoop.start();
   }
 
   @Override
@@ -76,8 +74,6 @@ public class Client implements Runnable {
     eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket()));
 
     while (mochaConnection.isConnected()) {
-      Optional<Chunk> chunkAt = game.getWorld().getChunk(new Location(0, 0));
-      chunkAt.ifPresent(chunk -> System.out.println(chunk.buildTileData()));
       nap();
     }
     log.info("Lost connection with " + mochaConnection);

@@ -82,7 +82,8 @@ public class Chunk {
 
   public List<Entity> getEntities() {
     List<Entity> allEntities = Lists.newArrayList();
-    Arrays.stream(getTileEntities()).forEach(allEntities::addAll);
+    List<Entity>[] tileEntities = getTileEntities();
+    Arrays.stream(tileEntities).forEach(allEntities::addAll);
     return allEntities;
   }
 

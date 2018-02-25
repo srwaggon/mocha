@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import mocha.client.gfx.BackgroundLayer;
 import mocha.client.gfx.SpriteLayer;
 
-//@Component
+@Component
 public class GameView {
 
   @Inject

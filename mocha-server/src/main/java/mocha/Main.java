@@ -21,11 +21,10 @@ public class Main extends Application {
   public void start(Stage stage) {
     ApplicationContext context = SpringApplication.run(Main.class, args);
 
-//    stage.setTitle("Mocha");
-//    stage.setScene(context.getBean(MochaScene.class));
+    stage.setTitle("Mocha Server");
 
-//    closeOnExit(stage);
-//    stage.show();
+    closeOnExit(stage);
+    stage.show();
   }
 
   private void closeOnExit(Stage stage) {
