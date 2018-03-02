@@ -73,13 +73,21 @@ public class Client implements Runnable {
   }
 
   private void execute(MochaConnection mochaConnection) {
-    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(new Location(-Chunk.getWidth(), -Chunk.getHeight()))));
-    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(new Location(-Chunk.getWidth(), 0))));
-    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(new Location(0, -Chunk.getHeight()))));
-    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(new Location(0, 0))));
+    Location chunk0 = new Location(-Chunk.getWidth(), -Chunk.getHeight());
+    Location chunk1 = new Location(-Chunk.getWidth(), 0);
+    Location chunk2 = new Location(0, -Chunk.getHeight());
+    Location chunk3 = new Location(0, 0);
+
+    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(chunk0)));
+    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(chunk1)));
+    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(chunk2)));
+    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(chunk3)));
 
     while (mochaConnection.isConnected()) {
-      eventBus.post(new SendPacket(packetFactory.newRequestEntitiesInChunkPacket(new Location(0,0))));
+      eventBus.post(new SendPacket(packetFactory.newRequestEntitiesInChunkPacket(chunk0)));
+      eventBus.post(new SendPacket(packetFactory.newRequestEntitiesInChunkPacket(chunk1)));
+      eventBus.post(new SendPacket(packetFactory.newRequestEntitiesInChunkPacket(chunk2)));
+      eventBus.post(new SendPacket(packetFactory.newRequestEntitiesInChunkPacket(chunk3)));
       nap();
     }
     log.info("Lost connection with " + mochaConnection);

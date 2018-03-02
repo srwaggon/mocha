@@ -5,7 +5,7 @@ Mocha is currently a tile based game template, with simple hitbox collision.
 # Backlog
 ## Bugs
 1. The player's sprite is not centered on the screen. It is in the SE quadrant of the center.
-1. The player's sprite is not centered on its pickingUpEntity's hitbox. The right and bottom sides overhang by any difference in size.
+1. The player's sprite is not centered on its entity's hitbox. The right and bottom sides overhang by any difference in size.
 
 ## Stories / Epics
 These represent units of work **to be done.**
@@ -40,16 +40,17 @@ These represent units of work **to be done.**
 1. A sound is played when a pickaxe is swung.
 1. A sound is played when a stone is struck by a pickaxe.
 1. A sound is played when a sword is swung.
-1. A sound is played when an pickingUpEntity is struck by a sword.
+1. A sound is played when an entity is struck by a sword.
 
 ### Networking
 [x] There is a game client.
 [x] The game server responds to chunk requests with the requested chunk's data.
-1. The game client renders a chunk requested from the server.
-1. The game server responds to pickingUpEntity requests with the requested pickingUpEntity's data.
-1. The game client renders entities requested from the server.
-1. The game server accepts proposals for moving an pickingUpEntity.
-1. The game client proposes to move an pickingUpEntity upon key-press.
+[x] The game client renders a chunk requested from the server.
+[x] The game server responds to entities requests with the requested entities's data.
+[x] The game client renders entities requested from the server.
+1. The client can distinguish entity updates from additions.
+1. The game server accepts proposals for moving an entities.
+1. The game client proposes to move an entities upon key-press.
 
 # Ideas
 + Architect by layer
@@ -59,7 +60,7 @@ These represent units of work **to be done.**
   + Physics
   + Rendering
 + Movement
-  + An pickingUpEntity near a corner will be able to slide left/right (relative to the pickingUpEntity's face) and around the corner so that they can continue forward.
+  + An entity near a corner will be able to slide left/right (relative to the entity's face) and around the corner so that they can continue forward.
 + Crafting
   + Have to use correct tool on correct items at proper moment.
   + Using a hammer on stone creates stone chunks.

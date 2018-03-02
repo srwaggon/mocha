@@ -39,11 +39,6 @@ import mocha.net.packet.PacketFactory;
 public class ClientConfiguration {
 
   @Bean
-  public EventBus eventBus() {
-    return new EventBus();
-  }
-
-  @Bean
   public PacketListenerFactory packetListenerFactory(EventBus eventBus) {
     return new PacketListenerFactory(eventBus);
   }
@@ -88,8 +83,9 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public Game game(World world, @Qualifier("player") Entity player, List<GameRule> gameRules) {
-    Game game = new Game(world, gameRules);
+  public Game game(World world, @Qualifier("player") Entity player, List<GameRule> gameRules, EventBus eventBus) {
+    Game game = new MochaClientGame(world, gameRules);
+    eventBus.register(game);
     game.setPlayer(player);
     return game;
   }
@@ -129,9 +125,9 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public ClientPacketHandler clientPacketHandler(EventBus eventBus, ChunkFactory chunkFactory, Game game) {
-    ClientPacketHandler clientPacketHandler = new ClientPacketHandler(chunkFactory, game);
-    eventBus.register(clientPacketHandler);
+  public ClientPacketHandler clientPacketHandler(MochaClientEventBus mochaClientEventBus, ChunkFactory chunkFactory, Game game) {
+    ClientPacketHandler clientPacketHandler = new ClientPacketHandler(chunkFactory, game, mochaClientEventBus);
+    mochaClientEventBus.register(clientPacketHandler);
     return clientPacketHandler;
   }
 

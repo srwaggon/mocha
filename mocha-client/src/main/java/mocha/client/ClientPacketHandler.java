@@ -14,10 +14,12 @@ public class ClientPacketHandler extends SimplePacketHandler {
 
   private final ChunkFactory chunkFactory;
   private final Game game;
+  private MochaClientEventBus mochaClientEventBus;
 
-  ClientPacketHandler(ChunkFactory chunkFactory, Game game) {
+  ClientPacketHandler(ChunkFactory chunkFactory, Game game, MochaClientEventBus mochaClientEventBus) {
     this.chunkFactory = chunkFactory;
     this.game = game;
+    this.mochaClientEventBus = mochaClientEventBus;
   }
 
   @Subscribe
@@ -31,6 +33,6 @@ public class ClientPacketHandler extends SimplePacketHandler {
   @Subscribe
   @Override
   public void handle(EntityPacket entityPacket) {
-    game.add(entityPacket.getEntity());
+    mochaClientEventBus.addEntity(entityPacket.getEntity());
   }
 }

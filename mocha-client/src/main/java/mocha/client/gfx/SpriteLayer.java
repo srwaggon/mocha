@@ -10,12 +10,14 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import javafx.application.Platform;
 import javafx.scene.Group;
 import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.client.gfx.sprite.SpriteSheetFactory;
 import mocha.client.gfx.view.EntityView;
 import mocha.client.gfx.view.PlayerView;
 import mocha.game.Game;
+import mocha.game.world.entity.AddEntityEvent;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.RemoveEntityEvent;
 
@@ -50,8 +52,13 @@ public class SpriteLayer extends Group {
   }
 
   @Subscribe
-  public void handleRemoveEntityEvent(RemoveEntityEvent removeEntityEvent) {
-    removeEntityView(removeEntityEvent.getEntity());
+  public void handle(AddEntityEvent addEntityEvent) {
+    Platform.runLater(() -> addEntityView(addEntityEvent.getEntity()));
+  }
+
+  @Subscribe
+  public void handle(RemoveEntityEvent removeEntityEvent) {
+    Platform.runLater(() -> removeEntityView(removeEntityEvent.getEntity()));
   }
 
   private void removeEntityView(Entity entity) {
