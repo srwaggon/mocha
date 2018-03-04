@@ -15,7 +15,6 @@ import mocha.game.world.entity.EntityRegistry;
 public class Game implements Tickable {
 
   private World world;
-  private Entity player;
   private List<GameRule> gameRules;
   protected EntityRegistry entityRegistry;
 
@@ -27,14 +26,6 @@ public class Game implements Tickable {
 
   public void tick(long now) {
     gameRules.forEach(gameRule -> gameRule.apply(this));
-  }
-
-  public void setPlayer(Entity player) {
-    this.player = player;
-  }
-
-  public Entity getPlayer() {
-    return player;
   }
 
   public World getWorld() {

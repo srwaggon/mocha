@@ -41,12 +41,6 @@ public class ServerConfiguration {
   }
 
   @Bean
-  @Qualifier("player")
-  public Entity getPlayer(EntityFactory entityFactory, BrainFactory brainFactory) {
-    return entityFactory.createRandom();
-  }
-
-  @Bean
   public List<GameRule> getRules(World world, EventBus eventBus) {
     MovementRule movementRule = new MovementRule();
     eventBus.register(movementRule);
@@ -71,7 +65,7 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Game game(World world, @Qualifier("player") Entity player, List<GameRule> gameRules, EntityFactory entityFactory, EntityRegistry entityRegistry) {
+  public Game game(World world, List<GameRule> gameRules, EntityFactory entityFactory, EntityRegistry entityRegistry) {
     Game game = new Game(world, gameRules, entityRegistry);
     game.add(entityFactory.createRandom());
     game.add(entityFactory.createRandomSlider());

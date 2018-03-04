@@ -8,12 +8,10 @@ import mocha.game.world.entity.Entity;
 public class EntityView extends Canvas {
 
   private Entity entity;
-  private Entity player;
   private SpriteSheet spriteSheet;
 
-  public EntityView(Entity entity, Entity player, SpriteSheet spriteSheet) {
+  public EntityView(Entity entity, SpriteSheet spriteSheet) {
     this.entity = entity;
-    this.player = player;
     this.spriteSheet = spriteSheet;
     this.setOnMouseClicked(event -> System.out.println(this.entity + " clicked!"));
   }
@@ -29,15 +27,13 @@ public class EntityView extends Canvas {
 
   private double getXOffset() {
     double entityX = entity.getMovement().getLocation().getX();
-    double playerX = player.getMovement().getLocation().getX();
     int canvasXOffset = 512 / 2;
-    return entityX - playerX + canvasXOffset;
+    return entityX + canvasXOffset;
   }
 
   private double getYOffset() {
     double entityY = entity.getMovement().getLocation().getY();
-    double playerY = player.getMovement().getLocation().getY();
     int canvasYOffset = 512 / 2;
-    return entityY - playerY + canvasYOffset;
+    return entityY + canvasYOffset;
   }
 }

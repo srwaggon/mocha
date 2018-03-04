@@ -95,7 +95,7 @@ public class Client implements Runnable {
 
   private void nap() {
     try {
-      Thread.sleep(1000);
+      Thread.sleep(10);
     } catch (InterruptedException interruptedException) {
       log.error("Client .. something interrupted", interruptedException);
     }

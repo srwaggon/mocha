@@ -15,11 +15,10 @@ import javafx.scene.Group;
 import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.client.gfx.sprite.SpriteSheetFactory;
 import mocha.client.gfx.view.EntityView;
-import mocha.client.gfx.view.PlayerView;
 import mocha.game.Game;
 import mocha.game.event.world.entity.AddEntityEvent;
-import mocha.game.world.entity.Entity;
 import mocha.game.event.world.entity.RemoveEntityEvent;
+import mocha.game.world.entity.Entity;
 
 @Component
 public class SpriteLayer extends Group {
@@ -27,7 +26,6 @@ public class SpriteLayer extends Group {
   private final Game game;
   private SpriteSheet spriteSheet;
   private Map<Entity, EntityView> entityViews = Maps.newIdentityHashMap();
-  private PlayerView playerView;
 
   @Inject
   public SpriteLayer(Game game, SpriteSheetFactory spriteSheetFactory) {
@@ -35,18 +33,16 @@ public class SpriteLayer extends Group {
     spriteSheet = spriteSheetFactory.newSpriteSheet();
 
     addEntityViews();
-    addPlayerView();
   }
 
   private void addEntityViews() {
     game.getActiveEntities().stream()
-        .filter(entity -> !entity.equals(game.getPlayer()))
         .sorted(Comparator.comparingInt(entity -> entity.getMovement().getLocation().getYAsInt()))
         .forEach(this::addEntityView);
   }
 
   private void addEntityView(Entity entity) {
-    EntityView entityView = new EntityView(entity, game.getPlayer(), spriteSheet);
+    EntityView entityView = new EntityView(entity, spriteSheet);
     entityViews.put(entity, entityView);
     getChildren().add(entityView);
   }
@@ -66,13 +62,7 @@ public class SpriteLayer extends Group {
     getChildren().remove(entityView);
   }
 
-  private void addPlayerView() {
-    playerView = new PlayerView(game.getPlayer(), spriteSheet);
-    getChildren().add(playerView);
-  }
-
   public void render() {
     entityViews.values().forEach(EntityView::render);
-    playerView.render();
   }
 }

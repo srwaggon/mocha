@@ -5,6 +5,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.game.Game;
+import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.tile.TileType;
 import mocha.client.gfx.TileSpriteSelector;
@@ -44,14 +45,14 @@ public class ChunkView extends Group {
   }
 
   private int getChunkXOffset(int x) {
-    int playerX = game.getPlayer().getMovement().getLocation().getXAsInt() % Chunk.getWidth();
+    int playerX = Location.at(0, 0).getXAsInt() % Chunk.getWidth();
     int playerOffsetX = -1 * ((Chunk.getWidth() + playerX) % Chunk.getWidth());
     int xOffset = x * Chunk.getWidth() + getCanvasXOffset();
     return playerOffsetX + xOffset;
   }
 
   private int getChunkYOffset(int y) {
-    int playerY = game.getPlayer().getMovement().getLocation().getYAsInt() % Chunk.getHeight();
+    int playerY = Location.at(0, 0).getYAsInt() % Chunk.getHeight();
     int playerOffsetY = -1 * ((Chunk.getHeight() + playerY) % Chunk.getHeight());
     int yOffset = y * Chunk.getHeight() + getCanvasYOffset();
     return playerOffsetY + yOffset;

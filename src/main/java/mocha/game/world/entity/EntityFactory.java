@@ -51,6 +51,8 @@ public class EntityFactory {
   }
 
   public Pickaxe newPickaxe() {
-    return new Pickaxe(movementFactory.newSimpleMovement(), brainFactory.newSimpleBrain());
+    Pickaxe pickaxe = new Pickaxe(movementFactory.newSimpleMovement(), brainFactory.newSimpleBrain());
+    pickaxe.setId(entityIdFactory.newEntityId());
+    return pickaxe;
   }
 }

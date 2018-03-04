@@ -84,21 +84,14 @@ public class ClientConfiguration {
   }
 
   @Bean
-  @Qualifier("player")
-  public Entity player(EntityFactory entityFactory, BrainFactory brainFactory) {
-    return entityFactory.createRandom();
-  }
-
-  @Bean
   public EntityRegistry entityRegistry() {
     return new EntityRegistry();
   }
 
   @Bean
-  public Game game(World world, @Qualifier("player") Entity player, List<GameRule> gameRules, MochaClientEventBus eventBus, EntityFactory entityFactory, EntityRegistry entityRegistry) {
+  public Game game(World world, List<GameRule> gameRules, MochaClientEventBus eventBus, EntityFactory entityFactory, EntityRegistry entityRegistry) {
     Game game = new MochaClientGame(world, gameRules, entityFactory, entityRegistry, eventBus);
     eventBus.register(game);
-    game.setPlayer(player);
     return game;
   }
 

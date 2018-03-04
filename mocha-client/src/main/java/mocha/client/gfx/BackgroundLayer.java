@@ -46,18 +46,18 @@ public class BackgroundLayer extends Group {
   }
 
   private boolean isChunkOffScreen(Location chunkLocation) {
-    Location playerLocation = game.getPlayer().getMovement().getLocation();
-    return chunkLocation.getX() < playerLocation.getX() - Chunk.getWidth() ||
-        chunkLocation.getX() > playerLocation.getX() + Chunk.getWidth() ||
-        chunkLocation.getY() < playerLocation.getY() - Chunk.getHeight() ||
-        chunkLocation.getY() > playerLocation.getY() + Chunk.getHeight();
+    Location location = Location.at(0,0);
+    return chunkLocation.getX() < location.getX() - Chunk.getWidth() ||
+        chunkLocation.getX() > location.getX() + Chunk.getWidth() ||
+        chunkLocation.getY() < location.getY() - Chunk.getHeight() ||
+        chunkLocation.getY() > location.getY() + Chunk.getHeight();
   }
 
   private void drawChunks() {
-    Location playerChunk = game.getPlayer().getMovement().getLocation();
+    Location location = Location.at(0,0);
     for (int y = -1; y <= 1; y++) {
       for (int x = -1; x <= 1; x++) {
-        Location chunkLocation = new Location(playerChunk.getX() + x * Chunk.getWidth(), playerChunk.getY() + y * Chunk.getHeight());
+        Location chunkLocation = new Location(location.getX() + x * Chunk.getWidth(), location.getY() + y * Chunk.getHeight());
         int finalX = x * Chunk.getWidth();
         int finalY = y * Chunk.getHeight();
         game.getWorld().getChunkAt(chunkLocation).ifPresent((chunk) ->
