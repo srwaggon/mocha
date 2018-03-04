@@ -10,16 +10,19 @@ import mocha.game.world.Location;
 import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityRegistry;
 
 public class Game implements Tickable {
 
   private World world;
   private Entity player;
   private List<GameRule> gameRules;
+  protected EntityRegistry entityRegistry;
 
-  public Game(World world, List<GameRule> gameRules) {
+  public Game(World world, List<GameRule> gameRules, EntityRegistry entityRegistry) {
     this.world = world;
     this.gameRules = gameRules;
+    this.entityRegistry = entityRegistry;
   }
 
   public void tick(long now) {
@@ -39,11 +42,12 @@ public class Game implements Tickable {
   }
 
   public void add(Entity entity) {
+    entityRegistry.add(entity);
     world.add(entity);
   }
 
   private List<Chunk> getActiveChunks() {
-    Location playerLocation = getPlayer().getMovement().getLocation();
+    Location playerLocation = Location.at(0,0);
     List<Chunk> activeChunks = Lists.newLinkedList();
     for (int y = -1; y <= 1; y++) {
       for (int x = -1; x <= 1; x++) {

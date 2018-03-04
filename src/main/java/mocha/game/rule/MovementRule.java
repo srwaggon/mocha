@@ -8,7 +8,7 @@ import java.util.Queue;
 
 import mocha.game.Game;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.movement.MovementEvent;
+import mocha.game.event.world.entity.movement.MovementEvent;
 
 public class MovementRule implements GameRule {
 

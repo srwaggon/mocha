@@ -15,6 +15,10 @@ public class Location {
   private double x;
   private double y;
 
+  public static Location at(int x, int y) {
+    return new Location(x, y);
+  }
+
   public double getX() {
     return x;
   }
@@ -39,6 +43,11 @@ public class Location {
     this.y = y;
   }
 
+  public void set(Location location) {
+    this.setX(location.getX());
+    this.setY(location.getY());
+  }
+
   public Location add(double x, double y) {
     return new Location(this.getX() + x, this.getY() + y);
   }
@@ -49,6 +58,11 @@ public class Location {
 
   public void addY(double y) {
     this.setY(this.getY() + y);
+  }
+
+  public void add(Location location) {
+    this.addX(location.getX());
+    this.addY(location.getY());
   }
 
   @Override

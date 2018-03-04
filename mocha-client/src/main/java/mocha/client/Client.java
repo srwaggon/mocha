@@ -30,7 +30,7 @@ import mocha.net.packet.PacketFactory;
 public class Client implements Runnable {
 
   @Inject
-  private EventBus eventBus;
+  private MochaClientEventBus eventBus;
 
   @Inject
   private PacketListenerFactory packetListenerFactory;

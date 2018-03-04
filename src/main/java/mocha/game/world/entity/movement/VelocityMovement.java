@@ -5,6 +5,7 @@ import com.google.common.eventbus.EventBus;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import mocha.game.event.world.entity.movement.MovementEvent;
 import mocha.game.world.Location;
 import mocha.game.world.entity.movement.collision.Collision;
 

@@ -27,6 +27,8 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
+import mocha.game.world.entity.EntityIdFactory;
+import mocha.game.world.entity.EntityRegistry;
 import mocha.game.world.entity.brain.BrainFactory;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
@@ -52,7 +54,7 @@ public class ClientConfiguration {
   public World world(ChunkFactory chunkFactory) {
     World world = new World();
     Chunk chunk = chunkFactory.newRandomDefault();
-    world.put(new Location(0,0), chunk);
+    world.put(new Location(0, 0), chunk);
     return world;
   }
 
@@ -72,8 +74,13 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public EntityFactory entityFactory(BrainFactory brainFactory, MovementFactory movementFactory) {
-    return new EntityFactory(brainFactory, movementFactory);
+  public EntityIdFactory entityIdFactory(EntityRegistry entityRegistry) {
+    return new EntityIdFactory(entityRegistry);
+  }
+
+  @Bean
+  public EntityFactory entityFactory(BrainFactory brainFactory, MovementFactory movementFactory, EntityIdFactory entityIdFactory) {
+    return new EntityFactory(brainFactory, movementFactory, entityIdFactory);
   }
 
   @Bean
@@ -83,8 +90,13 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public Game game(World world, @Qualifier("player") Entity player, List<GameRule> gameRules, EventBus eventBus) {
-    Game game = new MochaClientGame(world, gameRules);
+  public EntityRegistry entityRegistry() {
+    return new EntityRegistry();
+  }
+
+  @Bean
+  public Game game(World world, @Qualifier("player") Entity player, List<GameRule> gameRules, MochaClientEventBus eventBus, EntityFactory entityFactory, EntityRegistry entityRegistry) {
+    Game game = new MochaClientGame(world, gameRules, entityFactory, entityRegistry, eventBus);
     eventBus.register(game);
     game.setPlayer(player);
     return game;
@@ -133,7 +145,7 @@ public class ClientConfiguration {
 
   @Bean
   @Scope("prototype")
-  Logger logger(InjectionPoint injectionPoint){
+  Logger logger(InjectionPoint injectionPoint) {
     return LoggerFactory.getLogger(injectionPoint.getMethodParameter().getContainingClass());
   }
 

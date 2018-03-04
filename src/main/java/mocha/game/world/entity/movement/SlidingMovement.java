@@ -6,6 +6,7 @@ import com.google.common.eventbus.EventBus;
 import java.util.Queue;
 
 import lombok.Builder;
+import mocha.game.event.world.entity.movement.MovementEvent;
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
 import mocha.game.world.entity.movement.collision.Collision;

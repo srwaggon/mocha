@@ -14,7 +14,7 @@ import mocha.game.world.Location;
 import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.RemoveEntityEvent;
+import mocha.game.event.world.entity.RemoveEntityEvent;
 import mocha.game.world.entity.brain.PickUpItemEvent;
 
 public class PickUpItemsRule implements GameRule {

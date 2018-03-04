@@ -8,7 +8,7 @@ import java.util.Queue;
 import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.World;
-import mocha.game.world.entity.RemoveEntityEvent;
+import mocha.game.event.world.entity.RemoveEntityEvent;
 
 public class RemoveEntityRule implements GameRule {
 

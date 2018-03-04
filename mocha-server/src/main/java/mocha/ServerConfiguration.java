@@ -22,6 +22,8 @@ import mocha.game.world.World;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
+import mocha.game.world.entity.EntityIdFactory;
+import mocha.game.world.entity.EntityRegistry;
 import mocha.game.world.entity.brain.BrainFactory;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
@@ -69,8 +71,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Game game(World world, @Qualifier("player") Entity player, List<GameRule> gameRules, EntityFactory entityFactory) {
-    Game game = new Game(world, gameRules);
+  public Game game(World world, @Qualifier("player") Entity player, List<GameRule> gameRules, EntityFactory entityFactory, EntityRegistry entityRegistry) {
+    Game game = new Game(world, gameRules, entityRegistry);
     game.add(entityFactory.createRandom());
     game.add(entityFactory.createRandomSlider());
     game.add(entityFactory.createRandomAccelerating());
@@ -84,8 +86,18 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public EntityFactory getEntityFactory(BrainFactory brainFactory, MovementFactory movementFactory) {
-    return new EntityFactory(brainFactory, movementFactory);
+  public EntityRegistry entityRegistry() {
+    return new EntityRegistry();
+  }
+
+  @Bean
+  public EntityIdFactory entityIdFactory(EntityRegistry entityRegistry) {
+    return new EntityIdFactory(entityRegistry);
+  }
+
+  @Bean
+  public EntityFactory getEntityFactory(BrainFactory brainFactory, MovementFactory movementFactory, EntityIdFactory entityIdFactory) {
+    return new EntityFactory(brainFactory, movementFactory, entityIdFactory);
   }
 
   @Bean

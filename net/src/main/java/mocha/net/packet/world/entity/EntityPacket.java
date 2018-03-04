@@ -9,15 +9,16 @@ import mocha.net.packet.AbstractPacket;
 import mocha.net.packet.PacketType;
 
 public class EntityPacket extends AbstractPacket {
-  private String[] data = new String[3];
+  private String[] data = new String[4];
   public EntityPacket() {
   }
 
   public EntityPacket(Entity entity) {
     this.data[0] = getType().name();
     Location location = entity.getMovement().getLocation();
-    this.data[1] = "" + location.getXAsInt();
-    this.data[2] = "" + location.getYAsInt();
+    this.data[1] = "" + entity.getId();
+    this.data[2] = "" + location.getXAsInt();
+    this.data[3] = "" + location.getYAsInt();
   }
 
   @Override
@@ -25,6 +26,7 @@ public class EntityPacket extends AbstractPacket {
     this.data[0] = getType().name();
     this.data[1] = data[1];
     this.data[2] = data[2];
+    this.data[3] = data[3];
   }
 
   @Override
@@ -38,13 +40,15 @@ public class EntityPacket extends AbstractPacket {
   }
 
   public Entity getEntity() {
-    int x = Integer.parseInt(data[1]);
-    int y = Integer.parseInt(data[2]);
+    int id = Integer.parseInt(data[1]);
+    int x = Integer.parseInt(data[2]);
+    int y = Integer.parseInt(data[3]);
     Location location = new Location(x, y);
     SimpleCollision collision = new SimpleCollision();
     SimpleMovement movement = new SimpleMovement(location, collision);
     SimpleBrain brain = new SimpleBrain();
     return Entity.builder()
+        .id(id)
         .movement(movement)
         .brain(brain)
         .build();

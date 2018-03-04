@@ -12,6 +12,7 @@ import mocha.game.world.entity.movement.Movement;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Entity {
+  private int id;
   private Movement movement;
   private Brain brain;
 

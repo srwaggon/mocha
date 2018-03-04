@@ -2,8 +2,8 @@ package mocha.client;
 
 import org.springframework.stereotype.Component;
 
-import mocha.game.MochaEventbus;
+import mocha.net.event.NetworkedMochaEventBus;
 
 @Component
-class MochaClientEventBus extends MochaEventbus {
+class MochaClientEventBus extends NetworkedMochaEventBus {
 }
