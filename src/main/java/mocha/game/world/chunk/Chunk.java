@@ -65,9 +65,21 @@ public class Chunk {
   }
 
   private Location boundToChunk(Location location) {
-    int x = (Chunk.getWidth() + location.getXAsInt() % Chunk.getWidth()) % Chunk.getWidth();
-    int y = (Chunk.getHeight() + location.getYAsInt() % Chunk.getHeight()) % Chunk.getHeight();
+    int x = getXBoundToChunk(location);
+    int y = getYBoundToChunk(location);
     return new Location(x, y);
+  }
+
+  private int getXBoundToChunk(Location location) {
+    return getBoundToChunk(location.getXAsInt(), Chunk.getWidth());
+  }
+
+  private int getYBoundToChunk(Location location) {
+    return getBoundToChunk(location.getYAsInt(), Chunk.getHeight());
+  }
+
+  private int getBoundToChunk(int xAsInt, int width) {
+    return (width + xAsInt % width) % width;
   }
 
   public String buildTileData() {

@@ -54,7 +54,6 @@ public class Connection {
   }
 
   public void send(String message) {
-    System.out.println("sending " + message);
     out.println(message);
     out.flush();
   }

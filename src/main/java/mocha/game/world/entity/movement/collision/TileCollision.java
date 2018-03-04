@@ -21,10 +21,6 @@ public class TileCollision extends SimpleCollision {
     if (!chunkMaybe.isPresent()) {
       return false;
     }
-    int x = (Chunk.getWidth() + location.getXAsInt() % Chunk.getWidth()) % Chunk.getWidth();
-    int y = (Chunk.getHeight() + location.getYAsInt() % Chunk.getHeight()) % Chunk.getHeight();
-    Location locationInChunk = new Location(x, y);
-    Optional<TileType> tileMaybe = chunkMaybe.get().getTileAt(locationInChunk);
-    return tileMaybe.map(TileType::isBlocking).orElse(false);
+    return chunkMaybe.get().getTileAt(location).map(TileType::isBlocking).orElse(false);
   }
 }
