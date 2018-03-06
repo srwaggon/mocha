@@ -25,6 +25,9 @@ public class Entity {
   }
 
   public String toString() {
-    return "{\"location\": " + this.getMovement().getLocation() + "}";
+    return "{" +
+        "\"id\":" + this.getId() + ", " +
+        "\"location\": " + this.getMovement().getLocation() +
+        "}";
   }
 }

@@ -67,10 +67,7 @@ public class ServerConfiguration {
   @Bean
   public Game game(World world, List<GameRule> gameRules, EntityFactory entityFactory, EntityRegistry entityRegistry) {
     Game game = new Game(world, gameRules, entityRegistry);
-    game.add(entityFactory.createRandom());
-    game.add(entityFactory.createRandomSlider());
-    game.add(entityFactory.createRandomAccelerating());
-    game.add(entityFactory.newPickaxe());
+    game.add(entityFactory.createSimple());
     return game;
   }
 

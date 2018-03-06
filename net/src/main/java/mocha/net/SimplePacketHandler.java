@@ -7,6 +7,7 @@ import mocha.net.packet.world.chunk.RequestChunkPacket;
 import mocha.net.packet.world.entity.EntityPacket;
 import mocha.net.packet.world.entity.RequestEntitiesInChunkPacket;
 import mocha.net.packet.world.entity.RequestEntityByIdPacket;
+import mocha.net.packet.world.entity.movement.action.MoveRequestPacket;
 
 public class SimplePacketHandler implements PacketHandler {
   @Override
@@ -41,6 +42,11 @@ public class SimplePacketHandler implements PacketHandler {
 
   @Override
   public void handle(RequestEntitiesInChunkPacket requestEntitiesInChunkPacket) {
+
+  }
+
+  @Override
+  public void handle(MoveRequestPacket moveRequestPacket) {
 
   }
 }

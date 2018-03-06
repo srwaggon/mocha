@@ -1,4 +1,4 @@
-package mocha.net.packet.world.entity;
+package mocha.net.packet.world.entity.movement.action;
 
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
@@ -8,17 +8,19 @@ import mocha.game.world.entity.movement.collision.SimpleCollision;
 import mocha.net.packet.AbstractPacket;
 import mocha.net.packet.PacketType;
 
-public class EntityPacket extends AbstractPacket {
+public class MoveRequestPacket extends AbstractPacket {
+
   private String[] data = new String[4];
-  public EntityPacket() {
+
+  public MoveRequestPacket() {
+
   }
 
-  public EntityPacket(Entity entity) {
+  public MoveRequestPacket(Entity entity) {
     this.data[0] = getType().name();
-    Location location = entity.getMovement().getLocation();
     this.data[1] = "" + entity.getId();
-    this.data[2] = "" + location.getXAsInt();
-    this.data[3] = "" + location.getYAsInt();
+    this.data[2] = "" + entity.getMovement().getLocation().getXAsInt();
+    this.data[3] = "" + entity.getMovement().getLocation().getYAsInt();
   }
 
   @Override
@@ -31,12 +33,22 @@ public class EntityPacket extends AbstractPacket {
 
   @Override
   public PacketType getType() {
-    return PacketType.ENTITY;
+    return PacketType.MOVE_REQUEST;
   }
 
   @Override
   public String[] getData() {
     return data;
+  }
+
+  public int getId() {
+    return Integer.parseInt(data[1]);
+  }
+
+  public Location getLocation() {
+    int x = Integer.parseInt(data[2]);
+    int y = Integer.parseInt(data[3]);
+    return new Location(x, y);
   }
 
   public Entity getEntity() {
@@ -48,15 +60,5 @@ public class EntityPacket extends AbstractPacket {
         .movement(movement)
         .brain(brain)
         .build();
-  }
-
-  public Location getLocation() {
-    int x = Integer.parseInt(data[2]);
-    int y = Integer.parseInt(data[3]);
-    return new Location(x, y);
-  }
-
-  public int getId() {
-    return Integer.parseInt(data[1]);
   }
 }

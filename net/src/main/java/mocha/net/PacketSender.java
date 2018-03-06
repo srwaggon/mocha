@@ -11,7 +11,7 @@ public class PacketSender {
   }
 
   @Subscribe
-  public void handle(SendPacket sendPacket) {
-    this.mochaConnection.sendPacket(sendPacket.getPacket());
+  public void handle(SendPacketEvent sendPacketEvent) {
+    this.mochaConnection.sendPacket(sendPacketEvent.getPacket());
   }
 }

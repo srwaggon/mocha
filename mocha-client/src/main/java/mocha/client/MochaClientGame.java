@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 
 import java.util.List;
 
+import mocha.client.input.KeyDownEvent;
 import mocha.game.Game;
 import mocha.game.event.world.entity.EntityUpdateEvent;
 import mocha.game.rule.GameRule;
@@ -45,10 +46,16 @@ public class MochaClientGame extends Game {
 
   private void createEntityIfAbsent(Entity entityUpdate) {
     if (!entityRegistry.getIds().contains(entityUpdate.getId())) {
-      Entity entity = entityFactory.createSimple();
+      Entity entity = entityFactory.createSimpleSlider();
       entity.setId(entityUpdate.getId());
       eventBus.addEntity(entity);
     }
+  }
+
+  @Subscribe
+  public void handle(KeyDownEvent keyDownEvent) {
+    entityRegistry.get(0).ifPresent(entity -> entity.getMovement().getLocation().addY(-16));
+    entityRegistry.get(0).ifPresent(eventBus::sendMoveRequest);
   }
 
 }

@@ -1,7 +1,5 @@
 package mocha.client;
 
-import com.google.common.eventbus.EventBus;
-
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -22,7 +20,7 @@ import mocha.net.MochaConnection;
 import mocha.net.PacketListener;
 import mocha.net.PacketListenerFactory;
 import mocha.net.PacketSenderFactory;
-import mocha.net.SendPacket;
+import mocha.net.SendPacketEvent;
 import mocha.net.packet.PacketFactory;
 
 @Component
@@ -78,16 +76,17 @@ public class Client implements Runnable {
     Location chunk2 = new Location(0, -Chunk.getHeight());
     Location chunk3 = new Location(0, 0);
 
-    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(chunk0)));
-    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(chunk1)));
-    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(chunk2)));
-    eventBus.post(new SendPacket(packetFactory.newChunkRequestPacket(chunk3)));
+    eventBus.post(new SendPacketEvent(packetFactory.newChunkRequestPacket(chunk0)));
+    eventBus.post(new SendPacketEvent(packetFactory.newChunkRequestPacket(chunk1)));
+    eventBus.post(new SendPacketEvent(packetFactory.newChunkRequestPacket(chunk2)));
+    eventBus.post(new SendPacketEvent(packetFactory.newChunkRequestPacket(chunk3)));
+
+    eventBus.post(new SendPacketEvent(packetFactory.newRequestEntitiesInChunkPacket(chunk0)));
+    eventBus.post(new SendPacketEvent(packetFactory.newRequestEntitiesInChunkPacket(chunk1)));
+    eventBus.post(new SendPacketEvent(packetFactory.newRequestEntitiesInChunkPacket(chunk2)));
+    eventBus.post(new SendPacketEvent(packetFactory.newRequestEntitiesInChunkPacket(chunk3)));
 
     while (mochaConnection.isConnected()) {
-      eventBus.post(new SendPacket(packetFactory.newRequestEntitiesInChunkPacket(chunk0)));
-      eventBus.post(new SendPacket(packetFactory.newRequestEntitiesInChunkPacket(chunk1)));
-      eventBus.post(new SendPacket(packetFactory.newRequestEntitiesInChunkPacket(chunk2)));
-      eventBus.post(new SendPacket(packetFactory.newRequestEntitiesInChunkPacket(chunk3)));
       nap();
     }
     log.info("Lost connection with " + mochaConnection);

@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-class KeyDownEvent {
+public class KeyDownEvent {
   private InputKey inputKey;
 }

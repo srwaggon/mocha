@@ -23,6 +23,14 @@ public class EntityFactory {
         .build();
   }
 
+  public Entity createSimpleSlider() {
+    return Entity.builder()
+        .id(entityIdFactory.newEntityId())
+        .movement(movementFactory.newSlidingMovement())
+        .brain(brainFactory.newSimpleBrain())
+        .build();
+  }
+
   public Entity createRandomSlider() {
     Entity entity = Entity.builder()
         .id(entityIdFactory.newEntityId())

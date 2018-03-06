@@ -4,11 +4,14 @@ import com.google.common.eventbus.Subscribe;
 
 import mocha.game.Game;
 import mocha.game.world.Location;
+import mocha.game.world.chunk.Chunk;
+import mocha.game.world.entity.Entity;
 import mocha.net.MochaConnection;
 import mocha.net.SimplePacketHandler;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.world.chunk.RequestChunkPacket;
 import mocha.net.packet.world.entity.RequestEntitiesInChunkPacket;
+import mocha.net.packet.world.entity.movement.action.MoveRequestPacket;
 
 public class ServerPacketHandler extends SimplePacketHandler {
   private MochaConnection mochaConnection;
@@ -26,7 +29,7 @@ public class ServerPacketHandler extends SimplePacketHandler {
   public void handle(RequestChunkPacket requestChunkPacket) {
     Location location = requestChunkPacket.getLocation();
     game.getWorld().getChunkAt(location).ifPresent(chunk ->
-        mochaConnection.sendPacket(packetFactory.newChunkPacket(location, chunk)));
+        sendChunkUpdate(location, chunk));
   }
 
   @Subscribe
@@ -34,7 +37,25 @@ public class ServerPacketHandler extends SimplePacketHandler {
   public void handle(RequestEntitiesInChunkPacket requestEntitiesInChunkPacket) {
     Location location = requestEntitiesInChunkPacket.getLocation();
     game.getWorld().getChunkAt(location).ifPresent(chunk ->
-        chunk.getEntities().forEach((entity) ->
-            mochaConnection.sendPacket(packetFactory.newEntityPacket(entity))));
+        chunk.getEntities().forEach(this::sendEntityUpdate));
+  }
+
+  private void sendChunkUpdate(Location location, Chunk chunk) {
+    mochaConnection.sendPacket(packetFactory.newChunkPacket(location, chunk));
+  }
+
+  private void sendEntityUpdate(Entity entity) {
+    mochaConnection.sendPacket(packetFactory.newEntityPacket(entity));
+  }
+
+  @Subscribe
+  @Override
+  public void handle(MoveRequestPacket moveRequestPacket) {
+    game.getEntityRegistry().get(moveRequestPacket.getId())
+        .ifPresent(entity -> {
+          entity.getMovement().setLocation(moveRequestPacket.getLocation());
+          sendEntityUpdate(entity);
+        });
+
   }
 }

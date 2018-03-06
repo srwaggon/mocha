@@ -49,8 +49,8 @@ These represent units of work **to be done.**
 [x] The game server responds to entities requests with the requested entities's data.
 [x] The game client renders entities requested from the server.
 [x] The client can distinguish entity updates from additions.
-1. The game server accepts proposals for moving an entities.
-1. The game client proposes to move an entities upon key-press.
+[x] The game server accepts proposals for moving an entities.
+[x] The game client proposes to move an entities upon key-press.
 
 # Ideas
 + Architect by layer

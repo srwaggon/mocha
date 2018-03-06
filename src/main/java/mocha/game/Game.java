@@ -55,4 +55,8 @@ public class Game implements Tickable {
         .flatMap(List::stream)
         .collect(Collectors.toList());
   }
+
+  public EntityRegistry getEntityRegistry() {
+    return entityRegistry;
+  }
 }

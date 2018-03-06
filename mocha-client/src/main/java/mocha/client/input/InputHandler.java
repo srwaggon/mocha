@@ -1,7 +1,6 @@
 package mocha.client.input;
 
 import com.google.common.collect.Maps;
-import com.google.common.eventbus.EventBus;
 
 import org.springframework.stereotype.Component;
 
@@ -17,6 +16,7 @@ import javafx.scene.input.KeyEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import mocha.client.MochaClientEventBus;
 
 @Builder
 @Component
@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class InputHandler {
 
   @Inject
-  private EventBus eventBus;
+  private MochaClientEventBus eventBus;
 
   private final Map<KeyCode, InputKey> keyMap = Maps.newHashMap();
 
@@ -39,17 +39,16 @@ public class InputHandler {
   }
 
   private void down(KeyCode keyCode) {
-    InputKey inputKey = Optional.ofNullable(keyMap.get(keyCode))
-        .orElse(InputKey.UNBOUND);
-    inputKey.down();
+    Optional.ofNullable(keyMap.get(keyCode)).ifPresent(this::down);
+  }
 
-    eventBus.post(new KeyDownEvent(inputKey));
+  private void down(InputKey inputKey) {
+    inputKey.down();
+    eventBus.keyDown(inputKey);
   }
 
   private void up(KeyCode keyCode) {
-    Optional.ofNullable(keyMap.get(keyCode))
-        .orElse(InputKey.UNBOUND)
-        .up();
+    Optional.ofNullable(keyMap.get(keyCode)).ifPresent(InputKey::up);
   }
 
   public EventHandler<KeyEvent> getKeyPressedHandler() {
