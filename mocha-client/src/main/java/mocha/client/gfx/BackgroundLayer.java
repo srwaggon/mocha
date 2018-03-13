@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -55,8 +54,8 @@ public class BackgroundLayer extends Group {
 
   private void drawChunks() {
     Location location = Location.at(0,0);
-    for (int y = -1; y <= 1; y++) {
-      for (int x = -1; x <= 1; x++) {
+    for (int y = 0; y < 1; y++) {
+      for (int x = 0; x < 1; x++) {
         Location chunkLocation = new Location(location.getX() + x * Chunk.getWidth(), location.getY() + y * Chunk.getHeight());
         int finalX = x * Chunk.getWidth();
         int finalY = y * Chunk.getHeight();

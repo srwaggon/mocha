@@ -17,23 +17,12 @@ public class EntityView extends Canvas {
   }
 
   public void render() {
-    this.setLayoutX(getXOffset());
-    this.setLayoutY(getYOffset());
+    this.setLayoutX(entity.getMovement().getLocation().getX());
+    this.setLayoutY(entity.getMovement().getLocation().getY());
     this.setWidth(32);
     this.setHeight(32);
     Image sprite = spriteSheet.getSprite(entity.getSpriteId(), entity.getScale());
     this.getGraphicsContext2D().drawImage(sprite, 0, 0);
   }
 
-  private double getXOffset() {
-    double entityX = entity.getMovement().getLocation().getX();
-    int canvasXOffset = 512 / 2;
-    return entityX + canvasXOffset;
-  }
-
-  private double getYOffset() {
-    double entityY = entity.getMovement().getLocation().getY();
-    int canvasYOffset = 512 / 2;
-    return entityY + canvasYOffset;
-  }
 }
