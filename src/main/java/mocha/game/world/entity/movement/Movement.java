@@ -22,4 +22,6 @@ public interface Movement extends Tickable {
 
   void right();
 
+  void handle(Move move);
+
 }

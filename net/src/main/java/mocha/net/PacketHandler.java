@@ -7,7 +7,7 @@ import mocha.net.packet.world.chunk.RequestChunkPacket;
 import mocha.net.packet.world.entity.EntityPacket;
 import mocha.net.packet.world.entity.RequestEntitiesInChunkPacket;
 import mocha.net.packet.world.entity.RequestEntityByIdPacket;
-import mocha.net.packet.world.entity.movement.action.MoveRequestPacket;
+import mocha.net.packet.world.entity.movement.action.MovePacket;
 
 public interface PacketHandler {
 
@@ -25,6 +25,6 @@ public interface PacketHandler {
 
   void handle(RequestEntitiesInChunkPacket requestEntitiesInChunkPacket);
 
-  void handle(MoveRequestPacket moveRequestPacket);
+  void handle(MovePacket movePacket);
 
 }

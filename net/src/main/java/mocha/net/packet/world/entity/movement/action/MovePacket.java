@@ -1,26 +1,26 @@
 package mocha.net.packet.world.entity.movement.action;
 
+import mocha.game.world.Direction;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.brain.SimpleBrain;
+import mocha.game.world.entity.movement.EntityMove;
 import mocha.game.world.entity.movement.SimpleMovement;
 import mocha.game.world.entity.movement.collision.SimpleCollision;
 import mocha.net.packet.AbstractPacket;
 import mocha.net.packet.PacketType;
 
-public class MoveRequestPacket extends AbstractPacket {
+public class MovePacket extends AbstractPacket {
 
-  private String[] data = new String[4];
+  private String[] data = new String[3];
 
-  public MoveRequestPacket() {
-
+  public MovePacket() {
   }
 
-  public MoveRequestPacket(Entity entity) {
+  public MovePacket(EntityMove entityMove) {
     this.data[0] = getType().name();
-    this.data[1] = "" + entity.getId();
-    this.data[2] = "" + entity.getMovement().getLocation().getXAsInt();
-    this.data[3] = "" + entity.getMovement().getLocation().getYAsInt();
+    this.data[1] = "" + entityMove.getEntity().getId();
+    this.data[2] = entityMove.getDirection().toString();
   }
 
   @Override
@@ -28,7 +28,6 @@ public class MoveRequestPacket extends AbstractPacket {
     this.data[0] = getType().name();
     this.data[1] = data[1];
     this.data[2] = data[2];
-    this.data[3] = data[3];
   }
 
   @Override
@@ -45,20 +44,22 @@ public class MoveRequestPacket extends AbstractPacket {
     return Integer.parseInt(data[1]);
   }
 
-  public Location getLocation() {
-    int x = Integer.parseInt(data[2]);
-    int y = Integer.parseInt(data[3]);
-    return new Location(x, y);
-  }
-
   public Entity getEntity() {
     SimpleCollision collision = new SimpleCollision();
-    SimpleMovement movement = new SimpleMovement(getLocation(), collision);
+    SimpleMovement movement = new SimpleMovement(Location.at(0, 0), collision);
     SimpleBrain brain = new SimpleBrain();
     return Entity.builder()
         .id(getId())
         .movement(movement)
         .brain(brain)
         .build();
+  }
+
+  private Direction getDirection() {
+    return Direction.valueOf(data[2]);
+  }
+
+  public EntityMove getMove() {
+    return new EntityMove(getEntity(), getDirection());
   }
 }

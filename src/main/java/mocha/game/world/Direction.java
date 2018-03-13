@@ -27,6 +27,6 @@ public enum Direction {
   }
 
   public static Direction random() {
-    return values()[(int) (Direction.count() * Math.random())];
+    return values()[(int) (count() * Math.random())];
   }
 }

@@ -5,7 +5,7 @@ import mocha.net.packet.world.chunk.RequestChunkPacket;
 import mocha.net.packet.world.entity.EntityPacket;
 import mocha.net.packet.world.entity.RequestEntitiesInChunkPacket;
 import mocha.net.packet.world.entity.RequestEntityByIdPacket;
-import mocha.net.packet.world.entity.movement.action.MoveRequestPacket;
+import mocha.net.packet.world.entity.movement.action.MovePacket;
 
 public enum PacketType {
 
@@ -18,7 +18,7 @@ public enum PacketType {
   REQUEST_ENTITY_BY_ID(RequestEntityByIdPacket.class),
   ENTITY(EntityPacket.class),
 
-  MOVE_REQUEST(MoveRequestPacket.class)
+  MOVE_REQUEST(MovePacket.class)
   ;
 
   public static final String SEPARATOR = " ";

@@ -2,6 +2,8 @@ package mocha.server;
 
 import com.google.common.eventbus.Subscribe;
 
+import java.util.Optional;
+
 import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
@@ -11,7 +13,7 @@ import mocha.net.SimplePacketHandler;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.world.chunk.RequestChunkPacket;
 import mocha.net.packet.world.entity.RequestEntitiesInChunkPacket;
-import mocha.net.packet.world.entity.movement.action.MoveRequestPacket;
+import mocha.net.packet.world.entity.movement.action.MovePacket;
 
 public class ServerPacketHandler extends SimplePacketHandler {
   private MochaConnection mochaConnection;
@@ -50,12 +52,9 @@ public class ServerPacketHandler extends SimplePacketHandler {
 
   @Subscribe
   @Override
-  public void handle(MoveRequestPacket moveRequestPacket) {
-    game.getEntityRegistry().get(moveRequestPacket.getId())
-        .ifPresent(entity -> {
-          entity.getMovement().setLocation(moveRequestPacket.getLocation());
-          sendEntityUpdate(entity);
-        });
-
+  public void handle(MovePacket movePacket) {
+    Optional<Entity> optionalEntity = game.getEntityRegistry().get(movePacket.getId());
+    optionalEntity.ifPresent(entity -> entity.getMovement().handle(movePacket.getMove()));
+    optionalEntity.ifPresent(this::sendEntityUpdate);
   }
 }

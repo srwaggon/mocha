@@ -5,13 +5,12 @@ import com.google.common.eventbus.EventBus;
 
 import java.util.Queue;
 
-import lombok.Builder;
 import mocha.game.event.world.entity.movement.MovementEvent;
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
 import mocha.game.world.entity.movement.collision.Collision;
 
-public class SlidingMovement extends SimpleMovement {
+public class SlidingMovement extends BaseMovement {
 
   private final EventBus eventBus;
   private double distance;
@@ -19,8 +18,7 @@ public class SlidingMovement extends SimpleMovement {
   private Direction direction;
   private Queue<Runnable> turns;
 
-  @Builder
-  private SlidingMovement(Location location, Collision collision, double distance, double duration, Direction direction, Queue<Runnable> turns, EventBus eventBus) {
+  SlidingMovement(Location location, Collision collision, double distance, double duration, Direction direction, Queue<Runnable> turns, EventBus eventBus) {
     super(location, collision);
     this.duration = duration;
     this.direction = direction;
@@ -28,6 +26,10 @@ public class SlidingMovement extends SimpleMovement {
     this.turns = turns;
     this.eventBus = eventBus;
     Preconditions.checkArgument(duration > 0, "Duration must be greater than 0.");
+  }
+
+  public static SlidingMovementBuilder builder() {
+    return new SlidingMovementBuilder();
   }
 
   @Override
@@ -82,20 +84,63 @@ public class SlidingMovement extends SimpleMovement {
 
   private Location applyXDelta(Location location) {
     double xDelta = distance * this.direction.getXMultiplier();
-    Location nextX = this.getLocation().add(xDelta, 0);
+    Location nextX = location.add(xDelta, 0);
     return collision.collides(nextX) ? location : nextX;
   }
 
   private Location applyYDelta(Location location) {
     double yDelta = distance * this.direction.getYMultiplier();
-    Location nextY = this.getLocation().add(0, yDelta);
+    Location nextY = location.add(0, yDelta);
     return collision.collides(nextY) ? location : nextY;
   }
 
-  public static class SlidingMovementBuilder extends SimpleMovementBuilder {
-    public SlidingMovementBuilder() {
-      super();
+  static class SlidingMovementBuilder extends BaseMovement.BaseMovementBuilder {
+
+    private EventBus eventBus;
+    private double distance;
+    private double duration;
+    private Direction direction;
+    private Queue<Runnable> turns;
+
+    public SlidingMovementBuilder eventBus(EventBus eventBus) {
+      this.eventBus = eventBus;
+      return this;
+    }
+
+    public SlidingMovementBuilder distance(double distance) {
+      this.distance = distance;
+      return this;
+    }
+
+    public SlidingMovementBuilder duration(double duration) {
+      this.duration = duration;
+      return this;
+    }
+
+    public SlidingMovementBuilder direction(Direction direction) {
+      this.direction = direction;
+      return this;
+    }
+
+    public SlidingMovementBuilder turns(Queue<Runnable> turns) {
+      this.turns = turns;
+      return this;
+    }
+
+    public SlidingMovementBuilder location(Location location) {
+      this.location = location;
+      return this;
+    }
+
+    public SlidingMovementBuilder collision(Collision collision) {
+      this.collision = collision;
+      return this;
+    }
+
+    public SlidingMovement build() {
+      return new SlidingMovement(location, collision, distance, duration, direction, turns, eventBus);
     }
   }
 
 }
+

@@ -2,7 +2,6 @@ package mocha.game.world.entity.movement;
 
 import com.google.common.eventbus.EventBus;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import mocha.game.event.world.entity.movement.MovementEvent;
@@ -11,14 +10,17 @@ import mocha.game.world.entity.movement.collision.Collision;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class VelocityMovement extends SimpleMovement {
+public class VelocityMovement extends BaseMovement {
 
-  private double speed = 2.0;
+  private double speed;
   private double xVelocity;
   private double yVelocity;
   protected EventBus eventBus;
 
-  @Builder
+  public static VelocityMovementBuilder builder() {
+    return new VelocityMovementBuilder();
+  }
+
   VelocityMovement(Location location, Collision collision, double speed, double xVelocity, double yVelocity, EventBus eventBus) {
     super(location, collision);
     this.eventBus = eventBus;
@@ -77,9 +79,45 @@ public class VelocityMovement extends SimpleMovement {
     return applyYVelocity(location);
   }
 
-  static class VelocityMovementBuilder extends SimpleMovementBuilder {
-    VelocityMovementBuilder() {
-      super();
+  static class VelocityMovementBuilder extends BaseMovement.BaseMovementBuilder {
+
+    private double speed = 2.0;
+    private double xVelocity;
+    private double yVelocity;
+    private EventBus eventBus;
+
+    public VelocityMovementBuilder location(Location location) {
+      this.location = location;
+      return this;
+    }
+
+    public VelocityMovementBuilder collision(Collision collision) {
+      this.collision = collision;
+      return this;
+    }
+
+    public VelocityMovementBuilder speed(double speed) {
+      this.speed = speed;
+      return this;
+    }
+
+    public VelocityMovementBuilder xVelocity(double xVelocity) {
+      this.xVelocity = xVelocity;
+      return this;
+    }
+
+    public VelocityMovementBuilder yVelocity(double yVelocity) {
+      this.yVelocity = yVelocity;
+      return this;
+    }
+
+    public VelocityMovementBuilder eventBus(EventBus eventBus) {
+      this.eventBus = eventBus;
+      return this;
+    }
+
+    public VelocityMovement build() {
+      return new VelocityMovement(location, collision, speed, xVelocity, yVelocity, eventBus);
     }
   }
 }

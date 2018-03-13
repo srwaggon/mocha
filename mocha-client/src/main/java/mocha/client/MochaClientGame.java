@@ -3,16 +3,20 @@ package mocha.client;
 import com.google.common.eventbus.Subscribe;
 
 import java.util.List;
+import java.util.Optional;
 
+import mocha.client.input.InputKey;
 import mocha.client.input.KeyDownEvent;
 import mocha.game.Game;
+import mocha.game.event.world.entity.AddEntityEvent;
 import mocha.game.event.world.entity.EntityUpdateEvent;
 import mocha.game.rule.GameRule;
+import mocha.game.world.Direction;
 import mocha.game.world.World;
-import mocha.game.event.world.entity.AddEntityEvent;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.EntityRegistry;
+import mocha.game.world.entity.movement.EntityMove;
 
 public class MochaClientGame extends Game {
   private final EntityFactory entityFactory;
@@ -54,8 +58,27 @@ public class MochaClientGame extends Game {
 
   @Subscribe
   public void handle(KeyDownEvent keyDownEvent) {
-    entityRegistry.get(0).ifPresent(entity -> entity.getMovement().getLocation().addY(-16));
-    entityRegistry.get(0).ifPresent(eventBus::sendMoveRequest);
+    entityRegistry.get(0)
+        .map(entity -> getEntityMove(keyDownEvent, entity))
+        .ifPresent(entityMove ->
+            entityMove.ifPresent(eventBus::sendMoveRequest));
+  }
+
+  private Optional<EntityMove> getEntityMove(KeyDownEvent keyDownEvent, Entity entity) {
+    return getDirection(keyDownEvent).map(direction -> new EntityMove(entity, direction));
+  }
+
+  private Optional<Direction> getDirection(KeyDownEvent keyDownEvent) {
+    if (keyDownEvent.getInputKey().equals(InputKey.UP)) {
+      return Optional.of(Direction.NORTH);
+    } else if (keyDownEvent.getInputKey().equals(InputKey.RIGHT)) {
+      return Optional.of(Direction.EAST);
+    } else if (keyDownEvent.getInputKey().equals(InputKey.DOWN)) {
+      return Optional.of(Direction.SOUTH);
+    } else if (keyDownEvent.getInputKey().equals(InputKey.LEFT)) {
+      return Optional.of(Direction.WEST);
+    }
+    return Optional.empty();
   }
 
 }

@@ -3,7 +3,6 @@ package mocha;
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,7 +19,6 @@ import mocha.game.rule.PickUpItemsRule;
 import mocha.game.rule.RemoveEntityRule;
 import mocha.game.world.World;
 import mocha.game.world.chunk.ChunkFactory;
-import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.EntityIdFactory;
 import mocha.game.world.entity.EntityRegistry;
@@ -67,7 +65,7 @@ public class ServerConfiguration {
   @Bean
   public Game game(World world, List<GameRule> gameRules, EntityFactory entityFactory, EntityRegistry entityRegistry) {
     Game game = new Game(world, gameRules, entityRegistry);
-    game.add(entityFactory.createSimple());
+    game.add(entityFactory.createSimpleSlider());
     return game;
   }
 
