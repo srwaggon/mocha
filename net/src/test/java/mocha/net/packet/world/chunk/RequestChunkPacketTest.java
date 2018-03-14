@@ -14,9 +14,9 @@ public class RequestChunkPacketTest {
 
   @Before
   public void setUp() {
-    Location location = new Location(32.33, 64.77777);
+    Location location = new Location(32, 64);
     testObject = new RequestChunkPacket();
-    testObject.build(new String[]{"", "" + location.getXAsInt(), "" + location.getYAsInt()});
+    testObject.build(new String[]{"", "" + location.getX(), "" + location.getY()});
   }
 
   @Test

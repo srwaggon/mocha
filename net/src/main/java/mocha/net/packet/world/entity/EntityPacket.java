@@ -17,8 +17,8 @@ public class EntityPacket extends AbstractPacket {
     this.data[0] = getType().name();
     Location location = entity.getLocation();
     this.data[1] = "" + entity.getId();
-    this.data[2] = "" + location.getXAsInt();
-    this.data[3] = "" + location.getYAsInt();
+    this.data[2] = "" + location.getX();
+    this.data[3] = "" + location.getY();
   }
 
   @Override

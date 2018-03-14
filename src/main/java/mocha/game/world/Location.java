@@ -1,44 +1,22 @@
 package mocha.game.world;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import mocha.game.world.chunk.Chunk;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 public class Location {
 
-  private double x;
-  private double y;
+  private int x;
+  private int y;
 
   public static Location at(int x, int y) {
     return new Location(x, y);
-  }
-
-  public double getX() {
-    return x;
-  }
-
-  public int getXAsInt() {
-    return (int) x;
-  }
-
-  public int getYAsInt() {
-    return (int) y;
-  }
-
-  public void setX(double x) {
-    this.x = x;
-  }
-
-  public double getY() {
-    return y;
-  }
-
-  public void setY(double y) {
-    this.y = y;
   }
 
   public void set(Location location) {
@@ -46,21 +24,21 @@ public class Location {
     this.y = location.getY();
   }
 
-  public Location addNew(double x, double y) {
+  public Location addNew(int x, int y) {
     return new Location(this.getX() + x, this.getY() + y);
   }
 
-  public void add(double x, double y) {
+  public void add(int x, int y) {
     addX(x);
     addY(y);
   }
 
-  private void addX(double x) {
-    this.x = this.getX() + x;
+  public void addX(int x) {
+    this.x = this.x + x;
   }
 
-  private void addY(double y) {
-    this.y = this.getY() + y;
+  public void addY(int y) {
+    this.y = this.y + y;
   }
 
   public void add(Location location) {
@@ -70,7 +48,7 @@ public class Location {
 
   @Override
   public String toString() {
-    return String.format("{\"x\": %f, \"y\": %f}", x, y);
+    return String.format("{\"x\": %d, \"y\": %d}", x, y);
   }
 
   public Location getChunkIndex() {
@@ -78,14 +56,14 @@ public class Location {
   }
 
   private int getChunkX() {
-    return getX() < 0
-        ? (int) ((getX() + 1) / Chunk.getWidth()) - 1
-        : (int) (getX() / Chunk.getWidth());
+    return x < 0
+        ? (x + 1) / Chunk.getWidth() - 1
+        : x / Chunk.getWidth();
   }
 
-  private int getChunkY()  {
-    return getY() < 0
-        ? (int) ((getY() + 1) / Chunk.getHeight()) - 1
-        : (int) (getY() / Chunk.getHeight());
+  private int getChunkY() {
+    return y < 0
+        ? (y + 1) / Chunk.getHeight() - 1
+        : y / Chunk.getHeight();
   }
 }

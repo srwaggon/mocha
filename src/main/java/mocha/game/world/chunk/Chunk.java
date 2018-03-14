@@ -64,11 +64,11 @@ public class Chunk {
   }
 
   private int getXBoundToChunk(Location location) {
-    return getBoundToChunk(location.getXAsInt(), Chunk.getWidth());
+    return getBoundToChunk(location.getX(), Chunk.getWidth());
   }
 
   private int getYBoundToChunk(Location location) {
-    return getBoundToChunk(location.getYAsInt(), Chunk.getHeight());
+    return getBoundToChunk(location.getY(), Chunk.getHeight());
   }
 
   private int getBoundToChunk(int xAsInt, int width) {

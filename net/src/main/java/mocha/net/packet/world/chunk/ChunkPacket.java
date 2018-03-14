@@ -15,8 +15,8 @@ public class ChunkPacket extends AbstractPacket implements Packet {
 
   public ChunkPacket(Location location, Chunk chunk) {
     data[0] = getType().name();
-    data[1] = "" + location.getXAsInt();
-    data[2] = "" + location.getYAsInt();
+    data[1] = "" + location.getX();
+    data[2] = "" + location.getY();
     data[3] = chunk.buildTileData();
   }
 
