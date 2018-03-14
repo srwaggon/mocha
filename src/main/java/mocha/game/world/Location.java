@@ -1,12 +1,10 @@
 package mocha.game.world;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import mocha.game.world.chunk.Chunk;
 
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -44,20 +42,25 @@ public class Location {
   }
 
   public void set(Location location) {
-    this.setX(location.getX());
-    this.setY(location.getY());
+    this.x = location.getX();
+    this.y = location.getY();
   }
 
-  public Location add(double x, double y) {
+  public Location addNew(double x, double y) {
     return new Location(this.getX() + x, this.getY() + y);
   }
 
-  public void addX(double x) {
-    this.setX(this.getX() + x);
+  public void add(double x, double y) {
+    addX(x);
+    addY(y);
   }
 
-  public void addY(double y) {
-    this.setY(this.getY() + y);
+  private void addX(double x) {
+    this.x = this.getX() + x;
+  }
+
+  private void addY(double y) {
+    this.y = this.getY() + y;
   }
 
   public void add(Location location) {
@@ -67,10 +70,7 @@ public class Location {
 
   @Override
   public String toString() {
-    return "{" +
-        "  \"x\": " + x + "," +
-        "  \"y\": " + y + "" +
-        "}";
+    return String.format("{\"x\": %f, \"y\": %f}", x, y);
   }
 
   public Location getChunkIndex() {

@@ -23,41 +23,6 @@ public class EntityFactory {
         .build();
   }
 
-  public Entity createSimpleSlider() {
-    return Entity.builder()
-        .id(entityIdFactory.newEntityId())
-        .movement(movementFactory.newSlidingMovement())
-        .brain(brainFactory.newSimpleBrain())
-        .build();
-  }
-
-  public Entity createRandomSlider() {
-    Entity entity = Entity.builder()
-        .id(entityIdFactory.newEntityId())
-        .movement(movementFactory.newSlidingMovement())
-        .build();
-    entity.setBrain(brainFactory.newRandomBrain(entity));
-    return entity;
-  }
-
-  public Entity createRandom() {
-    Entity entity = Entity.builder()
-        .id(entityIdFactory.newEntityId())
-        .movement(movementFactory.newVelocityMovement())
-        .build();
-    entity.setBrain(brainFactory.newRandomBrain(entity));
-    return entity;
-  }
-
-  public Entity createRandomAccelerating() {
-    Entity entity = Entity.builder()
-        .id(entityIdFactory.newEntityId())
-        .movement(movementFactory.newAccelerationMovement())
-        .build();
-    entity.setBrain(brainFactory.newRandomBrain(entity));
-    return entity;
-  }
-
   public Pickaxe newPickaxe() {
     Pickaxe pickaxe = new Pickaxe(movementFactory.newSimpleMovement(), brainFactory.newSimpleBrain());
     pickaxe.setId(entityIdFactory.newEntityId());

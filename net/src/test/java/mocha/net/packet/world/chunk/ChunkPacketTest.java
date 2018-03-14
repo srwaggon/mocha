@@ -7,7 +7,6 @@ import org.junit.Test;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.tile.TileFactory;
-import mocha.game.world.tile.TileType;
 import mocha.net.packet.PacketType;
 
 import static org.junit.Assert.assertEquals;
@@ -26,8 +25,10 @@ public class ChunkPacketTest {
     testChunk = chunkFactory.newRandomDefault();
 
     testObject = new ChunkPacket();
-    String[] data = new String[2];
-    data[1] = testChunk.buildTileData();
+    String[] data = new String[4];
+    data[1] = "32";
+    data[2] = "64";
+    data[3] = testChunk.buildTileData();
     testObject.build(data);
   }
 
@@ -40,18 +41,6 @@ public class ChunkPacketTest {
   public void construct_ContainsMapCode_AsZeroethPhrase() {
     assertEquals(PacketType.CHUNK.name(), testObject.getData()[0]);
     assertEquals(PacketType.CHUNK.name(), getPhrase(0));
-  }
-
-  @Test
-  public void construct_ContainsTileData_AsFirstPhrase() {
-    int index = 1;
-
-    StringBuilder tilesBuilder = new StringBuilder();
-    for (TileType tile : testChunk.getTiles()) {
-      tilesBuilder.append(tile.getSymbol());
-    }
-
-    assertEquals(tilesBuilder.toString(), getPhrase(index));
   }
 
   private String getPhrase(int index) {

@@ -42,7 +42,7 @@ public class Game implements Tickable {
     List<Chunk> activeChunks = Lists.newLinkedList();
     for (int y = -1; y <= 1; y++) {
       for (int x = -1; x <= 1; x++) {
-        Location chunkLocation = playerLocation.add(x * Chunk.getWidth(), y * Chunk.getHeight());
+        Location chunkLocation = playerLocation.addNew(x * Chunk.getWidth(), y * Chunk.getHeight());
         world.getChunkAt(chunkLocation).ifPresent(activeChunks::add);
       }
     }

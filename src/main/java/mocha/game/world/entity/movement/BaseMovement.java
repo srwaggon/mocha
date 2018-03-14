@@ -10,7 +10,7 @@ import mocha.game.world.entity.movement.collision.Collision;
 
 public class BaseMovement extends SimpleMovement {
 
-  private final Map<Direction, Runnable> moveMap = Maps.newHashMap();
+  private final Map<Direction, Runnable> moveMap = Maps.newConcurrentMap();
 
   BaseMovement(Location location, Collision collision) {
     super(location, collision);

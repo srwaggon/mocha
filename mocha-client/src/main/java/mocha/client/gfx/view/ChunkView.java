@@ -3,12 +3,11 @@ package mocha.client.gfx.view;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
+import mocha.client.gfx.TileSpriteSelector;
 import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.game.Game;
-import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.tile.TileType;
-import mocha.client.gfx.TileSpriteSelector;
 
 public class ChunkView extends Group {
 
@@ -38,32 +37,12 @@ public class ChunkView extends Group {
     getChildren().add(tileCanvas);
   }
 
-  public void render(int x, int y) {
-//    this.setLayoutX(getChunkXOffset(x));
-//    this.setLayoutY(getChunkYOffset(y));
+  public void render() {
     drawTiles();
   }
 
-  private int getChunkXOffset(int x) {
-    int playerX = Location.at(0, 0).getXAsInt() % Chunk.getWidth();
-    int playerOffsetX = -1 * ((Chunk.getWidth() + playerX) % Chunk.getWidth());
-    int xOffset = x * Chunk.getWidth() + getCanvasXOffset();
-    return playerOffsetX + xOffset;
-  }
-
-  private int getChunkYOffset(int y) {
-    int playerY = Location.at(0, 0).getYAsInt() % Chunk.getHeight();
-    int playerOffsetY = -1 * ((Chunk.getHeight() + playerY) % Chunk.getHeight());
-    int yOffset = y * Chunk.getHeight() + getCanvasYOffset();
-    return playerOffsetY + yOffset;
-  }
-
-  private int getCanvasXOffset() {
-    return 512 / 2;
-  }
-
-  private int getCanvasYOffset() {
-    return 512 / 2;
+  public void setChunk(Chunk chunk) {
+    this.chunk = chunk;
   }
 
   private void drawTiles() {

@@ -12,9 +12,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
-import mocha.client.gfx.RenderLoop;
+import mocha.game.GameLoop;
 import mocha.game.world.Location;
-import mocha.game.world.chunk.Chunk;
 import mocha.net.Connection;
 import mocha.net.MochaConnection;
 import mocha.net.PacketListener;
@@ -46,12 +45,12 @@ public class Client implements Runnable {
   private ClientPacketHandler clientPacketHandler;
 
   @Inject
-  private RenderLoop renderLoop;
+  private GameLoop gameLoop;
 
   @PostConstruct
   public void init() {
+    executorService.submit(() -> gameLoop.start());
     executorService.submit(this);
-    renderLoop.start();
   }
 
   @Override
@@ -71,30 +70,21 @@ public class Client implements Runnable {
   }
 
   private void execute(MochaConnection mochaConnection) {
-    Location chunk0 = new Location(-Chunk.getWidth(), -Chunk.getHeight());
-    Location chunk1 = new Location(-Chunk.getWidth(), 0);
-    Location chunk2 = new Location(0, -Chunk.getHeight());
-    Location chunk3 = new Location(0, 0);
-
-    eventBus.post(new SendPacketEvent(packetFactory.newChunkRequestPacket(chunk0)));
-    eventBus.post(new SendPacketEvent(packetFactory.newChunkRequestPacket(chunk1)));
-    eventBus.post(new SendPacketEvent(packetFactory.newChunkRequestPacket(chunk2)));
-    eventBus.post(new SendPacketEvent(packetFactory.newChunkRequestPacket(chunk3)));
-
-    eventBus.post(new SendPacketEvent(packetFactory.newRequestEntitiesInChunkPacket(chunk0)));
-    eventBus.post(new SendPacketEvent(packetFactory.newRequestEntitiesInChunkPacket(chunk1)));
-    eventBus.post(new SendPacketEvent(packetFactory.newRequestEntitiesInChunkPacket(chunk2)));
-    eventBus.post(new SendPacketEvent(packetFactory.newRequestEntitiesInChunkPacket(chunk3)));
-
-    while (mochaConnection.isConnected()) {
-      nap();
-    }
+//    while (mochaConnection.isConnected()) {
+    nap();
+    requestMapData(new Location(0, 0));
+//    }
     log.info("Lost connection with " + mochaConnection);
+  }
+
+  private void requestMapData(Location location) {
+    eventBus.post(new SendPacketEvent(packetFactory.newChunkRequestPacket(location)));
+    eventBus.post(new SendPacketEvent(packetFactory.newRequestEntitiesInChunkPacket(location)));
   }
 
   private void nap() {
     try {
-      Thread.sleep(10);
+      Thread.sleep(2000);
     } catch (InterruptedException interruptedException) {
       log.error("Client .. something interrupted", interruptedException);
     }

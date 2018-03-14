@@ -22,14 +22,14 @@ public enum InputKey {
   }
 
   public void down() {
-    // TODO: perhaps down should be a noop if it's already down?
-    // TODO: clicks should only increase if the key is not already down
     clicks++;
     pressed = true;
+    isDown = true;
   }
 
   public void up() {
     pressed = false;
+    isDown = false;
   }
 
   public void tick() {

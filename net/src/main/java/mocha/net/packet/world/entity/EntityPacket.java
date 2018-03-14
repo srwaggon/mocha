@@ -51,9 +51,15 @@ public class EntityPacket extends AbstractPacket {
   }
 
   public Location getLocation() {
-    int x = Integer.parseInt(data[2]);
-    int y = Integer.parseInt(data[3]);
-    return new Location(x, y);
+    return new Location(getX(), getY());
+  }
+
+  public int getY() {
+    return Integer.parseInt(data[3]);
+  }
+
+  public int getX() {
+    return Integer.parseInt(data[2]);
   }
 
   public int getId() {

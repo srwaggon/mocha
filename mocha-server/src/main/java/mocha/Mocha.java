@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import mocha.game.GameLoop;
-//import mocha.mocha.gfx.RenderLoop;
 import mocha.server.Server;
 
 @Component

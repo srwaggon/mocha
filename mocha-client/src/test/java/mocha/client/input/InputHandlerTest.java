@@ -1,7 +1,5 @@
 package mocha.client.input;
 
-import com.google.common.eventbus.EventBus;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import mocha.client.MochaClientEventBus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -19,8 +18,10 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 public class InputHandlerTest {
 
-  @Mock private EventBus eventBus;
-  @Captor private ArgumentCaptor<KeyDownEvent> keyDownEventCaptor;
+  @Mock
+  private MochaClientEventBus eventBus;
+  @Captor
+  private ArgumentCaptor<KeyDownEvent> keyDownEventCaptor;
   private InputHandler testObject;
 
   @Before

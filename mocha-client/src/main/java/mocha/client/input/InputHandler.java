@@ -43,12 +43,20 @@ public class InputHandler {
   }
 
   private void down(InputKey inputKey) {
-    inputKey.down();
-    eventBus.keyDown(inputKey);
+    if (!inputKey.isDown()) {
+      inputKey.down();
+      eventBus.keyDown(inputKey);
+    }
+  }
+
+  private void up(InputKey inputKey) {
+    if (inputKey.isDown()) {
+      inputKey.up();
+    }
   }
 
   private void up(KeyCode keyCode) {
-    Optional.ofNullable(keyMap.get(keyCode)).ifPresent(InputKey::up);
+    Optional.ofNullable(keyMap.get(keyCode)).ifPresent(this::up);
   }
 
   public EventHandler<KeyEvent> getKeyPressedHandler() {

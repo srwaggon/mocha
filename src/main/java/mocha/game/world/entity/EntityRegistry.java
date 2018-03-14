@@ -1,13 +1,14 @@
 package mocha.game.world.entity;
 
+import com.google.common.collect.Maps;
+
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 public class EntityRegistry {
-  private Map<Integer, Entity> entities = new HashMap<>();
+  private Map<Integer, Entity> entities = Maps.newConcurrentMap();
 
   public Collection<Entity> getEntities() {
     return entities.values();

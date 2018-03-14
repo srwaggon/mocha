@@ -65,7 +65,7 @@ public class ServerConfiguration {
   @Bean
   public Game game(World world, List<GameRule> gameRules, EntityFactory entityFactory, EntityRegistry entityRegistry) {
     Game game = new Game(world, gameRules, entityRegistry);
-    game.add(entityFactory.createSimpleSlider());
+    game.add(entityFactory.createSimple());
     return game;
   }
 
@@ -95,8 +95,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public MovementFactory movementFactory(CollisionFactory collisionFactory, EventBus eventBus) {
-    return new MovementFactory(collisionFactory, eventBus);
+  public MovementFactory movementFactory(CollisionFactory collisionFactory) {
+    return new MovementFactory(collisionFactory);
   }
 
   @Bean
@@ -121,6 +121,6 @@ public class ServerConfiguration {
 
   @Bean
   public ExecutorService executorService() {
-    return Executors.newFixedThreadPool(8);
+    return Executors.newFixedThreadPool(2);
   }
 }

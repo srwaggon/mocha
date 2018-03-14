@@ -50,18 +50,21 @@ public class MochaClientGame extends Game {
 
   private void createEntityIfAbsent(Entity entityUpdate) {
     if (!entityRegistry.getIds().contains(entityUpdate.getId())) {
-      Entity entity = entityFactory.createSimpleSlider();
+      Entity entity = entityFactory.createSimple();
       entity.setId(entityUpdate.getId());
+      entity.getMovement().getLocation().set(entityUpdate.getMovement().getLocation());
       eventBus.addEntity(entity);
     }
   }
 
   @Subscribe
   public void handle(KeyDownEvent keyDownEvent) {
-    entityRegistry.get(0)
-        .map(entity -> getEntityMove(keyDownEvent, entity))
-        .ifPresent(entityMove ->
-            entityMove.ifPresent(eventBus::sendMoveRequest));
+    entityRegistry.get(0).ifPresent(entity -> {
+          Optional<EntityMove> optionalEntityMove = getEntityMove(keyDownEvent, entity);
+          optionalEntityMove.ifPresent(entityMove -> entity.getMovement().handle(entityMove));
+          optionalEntityMove.ifPresent(eventBus::sendMoveRequest);
+        }
+    );
   }
 
   private Optional<EntityMove> getEntityMove(KeyDownEvent keyDownEvent, Entity entity) {

@@ -47,7 +47,7 @@ public class ServerPacketHandler extends SimplePacketHandler {
   }
 
   private void sendEntityUpdate(Entity entity) {
-    mochaConnection.sendPacket(packetFactory.newEntityPacket(entity));
+    mochaConnection.sendPacket(packetFactory.entityPacket(entity));
   }
 
   @Subscribe

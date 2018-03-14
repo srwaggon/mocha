@@ -22,7 +22,7 @@ public class PacketFactory {
     return new RequestEntitiesInChunkPacket(location);
   }
 
-  public EntityPacket newEntityPacket(Entity entity) {
+  public EntityPacket entityPacket(Entity entity) {
     return new EntityPacket(entity);
   }
 }

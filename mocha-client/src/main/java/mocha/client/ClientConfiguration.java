@@ -6,7 +6,6 @@ import com.google.common.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InjectionPoint;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -16,6 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import mocha.game.Game;
+import mocha.game.GameLoop;
 import mocha.game.rule.BrainRule;
 import mocha.game.rule.GameRule;
 import mocha.game.rule.MovementRule;
@@ -25,7 +25,6 @@ import mocha.game.world.Location;
 import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
-import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.EntityIdFactory;
 import mocha.game.world.entity.EntityRegistry;
@@ -69,8 +68,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public MovementFactory movementFactory(CollisionFactory collisionFactory, EventBus eventBus) {
-    return new MovementFactory(collisionFactory, eventBus);
+  public MovementFactory movementFactory(CollisionFactory collisionFactory) {
+    return new MovementFactory(collisionFactory);
   }
 
   @Bean
@@ -96,6 +95,11 @@ public class ClientConfiguration {
   }
 
   @Bean
+  public GameLoop getGameLoop(Game game) {
+    return new GameLoop(game);
+  }
+
+  @Bean
   public List<GameRule> getRules(World world, EventBus eventBus) {
     MovementRule movementRule = new MovementRule();
     eventBus.register(movementRule);
@@ -116,7 +120,7 @@ public class ClientConfiguration {
 
   @Bean
   public ExecutorService executorService() {
-    return Executors.newFixedThreadPool(8);
+    return Executors.newFixedThreadPool(2);
   }
 
   @Bean
