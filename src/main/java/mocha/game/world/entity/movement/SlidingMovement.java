@@ -6,8 +6,8 @@ import mocha.game.world.tile.TileType;
 
 public class SlidingMovement extends BaseMovement {
 
-  private static final int WALK_SPEED = 4;
-  private static final int RUN_SPEED = 8;
+  private static final int WALK_SPEED = 1;
+  private static final int RUN_SPEED = 2;
 
 
   private boolean isMoving = false;

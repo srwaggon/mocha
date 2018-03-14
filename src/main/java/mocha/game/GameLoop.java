@@ -5,7 +5,7 @@ import javafx.animation.AnimationTimer;
 
 public class GameLoop extends AnimationTimer {
   private static final double NANOSECONDS_PER_SECOND = 1000000000.0;
-  private static final int TICKS_PER_SECOND = 30;
+  private static final int TICKS_PER_SECOND = 60;
   private Game game;
   private long previousTime;
   private double unprocessed = 0.0;
