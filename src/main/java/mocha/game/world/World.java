@@ -24,7 +24,7 @@ public class World {
   }
 
   public void add(Entity entity) {
-    getChunkAt(entity.getMovement().getLocation()).ifPresent(chunk -> chunk.add(entity));
+    getChunkAt(entity.getLocation()).ifPresent(chunk -> chunk.add(entity));
   }
 
   public Chunk put(Location location, Chunk chunk) {

@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Queue;
 
 import mocha.game.Game;
-import mocha.game.world.entity.Entity;
 import mocha.game.event.world.entity.movement.MovementEvent;
+import mocha.game.world.entity.Entity;
 
 public class MovementRule implements GameRule {
 
@@ -24,16 +24,16 @@ public class MovementRule implements GameRule {
         .forEach(movement -> movement.tick(0L));
 
     activeEntities.forEach(entity ->
-        game.getWorld().getChunkAt(entity.getMovement().getLocation())
+        game.getWorld().getChunkAt(entity.getLocation())
             .ifPresent(chunk -> chunk.remove(entity)));
 
     while (!movementEvents.isEmpty()) {
       MovementEvent movementEvent = movementEvents.poll();
-      movementEvent.getMovement().setLocation(movementEvent.getLocation());
+      movementEvent.getLocation().set(movementEvent.getLocation());
     }
 
     activeEntities.forEach(entity ->
-        game.getWorld().getChunkAt(entity.getMovement().getLocation())
+        game.getWorld().getChunkAt(entity.getLocation())
             .ifPresent(chunk -> chunk.add(entity)));
   }
 

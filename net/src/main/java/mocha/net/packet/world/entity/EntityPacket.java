@@ -15,7 +15,7 @@ public class EntityPacket extends AbstractPacket {
 
   public EntityPacket(Entity entity) {
     this.data[0] = getType().name();
-    Location location = entity.getMovement().getLocation();
+    Location location = entity.getLocation();
     this.data[1] = "" + entity.getId();
     this.data[2] = "" + location.getXAsInt();
     this.data[3] = "" + location.getYAsInt();
@@ -40,14 +40,13 @@ public class EntityPacket extends AbstractPacket {
   }
 
   public Entity getEntity() {
-    SimpleCollision collision = new SimpleCollision();
-    SimpleMovement movement = new SimpleMovement(getLocation(), collision);
-    SimpleBrain brain = new SimpleBrain();
-    return Entity.builder()
+    Entity entity = Entity.builder()
         .id(getId())
-        .movement(movement)
-        .brain(brain)
+        .location(getLocation())
         .build();
+    entity.setBrain(new SimpleBrain());
+    entity.setMovement(new SimpleMovement(new SimpleCollision()));
+    return entity;
   }
 
   public Location getLocation() {

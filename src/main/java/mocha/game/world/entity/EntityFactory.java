@@ -1,7 +1,10 @@
 package mocha.game.world.entity;
 
+import mocha.game.world.Location;
 import mocha.game.world.entity.brain.BrainFactory;
+import mocha.game.world.entity.brain.SimpleBrain;
 import mocha.game.world.entity.movement.MovementFactory;
+import mocha.game.world.entity.movement.SimpleMovement;
 
 public class EntityFactory {
 
@@ -16,16 +19,22 @@ public class EntityFactory {
   }
 
   public Entity createSimple() {
-    return Entity.builder()
+    Entity entity = Entity.builder()
         .id(entityIdFactory.newEntityId())
-        .movement(movementFactory.newSimpleMovement())
-        .brain(brainFactory.newSimpleBrain())
+        .location(new Location())
         .build();
+    entity.setMovement(movementFactory.newSimpleMovement());
+    entity.setBrain(brainFactory.newSimpleBrain());
+    return entity;
   }
 
   public Pickaxe newPickaxe() {
-    Pickaxe pickaxe = new Pickaxe(movementFactory.newSimpleMovement(), brainFactory.newSimpleBrain());
+    SimpleMovement movement = movementFactory.newSimpleMovement();
+    SimpleBrain brain = brainFactory.newSimpleBrain();
+    Pickaxe pickaxe = new Pickaxe();
     pickaxe.setId(entityIdFactory.newEntityId());
+    pickaxe.setMovement(movement);
+    pickaxe.setBrain(brain);
     return pickaxe;
   }
 }

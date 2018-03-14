@@ -10,11 +10,11 @@ import java.util.Optional;
 import java.util.Queue;
 
 import mocha.game.Game;
+import mocha.game.event.world.entity.RemoveEntityEvent;
 import mocha.game.world.Location;
 import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
-import mocha.game.event.world.entity.RemoveEntityEvent;
 import mocha.game.world.entity.brain.PickUpItemEvent;
 
 public class PickUpItemsRule implements GameRule {
@@ -43,7 +43,7 @@ public class PickUpItemsRule implements GameRule {
   }
 
   private void pickUpItem(PickUpItemEvent pickUpItemEvent) {
-    Location entityLocation = pickUpItemEvent.getPickingUpEntity().getMovement().getLocation();
+    Location entityLocation = pickUpItemEvent.getPickingUpEntity().getLocation();
     Optional<Chunk> chunkMaybe = world.getChunkAt(entityLocation);
     if (!chunkMaybe.isPresent()) {
       return;

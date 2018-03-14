@@ -43,16 +43,15 @@ public class MochaClientGame extends Game {
   private void updateEntity(Entity entityUpdate) {
     entityRegistry.get(entityUpdate.getId())
         .ifPresent(entity ->
-            entity.getMovement()
-                .getLocation()
-                .set(entityUpdate.getMovement().getLocation()));
+            entity.getLocation()
+                .set(entityUpdate.getLocation()));
   }
 
   private void createEntityIfAbsent(Entity entityUpdate) {
     if (!entityRegistry.getIds().contains(entityUpdate.getId())) {
       Entity entity = entityFactory.createSimple();
       entity.setId(entityUpdate.getId());
-      entity.getMovement().getLocation().set(entityUpdate.getMovement().getLocation());
+      entity.getLocation().set(entityUpdate.getLocation());
       eventBus.addEntity(entity);
     }
   }

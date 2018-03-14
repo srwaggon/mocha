@@ -6,9 +6,9 @@ import com.google.common.eventbus.Subscribe;
 import java.util.Queue;
 
 import mocha.game.Game;
+import mocha.game.event.world.entity.RemoveEntityEvent;
 import mocha.game.world.Location;
 import mocha.game.world.World;
-import mocha.game.event.world.entity.RemoveEntityEvent;
 
 public class RemoveEntityRule implements GameRule {
 
@@ -28,7 +28,7 @@ public class RemoveEntityRule implements GameRule {
   }
 
   private void removeEntity(RemoveEntityEvent removeEntityEvent) {
-    Location entityLocation = removeEntityEvent.getEntity().getMovement().getLocation();
+    Location entityLocation = removeEntityEvent.getEntity().getLocation();
     world.getChunkAt(entityLocation)
         .ifPresent(chunk -> chunk.remove(removeEntityEvent.getEntity()));
   }

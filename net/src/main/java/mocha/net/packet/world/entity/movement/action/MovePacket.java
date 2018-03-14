@@ -1,7 +1,6 @@
 package mocha.net.packet.world.entity.movement.action;
 
 import mocha.game.world.Direction;
-import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.brain.SimpleBrain;
 import mocha.game.world.entity.movement.EntityMove;
@@ -45,14 +44,10 @@ public class MovePacket extends AbstractPacket {
   }
 
   public Entity getEntity() {
-    SimpleCollision collision = new SimpleCollision();
-    SimpleMovement movement = new SimpleMovement(Location.at(0, 0), collision);
-    SimpleBrain brain = new SimpleBrain();
-    return Entity.builder()
-        .id(getId())
-        .movement(movement)
-        .brain(brain)
-        .build();
+    Entity entity = Entity.builder().id(getId()).build();
+    entity.setMovement(new SimpleMovement(new SimpleCollision()));
+    entity.setBrain(new SimpleBrain());
+    return entity;
   }
 
   private Direction getDirection() {

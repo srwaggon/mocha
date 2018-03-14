@@ -58,8 +58,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public BrainFactory brainFactory(EventBus eventBus) {
-    return new BrainFactory(eventBus);
+  public BrainFactory brainFactory() {
+    return new BrainFactory();
   }
 
   @Bean

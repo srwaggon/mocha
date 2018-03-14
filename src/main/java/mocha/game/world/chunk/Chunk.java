@@ -89,7 +89,7 @@ public class Chunk {
   }
 
   public void add(Entity entity) {
-    Location entityLocation = boundToChunk(entity.getMovement().getLocation());
+    Location entityLocation = boundToChunk(entity.getLocation());
     int x = entityLocation.getXAsInt() / TileType.SIZE;
     int y = entityLocation.getYAsInt() / TileType.SIZE;
     int tileIndex = x + y * SIZE;
@@ -97,7 +97,7 @@ public class Chunk {
   }
 
   public void remove(Entity entity) {
-    Location entityLocation = boundToChunk(entity.getMovement().getLocation());
+    Location entityLocation = boundToChunk(entity.getLocation());
     int x = entityLocation.getXAsInt() / TileType.SIZE;
     int y = entityLocation.getYAsInt() / TileType.SIZE;
     int tileIndex = x + y * SIZE;

@@ -17,8 +17,8 @@ public class EntityView extends Canvas {
   }
 
   public void render() {
-    this.setLayoutX(entity.getMovement().getLocation().getX());
-    this.setLayoutY(entity.getMovement().getLocation().getY());
+    this.setLayoutX(entity.getLocation().getX());
+    this.setLayoutY(entity.getLocation().getY());
     this.setWidth(32);
     this.setHeight(32);
     Image sprite = spriteSheet.getSprite(entity.getSpriteId(), entity.getScale());
