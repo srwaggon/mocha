@@ -5,13 +5,11 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 
 import mocha.game.world.Direction;
-import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.collision.Collision;
 
 public class BaseMovement extends SimpleMovement {
 
   private final Map<Direction, Runnable> moveMap = Maps.newConcurrentMap();
-  protected Entity entity;
 
   BaseMovement(Collision collision) {
     super(collision);
@@ -24,11 +22,6 @@ public class BaseMovement extends SimpleMovement {
 
   public static BaseMovementBuilder builder() {
     return new BaseMovementBuilder();
-  }
-
-  @Override
-  public void setEntity(Entity entity) {
-    this.entity = entity;
   }
 
   @Override

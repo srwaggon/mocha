@@ -55,6 +55,6 @@ public class ServerPacketHandler extends SimplePacketHandler {
   public void handle(MovePacket movePacket) {
     Optional<Entity> optionalEntity = game.getEntityRegistry().get(movePacket.getId());
     optionalEntity.ifPresent(entity -> entity.getMovement().handle(movePacket.getMove()));
-    optionalEntity.ifPresent(this::sendEntityUpdate);
+//    optionalEntity.ifPresent(this::sendEntityUpdate);
   }
 }

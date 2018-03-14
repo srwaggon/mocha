@@ -28,6 +28,16 @@ public class EntityFactory {
     return entity;
   }
 
+  public Entity createSlider() {
+    Entity entity = Entity.builder()
+        .id(entityIdFactory.newEntityId())
+        .location(new Location())
+        .build();
+    entity.setMovement(movementFactory.newSlidingMovement());
+    entity.setBrain(brainFactory.newSimpleBrain());
+    return entity;
+  }
+
   public Pickaxe newPickaxe() {
     SimpleMovement movement = movementFactory.newSimpleMovement();
     SimpleBrain brain = brainFactory.newSimpleBrain();

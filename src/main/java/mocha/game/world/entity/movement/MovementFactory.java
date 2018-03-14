@@ -15,4 +15,8 @@ public class MovementFactory {
         .collision(collisionFactory.newSimpleCollision())
         .build();
   }
+
+  public SlidingMovement newSlidingMovement() {
+    return new SlidingMovement(collisionFactory.newSimpleCollision());
+  }
 }

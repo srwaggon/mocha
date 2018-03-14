@@ -66,7 +66,7 @@ public class ServerConfiguration {
   @Bean
   public Game game(World world, List<GameRule> gameRules, EntityFactory entityFactory, EntityRegistry entityRegistry) {
     Game game = new Game(world, gameRules, entityRegistry);
-    Entity simpleEntity = entityFactory.createSimple();
+    Entity simpleEntity = entityFactory.createSlider();
     game.add(simpleEntity);
     return game;
   }
