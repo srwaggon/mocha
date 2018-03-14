@@ -19,7 +19,6 @@ public class SlidingMovement extends BaseMovement {
     super(collision);
   }
 
-
   @Override
   public void up() {
     if (isMoving) {

@@ -1,11 +1,13 @@
 package mocha.game.world.chunk;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import lombok.Builder;
@@ -19,18 +21,14 @@ public class Chunk {
   public final static int SIZE = 16;
 
   private TileType[] tiles;
-  private List<List<Entity>> entities;
+  private Set<Entity> entities;
 
   public Chunk() {
     tiles = new TileType[Chunk.SIZE * Chunk.SIZE];
-    entities = Lists.newArrayList();
-
-    for (int i = 0; i < Chunk.SIZE * Chunk.SIZE; i++) {
-      entities.add(Lists.newArrayList());
-    }
+    entities = Sets.newHashSet();
   }
 
-  public Chunk(TileType[] tiles, List<List<Entity>> entities) {
+  public Chunk(TileType[] tiles, Set<Entity> entities) {
     this.tiles = tiles;
     this.entities = entities;
   }
@@ -60,14 +58,9 @@ public class Chunk {
   }
 
   public Optional<TileType> getTileAt(Location location) {
-    Location locationInChunk = boundToChunk(location);
-    return getTileAt(locationInChunk.getXAsInt(), locationInChunk.getYAsInt());
-  }
-
-  private Location boundToChunk(Location location) {
     int x = getXBoundToChunk(location);
     int y = getYBoundToChunk(location);
-    return new Location(x, y);
+    return getTileAt(x, y);
   }
 
   private int getXBoundToChunk(Location location) {
@@ -89,30 +82,21 @@ public class Chunk {
   }
 
   public void add(Entity entity) {
-    Location entityLocation = boundToChunk(entity.getLocation());
-    int x = entityLocation.getXAsInt() / TileType.SIZE;
-    int y = entityLocation.getYAsInt() / TileType.SIZE;
-    int tileIndex = x + y * SIZE;
-    entities.get(tileIndex).add(entity);
+    entities.add(entity);
   }
 
   public void remove(Entity entity) {
-    Location entityLocation = boundToChunk(entity.getLocation());
-    int x = entityLocation.getXAsInt() / TileType.SIZE;
-    int y = entityLocation.getYAsInt() / TileType.SIZE;
-    int tileIndex = x + y * SIZE;
-    entities.get(tileIndex).remove(entity);
+    entities.remove(entity);
   }
 
   public List<Entity> getEntities() {
-    List<Entity> allEntities = Lists.newArrayList();
-    entities.forEach(allEntities::addAll);
-    return allEntities;
+    return Lists.newArrayList(entities);
   }
 
   public List<Entity> getEntitiesAt(Location location) {
-    Location locationInChunk = boundToChunk(location);
-    return getEntitiesAt(locationInChunk.getXAsInt(), locationInChunk.getYAsInt());
+    int x = getXBoundToChunk(location);
+    int y = getYBoundToChunk(location);
+    return getEntitiesAt(x, y);
   }
 
   private List<Entity> getEntitiesAt(int x, int y) {
@@ -123,8 +107,8 @@ public class Chunk {
         : Collections.emptyList();
   }
 
-  private List<Entity> getEntities(int x, int y) {
+  private Set<Entity> getEntities(int x, int y) {
     int tileIndex = x + y * SIZE;
-    return entities.get(tileIndex);
+    return entities;
   }
 }

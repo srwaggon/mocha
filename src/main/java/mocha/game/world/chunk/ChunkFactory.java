@@ -1,11 +1,8 @@
 package mocha.game.world.chunk;
 
-import com.google.common.collect.Lists;
-
-import java.util.List;
+import com.google.common.collect.Sets;
 
 import lombok.Builder;
-import mocha.game.world.entity.Entity;
 import mocha.game.world.tile.TileFactory;
 import mocha.game.world.tile.TileType;
 
@@ -23,23 +20,15 @@ public class ChunkFactory {
   public Chunk newGrid() {
     return Chunk.builder()
         .tiles(createGridTiles(Chunk.SIZE, Chunk.SIZE))
-        .entities(createTileEntities())
+        .entities(Sets.newHashSet())
         .build();
   }
 
   public Chunk newRandomDefault() {
     return Chunk.builder()
         .tiles(createRandomTiles())
-        .entities(createTileEntities())
+        .entities(Sets.newHashSet())
         .build();
-  }
-
-  private List<List<Entity>> createTileEntities() {
-    List<List<Entity>> entities = Lists.newArrayList();
-    for (int i = 0; i < Chunk.SIZE * Chunk.SIZE; i++) {
-      entities.add(Lists.newArrayList());
-    }
-    return entities;
   }
 
   private TileType[] createGridTiles(int columns, int rows) {
@@ -78,7 +67,7 @@ public class ChunkFactory {
 
     return Chunk.builder()
         .tiles(tiles)
-        .entities(createTileEntities())
+        .entities(Sets.newHashSet())
         .build();
   }
 }
