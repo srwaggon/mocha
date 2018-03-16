@@ -37,7 +37,6 @@ public class GameLoop extends AnimationTimer {
     while (unprocessed >= 1) {
       game.tick(now);
       unprocessed -= 1.0;
-      System.out.println(unprocessed);
     }
   }
 }

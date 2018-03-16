@@ -11,8 +11,8 @@ public class LocationTest {
 
   @Test
   public void equals_ReturnsTrueWhenTheXsAndYsMatch() {
-    double x = 40.0;
-    double y = 69468468468.18949894;
+    int x = 40;
+    int y = 694684688;
     Location other = new Location(x, y);
     testObject.setX(x);
     testObject.setY(y);
@@ -22,8 +22,8 @@ public class LocationTest {
 
   @Test
   public void equals_ReturnsFalseWhenTheXsDoNotMatch() {
-    double x = 40.0;
-    double y = 69468468468.18949894;
+    int x = 40;
+    int y = 69468468;
     Location other = new Location(x, y);
     testObject.setX(x + 1);
     testObject.setY(y);
@@ -33,11 +33,11 @@ public class LocationTest {
 
   @Test
   public void equals_ReturnsFalseWhenTheYsDoNotMatch() {
-    double x = 40.0;
-    double y = 69468468468.18949894;
+    int x = 40;
+    int y = 69468468;
     Location other = new Location(x, y);
     testObject.setX(x);
-    testObject.setY(y + 789416816345.0);
+    testObject.setY(y + 789416816);
 
     assertFalse(testObject.equals(other));
   }

@@ -35,7 +35,6 @@ public enum PacketType {
       resolvedPacket.build(packet.getData());
       return resolvedPacket;
     } catch (InstantiationException | IllegalAccessException ignored) {
-      System.out.println(ignored);
     }
     return packet;
   }

@@ -24,26 +24,26 @@ public class HitBoxCollision extends SimpleCollision {
   }
 
   private Location topLeft(Location location) {
-    double y = location.getY();
-    double x = location.getX();
+    int y = location.getY();
+    int x = location.getX();
     return new Location(x, y);
   }
 
   private Location topRight(Location location) {
-    double x = location.getX() + this.getWidth() - 1;
-    double y = location.getY();
+    int x = location.getX() + this.getWidth() - 1;
+    int y = location.getY();
     return new Location(x, y);
   }
 
   private Location bottomLeft(Location location) {
-    double x = location.getX();
-    double y = location.getY() + this.getHeight() - 1;
+    int x = location.getX();
+    int y = location.getY() + this.getHeight() - 1;
     return new Location(x, y);
   }
 
   private Location bottomRight(Location location) {
-    double x = location.getX() + this.getWidth() - 1;
-    double y = location.getY() + this.getHeight() - 1;
+    int x = location.getX() + this.getWidth() - 1;
+    int y = location.getY() + this.getHeight() - 1;
     return new Location(x, y);
   }
 }
