@@ -17,6 +17,6 @@ public class MovementFactory {
   }
 
   public SlidingMovement newSlidingMovement() {
-    return new SlidingMovement(collisionFactory.newSimpleCollision());
+    return new SlidingMovement(collisionFactory.newHitBoxCollision());
   }
 }

@@ -1,6 +1,7 @@
 package mocha.game.world.entity.movement;
 
 import mocha.game.world.Direction;
+import mocha.game.world.Location;
 import mocha.game.world.entity.movement.collision.Collision;
 import mocha.game.world.tile.TileType;
 
@@ -66,6 +67,12 @@ public class SlidingMovement extends BaseMovement {
     int yDelta = WALK_SPEED * direction.getYMultiplier();
     xOffset -= xDelta;
     yOffset -= yDelta;
-    getLocation().add(xDelta, yDelta);
+
+    Location next = getLocation().addNew(xDelta, yDelta);
+
+    if (!collision.collides(next)) {
+      getLocation().set(next);
+    }
+
   }
 }

@@ -1,7 +1,5 @@
 package mocha.server;
 
-import com.google.common.eventbus.EventBus;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +15,7 @@ import mocha.net.Connection;
 import mocha.net.MochaConnection;
 import mocha.net.PacketListener;
 import mocha.net.PacketListenerFactory;
+import mocha.net.event.NetworkedMochaEventBus;
 
 @Component
 @Slf4j
@@ -27,7 +26,7 @@ public class Server implements Runnable {
   @Inject
   private PacketListenerFactory packetListenerFactory;
   @Inject
-  private EventBus eventBus;
+  private NetworkedMochaEventBus eventBus;
 
   @Inject
   private ServerPacketHandlerFactory serverPacketHandlerFactory;
@@ -74,6 +73,8 @@ public class Server implements Runnable {
     log.info("Receiving connection from " + socket.getInetAddress().toString());
     Connection connection = new Connection(socket);
     MochaConnection mochaConnection = new MochaConnection(connection);
+
+    eventBus.connected(mochaConnection);
 
     serverPacketHandlerFactory.newServerPacketHandler(mochaConnection);
 

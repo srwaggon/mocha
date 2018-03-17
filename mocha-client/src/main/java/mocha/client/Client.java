@@ -72,8 +72,8 @@ public class Client implements Runnable {
 
   private void execute(MochaConnection mochaConnection) {
 //    while (mochaConnection.isConnected()) {
-    nap();
     requestMapData(new Location(0, 0));
+    nap();
 //    }
     log.info("Lost connection with " + mochaConnection);
   }
@@ -85,7 +85,7 @@ public class Client implements Runnable {
 
   private void nap() {
     try {
-      Thread.sleep(2000);
+      Thread.sleep(50);
     } catch (InterruptedException interruptedException) {
       log.error("Client .. something interrupted", interruptedException);
     }
