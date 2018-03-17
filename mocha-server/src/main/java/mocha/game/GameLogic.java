@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import mocha.net.event.ConnectedEvent;
+import mocha.net.event.DisconnectedEvent;
 import mocha.net.event.NetworkedMochaEventBus;
 
 @Component
@@ -15,6 +16,9 @@ public class GameLogic {
 
   @Inject
   private NetworkedMochaEventBus networkedMochaEventBus;
+
+  @Inject
+  private PlayerFactory playerFactory;
 
   @Inject
   private Registry<Player> playerRegistry;
@@ -26,6 +30,12 @@ public class GameLogic {
 
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
+    Player player = playerFactory.newPlayer(connectedEvent.getMochaConnection());
+    playerRegistry.add(player);
+  }
+
+  @Subscribe
+  public void handle(DisconnectedEvent disconnectedEvent) {
 
   }
 }

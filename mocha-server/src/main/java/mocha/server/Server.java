@@ -80,7 +80,7 @@ public class Server implements Runnable {
     PacketConnection packetConnection = new PacketConnection(connection);
     MochaConnection mochaConnection = new MochaConnection(packetConnection, packetFactory);
 
-    eventBus.connected(packetConnection);
+    eventBus.connected(mochaConnection);
 
     serverPacketHandlerFactory.newServerPacketHandler(mochaConnection);
 

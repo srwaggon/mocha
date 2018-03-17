@@ -11,17 +11,17 @@ public class EntityFactory {
 
   private BrainFactory brainFactory;
   private MovementFactory movementFactory;
-  private IdFactory idFactory;
+  private IdFactory<Entity> entityIdFactory;
 
-  public EntityFactory(BrainFactory brainFactory, MovementFactory movementFactory, IdFactory idFactory) {
+  public EntityFactory(BrainFactory brainFactory, MovementFactory movementFactory, IdFactory<Entity> entityIdFactory) {
     this.brainFactory = brainFactory;
     this.movementFactory = movementFactory;
-    this.idFactory = idFactory;
+    this.entityIdFactory = entityIdFactory;
   }
 
   public Entity createSimple() {
     Entity entity = Entity.builder()
-        .id(idFactory.newId())
+        .id(entityIdFactory.newId())
         .location(new Location())
         .build();
     entity.setMovement(movementFactory.newSimpleMovement());
@@ -31,7 +31,7 @@ public class EntityFactory {
 
   public Entity createSlider() {
     Entity entity = Entity.builder()
-        .id(idFactory.newId())
+        .id(entityIdFactory.newId())
         .location(new Location())
         .build();
     entity.setMovement(movementFactory.newSlidingMovement());
@@ -41,7 +41,7 @@ public class EntityFactory {
 
   public Entity createRandomSlider() {
     Entity entity = Entity.builder()
-        .id(idFactory.newId())
+        .id(entityIdFactory.newId())
         .location(new Location())
         .build();
     entity.setMovement(movementFactory.newSlidingMovement());
@@ -53,7 +53,7 @@ public class EntityFactory {
     SimpleMovement movement = movementFactory.newSimpleMovement();
     SimpleBrain brain = brainFactory.newSimpleBrain();
     Pickaxe pickaxe = new Pickaxe();
-    pickaxe.setId(idFactory.newId());
+    pickaxe.setId(entityIdFactory.newId());
     pickaxe.setMovement(movement);
     pickaxe.setBrain(brain);
     return pickaxe;
