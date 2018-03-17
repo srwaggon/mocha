@@ -19,7 +19,6 @@ import mocha.game.rule.PickUpItemsRule;
 import mocha.game.rule.RemoveEntityRule;
 import mocha.game.world.World;
 import mocha.game.world.chunk.ChunkFactory;
-import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.EntityIdFactory;
 import mocha.game.world.entity.EntityRegistry;
@@ -66,8 +65,7 @@ public class ServerConfiguration {
   @Bean
   public Game game(World world, List<GameRule> gameRules, EntityFactory entityFactory, EntityRegistry entityRegistry) {
     Game game = new Game(world, gameRules, entityRegistry);
-    Entity simpleEntity = entityFactory.createSlider();
-    game.add(simpleEntity);
+    game.add(entityFactory.createSlider());
     return game;
   }
 

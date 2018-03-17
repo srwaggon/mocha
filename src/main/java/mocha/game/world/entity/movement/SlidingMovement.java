@@ -9,8 +9,6 @@ public class SlidingMovement extends BaseMovement {
   private static final int WALK_SPEED = 1;
   private static final int RUN_SPEED = 2;
 
-
-  private boolean isMoving = false;
   private Direction direction;
   private int xOffset = 0;
   private int yOffset = 0;
@@ -21,17 +19,16 @@ public class SlidingMovement extends BaseMovement {
 
   @Override
   public void up() {
-    if (isMoving) {
+    if (isMoving()) {
       return;
     }
     this.direction = Direction.NORTH;
     this.yOffset = direction.getYMultiplier() * TileType.SIZE;
-    isMoving = true;
   }
 
   @Override
   public void down() {
-    if (isMoving) {
+    if (isMoving()) {
       return;
     }
     this.direction = Direction.SOUTH;
@@ -40,7 +37,7 @@ public class SlidingMovement extends BaseMovement {
 
   @Override
   public void left() {
-    if (isMoving) {
+    if (isMoving()) {
       return;
     }
     this.direction = Direction.WEST;
@@ -49,7 +46,7 @@ public class SlidingMovement extends BaseMovement {
 
   @Override
   public void right() {
-    if (isMoving) {
+    if (isMoving()) {
       return;
     }
     this.direction = Direction.EAST;
@@ -58,10 +55,13 @@ public class SlidingMovement extends BaseMovement {
 
   @Override
   public void tick(long now) {
-    isMoving = xOffset != 0 || yOffset != 0;
-    if (isMoving) {
+    if (isMoving()) {
       updateLocation();
     }
+  }
+
+  private boolean isMoving() {
+    return xOffset != 0 || yOffset != 0;
   }
 
   private void updateLocation() {
