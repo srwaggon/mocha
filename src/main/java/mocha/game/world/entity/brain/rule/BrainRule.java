@@ -1,6 +1,7 @@
-package mocha.game.rule;
+package mocha.game.world.entity.brain.rule;
 
 import mocha.game.Game;
+import mocha.game.rule.GameRule;
 import mocha.game.world.entity.Entity;
 
 public class BrainRule implements GameRule {

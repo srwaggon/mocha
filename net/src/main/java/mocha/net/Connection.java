@@ -35,7 +35,9 @@ public class Connection {
 
   public String readLine() throws DisconnectedException {
     try {
-      return in.nextLine();
+      String nextLine = in.nextLine();
+      System.out.println("reading: " + nextLine);
+      return nextLine;
     } catch (NoSuchElementException e) {
       this.disconnect();
       throw new DisconnectedException(e);
@@ -54,6 +56,7 @@ public class Connection {
   }
 
   public void send(String message) {
+    System.out.println("Sending: " + message);
     out.println(message);
     out.flush();
   }

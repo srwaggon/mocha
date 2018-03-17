@@ -25,8 +25,8 @@ public class Entity {
 
   public String toString() {
     return "{" +
-        "\"id\":" + this.getId() + ", " +
-        "\"location\": " + this.getLocation() +
+        "\"id\":" + id + ", " +
+        "\"location\": " + location +
         "}";
   }
 

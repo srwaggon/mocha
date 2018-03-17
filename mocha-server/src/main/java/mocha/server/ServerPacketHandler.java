@@ -2,14 +2,14 @@ package mocha.server;
 
 import com.google.common.eventbus.Subscribe;
 
-import java.util.Optional;
-
 import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.movement.event.EntityMovementEvent;
 import mocha.net.MochaConnection;
 import mocha.net.SimplePacketHandler;
+import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.world.chunk.RequestChunkPacket;
 import mocha.net.packet.world.entity.RequestEntitiesInChunkPacket;
@@ -19,11 +19,18 @@ public class ServerPacketHandler extends SimplePacketHandler {
   private MochaConnection mochaConnection;
   private PacketFactory packetFactory;
   private Game game;
+  private NetworkedMochaEventBus networkedMochaEventBus;
 
-  ServerPacketHandler(MochaConnection mochaConnection, PacketFactory packetFactory, Game game) {
+  ServerPacketHandler(MochaConnection mochaConnection, PacketFactory packetFactory, Game game, NetworkedMochaEventBus networkedMochaEventBus) {
     this.mochaConnection = mochaConnection;
     this.packetFactory = packetFactory;
     this.game = game;
+    this.networkedMochaEventBus = networkedMochaEventBus;
+  }
+
+  @Subscribe
+  public void handleMoveEvent(EntityMovementEvent entityMovementEvent) {
+    mochaConnection.sendPacket(packetFactory.entityPacket(entityMovementEvent.getMovement().getEntity()));
   }
 
   @Subscribe
@@ -53,8 +60,6 @@ public class ServerPacketHandler extends SimplePacketHandler {
   @Subscribe
   @Override
   public void handle(MovePacket movePacket) {
-    Optional<Entity> optionalEntity = game.getEntityRegistry().get(movePacket.getId());
-    optionalEntity.ifPresent(entity -> entity.getMovement().handle(movePacket.getMove()));
-    optionalEntity.ifPresent(this::sendEntityUpdate);
+    networkedMochaEventBus.post(movePacket.getMoveCommand());
   }
 }

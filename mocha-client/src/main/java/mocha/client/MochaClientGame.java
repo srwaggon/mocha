@@ -3,21 +3,16 @@ package mocha.client;
 import com.google.common.eventbus.Subscribe;
 
 import java.util.List;
-import java.util.Optional;
 
 import mocha.client.event.MochaClientEventBus;
-import mocha.client.input.InputKey;
-import mocha.client.input.event.KeyDownEvent;
 import mocha.game.Game;
 import mocha.game.rule.GameRule;
-import mocha.game.world.Direction;
 import mocha.game.world.World;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.EntityRegistry;
 import mocha.game.world.entity.event.AddEntityEvent;
 import mocha.game.world.entity.event.EntityUpdateEvent;
-import mocha.game.world.entity.movement.EntityMoveCommand;
 
 public class MochaClientGame extends Game {
   private final EntityFactory entityFactory;
@@ -55,33 +50,6 @@ public class MochaClientGame extends Game {
       entity.getLocation().set(entityUpdate.getLocation());
       eventBus.addEntity(entity);
     }
-  }
-
-  @Subscribe
-  public void handle(KeyDownEvent keyDownEvent) {
-    entityRegistry.get(0).ifPresent(entity -> {
-      Optional<EntityMoveCommand> optionalEntityMove = getEntityMove(keyDownEvent, entity);
-          optionalEntityMove.ifPresent(entityMove -> entity.getMovement().handle(entityMove));
-          optionalEntityMove.ifPresent(eventBus::sendMoveRequest);
-        }
-    );
-  }
-
-  private Optional<EntityMoveCommand> getEntityMove(KeyDownEvent keyDownEvent, Entity entity) {
-    return getDirection(keyDownEvent).map(direction -> new EntityMoveCommand(entity, direction));
-  }
-
-  private Optional<Direction> getDirection(KeyDownEvent keyDownEvent) {
-    if (keyDownEvent.getInputKey().equals(InputKey.UP)) {
-      return Optional.of(Direction.NORTH);
-    } else if (keyDownEvent.getInputKey().equals(InputKey.RIGHT)) {
-      return Optional.of(Direction.EAST);
-    } else if (keyDownEvent.getInputKey().equals(InputKey.DOWN)) {
-      return Optional.of(Direction.SOUTH);
-    } else if (keyDownEvent.getInputKey().equals(InputKey.LEFT)) {
-      return Optional.of(Direction.WEST);
-    }
-    return Optional.empty();
   }
 
 }

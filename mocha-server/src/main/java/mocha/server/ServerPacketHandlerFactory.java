@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import mocha.game.Game;
 import mocha.net.MochaConnection;
+import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.PacketFactory;
 
 @Component
@@ -22,8 +23,11 @@ public class ServerPacketHandlerFactory {
   @Inject
   private PacketFactory packetFactory;
 
+  @Inject
+  private NetworkedMochaEventBus networkedMochaEventBus;
+
   public void newServerPacketHandler(MochaConnection mochaConnection) {
-    ServerPacketHandler serverPacketHandler = new ServerPacketHandler(mochaConnection, packetFactory, game);
+    ServerPacketHandler serverPacketHandler = new ServerPacketHandler(mochaConnection, packetFactory, game, networkedMochaEventBus);
     eventBus.register(serverPacketHandler);
   }
 }

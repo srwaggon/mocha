@@ -1,11 +1,18 @@
 package mocha.net.event;
 
-import mocha.game.event.MochaEventbus;
+import mocha.game.event.MochaEventBus;
 import mocha.net.MochaConnection;
 import mocha.net.SendPacketEvent;
 import mocha.net.packet.Packet;
+import mocha.net.packet.PacketFactory;
 
-public class NetworkedMochaEventBus extends MochaEventbus {
+public class NetworkedMochaEventBus extends MochaEventBus {
+
+  private PacketFactory packetFactory;
+
+  public NetworkedMochaEventBus(PacketFactory packetFactory) {
+    this.packetFactory = packetFactory;
+  }
 
   public void connected(MochaConnection mochaConnection) {
     this.post(new ConnectedEvent(mochaConnection));

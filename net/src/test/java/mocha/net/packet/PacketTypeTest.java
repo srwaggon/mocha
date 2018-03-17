@@ -2,6 +2,8 @@ package mocha.net.packet;
 
 import org.junit.Test;
 
+import mocha.net.packet.message.GlobalMessagePacket;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class PacketTypeTest {

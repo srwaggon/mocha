@@ -41,7 +41,7 @@ public class InputHandlerTest {
     testObject.getKeyPressedHandler().handle(keyEvent);
 
     verify(eventBus).post(keyDownEventCaptor.capture());
-    assertThat(keyDownEventCaptor.getValue().getInputKey()).isEqualTo(InputKey.PICKUP);
+    assertThat(keyDownEventCaptor.getValue().getGameKey()).isEqualTo(GameKey.PICKUP);
   }
 
   private KeyEvent newKeyEvent(KeyCode keyCode) {

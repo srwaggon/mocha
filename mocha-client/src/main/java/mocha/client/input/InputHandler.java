@@ -27,31 +27,31 @@ public class InputHandler {
   @Inject
   private MochaClientEventBus eventBus;
 
-  private final Map<KeyCode, InputKey> keyMap = Maps.newHashMap();
+  private final Map<KeyCode, GameKey> keyMap = Maps.newHashMap();
 
   @PostConstruct
   public void init() {
-    keyMap.put(KeyCode.UP, InputKey.UP);
-    keyMap.put(KeyCode.RIGHT, InputKey.RIGHT);
-    keyMap.put(KeyCode.DOWN, InputKey.DOWN);
-    keyMap.put(KeyCode.LEFT, InputKey.LEFT);
-    keyMap.put(KeyCode.ENTER, InputKey.PICKUP);
+    keyMap.put(KeyCode.UP, GameKey.UP);
+    keyMap.put(KeyCode.RIGHT, GameKey.RIGHT);
+    keyMap.put(KeyCode.DOWN, GameKey.DOWN);
+    keyMap.put(KeyCode.LEFT, GameKey.LEFT);
+    keyMap.put(KeyCode.ENTER, GameKey.PICKUP);
   }
 
   private void down(KeyCode keyCode) {
     Optional.ofNullable(keyMap.get(keyCode)).ifPresent(this::down);
   }
 
-  private void down(InputKey inputKey) {
-    if (!inputKey.isDown()) {
-      inputKey.down();
-      eventBus.keyDown(inputKey);
+  private void down(GameKey gameKey) {
+    if (!gameKey.isDown()) {
+      gameKey.down();
+      eventBus.keyDown(gameKey);
     }
   }
 
-  private void up(InputKey inputKey) {
-    if (inputKey.isDown()) {
-      inputKey.up();
+  private void up(GameKey gameKey) {
+    if (gameKey.isDown()) {
+      gameKey.up();
     }
   }
 

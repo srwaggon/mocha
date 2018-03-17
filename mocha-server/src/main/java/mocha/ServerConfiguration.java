@@ -12,42 +12,43 @@ import java.util.concurrent.Executors;
 
 import mocha.game.Game;
 import mocha.game.GameLoop;
-import mocha.game.rule.BrainRule;
 import mocha.game.rule.GameRule;
-import mocha.game.rule.MovementRule;
-import mocha.game.rule.PickUpItemsRule;
-import mocha.game.rule.RemoveEntityRule;
 import mocha.game.world.World;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.EntityIdFactory;
 import mocha.game.world.entity.EntityRegistry;
 import mocha.game.world.entity.brain.BrainFactory;
+import mocha.game.world.entity.brain.rule.BrainRule;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
+import mocha.game.world.entity.movement.rule.MovementRule;
+import mocha.game.world.entity.rule.PickUpItemsRule;
+import mocha.game.world.entity.rule.RemoveEntityRule;
 import mocha.game.world.tile.TileFactory;
 import mocha.net.PacketListenerFactory;
 import mocha.net.PacketSenderFactory;
+import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.PacketFactory;
 
 @Configuration
 public class ServerConfiguration {
 
   @Bean
-  public EventBus getEventBus() {
-    return new EventBus();
+  public NetworkedMochaEventBus getEventBus(PacketFactory packetFactory) {
+    return new NetworkedMochaEventBus(packetFactory);
   }
 
   @Bean
-  public List<GameRule> getRules(World world, EventBus eventBus) {
-    MovementRule movementRule = new MovementRule();
-    eventBus.register(movementRule);
+  public List<GameRule> getRules(World world, NetworkedMochaEventBus networkedMochaEventBus) {
+    MovementRule movementRule = new MovementRule(networkedMochaEventBus);
+    networkedMochaEventBus.register(movementRule);
 
-    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(world, eventBus);
-    eventBus.register(pickUpItemsRule);
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(networkedMochaEventBus);
+    networkedMochaEventBus.register(pickUpItemsRule);
 
     RemoveEntityRule removeEntityRule = new RemoveEntityRule(world);
-    eventBus.register(removeEntityRule);
+    networkedMochaEventBus.register(removeEntityRule);
 
     return Lists.newArrayList(new BrainRule(), movementRule, pickUpItemsRule, removeEntityRule);
   }
@@ -65,7 +66,10 @@ public class ServerConfiguration {
   @Bean
   public Game game(World world, List<GameRule> gameRules, EntityFactory entityFactory, EntityRegistry entityRegistry) {
     Game game = new Game(world, gameRules, entityRegistry);
-    game.add(entityFactory.createSlider());
+    game.add(entityFactory.createRandomSlider());
+    game.add(entityFactory.createRandomSlider());
+    game.add(entityFactory.createRandomSlider());
+    game.add(entityFactory.createRandomSlider());
     return game;
   }
 

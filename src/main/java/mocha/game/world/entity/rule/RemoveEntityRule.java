@@ -1,4 +1,4 @@
-package mocha.game.rule;
+package mocha.game.world.entity.rule;
 
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
@@ -6,6 +6,7 @@ import com.google.common.eventbus.Subscribe;
 import java.util.Queue;
 
 import mocha.game.Game;
+import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
 import mocha.game.world.World;
 import mocha.game.world.entity.event.RemoveEntityEvent;

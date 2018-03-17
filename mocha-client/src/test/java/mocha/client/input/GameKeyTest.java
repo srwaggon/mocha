@@ -7,13 +7,13 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class InputKeyTest {
+public class GameKeyTest {
 
-  private InputKey testObject;
+  private GameKey testObject;
 
   @Before
   public void setUp() {
-    testObject = InputKey.UNBOUND;
+    testObject = GameKey.UNBOUND;
   }
 
   @After

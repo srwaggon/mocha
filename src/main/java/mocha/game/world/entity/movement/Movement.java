@@ -1,9 +1,11 @@
 package mocha.game.world.entity.movement;
 
 import mocha.game.Tickable;
+import mocha.game.world.Direction;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.collision.Collision;
+import mocha.game.world.entity.movement.command.MoveCommand;
 
 public interface Movement extends Tickable {
 
@@ -12,6 +14,12 @@ public interface Movement extends Tickable {
   void setCollision(Collision collision);
 
   Location getLocation();
+
+  Direction getDirection();
+
+  Entity getEntity();
+
+  void setEntity(Entity entity);
 
   void up();
 
@@ -22,6 +30,4 @@ public interface Movement extends Tickable {
   void right();
 
   void handle(MoveCommand moveCommand);
-
-  void setEntity(Entity entity);
 }

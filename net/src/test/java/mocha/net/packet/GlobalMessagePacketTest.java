@@ -2,6 +2,8 @@ package mocha.net.packet;
 
 import org.junit.Test;
 
+import mocha.net.packet.message.GlobalMessagePacket;
+
 import static junit.framework.TestCase.assertEquals;
 
 public class GlobalMessagePacketTest {

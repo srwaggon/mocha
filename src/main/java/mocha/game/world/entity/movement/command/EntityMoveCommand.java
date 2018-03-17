@@ -1,5 +1,6 @@
-package mocha.game.world.entity.movement;
+package mocha.game.world.entity.movement.command;
 
+import mocha.game.Game;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 
@@ -13,5 +14,11 @@ public class EntityMoveCommand extends MoveCommand {
 
   public Entity getEntity() {
     return entity;
+  }
+
+  @Override
+  public void apply(Game game) {
+    game.getEntityRegistry().get(entity.getId())
+        .ifPresent(entity -> entity.getMovement().handle(this));
   }
 }

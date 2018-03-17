@@ -66,4 +66,8 @@ public class Location {
         ? (y + 1) / Chunk.getHeight() - 1
         : y / Chunk.getHeight();
   }
+
+  public Location copy() {
+    return new Location(x, y);
+  }
 }

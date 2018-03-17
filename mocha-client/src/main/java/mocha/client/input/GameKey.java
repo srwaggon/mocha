@@ -2,7 +2,7 @@ package mocha.client.input;
 
 import java.util.Arrays;
 
-public enum InputKey {
+public enum GameKey {
 
   UNBOUND,
   LEFT,
@@ -43,6 +43,6 @@ public enum InputKey {
   }
 
   public static void tickAll() {
-    Arrays.stream(InputKey.values()).forEach(InputKey::tick);
+    Arrays.stream(GameKey.values()).forEach(GameKey::tick);
   }
 }

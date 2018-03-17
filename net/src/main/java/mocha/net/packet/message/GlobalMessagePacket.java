@@ -1,6 +1,10 @@
-package mocha.net.packet;
+package mocha.net.packet.message;
 
-import static mocha.net.packet.PacketType.*;
+import mocha.net.packet.AbstractPacket;
+import mocha.net.packet.Packet;
+import mocha.net.packet.PacketType;
+
+import static mocha.net.packet.PacketType.GLOBAL_MESSAGE;
 
 public class GlobalMessagePacket extends AbstractPacket implements Packet {
 

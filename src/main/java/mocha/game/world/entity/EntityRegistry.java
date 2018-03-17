@@ -29,4 +29,8 @@ public class EntityRegistry {
   public Optional<Entity> get(int id) {
     return Optional.ofNullable(entities.get(id));
   }
+
+  public Entity remove(Entity entity) {
+    return entities.remove(entity.getId());
+  }
 }
