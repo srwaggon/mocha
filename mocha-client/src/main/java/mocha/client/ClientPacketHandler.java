@@ -7,7 +7,7 @@ import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
-import mocha.net.SimplePacketHandler;
+import mocha.net.packet.SimplePacketHandler;
 import mocha.net.packet.world.chunk.ChunkPacket;
 import mocha.net.packet.world.entity.EntityPacket;
 

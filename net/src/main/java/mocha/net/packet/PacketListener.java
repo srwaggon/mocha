@@ -1,8 +1,8 @@
-package mocha.net;
+package mocha.net.packet;
 
 import com.google.common.eventbus.EventBus;
 
-import mocha.net.packet.Packet;
+import mocha.net.exception.DisconnectedException;
 
 public class PacketListener implements Runnable {
 

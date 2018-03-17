@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import mocha.net.Connection;
-import mocha.net.DisconnectedException;
+import mocha.net.exception.DisconnectedException;
 
 import static org.junit.Assert.assertEquals;
 

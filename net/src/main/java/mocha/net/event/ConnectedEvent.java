@@ -2,7 +2,7 @@ package mocha.net.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import mocha.net.PacketConnection;
+import mocha.net.packet.PacketConnection;
 
 @Data
 @AllArgsConstructor

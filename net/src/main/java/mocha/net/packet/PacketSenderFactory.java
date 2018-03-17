@@ -1,4 +1,4 @@
-package mocha.net;
+package mocha.net.packet;
 
 import com.google.common.eventbus.EventBus;
 

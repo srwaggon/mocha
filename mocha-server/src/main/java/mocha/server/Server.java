@@ -12,9 +12,9 @@ import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
 import mocha.net.Connection;
-import mocha.net.PacketConnection;
-import mocha.net.PacketListener;
-import mocha.net.PacketListenerFactory;
+import mocha.net.packet.PacketConnection;
+import mocha.net.packet.PacketListener;
+import mocha.net.packet.PacketListenerFactory;
 import mocha.net.event.NetworkedMochaEventBus;
 
 @Component

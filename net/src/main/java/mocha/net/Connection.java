@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import mocha.net.exception.DisconnectedException;
+
 public class Connection {
   private boolean isConnected;
   private Socket socket;

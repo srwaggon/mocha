@@ -16,11 +16,11 @@ import mocha.client.event.MochaClientEventBus;
 import mocha.game.GameLoop;
 import mocha.game.world.Location;
 import mocha.net.Connection;
-import mocha.net.PacketConnection;
-import mocha.net.PacketListener;
-import mocha.net.PacketListenerFactory;
-import mocha.net.PacketSenderFactory;
-import mocha.net.SendPacketEvent;
+import mocha.net.packet.PacketConnection;
+import mocha.net.packet.PacketListener;
+import mocha.net.packet.PacketListenerFactory;
+import mocha.net.packet.PacketSenderFactory;
+import mocha.net.packet.SendPacketEvent;
 import mocha.net.packet.PacketFactory;
 
 @Component

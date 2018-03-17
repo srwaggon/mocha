@@ -1,6 +1,5 @@
-package mocha.net;
+package mocha.net.packet;
 
-import mocha.net.packet.UnknownPacket;
 import mocha.net.packet.message.GlobalMessagePacket;
 import mocha.net.packet.world.chunk.ChunkPacket;
 import mocha.net.packet.world.chunk.RequestChunkPacket;

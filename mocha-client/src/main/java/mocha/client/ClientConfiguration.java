@@ -33,8 +33,8 @@ import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
 import mocha.game.world.entity.rule.RemoveEntityRule;
 import mocha.game.world.tile.TileFactory;
-import mocha.net.PacketListenerFactory;
-import mocha.net.PacketSenderFactory;
+import mocha.net.packet.PacketListenerFactory;
+import mocha.net.packet.PacketSenderFactory;
 import mocha.net.packet.PacketFactory;
 
 @Configuration

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 
 import mocha.game.Game;
-import mocha.net.PacketConnection;
+import mocha.net.packet.PacketConnection;
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.PacketFactory;
 

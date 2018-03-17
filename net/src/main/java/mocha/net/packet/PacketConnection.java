@@ -1,8 +1,7 @@
-package mocha.net;
+package mocha.net.packet;
 
-import mocha.net.packet.Packet;
-import mocha.net.packet.PacketType;
-import mocha.net.packet.UnknownPacket;
+import mocha.net.Connection;
+import mocha.net.exception.DisconnectedException;
 
 public class PacketConnection {
 

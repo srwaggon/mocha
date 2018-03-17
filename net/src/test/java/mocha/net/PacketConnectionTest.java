@@ -8,7 +8,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.NoSuchElementException;
 
+import mocha.net.exception.DisconnectedException;
 import mocha.net.packet.Packet;
+import mocha.net.packet.PacketConnection;
 import mocha.net.packet.message.GlobalMessagePacket;
 
 import static junit.framework.Assert.assertEquals;

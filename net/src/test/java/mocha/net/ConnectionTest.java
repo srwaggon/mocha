@@ -14,6 +14,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 
+import mocha.net.exception.DisconnectedException;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

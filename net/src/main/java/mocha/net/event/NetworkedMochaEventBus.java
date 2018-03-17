@@ -1,8 +1,8 @@
 package mocha.net.event;
 
 import mocha.game.event.MochaEventBus;
-import mocha.net.PacketConnection;
-import mocha.net.SendPacketEvent;
+import mocha.net.packet.PacketConnection;
+import mocha.net.packet.SendPacketEvent;
 import mocha.net.packet.Packet;
 import mocha.net.packet.PacketFactory;
 
