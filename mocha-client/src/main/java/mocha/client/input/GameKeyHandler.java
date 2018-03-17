@@ -11,16 +11,16 @@ import javax.inject.Inject;
 
 import mocha.client.event.MochaClientEventBus;
 import mocha.client.input.event.KeyDownEvent;
+import mocha.game.Registry;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityRegistry;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 
 @Component
 public class GameKeyHandler {
 
   @Inject
-  private EntityRegistry entityRegistry;
+  private Registry<Entity> entityRegistry;
 
   @Inject
   private MochaClientEventBus mochaClientEventBus;

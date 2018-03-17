@@ -17,14 +17,15 @@ import java.util.concurrent.Executors;
 import mocha.client.event.MochaClientEventBus;
 import mocha.game.Game;
 import mocha.game.GameLoop;
+import mocha.game.IdFactory;
+import mocha.game.Registry;
 import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
 import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
+import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
-import mocha.game.world.entity.EntityIdFactory;
-import mocha.game.world.entity.EntityRegistry;
 import mocha.game.world.entity.brain.BrainFactory;
 import mocha.game.world.entity.brain.rule.BrainRule;
 import mocha.game.world.entity.movement.MovementFactory;
@@ -33,9 +34,9 @@ import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
 import mocha.game.world.entity.rule.RemoveEntityRule;
 import mocha.game.world.tile.TileFactory;
+import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketListenerFactory;
 import mocha.net.packet.PacketSenderFactory;
-import mocha.net.packet.PacketFactory;
 
 @Configuration
 public class ClientConfiguration {
@@ -74,22 +75,22 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public EntityIdFactory entityIdFactory(EntityRegistry entityRegistry) {
-    return new EntityIdFactory(entityRegistry);
+  public IdFactory<Entity> entityIdFactory(Registry<Entity> registry) {
+    return new IdFactory<>(registry);
   }
 
   @Bean
-  public EntityFactory entityFactory(BrainFactory brainFactory, MovementFactory movementFactory, EntityIdFactory entityIdFactory) {
-    return new EntityFactory(brainFactory, movementFactory, entityIdFactory);
+  public EntityFactory entityFactory(BrainFactory brainFactory, MovementFactory movementFactory, IdFactory<Entity> idFactory) {
+    return new EntityFactory(brainFactory, movementFactory, idFactory);
   }
 
   @Bean
-  public EntityRegistry entityRegistry() {
-    return new EntityRegistry();
+  public Registry<Entity> entityRegistry() {
+    return new Registry<>();
   }
 
   @Bean
-  public Game game(World world, List<GameRule> gameRules, MochaClientEventBus eventBus, EntityFactory entityFactory, EntityRegistry entityRegistry) {
+  public Game game(World world, List<GameRule> gameRules, MochaClientEventBus eventBus, EntityFactory entityFactory, Registry<Entity> entityRegistry) {
     Game game = new MochaClientGame(world, gameRules, entityFactory, entityRegistry, eventBus);
     eventBus.register(game);
     return game;

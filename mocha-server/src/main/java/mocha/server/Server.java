@@ -12,10 +12,12 @@ import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
 import mocha.net.Connection;
+import mocha.net.event.NetworkedMochaEventBus;
+import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketConnection;
+import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketListener;
 import mocha.net.packet.PacketListenerFactory;
-import mocha.net.event.NetworkedMochaEventBus;
 
 @Component
 @Slf4j
@@ -33,6 +35,9 @@ public class Server implements Runnable {
 
   @Inject
   private ExecutorService executorService;
+
+  @Inject
+  private PacketFactory packetFactory;
 
   @Inject
   Server(@Value("${mocha.server.port}") int port) throws IOException {
@@ -73,10 +78,11 @@ public class Server implements Runnable {
     log.info("Receiving connection from " + socket.getInetAddress().toString());
     Connection connection = new Connection(socket);
     PacketConnection packetConnection = new PacketConnection(connection);
+    MochaConnection mochaConnection = new MochaConnection(packetConnection, packetFactory);
 
     eventBus.connected(packetConnection);
 
-    serverPacketHandlerFactory.newServerPacketHandler(packetConnection);
+    serverPacketHandlerFactory.newServerPacketHandler(mochaConnection);
 
     PacketListener packetListener = packetListenerFactory.newPacketListener(packetConnection);
     executorService.submit(packetListener);

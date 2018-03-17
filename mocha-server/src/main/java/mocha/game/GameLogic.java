@@ -16,6 +16,9 @@ public class GameLogic {
   @Inject
   private NetworkedMochaEventBus networkedMochaEventBus;
 
+  @Inject
+  private Registry<Player> playerRegistry;
+
   @PostConstruct
   public void init() {
     networkedMochaEventBus.register(this);
@@ -23,6 +26,6 @@ public class GameLogic {
 
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
-    
+
   }
 }

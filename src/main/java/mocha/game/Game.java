@@ -10,18 +10,17 @@ import mocha.game.world.Location;
 import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityRegistry;
 
 public class Game implements Tickable {
 
   private World world;
   private List<GameRule> gameRules;
-  protected EntityRegistry entityRegistry;
+  protected Registry<Entity> registry;
 
-  public Game(World world, List<GameRule> gameRules, EntityRegistry entityRegistry) {
+  public Game(World world, List<GameRule> gameRules, Registry<Entity> registry) {
     this.world = world;
     this.gameRules = gameRules;
-    this.entityRegistry = entityRegistry;
+    this.registry = registry;
   }
 
   public void tick(long now) {
@@ -33,7 +32,7 @@ public class Game implements Tickable {
   }
 
   public void add(Entity entity) {
-    entityRegistry.add(entity);
+    registry.add(entity);
     world.add(entity);
   }
 
@@ -56,7 +55,7 @@ public class Game implements Tickable {
         .collect(Collectors.toList());
   }
 
-  public EntityRegistry getEntityRegistry() {
-    return entityRegistry;
+  public Registry<Entity> getEntityRegistry() {
+    return registry;
   }
 }

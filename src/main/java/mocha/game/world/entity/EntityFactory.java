@@ -1,5 +1,6 @@
 package mocha.game.world.entity;
 
+import mocha.game.IdFactory;
 import mocha.game.world.Location;
 import mocha.game.world.entity.brain.BrainFactory;
 import mocha.game.world.entity.brain.SimpleBrain;
@@ -10,17 +11,17 @@ public class EntityFactory {
 
   private BrainFactory brainFactory;
   private MovementFactory movementFactory;
-  private EntityIdFactory entityIdFactory;
+  private IdFactory idFactory;
 
-  public EntityFactory(BrainFactory brainFactory, MovementFactory movementFactory, EntityIdFactory entityIdFactory) {
+  public EntityFactory(BrainFactory brainFactory, MovementFactory movementFactory, IdFactory idFactory) {
     this.brainFactory = brainFactory;
     this.movementFactory = movementFactory;
-    this.entityIdFactory = entityIdFactory;
+    this.idFactory = idFactory;
   }
 
   public Entity createSimple() {
     Entity entity = Entity.builder()
-        .id(entityIdFactory.newEntityId())
+        .id(idFactory.newId())
         .location(new Location())
         .build();
     entity.setMovement(movementFactory.newSimpleMovement());
@@ -30,7 +31,7 @@ public class EntityFactory {
 
   public Entity createSlider() {
     Entity entity = Entity.builder()
-        .id(entityIdFactory.newEntityId())
+        .id(idFactory.newId())
         .location(new Location())
         .build();
     entity.setMovement(movementFactory.newSlidingMovement());
@@ -40,7 +41,7 @@ public class EntityFactory {
 
   public Entity createRandomSlider() {
     Entity entity = Entity.builder()
-        .id(entityIdFactory.newEntityId())
+        .id(idFactory.newId())
         .location(new Location())
         .build();
     entity.setMovement(movementFactory.newSlidingMovement());
@@ -52,7 +53,7 @@ public class EntityFactory {
     SimpleMovement movement = movementFactory.newSimpleMovement();
     SimpleBrain brain = brainFactory.newSimpleBrain();
     Pickaxe pickaxe = new Pickaxe();
-    pickaxe.setId(entityIdFactory.newEntityId());
+    pickaxe.setId(idFactory.newId());
     pickaxe.setMovement(movement);
     pickaxe.setBrain(brain);
     return pickaxe;
