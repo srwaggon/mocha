@@ -12,7 +12,7 @@ import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
 import mocha.net.Connection;
-import mocha.net.MochaConnection;
+import mocha.net.PacketConnection;
 import mocha.net.PacketListener;
 import mocha.net.PacketListenerFactory;
 import mocha.net.event.NetworkedMochaEventBus;
@@ -72,13 +72,13 @@ public class Server implements Runnable {
   private void acceptConnection(Socket socket) {
     log.info("Receiving connection from " + socket.getInetAddress().toString());
     Connection connection = new Connection(socket);
-    MochaConnection mochaConnection = new MochaConnection(connection);
+    PacketConnection packetConnection = new PacketConnection(connection);
 
-    eventBus.connected(mochaConnection);
+    eventBus.connected(packetConnection);
 
-    serverPacketHandlerFactory.newServerPacketHandler(mochaConnection);
+    serverPacketHandlerFactory.newServerPacketHandler(packetConnection);
 
-    PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection);
+    PacketListener packetListener = packetListenerFactory.newPacketListener(packetConnection);
     executorService.submit(packetListener);
   }
 

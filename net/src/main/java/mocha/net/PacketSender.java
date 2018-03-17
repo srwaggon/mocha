@@ -4,14 +4,14 @@ import com.google.common.eventbus.Subscribe;
 
 public class PacketSender {
 
-  private MochaConnection mochaConnection;
+  private PacketConnection packetConnection;
 
-  public PacketSender(MochaConnection mochaConnection) {
-    this.mochaConnection = mochaConnection;
+  public PacketSender(PacketConnection packetConnection) {
+    this.packetConnection = packetConnection;
   }
 
   @Subscribe
   public void handle(SendPacketEvent sendPacketEvent) {
-    this.mochaConnection.sendPacket(sendPacketEvent.getPacket());
+    this.packetConnection.sendPacket(sendPacketEvent.getPacket());
   }
 }

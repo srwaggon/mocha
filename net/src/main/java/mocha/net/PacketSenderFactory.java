@@ -10,8 +10,8 @@ public class PacketSenderFactory {
     this.eventBus = eventBus;
   }
 
-  public PacketSender newPacketSender(MochaConnection mochaConnection) {
-    PacketSender packetSender = new PacketSender(mochaConnection);
+  public PacketSender newPacketSender(PacketConnection packetConnection) {
+    PacketSender packetSender = new PacketSender(packetConnection);
     eventBus.register(packetSender);
     return packetSender;
   }

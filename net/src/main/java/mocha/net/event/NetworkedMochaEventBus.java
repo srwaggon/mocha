@@ -1,7 +1,7 @@
 package mocha.net.event;
 
 import mocha.game.event.MochaEventBus;
-import mocha.net.MochaConnection;
+import mocha.net.PacketConnection;
 import mocha.net.SendPacketEvent;
 import mocha.net.packet.Packet;
 import mocha.net.packet.PacketFactory;
@@ -14,12 +14,12 @@ public class NetworkedMochaEventBus extends MochaEventBus {
     this.packetFactory = packetFactory;
   }
 
-  public void connected(MochaConnection mochaConnection) {
-    this.post(new ConnectedEvent(mochaConnection));
+  public void connected(PacketConnection packetConnection) {
+    this.post(new ConnectedEvent(packetConnection));
   }
 
-  public void disconnected(MochaConnection mochaConnection) {
-    this.post(new DisconnectedEvent(mochaConnection));
+  public void disconnected(PacketConnection packetConnection) {
+    this.post(new DisconnectedEvent(packetConnection));
   }
 
   public void sendPacket(Packet packet) {

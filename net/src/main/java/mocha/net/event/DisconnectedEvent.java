@@ -1,9 +1,9 @@
 package mocha.net.event;
 
 import lombok.AllArgsConstructor;
-import mocha.net.MochaConnection;
+import mocha.net.PacketConnection;
 
 @AllArgsConstructor
 public class DisconnectedEvent {
-  private final MochaConnection mochaConnection;
+  private final PacketConnection packetConnection;
 }

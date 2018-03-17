@@ -6,19 +6,19 @@ import mocha.net.packet.Packet;
 
 public class PacketListener implements Runnable {
 
-  private MochaConnection mochaConnection;
+  private PacketConnection packetConnection;
   private final EventBus eventBus;
 
-  PacketListener(MochaConnection mochaConnection, EventBus eventBus) {
-    this.mochaConnection = mochaConnection;
+  PacketListener(PacketConnection packetConnection, EventBus eventBus) {
+    this.packetConnection = packetConnection;
     this.eventBus = eventBus;
   }
 
   @Override
   public void run() {
-    while (mochaConnection.isConnected()) {
+    while (packetConnection.isConnected()) {
       try {
-        Packet packet = mochaConnection.readPacket();
+        Packet packet = packetConnection.readPacket();
         eventBus.post(packet);
         nap();
       } catch(DisconnectedException disconnectedException) {

@@ -20,16 +20,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MochaConnectionTest {
+public class PacketConnectionTest {
 
-  private MochaConnection testObject;
+  private PacketConnection testObject;
 
   @Mock
   private Connection connection;
 
   @Before
   public void setUp() {
-    testObject = new MochaConnection(connection);
+    testObject = new PacketConnection(connection);
   }
 
   @Test

@@ -16,7 +16,7 @@ import mocha.client.event.MochaClientEventBus;
 import mocha.game.GameLoop;
 import mocha.game.world.Location;
 import mocha.net.Connection;
-import mocha.net.MochaConnection;
+import mocha.net.PacketConnection;
 import mocha.net.PacketListener;
 import mocha.net.PacketListenerFactory;
 import mocha.net.PacketSenderFactory;
@@ -56,26 +56,26 @@ public class Client implements Runnable {
 
   @Override
   public void run() {
-    MochaConnection mochaConnection = getMochaConnection();
-    packetSenderFactory.newPacketSender(mochaConnection);
+    PacketConnection packetConnection = getMochaConnection();
+    packetSenderFactory.newPacketSender(packetConnection);
 
-    PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection);
+    PacketListener packetListener = packetListenerFactory.newPacketListener(packetConnection);
     executorService.submit(packetListener);
-    executorService.submit(() -> execute(mochaConnection));
+    executorService.submit(() -> execute(packetConnection));
   }
 
-  private MochaConnection getMochaConnection() {
+  private PacketConnection getMochaConnection() {
     Socket socket = getSocket();
     Connection connection = new Connection(socket);
-    return new MochaConnection(connection);
+    return new PacketConnection(connection);
   }
 
-  private void execute(MochaConnection mochaConnection) {
-//    while (mochaConnection.isConnected()) {
+  private void execute(PacketConnection packetConnection) {
+//    while (packetConnection.isConnected()) {
     requestMapData(new Location(0, 0));
     nap();
 //    }
-    log.info("Lost connection with " + mochaConnection);
+    log.info("Lost connection with " + packetConnection);
   }
 
   private void requestMapData(Location location) {

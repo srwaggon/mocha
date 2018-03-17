@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 
 import mocha.game.Game;
-import mocha.net.MochaConnection;
+import mocha.net.PacketConnection;
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.PacketFactory;
 
@@ -26,8 +26,8 @@ public class ServerPacketHandlerFactory {
   @Inject
   private NetworkedMochaEventBus networkedMochaEventBus;
 
-  public void newServerPacketHandler(MochaConnection mochaConnection) {
-    ServerPacketHandler serverPacketHandler = new ServerPacketHandler(mochaConnection, packetFactory, game, networkedMochaEventBus);
+  public void newServerPacketHandler(PacketConnection packetConnection) {
+    ServerPacketHandler serverPacketHandler = new ServerPacketHandler(packetConnection, packetFactory, game, networkedMochaEventBus);
     eventBus.register(serverPacketHandler);
   }
 }

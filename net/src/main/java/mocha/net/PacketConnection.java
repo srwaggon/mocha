@@ -4,11 +4,11 @@ import mocha.net.packet.Packet;
 import mocha.net.packet.PacketType;
 import mocha.net.packet.UnknownPacket;
 
-public class MochaConnection {
+public class PacketConnection {
 
   private final Connection connection;
 
-  public MochaConnection(Connection connection) {
+  public PacketConnection(Connection connection) {
     this.connection = connection;
   }
 
