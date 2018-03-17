@@ -2,10 +2,10 @@ package mocha.game.world.entity.movement;
 
 import mocha.game.world.Direction;
 
-public class Move {
+public class MoveCommand {
   private final Direction direction;
 
-  Move(Direction direction) {
+  MoveCommand(Direction direction) {
     this.direction = direction;
   }
 

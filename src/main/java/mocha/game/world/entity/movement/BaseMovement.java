@@ -25,8 +25,8 @@ public class BaseMovement extends SimpleMovement {
   }
 
   @Override
-  public void handle(Move move) {
-    moveMap.get(move.getDirection()).run();
+  public void handle(MoveCommand moveCommand) {
+    moveMap.get(moveCommand.getDirection()).run();
   }
 
   static class BaseMovementBuilder extends SimpleMovement.SimpleMovementBuilder {

@@ -24,7 +24,7 @@ public class Main extends Application {
     stage.setTitle("Mocha Server");
 
     closeOnExit(stage);
-    stage.show();
+//    stage.show();
   }
 
   private void closeOnExit(Stage stage) {

@@ -21,7 +21,7 @@ public interface Movement extends Tickable {
 
   void right();
 
-  void handle(Move move);
+  void handle(MoveCommand moveCommand);
 
   void setEntity(Entity entity);
 }

@@ -10,7 +10,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import mocha.client.MochaClientEventBus;
+import mocha.client.event.MochaClientEventBus;
+import mocha.client.input.event.KeyDownEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;

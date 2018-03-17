@@ -16,9 +16,9 @@ import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.client.gfx.sprite.SpriteSheetFactory;
 import mocha.client.gfx.view.EntityView;
 import mocha.game.Game;
-import mocha.game.event.world.entity.AddEntityEvent;
-import mocha.game.event.world.entity.RemoveEntityEvent;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.event.AddEntityEvent;
+import mocha.game.world.entity.event.RemoveEntityEvent;
 
 @Component
 public class SpriteLayer extends Group {

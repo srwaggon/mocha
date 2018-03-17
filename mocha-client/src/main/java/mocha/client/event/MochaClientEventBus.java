@@ -1,10 +1,10 @@
-package mocha.client;
+package mocha.client.event;
 
 import org.springframework.stereotype.Component;
 
 import mocha.client.input.InputKey;
-import mocha.client.input.KeyDownEvent;
-import mocha.game.world.entity.movement.EntityMove;
+import mocha.client.input.event.KeyDownEvent;
+import mocha.game.world.entity.movement.EntityMoveCommand;
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.world.entity.movement.action.MovePacket;
 
@@ -15,7 +15,7 @@ public class MochaClientEventBus extends NetworkedMochaEventBus {
     post(new KeyDownEvent(inputKey));
   }
 
-  public void sendMoveRequest(EntityMove entityMove) {
+  public void sendMoveRequest(EntityMoveCommand entityMove) {
     sendPacket(new MovePacket(entityMove));
   }
 }

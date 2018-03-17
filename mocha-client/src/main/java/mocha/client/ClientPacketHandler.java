@@ -2,6 +2,7 @@ package mocha.client;
 
 import com.google.common.eventbus.Subscribe;
 
+import mocha.client.event.MochaClientEventBus;
 import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;

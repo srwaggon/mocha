@@ -16,7 +16,7 @@ import javafx.scene.input.KeyEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import mocha.client.MochaClientEventBus;
+import mocha.client.event.MochaClientEventBus;
 
 @Builder
 @Component

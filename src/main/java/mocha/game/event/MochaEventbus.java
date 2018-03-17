@@ -2,11 +2,11 @@ package mocha.game.event;
 
 import com.google.common.eventbus.EventBus;
 
-import mocha.game.event.world.entity.AddEntityEvent;
-import mocha.game.event.world.entity.EntityUpdateEvent;
 import mocha.game.world.entity.Entity;
-import mocha.game.event.world.entity.RemoveEntityEvent;
 import mocha.game.world.entity.brain.PickUpItemEvent;
+import mocha.game.world.entity.event.AddEntityEvent;
+import mocha.game.world.entity.event.EntityUpdateEvent;
+import mocha.game.world.entity.event.RemoveEntityEvent;
 
 public class MochaEventbus extends EventBus {
 

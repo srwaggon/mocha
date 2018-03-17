@@ -3,7 +3,7 @@ package mocha.net.packet.world.entity.movement.action;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.brain.SimpleBrain;
-import mocha.game.world.entity.movement.EntityMove;
+import mocha.game.world.entity.movement.EntityMoveCommand;
 import mocha.game.world.entity.movement.SimpleMovement;
 import mocha.game.world.entity.movement.collision.SimpleCollision;
 import mocha.net.packet.AbstractPacket;
@@ -16,7 +16,7 @@ public class MovePacket extends AbstractPacket {
   public MovePacket() {
   }
 
-  public MovePacket(EntityMove entityMove) {
+  public MovePacket(EntityMoveCommand entityMove) {
     this.data[0] = getType().name();
     this.data[1] = "" + entityMove.getEntity().getId();
     this.data[2] = entityMove.getDirection().toString();
@@ -54,7 +54,7 @@ public class MovePacket extends AbstractPacket {
     return Direction.valueOf(data[2]);
   }
 
-  public EntityMove getMove() {
-    return new EntityMove(getEntity(), getDirection());
+  public EntityMoveCommand getMove() {
+    return new EntityMoveCommand(getEntity(), getDirection());
   }
 }

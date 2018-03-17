@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import mocha.client.event.MochaClientEventBus;
 import mocha.game.Game;
 import mocha.game.GameLoop;
 import mocha.game.rule.BrainRule;

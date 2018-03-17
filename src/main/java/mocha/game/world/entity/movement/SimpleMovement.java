@@ -39,7 +39,7 @@ public class SimpleMovement implements Movement {
   }
 
   @Override
-  public void handle(Move move) {
+  public void handle(MoveCommand moveCommand) {
 
   }
 

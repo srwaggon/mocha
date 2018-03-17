@@ -10,12 +10,12 @@ import java.util.Optional;
 import java.util.Queue;
 
 import mocha.game.Game;
-import mocha.game.event.world.entity.RemoveEntityEvent;
 import mocha.game.world.Location;
 import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.brain.PickUpItemEvent;
+import mocha.game.world.entity.event.RemoveEntityEvent;
 
 public class PickUpItemsRule implements GameRule {
 

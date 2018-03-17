@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
+import mocha.client.event.MochaClientEventBus;
 import mocha.game.GameLoop;
 import mocha.game.world.Location;
 import mocha.net.Connection;

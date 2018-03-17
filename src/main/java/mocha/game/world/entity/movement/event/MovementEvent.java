@@ -1,4 +1,4 @@
-package mocha.game.event.world.entity.movement;
+package mocha.game.world.entity.movement.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -5,18 +5,19 @@ import com.google.common.eventbus.Subscribe;
 import java.util.List;
 import java.util.Optional;
 
+import mocha.client.event.MochaClientEventBus;
 import mocha.client.input.InputKey;
-import mocha.client.input.KeyDownEvent;
+import mocha.client.input.event.KeyDownEvent;
 import mocha.game.Game;
-import mocha.game.event.world.entity.AddEntityEvent;
-import mocha.game.event.world.entity.EntityUpdateEvent;
 import mocha.game.rule.GameRule;
 import mocha.game.world.Direction;
 import mocha.game.world.World;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.EntityRegistry;
-import mocha.game.world.entity.movement.EntityMove;
+import mocha.game.world.entity.event.AddEntityEvent;
+import mocha.game.world.entity.event.EntityUpdateEvent;
+import mocha.game.world.entity.movement.EntityMoveCommand;
 
 public class MochaClientGame extends Game {
   private final EntityFactory entityFactory;
@@ -59,15 +60,15 @@ public class MochaClientGame extends Game {
   @Subscribe
   public void handle(KeyDownEvent keyDownEvent) {
     entityRegistry.get(0).ifPresent(entity -> {
-          Optional<EntityMove> optionalEntityMove = getEntityMove(keyDownEvent, entity);
+      Optional<EntityMoveCommand> optionalEntityMove = getEntityMove(keyDownEvent, entity);
           optionalEntityMove.ifPresent(entityMove -> entity.getMovement().handle(entityMove));
           optionalEntityMove.ifPresent(eventBus::sendMoveRequest);
         }
     );
   }
 
-  private Optional<EntityMove> getEntityMove(KeyDownEvent keyDownEvent, Entity entity) {
-    return getDirection(keyDownEvent).map(direction -> new EntityMove(entity, direction));
+  private Optional<EntityMoveCommand> getEntityMove(KeyDownEvent keyDownEvent, Entity entity) {
+    return getDirection(keyDownEvent).map(direction -> new EntityMoveCommand(entity, direction));
   }
 
   private Optional<Direction> getDirection(KeyDownEvent keyDownEvent) {
