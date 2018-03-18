@@ -9,7 +9,7 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import mocha.client.event.MochaClientEventBus;
+import mocha.client.event.ClientEventBus;
 import mocha.client.input.event.KeyDownEvent;
 import mocha.game.Registry;
 import mocha.game.world.Direction;
@@ -24,7 +24,7 @@ public class GameKeyHandler {
   private Registry<Entity> entityRegistry;
 
   @Inject
-  private MochaClientEventBus eventBus;
+  private ClientEventBus eventBus;
 
   @Inject
   private PacketFactory packetFactory;

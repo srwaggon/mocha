@@ -27,6 +27,10 @@ public class World {
     getChunkAt(entity.getLocation()).ifPresent(chunk -> chunk.add(entity));
   }
 
+  public void remove(Entity entity) {
+    getChunkAt(entity.getLocation()).ifPresent(chunk -> chunk.remove(entity));
+  }
+
   public Chunk put(Location location, Chunk chunk) {
     chunks.put(location.getChunkIndex(), chunk);
     return chunk;

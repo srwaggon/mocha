@@ -10,7 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import mocha.client.event.MochaClientEventBus;
+import mocha.client.event.ClientEventBus;
 import mocha.client.input.event.KeyDownEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 public class InputHandlerTest {
 
   @Mock
-  private MochaClientEventBus eventBus;
+  private ClientEventBus eventBus;
   @Captor
   private ArgumentCaptor<KeyDownEvent> keyDownEventCaptor;
   private InputHandler testObject;

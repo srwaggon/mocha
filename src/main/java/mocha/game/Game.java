@@ -35,6 +35,12 @@ public class Game implements Tickable {
     eventBus.postAddEntityEvent(entity);
   }
 
+  public void remove(Entity entity) {
+    entityRegistry.remove(entity);
+    world.remove(entity);
+    eventBus.postRemoveEntityEvent(entity);
+  }
+
   public Registry<Entity> getEntityRegistry() {
     return entityRegistry;
   }

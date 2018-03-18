@@ -20,8 +20,8 @@ public class NetworkedMochaEventBus extends MochaEventBus {
     this.post(new ConnectedEvent(mochaConnection));
   }
 
-  public void postDisconnectedEvent(MochaConnection mochaConnection) {
-    this.post(new DisconnectedEvent(mochaConnection));
+  public void postDisconnectedEvent(int senderId, MochaConnection mochaConnection) {
+    this.post(new DisconnectedEvent(senderId, mochaConnection));
   }
 
   public void postSendPacketEvent(Packet packet) {

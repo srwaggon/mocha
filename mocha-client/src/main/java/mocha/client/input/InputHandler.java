@@ -16,7 +16,7 @@ import javafx.scene.input.KeyEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import mocha.client.event.MochaClientEventBus;
+import mocha.client.event.ClientEventBus;
 
 @Builder
 @Component
@@ -25,7 +25,7 @@ import mocha.client.event.MochaClientEventBus;
 public class InputHandler {
 
   @Inject
-  private MochaClientEventBus eventBus;
+  private ClientEventBus eventBus;
 
   private final Map<KeyCode, GameKey> keyMap = Maps.newHashMap();
 

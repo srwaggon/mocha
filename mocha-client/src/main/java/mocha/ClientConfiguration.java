@@ -11,11 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import mocha.client.ClientPacketHandler;
-import mocha.client.event.MochaClientEventBus;
+import mocha.client.event.ClientEventBus;
 import mocha.game.Game;
 import mocha.game.GameLoop;
 import mocha.game.IdFactory;
@@ -45,7 +43,7 @@ import mocha.shared.task.TaskService;
 public class ClientConfiguration {
 
   @Bean
-  public PacketListenerFactory packetListenerFactory(MochaClientEventBus eventBus) {
+  public PacketListenerFactory packetListenerFactory(ClientEventBus eventBus) {
     return new PacketListenerFactory(eventBus);
   }
 
@@ -103,15 +101,15 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public List<GameRule> getRules(World world, MochaClientEventBus mochaClientEventBus) {
-    MovementRule movementRule = new MovementRule(mochaClientEventBus);
-    mochaClientEventBus.register(movementRule);
+  public List<GameRule> getRules(World world, ClientEventBus clientEventBus) {
+    MovementRule movementRule = new MovementRule(clientEventBus);
+    clientEventBus.register(movementRule);
 
-    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(mochaClientEventBus);
-    mochaClientEventBus.register(pickUpItemsRule);
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(clientEventBus);
+    clientEventBus.register(pickUpItemsRule);
 
     RemoveEntityRule removeEntityRule = new RemoveEntityRule(world);
-    mochaClientEventBus.register(removeEntityRule);
+    clientEventBus.register(removeEntityRule);
 
     return Lists.newArrayList(new BrainRule(), movementRule, pickUpItemsRule, removeEntityRule);
   }
@@ -139,9 +137,9 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public ClientPacketHandler clientPacketHandler(MochaClientEventBus mochaClientEventBus, ChunkFactory chunkFactory, Game game) {
-    ClientPacketHandler clientPacketHandler = new ClientPacketHandler(chunkFactory, game, mochaClientEventBus);
-    mochaClientEventBus.register(clientPacketHandler);
+  public ClientPacketHandler clientPacketHandler(ClientEventBus clientEventBus, ChunkFactory chunkFactory, Game game) {
+    ClientPacketHandler clientPacketHandler = new ClientPacketHandler(chunkFactory, game, clientEventBus);
+    clientEventBus.register(clientPacketHandler);
     return clientPacketHandler;
   }
 

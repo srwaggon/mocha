@@ -9,5 +9,6 @@ import mocha.net.packet.MochaConnection;
 @AllArgsConstructor
 @ToString
 public class DisconnectedEvent {
+  private int senderId;
   private MochaConnection mochaConnection;
 }

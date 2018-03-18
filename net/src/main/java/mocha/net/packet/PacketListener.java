@@ -20,7 +20,7 @@ public class PacketListener implements Runnable {
     try {
       readPackets();
     } catch (DisconnectedException disconnectedException) {
-      eventBus.postDisconnectedEvent(connection);
+      eventBus.postDisconnectedEvent(senderId, connection);
     }
   }
 

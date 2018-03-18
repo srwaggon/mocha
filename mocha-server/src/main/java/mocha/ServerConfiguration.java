@@ -32,14 +32,15 @@ import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketListenerFactory;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.server.ClientWorker;
+import mocha.server.event.ServerEventBus;
 import mocha.shared.task.TaskService;
 
 @Configuration()
 public class ServerConfiguration {
 
   @Bean
-  public NetworkedMochaEventBus getEventBus() {
-    return new NetworkedMochaEventBus();
+  public ServerEventBus getEventBus() {
+    return new ServerEventBus();
   }
 
   @Bean
@@ -74,7 +75,7 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public PacketListenerFactory packetListenerFactory(NetworkedMochaEventBus eventBus) {
+  public PacketListenerFactory packetListenerFactory(ServerEventBus eventBus) {
     return new PacketListenerFactory(eventBus);
   }
 

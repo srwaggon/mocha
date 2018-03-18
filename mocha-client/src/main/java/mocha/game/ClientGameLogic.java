@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import mocha.client.event.MochaClientEventBus;
+import mocha.client.event.ClientEventBus;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
@@ -23,7 +23,7 @@ public class ClientGameLogic {
   @Inject
   private EntityFactory entityFactory;
   @Inject
-  private MochaClientEventBus eventBus;
+  private ClientEventBus eventBus;
   @Inject
   private PacketFactory packetFactory;
 

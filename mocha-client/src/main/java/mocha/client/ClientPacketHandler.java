@@ -2,7 +2,7 @@ package mocha.client;
 
 import com.google.common.eventbus.Subscribe;
 
-import mocha.client.event.MochaClientEventBus;
+import mocha.client.event.ClientEventBus;
 import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
@@ -17,9 +17,9 @@ public class ClientPacketHandler extends SimplePacketHandler {
 
   private final ChunkFactory chunkFactory;
   private final Game game;
-  private MochaClientEventBus eventBus;
+  private ClientEventBus eventBus;
 
-  public ClientPacketHandler(ChunkFactory chunkFactory, Game game, MochaClientEventBus eventBus) {
+  public ClientPacketHandler(ChunkFactory chunkFactory, Game game, ClientEventBus eventBus) {
     this.chunkFactory = chunkFactory;
     this.game = game;
     this.eventBus = eventBus;

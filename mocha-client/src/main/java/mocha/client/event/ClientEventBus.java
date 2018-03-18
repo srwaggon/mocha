@@ -7,7 +7,7 @@ import mocha.client.input.event.KeyDownEvent;
 import mocha.net.event.NetworkedMochaEventBus;
 
 @Component
-public class MochaClientEventBus extends NetworkedMochaEventBus {
+public class ClientEventBus extends NetworkedMochaEventBus {
   
   public void keyDown(GameKey gameKey) {
     post(new KeyDownEvent(gameKey));

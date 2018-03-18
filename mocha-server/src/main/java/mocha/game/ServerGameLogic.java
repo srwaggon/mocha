@@ -11,17 +11,17 @@ import lombok.extern.slf4j.Slf4j;
 import mocha.game.world.entity.EntityFactory;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
-import mocha.net.event.NetworkedMochaEventBus;
-import mocha.net.packet.MochaConnection;
 import mocha.server.ClientWorker;
 import mocha.server.ClientWorkerFactory;
+import mocha.server.event.ClientConnectedEvent;
+import mocha.server.event.ServerEventBus;
 
 @Slf4j
 @Component
 public class ServerGameLogic {
 
   @Inject
-  private NetworkedMochaEventBus eventBus;
+  private ServerEventBus eventBus;
 
   @Inject
   private ClientWorkerFactory clientWorkerFactory;
@@ -43,15 +43,20 @@ public class ServerGameLogic {
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
     log.info(connectedEvent.toString());
-    MochaConnection mochaConnection = connectedEvent.getMochaConnection();
-
-    ClientWorker clientWorker = clientWorkerFactory.newClientWorker(mochaConnection);
-    clientWorkerRegistry.add(clientWorker);
-    game.add(clientWorker.getEntity());
+    eventBus.postClientConnectedEvent(clientWorkerFactory.newClientWorker(connectedEvent.getMochaConnection()));
   }
 
   @Subscribe
   public void handle(DisconnectedEvent disconnectedEvent) {
     log.info(disconnectedEvent.toString());
+    clientWorkerRegistry.get(disconnectedEvent.getSenderId())
+        .ifPresent(clientWorker -> game.remove(clientWorker.getEntity()));
+  }
+
+  @Subscribe
+  public void handle(ClientConnectedEvent clientConnectedEvent) {
+    ClientWorker clientWorker = clientConnectedEvent.getClientWorker();
+    clientWorkerRegistry.add(clientWorker);
+    game.add(clientWorker.getEntity());
   }
 }
