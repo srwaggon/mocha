@@ -34,8 +34,14 @@ public class RequestChunkPacket extends AbstractPacket {
   }
 
   public Location getLocation() {
-    int x = Integer.parseInt(data[1]);
-    int y = Integer.parseInt(data[2]);
-    return new Location(x, y);
+    return new Location(getX(), getY());
+  }
+
+  private int getX() {
+    return getDataAsInt(1);
+  }
+
+  private int getY() {
+    return getDataAsInt(2);
   }
 }

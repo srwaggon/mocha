@@ -11,7 +11,8 @@ public class ChunkPacket extends AbstractPacket implements Packet {
 
   private String[] data = new String[4];
 
-  public ChunkPacket() { }
+  public ChunkPacket() {
+  }
 
   public ChunkPacket(Location location, Chunk chunk) {
     data[0] = getType().name();
@@ -43,9 +44,14 @@ public class ChunkPacket extends AbstractPacket implements Packet {
   }
 
   public Location getLocation() {
-    int x = Integer.parseInt(data[1]);
-    int y = Integer.parseInt(data[2]);
-    return new Location(x, y);
+    return new Location(getX(), getY());
   }
 
+  private int getX() {
+    return getDataAsInt(1);
+  }
+
+  private int getY() {
+    return getDataAsInt(2);
+  }
 }

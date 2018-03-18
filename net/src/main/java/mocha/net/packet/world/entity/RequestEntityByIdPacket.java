@@ -32,6 +32,6 @@ public class RequestEntityByIdPacket extends AbstractPacket {
   }
 
   public int getId() {
-    return Integer.parseInt(data[1]);
+    return getDataAsInt(1);
   }
 }

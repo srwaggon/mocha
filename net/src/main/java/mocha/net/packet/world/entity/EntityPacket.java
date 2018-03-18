@@ -10,6 +10,7 @@ import mocha.net.packet.PacketType;
 
 public class EntityPacket extends AbstractPacket {
   private String[] data = new String[4];
+
   public EntityPacket() {
   }
 
@@ -53,15 +54,15 @@ public class EntityPacket extends AbstractPacket {
     return new Location(getX(), getY());
   }
 
-  public int getY() {
-    return Integer.parseInt(data[3]);
+  private int getX() {
+    return getDataAsInt(2);
   }
 
-  public int getX() {
-    return Integer.parseInt(data[2]);
+  private int getY() {
+    return getDataAsInt(3);
   }
 
-  public int getId() {
-    return Integer.parseInt(data[1]);
+  private int getId() {
+    return getDataAsInt(1);
   }
 }
