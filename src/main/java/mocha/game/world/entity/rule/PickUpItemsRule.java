@@ -59,6 +59,6 @@ public class PickUpItemsRule implements GameRule {
   private void removeEntity(Game game, Chunk chunk, Entity pickedUpEntity) {
     chunk.remove(pickedUpEntity);
     game.getEntityRegistry().remove(pickedUpEntity);
-    eventBus.removeEntityEvent(pickedUpEntity);
+    eventBus.postRemoveEntityEvent(pickedUpEntity);
   }
 }

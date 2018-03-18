@@ -25,6 +25,8 @@ public interface Movement extends Tickable {
 
   void setEntity(Entity entity);
 
+  boolean isMoving();
+
   void up();
 
   void down();

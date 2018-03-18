@@ -64,6 +64,11 @@ public class SimpleMovement implements Movement {
   }
 
   @Override
+  public boolean isMoving() {
+    return false;
+  }
+
+  @Override
   public Location getLocation() {
     return entity.getLocation();
   }

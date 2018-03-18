@@ -15,19 +15,19 @@ public class NetworkedMochaEventBus extends MochaEventBus {
     this.packetFactory = packetFactory;
   }
 
-  public void connected(MochaConnection mochaConnection) {
+  public void postConnectedEvent(MochaConnection mochaConnection) {
     this.post(new ConnectedEvent(mochaConnection));
   }
 
-  public void disconnected(MochaConnection mochaConnection) {
+  public void postDisconnectedEvent(MochaConnection mochaConnection) {
     this.post(new DisconnectedEvent(mochaConnection));
   }
 
-  public void sendPacket(Packet packet) {
+  public void postSendPacketEvent(Packet packet) {
     this.post(new SendPacketEvent(packet));
   }
 
   public void sendMovePacket(EntityMoveCommand entityMove) {
-    sendPacket(packetFactory.movePacket(entityMove));
+    this.postSendPacketEvent(packetFactory.movePacket(entityMove));
   }
 }

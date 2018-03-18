@@ -15,6 +15,7 @@ import mocha.game.GameLoop;
 import mocha.game.IdFactory;
 import mocha.game.Player;
 import mocha.game.Registry;
+import mocha.game.rule.ArtificialIntelligenceRule;
 import mocha.game.rule.GameRule;
 import mocha.game.world.World;
 import mocha.game.world.chunk.ChunkFactory;
@@ -52,7 +53,14 @@ public class ServerConfiguration {
     RemoveEntityRule removeEntityRule = new RemoveEntityRule(world);
     networkedMochaEventBus.register(removeEntityRule);
 
-    return Lists.newArrayList(new BrainRule(), movementRule, pickUpItemsRule, removeEntityRule);
+    ArtificialIntelligenceRule artificialIntelligenceRule = new ArtificialIntelligenceRule(networkedMochaEventBus);
+
+    return Lists.newArrayList(new BrainRule(),
+        movementRule,
+        pickUpItemsRule,
+        removeEntityRule,
+        artificialIntelligenceRule
+    );
   }
 
   @Bean
@@ -79,15 +87,12 @@ public class ServerConfiguration {
   public Game game(World world, List<GameRule> gameRules, EntityFactory entityFactory, Registry<Entity> entityRegistry) {
     Game game = new Game(world, gameRules, entityRegistry);
     game.add(entityFactory.createSlider());
-    game.add(entityFactory.createRandomSlider());
-    game.add(entityFactory.createRandomSlider());
-    game.add(entityFactory.createRandomSlider());
-    game.add(entityFactory.createRandomSlider());
-    game.add(entityFactory.createRandomSlider());
-    game.add(entityFactory.createRandomSlider());
-    game.add(entityFactory.createRandomSlider());
-    game.add(entityFactory.createRandomSlider());
-    game.add(entityFactory.createRandomSlider());
+    game.add(entityFactory.createSlider());
+    game.add(entityFactory.createSlider());
+    game.add(entityFactory.createSlider());
+    game.add(entityFactory.createSlider());
+    game.add(entityFactory.createSlider());
+    game.add(entityFactory.createSlider());
     return game;
   }
 

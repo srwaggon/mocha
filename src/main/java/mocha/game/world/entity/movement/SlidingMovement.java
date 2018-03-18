@@ -56,7 +56,7 @@ public class SlidingMovement extends BaseMovement {
     }
   }
 
-  private boolean isMoving() {
+  public boolean isMoving() {
     return xOffset != 0 || yOffset != 0;
   }
 

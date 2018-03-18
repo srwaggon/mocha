@@ -40,7 +40,7 @@ public class MovementRule implements GameRule {
         .ifPresent(entity -> {
           Movement movement = entity.getMovement();
           movement.handle(moveCommand);
-          mochaEventBus.moveEvent(movement);
+          mochaEventBus.postMoveEvent(movement);
         });
   }
 

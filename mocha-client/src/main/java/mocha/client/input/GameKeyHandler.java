@@ -33,11 +33,11 @@ public class GameKeyHandler {
   @Subscribe
   public void handle(KeyDownEvent keyDownEvent) {
     int entityId = 0;
-    entityRegistry.get(entityId).ifPresent(entity -> {
-          Optional<EntityMoveCommand> optionalEntityMove = getEntityMove(keyDownEvent, entityId);
-          optionalEntityMove.ifPresent(mochaClientEventBus::sendMovePacket);
-        }
-    );
+    entityRegistry.get(entityId)
+        .ifPresent(entity ->
+            getEntityMove(keyDownEvent, entityId)
+                .ifPresent(mochaClientEventBus::sendMovePacket)
+        );
   }
 
   private Optional<EntityMoveCommand> getEntityMove(KeyDownEvent keyDownEvent, int entityId) {

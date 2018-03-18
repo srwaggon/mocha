@@ -2,8 +2,8 @@ package mocha.game;
 
 import com.google.common.collect.Lists;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
@@ -48,11 +48,8 @@ public class Game implements Tickable {
     return activeChunks;
   }
 
-  public List<Entity> getActiveEntities() {
-    return world.getChunks().stream()
-        .map(Chunk::getEntities)
-        .flatMap(List::stream)
-        .collect(Collectors.toList());
+  public Collection<Entity> getActiveEntities() {
+    return entityRegistry.getMembers();
   }
 
   public Registry<Entity> getEntityRegistry() {

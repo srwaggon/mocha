@@ -18,7 +18,6 @@ import mocha.net.packet.PacketConnection;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketListener;
 import mocha.net.packet.PacketListenerFactory;
-import mocha.net.packet.PacketSenderFactory;
 
 @Component
 @Slf4j
@@ -81,7 +80,7 @@ public class Server implements Runnable {
     PacketConnection packetConnection = new PacketConnection(connection);
     MochaConnection mochaConnection = new MochaConnection(packetConnection, packetFactory);
 
-    eventBus.connected(mochaConnection);
+    eventBus.postConnectedEvent(mochaConnection);
 
     serverPacketHandlerFactory.newServerPacketHandler(mochaConnection);
 
