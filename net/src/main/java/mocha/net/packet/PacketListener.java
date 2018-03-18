@@ -1,30 +1,32 @@
 package mocha.net.packet;
 
-import com.google.common.eventbus.EventBus;
-
+import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.exception.DisconnectedException;
 
 public class PacketListener implements Runnable {
 
-  private PacketConnection packetConnection;
-  private final EventBus eventBus;
+  private MochaConnection connection;
+  private final NetworkedMochaEventBus eventBus;
 
-  PacketListener(PacketConnection packetConnection, EventBus eventBus) {
-    this.packetConnection = packetConnection;
+  PacketListener(MochaConnection connection, NetworkedMochaEventBus eventBus) {
+    this.connection = connection;
     this.eventBus = eventBus;
   }
 
   @Override
   public void run() {
-    while (packetConnection.isConnected()) {
-      try {
-        Packet packet = packetConnection.readPacket();
-        eventBus.post(packet);
-        nap();
-      } catch(DisconnectedException disconnectedException) {
-      }
+    try {
+      readPackets();
+    } catch (DisconnectedException disconnectedException) {
+      eventBus.postDisconnectedEvent(connection);
     }
-    System.out.println("Disconnected.");
+  }
+
+  private void readPackets() throws DisconnectedException {
+    while (connection.isConnected()) {
+      eventBus.post(connection.readPacket());
+      nap();
+    }
   }
 
   private void nap() {

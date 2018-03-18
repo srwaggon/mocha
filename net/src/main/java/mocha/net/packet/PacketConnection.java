@@ -1,29 +1,25 @@
 package mocha.net.packet;
 
+import java.net.Socket;
+
 import mocha.net.Connection;
 import mocha.net.exception.DisconnectedException;
 
-public class PacketConnection {
+public class PacketConnection extends Connection {
 
-  private final Connection connection;
-
-  public PacketConnection(Connection connection) {
-    this.connection = connection;
-  }
-
-  public boolean isConnected() {
-    return connection.isConnected();
+  public PacketConnection(Socket socket) {
+    super(socket);
   }
 
   public void sendPacket(Packet packet) {
-    connection.send(packet.construct());
+    send(packet.construct());
   }
 
   public boolean hasPacket() {
-    return connection.hasLine();
+    return hasLine();
   }
 
   public Packet readPacket() throws DisconnectedException {
-    return PacketType.resolve(new UnknownPacket(connection.readLine()));
+    return PacketType.resolve(new UnknownPacket(readLine()));
   }
 }

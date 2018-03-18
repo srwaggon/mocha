@@ -15,6 +15,7 @@ import mocha.game.GameLoop;
 import mocha.game.IdFactory;
 import mocha.game.Player;
 import mocha.game.Registry;
+import mocha.game.event.MochaEventBus;
 import mocha.game.rule.ArtificialIntelligenceRule;
 import mocha.game.rule.GameRule;
 import mocha.game.world.World;
@@ -74,7 +75,7 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public PacketListenerFactory packetListenerFactory(EventBus eventBus) {
+  public PacketListenerFactory packetListenerFactory(NetworkedMochaEventBus eventBus) {
     return new PacketListenerFactory(eventBus);
   }
 
@@ -84,8 +85,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Game game(World world, List<GameRule> gameRules, EntityFactory entityFactory, Registry<Entity> entityRegistry) {
-    return new Game(world, gameRules, entityRegistry);
+  public Game game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Registry<Entity> entityRegistry) {
+    return new Game(eventBus, world, gameRules, entityRegistry);
   }
 
   @Bean

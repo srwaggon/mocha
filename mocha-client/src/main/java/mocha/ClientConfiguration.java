@@ -20,6 +20,7 @@ import mocha.game.Game;
 import mocha.game.GameLoop;
 import mocha.game.IdFactory;
 import mocha.game.Registry;
+import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
 import mocha.game.world.World;
@@ -43,7 +44,7 @@ import mocha.net.packet.PacketSenderFactory;
 public class ClientConfiguration {
 
   @Bean
-  public PacketListenerFactory packetListenerFactory(EventBus eventBus) {
+  public PacketListenerFactory packetListenerFactory(MochaClientEventBus eventBus) {
     return new PacketListenerFactory(eventBus);
   }
 
@@ -91,8 +92,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public Game game(World world, List<GameRule> gameRules, Registry<Entity> entityRegistry) {
-    return new Game(world, gameRules, entityRegistry);
+  public Game game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Registry<Entity> entityRegistry) {
+    return new Game(eventBus, world, gameRules, entityRegistry);
   }
 
   @Bean

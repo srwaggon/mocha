@@ -12,23 +12,16 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
-import mocha.client.event.MochaClientEventBus;
 import mocha.game.GameLoop;
-import mocha.game.world.Location;
-import mocha.net.Connection;
-import mocha.net.packet.PacketConnection;
+import mocha.net.packet.MochaConnection;
+import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketListener;
 import mocha.net.packet.PacketListenerFactory;
 import mocha.net.packet.PacketSenderFactory;
-import mocha.net.packet.SendPacketEvent;
-import mocha.net.packet.PacketFactory;
 
 @Component
 @Slf4j
 public class Client implements Runnable {
-
-  @Inject
-  private MochaClientEventBus eventBus;
 
   @Inject
   private PacketListenerFactory packetListenerFactory;
@@ -56,17 +49,15 @@ public class Client implements Runnable {
 
   @Override
   public void run() {
-    PacketConnection packetConnection = getMochaConnection();
-    packetSenderFactory.newPacketSender(packetConnection);
+    MochaConnection connection = getMochaConnection();
+    packetSenderFactory.newPacketSender(connection);
 
-    PacketListener packetListener = packetListenerFactory.newPacketListener(packetConnection);
+    PacketListener packetListener = packetListenerFactory.newPacketListener(connection);
     executorService.submit(packetListener);
   }
 
-  private PacketConnection getMochaConnection() {
-    Socket socket = getSocket();
-    Connection connection = new Connection(socket);
-    return new PacketConnection(connection);
+  private MochaConnection getMochaConnection() {
+    return new MochaConnection(getSocket(), packetFactory);
   }
 
   private Socket getSocket() {

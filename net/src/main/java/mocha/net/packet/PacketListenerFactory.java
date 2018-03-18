@@ -1,16 +1,16 @@
 package mocha.net.packet;
 
-import com.google.common.eventbus.EventBus;
+import mocha.net.event.NetworkedMochaEventBus;
 
 public class PacketListenerFactory {
 
-  private final EventBus eventBus;
+  private final NetworkedMochaEventBus eventBus;
 
-  public PacketListenerFactory(EventBus eventBus) {
+  public PacketListenerFactory(NetworkedMochaEventBus eventBus) {
     this.eventBus = eventBus;
   }
 
-  public PacketListener newPacketListener(PacketConnection packetConnection) {
+  public PacketListener newPacketListener(MochaConnection packetConnection) {
     return new PacketListener(packetConnection, eventBus);
   }
 }

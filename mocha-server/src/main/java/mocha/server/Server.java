@@ -76,15 +76,13 @@ public class Server implements Runnable {
 
   private void acceptConnection(Socket socket) {
     log.info("Receiving connection from " + socket.getInetAddress().toString());
-    Connection connection = new Connection(socket);
-    PacketConnection packetConnection = new PacketConnection(connection);
-    MochaConnection mochaConnection = new MochaConnection(packetConnection, packetFactory);
+    MochaConnection mochaConnection = new MochaConnection(socket, packetFactory);
 
     eventBus.postConnectedEvent(mochaConnection);
 
     serverPacketHandlerFactory.newServerPacketHandler(mochaConnection);
 
-    PacketListener packetListener = packetListenerFactory.newPacketListener(packetConnection);
+    PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection);
     executorService.submit(packetListener);
   }
 
