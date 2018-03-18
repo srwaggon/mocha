@@ -8,6 +8,7 @@ import mocha.game.event.MochaEventBus;
 import mocha.game.world.Location;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.Packet;
+import mocha.net.packet.event.ReadPacketEvent;
 import mocha.net.packet.event.SendPacketEvent;
 import mocha.net.packet.event.SendPacketToAllExceptEvent;
 import mocha.net.packet.event.SendPacketToAllNearEvent;
@@ -41,6 +42,10 @@ public class NetworkedMochaEventBus extends MochaEventBus {
 
   public void postSendPacketToAllNearEvent(Packet packet, Location location, int distance) {
     this.post(new SendPacketToAllNearEvent(packet, location, distance));
+  }
+
+  public void postReadPacketEvent(int senderId, Packet packet) {
+    this.post(new ReadPacketEvent(senderId, packet));
   }
 
 }

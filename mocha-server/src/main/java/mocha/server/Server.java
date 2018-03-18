@@ -37,7 +37,7 @@ public class Server implements Runnable {
   }
 
   public void start() {
-    eventBus.postTaskEvent(this);
+    taskService.submit(this);
   }
 
   @Override

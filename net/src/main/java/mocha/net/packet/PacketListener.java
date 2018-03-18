@@ -5,12 +5,14 @@ import mocha.net.exception.DisconnectedException;
 
 public class PacketListener implements Runnable {
 
-  private MochaConnection connection;
+  private final MochaConnection connection;
   private final NetworkedMochaEventBus eventBus;
+  private final int senderId;
 
-  PacketListener(MochaConnection connection, NetworkedMochaEventBus eventBus) {
+  PacketListener(NetworkedMochaEventBus eventBus, MochaConnection connection, int senderId) {
     this.connection = connection;
     this.eventBus = eventBus;
+    this.senderId = senderId;
   }
 
   @Override
@@ -24,7 +26,7 @@ public class PacketListener implements Runnable {
 
   private void readPackets() throws DisconnectedException {
     while (connection.isConnected()) {
-      eventBus.post(connection.readPacket());
+      eventBus.postReadPacketEvent(senderId, connection.readPacket());
       nap();
     }
   }

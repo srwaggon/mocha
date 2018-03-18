@@ -1,5 +1,6 @@
 package mocha.server;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
 import mocha.game.Game;
@@ -10,7 +11,9 @@ import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.MochaConnection;
+import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
+import mocha.net.packet.event.ReadPacketEvent;
 import mocha.net.packet.world.chunk.RequestChunkPacket;
 import mocha.net.packet.world.entity.RequestEntitiesInChunkPacket;
 import mocha.net.packet.world.entity.movement.action.MovePacket;
@@ -19,11 +22,16 @@ public class ServerPacketHandler extends SimplePacketHandler {
   private MochaConnection mochaConnection;
   private Game game;
   private NetworkedMochaEventBus eventBus;
+  private final int clientId;
+  private EventBus packetEventBus;
 
-  ServerPacketHandler(MochaConnection mochaConnection, Game game, NetworkedMochaEventBus eventBus) {
+  ServerPacketHandler(MochaConnection mochaConnection, Game game, NetworkedMochaEventBus eventBus, int clientId) {
     this.mochaConnection = mochaConnection;
     this.game = game;
     this.eventBus = eventBus;
+    this.clientId = clientId;
+    packetEventBus = new EventBus();
+    packetEventBus.register(this);
   }
 
   @Subscribe
@@ -41,6 +49,13 @@ public class ServerPacketHandler extends SimplePacketHandler {
         .yOffset(movement.getYOffset())
         .build();
     mochaConnection.sendMoveCommand(entityMove);
+  }
+
+  @Subscribe
+  public void handle(ReadPacketEvent readPacketEvent) {
+    if (readPacketEvent.getSenderId() == this.clientId) {
+      packetEventBus.post(readPacketEvent.getPacket());
+    }
   }
 
   @Subscribe

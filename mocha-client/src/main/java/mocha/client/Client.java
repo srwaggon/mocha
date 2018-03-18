@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.concurrent.ExecutorService;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -18,6 +17,7 @@ import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketListener;
 import mocha.net.packet.PacketListenerFactory;
 import mocha.net.packet.PacketSenderFactory;
+import mocha.shared.task.TaskService;
 
 @Component
 @Slf4j
@@ -33,7 +33,7 @@ public class Client implements Runnable {
   private PacketFactory packetFactory;
 
   @Inject
-  private ExecutorService executorService;
+  private TaskService taskService;
 
   @Inject
   private ClientPacketHandler clientPacketHandler;
@@ -43,17 +43,15 @@ public class Client implements Runnable {
 
   @PostConstruct
   public void init() {
-    executorService.submit(() -> gameLoop.start());
-    executorService.submit(this);
+    taskService.submit(() -> gameLoop.start()); // todo: must this be submitted?
+    taskService.submit(this);
   }
 
   @Override
   public void run() {
     MochaConnection connection = getMochaConnection();
     packetSenderFactory.newPacketSender(connection);
-
-    PacketListener packetListener = packetListenerFactory.newPacketListener(connection);
-    executorService.submit(packetListener);
+    taskService.submit(packetListenerFactory.newPacketListener(connection, -1));
   }
 
   private MochaConnection getMochaConnection() {

@@ -39,6 +39,7 @@ import mocha.game.world.tile.TileFactory;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketListenerFactory;
 import mocha.net.packet.PacketSenderFactory;
+import mocha.shared.task.TaskService;
 
 @Configuration
 public class ClientConfiguration {
@@ -120,9 +121,11 @@ public class ClientConfiguration {
     return new PacketSenderFactory(eventBus);
   }
 
-  @Bean
-  public ExecutorService executorService() {
-    return Executors.newFixedThreadPool(2);
+  @Bean()
+  public TaskService taskService(MochaEventBus eventBus) {
+    TaskService taskService = new TaskService();
+    eventBus.register(taskService);
+    return taskService;
   }
 
   @Bean

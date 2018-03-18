@@ -33,10 +33,10 @@ public class ClientWorkerFactory {
 
     int clientId = clientWorkerIdFactory.newId();
 
-    PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection);
+    PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection, clientId);
     eventBus.postTaskEvent(packetListener);
 
-    ServerPacketHandler serverPacketHandler = serverPacketHandlerFactory.newServerPacketHandler(mochaConnection);
+    ServerPacketHandler serverPacketHandler = serverPacketHandlerFactory.newServerPacketHandler(mochaConnection, clientId);
     eventBus.register(serverPacketHandler);
 
     return ClientWorker.builder()

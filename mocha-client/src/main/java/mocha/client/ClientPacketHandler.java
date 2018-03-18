@@ -8,6 +8,7 @@ import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.net.packet.SimplePacketHandler;
+import mocha.net.packet.event.ReadPacketEvent;
 import mocha.net.packet.world.chunk.ChunkPacket;
 import mocha.net.packet.world.entity.EntityPacket;
 import mocha.net.packet.world.entity.movement.action.MovePacket;
@@ -16,12 +17,17 @@ public class ClientPacketHandler extends SimplePacketHandler {
 
   private final ChunkFactory chunkFactory;
   private final Game game;
-  private MochaClientEventBus mochaClientEventBus;
+  private MochaClientEventBus eventBus;
 
-  public ClientPacketHandler(ChunkFactory chunkFactory, Game game, MochaClientEventBus mochaClientEventBus) {
+  public ClientPacketHandler(ChunkFactory chunkFactory, Game game, MochaClientEventBus eventBus) {
     this.chunkFactory = chunkFactory;
     this.game = game;
-    this.mochaClientEventBus = mochaClientEventBus;
+    this.eventBus = eventBus;
+  }
+
+  @Subscribe
+  public void handle(ReadPacketEvent readPacketEvent) {
+    eventBus.post(readPacketEvent.getPacket());
   }
 
   @Subscribe
@@ -35,12 +41,12 @@ public class ClientPacketHandler extends SimplePacketHandler {
   @Subscribe
   @Override
   public void handle(EntityPacket entityPacket) {
-    mochaClientEventBus.postEntityUpdateEvent(entityPacket.getEntity());
+    eventBus.postEntityUpdateEvent(entityPacket.getEntity());
   }
 
   @Subscribe
   @Override
   public void handle(MovePacket movePacket) {
-    mochaClientEventBus.post(movePacket.getMoveCommand());
+    eventBus.post(movePacket.getMoveCommand());
   }
 }
