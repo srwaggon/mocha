@@ -30,12 +30,12 @@ public class MovementRule implements GameRule {
   @Override
   public void apply(Game game) {
     while (!moveCommands.isEmpty()) {
-      sendMoveEvent(game, moveCommands.poll());
+      postMoveEvent(game, moveCommands.poll());
     }
     processEntityMovement(game);
   }
 
-  private void sendMoveEvent(Game game, EntityMoveCommand moveCommand) {
+  private void postMoveEvent(Game game, EntityMoveCommand moveCommand) {
     game.getEntityRegistry().get(moveCommand.getEntityId())
         .ifPresent(entity -> {
           Movement movement = entity.getMovement();

@@ -53,7 +53,9 @@ These represent units of work **to be done.**
 - [x] The client can distinguish entity updates from additions.
 - [x] The game server accepts proposals for moving an entities.
 - [x] The game client proposes to move an entities upon key-press.
-- [ ] Server entity movements are propagated to clients.
+- [x] Server entity movements are propagated to clients.
+- [x] When a client connects, a new entity is created for that client.
+- [ ] When a client disconnects, their entity is removed.
 - [ ] The server forgets a client when it disconnects, and does not continue to send it messages.
 - [ ] If a player asks for a non-existent entity, server responds with Entity Removed
 

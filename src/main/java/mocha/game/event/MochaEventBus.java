@@ -15,11 +15,11 @@ import mocha.game.world.entity.movement.event.EntityMovementEvent;
 
 public class MochaEventBus extends EventBus {
 
-  public void addEntity(Entity entity) {
+  public void postAddEntityEvent(Entity entity) {
     post(new AddEntityEvent(entity));
   }
 
-  public void updateEntity(Entity entity) {
+  public void postEntityUpdateEvent(Entity entity) {
     post(new EntityUpdateEvent(entity));
   }
 

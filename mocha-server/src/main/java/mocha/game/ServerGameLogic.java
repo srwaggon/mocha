@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityFactory;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.net.event.NetworkedMochaEventBus;
@@ -15,7 +17,7 @@ import mocha.net.event.NetworkedMochaEventBus;
 public class ServerGameLogic {
 
   @Inject
-  private NetworkedMochaEventBus networkedMochaEventBus;
+  private NetworkedMochaEventBus eventBus;
 
   @Inject
   private PlayerFactory playerFactory;
@@ -23,15 +25,25 @@ public class ServerGameLogic {
   @Inject
   private Registry<Player> playerRegistry;
 
+  @Inject
+  private Game game;
+
+  @Inject
+  private EntityFactory entityFactory;
+
   @PostConstruct
   public void init() {
-    networkedMochaEventBus.register(this);
+    eventBus.register(this);
   }
 
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
     Player player = playerFactory.newPlayer(connectedEvent.getMochaConnection());
     playerRegistry.add(player);
+
+    Entity newEntity = entityFactory.createSlider();
+    game.add(newEntity);
+    eventBus.postAddEntityEvent(newEntity);
   }
 
   @Subscribe

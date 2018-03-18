@@ -35,7 +35,7 @@ public class ClientPacketHandler extends SimplePacketHandler {
   @Subscribe
   @Override
   public void handle(EntityPacket entityPacket) {
-    mochaClientEventBus.updateEntity(entityPacket.getEntity());
+    mochaClientEventBus.postEntityUpdateEvent(entityPacket.getEntity());
   }
 
   @Subscribe
