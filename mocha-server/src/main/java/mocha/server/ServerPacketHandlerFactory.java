@@ -26,8 +26,7 @@ public class ServerPacketHandlerFactory {
   @Inject
   private NetworkedMochaEventBus networkedMochaEventBus;
 
-  public void newServerPacketHandler(MochaConnection mochaConnection) {
-    ServerPacketHandler serverPacketHandler = new ServerPacketHandler(mochaConnection, game, networkedMochaEventBus);
-    eventBus.register(serverPacketHandler);
+  public ServerPacketHandler newServerPacketHandler(MochaConnection mochaConnection) {
+    return new ServerPacketHandler(mochaConnection, game, networkedMochaEventBus);
   }
 }

@@ -12,6 +12,7 @@ import mocha.game.world.entity.event.RemoveEntityEvent;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
+import mocha.shared.task.event.TaskEvent;
 
 public class MochaEventBus extends EventBus {
 
@@ -51,5 +52,9 @@ public class MochaEventBus extends EventBus {
 
   public void postPickUpItemCommand(Entity entity) {
     post(new PickUpItemCommand(entity));
+  }
+
+  public void postTaskEvent(Runnable runnable) {
+    post(new TaskEvent(runnable));
   }
 }

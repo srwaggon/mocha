@@ -1,7 +1,8 @@
-package mocha.net.packet;
+package mocha.net.packet.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import mocha.net.packet.Packet;
 
 @Data
 @AllArgsConstructor

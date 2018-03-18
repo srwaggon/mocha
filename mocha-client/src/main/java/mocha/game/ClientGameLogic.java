@@ -14,7 +14,7 @@ import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.event.AddEntityEvent;
 import mocha.game.world.entity.event.EntityUpdateEvent;
 import mocha.net.packet.PacketFactory;
-import mocha.net.packet.SendPacketEvent;
+import mocha.net.packet.event.SendPacketEvent;
 
 @Component
 public class ClientGameLogic {

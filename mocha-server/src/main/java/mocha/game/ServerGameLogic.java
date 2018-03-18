@@ -8,11 +8,13 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
-import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.net.event.NetworkedMochaEventBus;
+import mocha.net.packet.MochaConnection;
+import mocha.server.ClientWorker;
+import mocha.server.ClientWorkerFactory;
 
 @Slf4j
 @Component
@@ -22,10 +24,10 @@ public class ServerGameLogic {
   private NetworkedMochaEventBus eventBus;
 
   @Inject
-  private PlayerFactory playerFactory;
+  private ClientWorkerFactory clientWorkerFactory;
 
   @Inject
-  private Registry<Player> playerRegistry;
+  private Registry<ClientWorker> clientWorkerRegistry;
 
   @Inject
   private Game game;
@@ -41,11 +43,11 @@ public class ServerGameLogic {
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
     log.info(connectedEvent.toString());
-    Player player = playerFactory.newPlayer(connectedEvent.getMochaConnection());
-    playerRegistry.add(player);
-    Entity newEntity = player.getEntity();
-    game.add(newEntity);
-    eventBus.postAddEntityEvent(newEntity);
+    MochaConnection mochaConnection = connectedEvent.getMochaConnection();
+
+    ClientWorker clientWorker = clientWorkerFactory.newClientWorker(mochaConnection);
+    clientWorkerRegistry.add(clientWorker);
+    game.add(clientWorker.getEntity());
   }
 
   @Subscribe

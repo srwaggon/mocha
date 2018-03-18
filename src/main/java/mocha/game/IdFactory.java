@@ -2,7 +2,7 @@ package mocha.game;
 
 public class IdFactory<T extends Identified> {
 
-  private int last = 0;
+  private int highest = 0;
   private Registry registry;
 
   public IdFactory(Registry<T> registry) {
@@ -10,9 +10,11 @@ public class IdFactory<T extends Identified> {
   }
 
   public int newId() {
-    while (registry.getIds().contains(last)) {
-      last++;
+    for (int newId = 0; newId < highest; newId++) {
+      if (!registry.containsKey(newId)) {
+        return newId;
+      }
     }
-    return last;
+    return highest++;
   }
 }

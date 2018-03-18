@@ -6,35 +6,26 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
 
 import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
-import mocha.net.Connection;
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.MochaConnection;
-import mocha.net.packet.PacketConnection;
 import mocha.net.packet.PacketFactory;
-import mocha.net.packet.PacketListener;
-import mocha.net.packet.PacketListenerFactory;
+import mocha.shared.task.TaskService;
 
-@Component
 @Slf4j
+@Component
 public class Server implements Runnable {
 
   private ServerSocket server;
 
   @Inject
-  private PacketListenerFactory packetListenerFactory;
-  @Inject
   private NetworkedMochaEventBus eventBus;
 
   @Inject
-  private ServerPacketHandlerFactory serverPacketHandlerFactory;
-
-  @Inject
-  private ExecutorService executorService;
+  private TaskService taskService;
 
   @Inject
   private PacketFactory packetFactory;
@@ -46,7 +37,7 @@ public class Server implements Runnable {
   }
 
   public void start() {
-    executorService.submit(this);
+    eventBus.postTaskEvent(this);
   }
 
   @Override
@@ -76,14 +67,7 @@ public class Server implements Runnable {
 
   private void acceptConnection(Socket socket) {
     log.info("Receiving connection from " + socket.getInetAddress().toString());
-    MochaConnection mochaConnection = new MochaConnection(socket, packetFactory);
-
-    eventBus.postConnectedEvent(mochaConnection);
-
-    serverPacketHandlerFactory.newServerPacketHandler(mochaConnection);
-
-    PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection);
-    executorService.submit(packetListener);
+    eventBus.postConnectedEvent(new MochaConnection(socket, packetFactory));
   }
 
 }

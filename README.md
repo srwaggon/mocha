@@ -58,6 +58,7 @@ These represent units of work **to be done.**
 - [ ] When a client disconnects, their entity is removed.
 - [ ] The server forgets a client when it disconnects, and does not continue to send it messages.
 - [ ] If a player asks for a non-existent entity, server responds with Entity Removed
+- [ ] Server sends data to clients beyond the first
 
 ## Ideas
 * Architect by layer

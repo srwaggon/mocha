@@ -7,13 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import mocha.game.Game;
 import mocha.game.GameLoop;
 import mocha.game.IdFactory;
-import mocha.game.Player;
 import mocha.game.Registry;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.ArtificialIntelligenceRule;
@@ -34,8 +31,10 @@ import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketListenerFactory;
 import mocha.net.packet.PacketSenderFactory;
+import mocha.server.ClientWorker;
+import mocha.shared.task.TaskService;
 
-@Configuration
+@Configuration()
 public class ServerConfiguration {
 
   @Bean
@@ -65,13 +64,13 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Registry<Player> playerRegistry() {
+  public Registry<ClientWorker> clientWorkerRegistry() {
     return new Registry<>();
   }
 
   @Bean
-  public IdFactory<Player> playerIdFactory(Registry<Player> playerRegistry) {
-    return new IdFactory<>(playerRegistry);
+  public IdFactory<ClientWorker> clientWorkerIdFactory(Registry<ClientWorker> clientWorkerRegistry) {
+    return new IdFactory<>(clientWorkerRegistry);
   }
 
   @Bean
@@ -139,8 +138,10 @@ public class ServerConfiguration {
     return new ChunkFactory(tileFactory);
   }
 
-  @Bean
-  public ExecutorService executorService() {
-    return Executors.newFixedThreadPool(2);
+  @Bean()
+  public TaskService taskService(MochaEventBus eventBus) {
+    TaskService taskService = new TaskService();
+    eventBus.register(taskService);
+    return taskService;
   }
 }

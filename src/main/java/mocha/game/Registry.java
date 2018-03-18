@@ -14,10 +14,6 @@ public class Registry<T extends Identified> {
     return members.values();
   }
 
-  public Map<Integer, T> getByid() {
-    return members;
-  }
-
   public Set<Integer> getIds() {
     return members.keySet();
   }
@@ -28,6 +24,13 @@ public class Registry<T extends Identified> {
 
   public Optional<T> get(int id) {
     return Optional.ofNullable(members.get(id));
+  }
+
+  public boolean containsKey(Integer key) {
+    return members.containsKey(key);
+  }
+  public boolean containsValue(T value) {
+    return members.containsValue(value);
   }
 
   public T remove(T member) {
