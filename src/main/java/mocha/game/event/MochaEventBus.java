@@ -21,7 +21,7 @@ public class MochaEventBus extends EventBus {
     post(new EntityUpdateEvent(entity));
   }
 
-  public void move(Movement movement) {
+  public void moveEvent(Movement movement) {
     post(new EntityMovementEvent(movement));
   }
 

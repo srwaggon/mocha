@@ -32,15 +32,19 @@ public class GameKeyHandler {
 
   @Subscribe
   public void handle(KeyDownEvent keyDownEvent) {
-    entityRegistry.get(0).ifPresent(entity -> {
-          Optional<EntityMoveCommand> optionalEntityMove = getEntityMove(keyDownEvent, entity);
-          optionalEntityMove.ifPresent(mochaClientEventBus::sendMoveRequest);
+    int entityId = 0;
+    entityRegistry.get(entityId).ifPresent(entity -> {
+          Optional<EntityMoveCommand> optionalEntityMove = getEntityMove(keyDownEvent, entityId);
+          optionalEntityMove.ifPresent(mochaClientEventBus::sendMovePacket);
         }
     );
   }
 
-  private Optional<EntityMoveCommand> getEntityMove(KeyDownEvent keyDownEvent, Entity entity) {
-    return getDirection(keyDownEvent).map(direction -> new EntityMoveCommand(entity, direction));
+  private Optional<EntityMoveCommand> getEntityMove(KeyDownEvent keyDownEvent, int entityId) {
+    return getDirection(keyDownEvent).map(direction -> EntityMoveCommand.builder()
+        .entityId(entityId)
+        .direction(direction)
+        .build());
   }
 
   private Optional<Direction> getDirection(KeyDownEvent keyDownEvent) {

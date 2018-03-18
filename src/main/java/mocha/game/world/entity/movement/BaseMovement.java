@@ -6,7 +6,7 @@ import java.util.Map;
 
 import mocha.game.world.Direction;
 import mocha.game.world.entity.movement.collision.Collision;
-import mocha.game.world.entity.movement.command.MoveCommand;
+import mocha.game.world.entity.movement.command.EntityMoveCommand;
 
 public class BaseMovement extends SimpleMovement {
 
@@ -26,7 +26,7 @@ public class BaseMovement extends SimpleMovement {
   }
 
   @Override
-  public void handle(MoveCommand moveCommand) {
+  public void handle(EntityMoveCommand moveCommand) {
     moveMap.get(moveCommand.getDirection()).run();
   }
 

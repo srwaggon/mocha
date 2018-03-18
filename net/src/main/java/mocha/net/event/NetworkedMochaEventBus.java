@@ -1,6 +1,7 @@
 package mocha.net.event;
 
 import mocha.game.event.MochaEventBus;
+import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.Packet;
 import mocha.net.packet.PacketFactory;
@@ -24,5 +25,9 @@ public class NetworkedMochaEventBus extends MochaEventBus {
 
   public void sendPacket(Packet packet) {
     this.post(new SendPacketEvent(packet));
+  }
+
+  public void sendMovePacket(EntityMoveCommand entityMove) {
+    sendPacket(packetFactory.movePacket(entityMove));
   }
 }

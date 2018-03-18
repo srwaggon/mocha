@@ -25,8 +25,8 @@ public class RenderLoop extends AnimationTimer {
 
   @Override
   public void handle(long now) {
-    render(now);
 //    printFramesPerSecond(now);
+    render(now);
   }
 
   private void render(long now) {
@@ -35,6 +35,7 @@ public class RenderLoop extends AnimationTimer {
     }
 
     gameView.render();
+    renders++;
 
     last = now;
   }
@@ -45,10 +46,6 @@ public class RenderLoop extends AnimationTimer {
       renders = 0;
       lastSecond = now;
     }
-    if (skipRendering(now)) {
-      return;
-    }
-    renders++;
   }
 
   private boolean skipRendering(long now) {

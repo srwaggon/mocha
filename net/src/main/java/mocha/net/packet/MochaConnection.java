@@ -3,6 +3,7 @@ package mocha.net.packet;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.movement.command.EntityMoveCommand;
 
 public class MochaConnection {
 
@@ -20,6 +21,10 @@ public class MochaConnection {
 
   public void sendEntityUpdate(Entity entity) {
     packetConnection.sendPacket(packetFactory.entityPacket(entity));
+  }
+
+  public void sendMoveCommand(EntityMoveCommand entityMoveCommand) {
+    packetConnection.sendPacket(packetFactory.movePacket(entityMoveCommand));
   }
 
 }

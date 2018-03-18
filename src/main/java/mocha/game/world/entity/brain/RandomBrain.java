@@ -23,7 +23,9 @@ public class RandomBrain extends BaseBrain {
 
   @Override
   public void tick(long now) {
-    directionMap.get(Direction.random()).accept(entity.getMovement());
+    if (Math.random() > .75) {
+      directionMap.get(Direction.random()).accept(entity.getMovement());
+    }
   }
 
 }

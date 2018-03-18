@@ -8,8 +8,6 @@ import mocha.game.world.tile.TileType;
 public class SlidingMovement extends BaseMovement {
 
   private static final int WALK_SPEED = 1;
-  private int xOffset = 0;
-  private int yOffset = 0;
 
   SlidingMovement(Collision collision) {
     super(collision);

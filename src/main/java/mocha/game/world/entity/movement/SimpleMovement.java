@@ -5,13 +5,15 @@ import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.collision.Collision;
 import mocha.game.world.entity.movement.collision.SimpleCollision;
-import mocha.game.world.entity.movement.command.MoveCommand;
+import mocha.game.world.entity.movement.command.EntityMoveCommand;
 
 public class SimpleMovement implements Movement {
 
   protected Entity entity;
   protected Collision collision;
   protected Direction direction;
+  int xOffset = 0;
+  int yOffset = 0;
 
   public static SimpleMovementBuilder builder() {
     return new SimpleMovementBuilder();
@@ -42,7 +44,7 @@ public class SimpleMovement implements Movement {
   }
 
   @Override
-  public void handle(MoveCommand moveCommand) {
+  public void handle(EntityMoveCommand moveCommand) {
 
   }
 
@@ -64,6 +66,14 @@ public class SimpleMovement implements Movement {
   @Override
   public Location getLocation() {
     return entity.getLocation();
+  }
+
+  public int getXOffset() {
+    return xOffset;
+  }
+
+  public int getYOffset() {
+    return yOffset;
   }
 
   @Override

@@ -15,12 +15,12 @@ public class Game implements Tickable {
 
   private World world;
   private List<GameRule> gameRules;
-  protected Registry<Entity> registry;
+  protected Registry<Entity> entityRegistry;
 
-  public Game(World world, List<GameRule> gameRules, Registry<Entity> registry) {
+  public Game(World world, List<GameRule> gameRules, Registry<Entity> entityRegistry) {
     this.world = world;
     this.gameRules = gameRules;
-    this.registry = registry;
+    this.entityRegistry = entityRegistry;
   }
 
   public void tick(long now) {
@@ -32,7 +32,7 @@ public class Game implements Tickable {
   }
 
   public void add(Entity entity) {
-    registry.add(entity);
+    entityRegistry.add(entity);
     world.add(entity);
   }
 
@@ -56,6 +56,6 @@ public class Game implements Tickable {
   }
 
   public Registry<Entity> getEntityRegistry() {
-    return registry;
+    return entityRegistry;
   }
 }

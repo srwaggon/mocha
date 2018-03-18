@@ -79,6 +79,15 @@ public class ServerConfiguration {
   public Game game(World world, List<GameRule> gameRules, EntityFactory entityFactory, Registry<Entity> entityRegistry) {
     Game game = new Game(world, gameRules, entityRegistry);
     game.add(entityFactory.createSlider());
+    game.add(entityFactory.createRandomSlider());
+    game.add(entityFactory.createRandomSlider());
+    game.add(entityFactory.createRandomSlider());
+    game.add(entityFactory.createRandomSlider());
+    game.add(entityFactory.createRandomSlider());
+    game.add(entityFactory.createRandomSlider());
+    game.add(entityFactory.createRandomSlider());
+    game.add(entityFactory.createRandomSlider());
+    game.add(entityFactory.createRandomSlider());
     return game;
   }
 

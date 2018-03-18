@@ -4,6 +4,8 @@ import com.google.common.eventbus.Subscribe;
 
 import mocha.game.Game;
 import mocha.game.world.Location;
+import mocha.game.world.entity.movement.Movement;
+import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.MochaConnection;
@@ -15,17 +17,24 @@ import mocha.net.packet.world.entity.movement.action.MovePacket;
 public class ServerPacketHandler extends SimplePacketHandler {
   private MochaConnection mochaConnection;
   private Game game;
-  private NetworkedMochaEventBus networkedMochaEventBus;
+  private NetworkedMochaEventBus eventBus;
 
-  ServerPacketHandler(MochaConnection mochaConnection, Game game, NetworkedMochaEventBus networkedMochaEventBus) {
+  ServerPacketHandler(MochaConnection mochaConnection, Game game, NetworkedMochaEventBus eventBus) {
     this.mochaConnection = mochaConnection;
     this.game = game;
-    this.networkedMochaEventBus = networkedMochaEventBus;
+    this.eventBus = eventBus;
   }
 
   @Subscribe
   public void handleMoveEvent(EntityMovementEvent entityMovementEvent) {
-    mochaConnection.sendEntityUpdate(entityMovementEvent.getMovement().getEntity());
+    Movement movement = entityMovementEvent.getMovement();
+    EntityMoveCommand entityMove = EntityMoveCommand.builder()
+        .entityId(movement.getEntity().getId())
+        .direction(movement.getDirection())
+        .xOffset(movement.getXOffset())
+        .yOffset(movement.getYOffset())
+        .build();
+    mochaConnection.sendMoveCommand(entityMove);
   }
 
   @Subscribe
@@ -47,6 +56,6 @@ public class ServerPacketHandler extends SimplePacketHandler {
   @Subscribe
   @Override
   public void handle(MovePacket movePacket) {
-    networkedMochaEventBus.post(movePacket.getMoveCommand());
+    eventBus.post(movePacket.getMoveCommand());
   }
 }

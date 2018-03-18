@@ -1,24 +1,19 @@
 package mocha.game.world.entity.movement.command;
 
-import mocha.game.Game;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import mocha.game.command.Command;
 import mocha.game.world.Direction;
-import mocha.game.world.entity.Entity;
 
-public class EntityMoveCommand extends MoveCommand {
-  private final Entity entity;
-
-  public EntityMoveCommand(Entity entity, Direction direction) {
-    super(direction);
-    this.entity = entity;
-  }
-
-  public Entity getEntity() {
-    return entity;
-  }
-
-  @Override
-  public void apply(Game game) {
-    game.getEntityRegistry().get(entity.getId())
-        .ifPresent(entity -> entity.getMovement().handle(this));
-  }
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class EntityMoveCommand implements Command {
+  private int entityId;
+  private Direction direction;
+  private int xOffset;
+  private int yOffset;
 }
