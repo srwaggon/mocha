@@ -50,7 +50,14 @@ public class ServerGameLogic {
   public void handle(DisconnectedEvent disconnectedEvent) {
     log.info(disconnectedEvent.toString());
     clientWorkerRegistry.get(disconnectedEvent.getSenderId())
-        .ifPresent(clientWorker -> game.remove(clientWorker.getEntity()));
+        .ifPresent(this::removeClient);
+
+  }
+
+  private void removeClient(ClientWorker clientWorker) {
+    game.remove(clientWorker.getEntity());
+
+    clientWorkerRegistry.remove(clientWorker);
   }
 
   @Subscribe

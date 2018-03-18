@@ -58,7 +58,7 @@ These represent units of work **to be done.**
 - [x] The server associates incoming packets with the sender.
 - [x] When a client disconnects, their entity is removed.
 - [x] Server sends data to clients beyond the first
-- [ ] The server forgets a client when it disconnects, and does not continue to send it messages.
+- [x] The server forgets a client when it disconnects, and does not continue to send it messages.
 - [ ] If a player asks for a non-existent entity, server responds with Entity Removed
 
 ## Ideas
