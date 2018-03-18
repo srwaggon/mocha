@@ -1,4 +1,4 @@
-package mocha.client;
+package mocha;
 
 import com.google.common.collect.Lists;
 import com.google.common.eventbus.EventBus;
@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import mocha.client.ClientPacketHandler;
 import mocha.client.event.MochaClientEventBus;
 import mocha.game.Game;
 import mocha.game.GameLoop;
@@ -90,10 +91,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public Game game(World world, List<GameRule> gameRules, MochaClientEventBus eventBus, EntityFactory entityFactory, Registry<Entity> entityRegistry) {
-    Game game = new MochaClientGame(world, gameRules, entityFactory, entityRegistry, eventBus);
-    eventBus.register(game);
-    return game;
+  public Game game(World world, List<GameRule> gameRules, Registry<Entity> entityRegistry) {
+    return new Game(world, gameRules, entityRegistry);
   }
 
   @Bean

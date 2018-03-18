@@ -1,20 +1,15 @@
 package mocha.game;
 
-import com.google.common.collect.Lists;
-
-import java.util.Collection;
 import java.util.List;
 
 import mocha.game.rule.GameRule;
-import mocha.game.world.Location;
 import mocha.game.world.World;
-import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 
 public class Game implements Tickable {
 
-  private World world;
   private List<GameRule> gameRules;
+  private World world;
   protected Registry<Entity> entityRegistry;
 
   public Game(World world, List<GameRule> gameRules, Registry<Entity> entityRegistry) {
@@ -34,22 +29,6 @@ public class Game implements Tickable {
   public void add(Entity entity) {
     entityRegistry.add(entity);
     world.add(entity);
-  }
-
-  private List<Chunk> getActiveChunks() {
-    Location playerLocation = Location.at(0,0);
-    List<Chunk> activeChunks = Lists.newLinkedList();
-    for (int y = -1; y <= 1; y++) {
-      for (int x = -1; x <= 1; x++) {
-        Location chunkLocation = playerLocation.addNew(x * Chunk.getWidth(), y * Chunk.getHeight());
-        world.getChunkAt(chunkLocation).ifPresent(activeChunks::add);
-      }
-    }
-    return activeChunks;
-  }
-
-  public Collection<Entity> getActiveEntities() {
-    return entityRegistry.getMembers();
   }
 
   public Registry<Entity> getEntityRegistry() {

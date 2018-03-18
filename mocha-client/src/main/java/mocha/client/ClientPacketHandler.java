@@ -18,7 +18,7 @@ public class ClientPacketHandler extends SimplePacketHandler {
   private final Game game;
   private MochaClientEventBus mochaClientEventBus;
 
-  ClientPacketHandler(ChunkFactory chunkFactory, Game game, MochaClientEventBus mochaClientEventBus) {
+  public ClientPacketHandler(ChunkFactory chunkFactory, Game game, MochaClientEventBus mochaClientEventBus) {
     this.chunkFactory = chunkFactory;
     this.game = game;
     this.mochaClientEventBus = mochaClientEventBus;

@@ -1,7 +1,6 @@
 package mocha.client.gfx;
 
 import com.google.common.collect.Maps;
-import com.google.common.eventbus.Subscribe;
 
 import org.springframework.stereotype.Component;
 
@@ -10,15 +9,12 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import javafx.application.Platform;
 import javafx.scene.Group;
 import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.client.gfx.sprite.SpriteSheetFactory;
 import mocha.client.gfx.view.EntityView;
 import mocha.game.Game;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.event.AddEntityEvent;
-import mocha.game.world.entity.event.RemoveEntityEvent;
 
 @Component
 public class SpriteLayer extends Group {
@@ -31,12 +27,10 @@ public class SpriteLayer extends Group {
   public SpriteLayer(Game game, SpriteSheetFactory spriteSheetFactory) {
     this.game = game;
     spriteSheet = spriteSheetFactory.newSpriteSheet();
-
-    addEntityViews();
   }
 
   private void addEntityViews() {
-    game.getActiveEntities().stream()
+    game.getEntityRegistry().getMembers().stream()
         .sorted(Comparator.comparingInt(entity -> entity.getLocation().getY()))
         .forEach(this::addEntityView);
   }
@@ -47,22 +41,19 @@ public class SpriteLayer extends Group {
     getChildren().add(entityView);
   }
 
-  @Subscribe
-  public void handle(AddEntityEvent addEntityEvent) {
-    Platform.runLater(() -> addEntityView(addEntityEvent.getEntity()));
-  }
-
-  @Subscribe
-  public void handle(RemoveEntityEvent removeEntityEvent) {
-    Platform.runLater(() -> removeEntityView(removeEntityEvent.getEntity()));
+  private void removeEntityViews() {
+    entityViews.keySet().forEach(this::removeEntityView);
+    entityViews.clear();
   }
 
   private void removeEntityView(Entity entity) {
-    EntityView entityView = entityViews.remove(entity);
+    EntityView entityView = entityViews.get(entity);
     getChildren().remove(entityView);
   }
 
   public void render() {
+    this.removeEntityViews();
+    addEntityViews();
     entityViews.values().forEach(EntityView::render);
   }
 }

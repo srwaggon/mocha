@@ -61,34 +61,12 @@ public class Client implements Runnable {
 
     PacketListener packetListener = packetListenerFactory.newPacketListener(packetConnection);
     executorService.submit(packetListener);
-    executorService.submit(() -> execute(packetConnection));
   }
 
   private PacketConnection getMochaConnection() {
     Socket socket = getSocket();
     Connection connection = new Connection(socket);
     return new PacketConnection(connection);
-  }
-
-  private void execute(PacketConnection packetConnection) {
-//    while (packetConnection.isConnected()) {
-    requestMapData(new Location(0, 0));
-    nap();
-//    }
-    log.info("Lost connection with " + packetConnection);
-  }
-
-  private void requestMapData(Location location) {
-    eventBus.post(new SendPacketEvent(packetFactory.newChunkRequestPacket(location)));
-    eventBus.post(new SendPacketEvent(packetFactory.newRequestEntitiesInChunkPacket(location)));
-  }
-
-  private void nap() {
-    try {
-      Thread.sleep(50);
-    } catch (InterruptedException interruptedException) {
-      log.error("Client .. something interrupted", interruptedException);
-    }
   }
 
   private Socket getSocket() {

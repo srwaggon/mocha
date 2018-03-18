@@ -45,7 +45,7 @@ public class MovementRule implements GameRule {
   }
 
   private void processEntityMovement(Game game) {
-    game.getActiveEntities().forEach((entity) -> {
+    game.getEntityRegistry().getMembers().forEach((entity) -> {
       Location start = entity.getLocation().copy();
       entity.getMovement().tick(0L);
       Location finish = entity.getLocation();

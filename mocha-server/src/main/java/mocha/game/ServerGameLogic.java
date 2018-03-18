@@ -12,7 +12,7 @@ import mocha.net.event.DisconnectedEvent;
 import mocha.net.event.NetworkedMochaEventBus;
 
 @Component
-public class GameLogic {
+public class ServerGameLogic {
 
   @Inject
   private NetworkedMochaEventBus networkedMochaEventBus;
