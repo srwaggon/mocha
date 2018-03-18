@@ -38,7 +38,7 @@ public class ClientGameLogic {
 
   @Subscribe
   public void handle(AddEntityEvent addEntityEvent) {
-    game.add(addEntityEvent.getEntity());
+
   }
 
   @Subscribe
@@ -60,7 +60,7 @@ public class ClientGameLogic {
       Entity entity = entityFactory.createSlider();
       entity.setId(entityUpdate.getId());
       entity.getLocation().set(entityUpdate.getLocation());
-      eventBus.postAddEntityEvent(entity);
+      game.add(entity);
     }
   }
 

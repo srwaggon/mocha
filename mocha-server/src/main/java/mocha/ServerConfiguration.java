@@ -39,8 +39,8 @@ import mocha.net.packet.PacketSenderFactory;
 public class ServerConfiguration {
 
   @Bean
-  public NetworkedMochaEventBus getEventBus(PacketFactory packetFactory) {
-    return new NetworkedMochaEventBus(packetFactory);
+  public NetworkedMochaEventBus getEventBus() {
+    return new NetworkedMochaEventBus();
   }
 
   @Bean

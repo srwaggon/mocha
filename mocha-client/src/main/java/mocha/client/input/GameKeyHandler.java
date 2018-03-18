@@ -15,6 +15,7 @@ import mocha.game.Registry;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
+import mocha.net.packet.PacketFactory;
 
 @Component
 public class GameKeyHandler {
@@ -23,11 +24,14 @@ public class GameKeyHandler {
   private Registry<Entity> entityRegistry;
 
   @Inject
-  private MochaClientEventBus mochaClientEventBus;
+  private MochaClientEventBus eventBus;
+
+  @Inject
+  private PacketFactory packetFactory;
 
   @PostConstruct
   public void init() {
-    mochaClientEventBus.register(this);
+    eventBus.register(this);
   }
 
   @Subscribe
@@ -36,8 +40,12 @@ public class GameKeyHandler {
     entityRegistry.get(entityId)
         .ifPresent(entity ->
             getEntityMove(keyDownEvent, entityId)
-                .ifPresent(mochaClientEventBus::sendMovePacket)
+                .ifPresent(this::sendMovePacket)
         );
+  }
+
+  private void sendMovePacket(EntityMoveCommand entityMove) {
+    eventBus.postSendPacketEvent(packetFactory.movePacket(entityMove));
   }
 
   private Optional<EntityMoveCommand> getEntityMove(KeyDownEvent keyDownEvent, int entityId) {
