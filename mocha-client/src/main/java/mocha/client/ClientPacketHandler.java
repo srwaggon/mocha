@@ -7,6 +7,7 @@ import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
+import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.packet.SimplePacketHandler;
 import mocha.net.packet.event.ReadPacketEvent;
 import mocha.net.packet.world.chunk.ChunkPacket;
@@ -47,6 +48,9 @@ public class ClientPacketHandler extends SimplePacketHandler {
   @Subscribe
   @Override
   public void handle(MovePacket movePacket) {
-    eventBus.post(movePacket.getMoveCommand());
+    EntityMoveCommand moveCommand = movePacket.getMoveCommand();
+    game.getEntityRegistry().get(moveCommand.getEntityId())
+        .ifPresent(entity -> entity.getLocation().set(moveCommand.getLocation()));
+    eventBus.post(moveCommand);
   }
 }

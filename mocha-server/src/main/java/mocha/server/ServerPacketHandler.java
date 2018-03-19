@@ -11,7 +11,6 @@ import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.MochaConnection;
-import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
 import mocha.net.packet.event.ReadPacketEvent;
 import mocha.net.packet.world.chunk.RequestChunkPacket;
@@ -44,6 +43,7 @@ public class ServerPacketHandler extends SimplePacketHandler {
     Movement movement = entityMovementEvent.getMovement();
     EntityMoveCommand entityMove = EntityMoveCommand.builder()
         .entityId(movement.getEntity().getId())
+        .location(movement.getLocation())
         .direction(movement.getDirection())
         .xOffset(movement.getXOffset())
         .yOffset(movement.getYOffset())
