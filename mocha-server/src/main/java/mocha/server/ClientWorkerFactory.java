@@ -37,6 +37,7 @@ public class ClientWorkerFactory {
     eventBus.postTaskEvent(packetListener);
 
     ServerPacketHandler serverPacketHandler = serverPacketHandlerFactory.newServerPacketHandler(mochaConnection, clientId);
+    eventBus.postTaskEvent(serverPacketHandler);
     eventBus.register(serverPacketHandler);
 
     return ClientWorker.builder()

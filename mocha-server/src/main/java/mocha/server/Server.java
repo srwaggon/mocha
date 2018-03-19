@@ -13,11 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketFactory;
+import mocha.shared.task.SleepyRunnable;
 import mocha.shared.task.TaskService;
 
 @Slf4j
 @Component
-public class Server implements Runnable {
+public class Server implements SleepyRunnable {
 
   private ServerSocket server;
 
@@ -54,14 +55,6 @@ public class Server implements Runnable {
       } catch (IOException ioexception) {
         log.error("IOException while awaiting connections: ", ioexception);
       }
-    }
-  }
-
-  private void nap() {
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
     }
   }
 

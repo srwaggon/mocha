@@ -137,9 +137,10 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public ClientPacketHandler clientPacketHandler(ClientEventBus clientEventBus, ChunkFactory chunkFactory, Game game) {
+  public ClientPacketHandler clientPacketHandler(ClientEventBus clientEventBus, ChunkFactory chunkFactory, Game game, TaskService taskService) {
     ClientPacketHandler clientPacketHandler = new ClientPacketHandler(chunkFactory, game, clientEventBus);
     clientEventBus.register(clientPacketHandler);
+    taskService.submit(clientPacketHandler);
     return clientPacketHandler;
   }
 

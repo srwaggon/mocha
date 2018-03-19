@@ -39,7 +39,7 @@ public class GameKeyHandler {
     int entityId = 0;
     entityRegistry.get(entityId)
         .ifPresent(entity ->
-            getEntityMove(keyDownEvent, entityId)
+            getEntityMove(keyDownEvent, entity)
                 .ifPresent(this::sendMovePacket)
         );
   }
@@ -48,9 +48,10 @@ public class GameKeyHandler {
     eventBus.postSendPacketEvent(packetFactory.movePacket(entityMove));
   }
 
-  private Optional<EntityMoveCommand> getEntityMove(KeyDownEvent keyDownEvent, int entityId) {
+  private Optional<EntityMoveCommand> getEntityMove(KeyDownEvent keyDownEvent, Entity entity) {
     return getDirection(keyDownEvent).map(direction -> EntityMoveCommand.builder()
-        .entityId(entityId)
+        .entityId(entity.getId())
+        .location(entity.getLocation())
         .direction(direction)
         .build());
   }

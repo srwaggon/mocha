@@ -2,8 +2,9 @@ package mocha.net.packet;
 
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.exception.DisconnectedException;
+import mocha.shared.task.SleepyRunnable;
 
-public class PacketListener implements Runnable {
+public class PacketListener implements SleepyRunnable {
 
   private final MochaConnection connection;
   private final NetworkedMochaEventBus eventBus;
@@ -28,14 +29,6 @@ public class PacketListener implements Runnable {
     while (connection.isConnected()) {
       eventBus.postReadPacketEvent(senderId, connection.readPacket());
       nap();
-    }
-  }
-
-  private void nap() {
-    try {
-      Thread.sleep(10);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
     }
   }
 }
