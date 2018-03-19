@@ -9,7 +9,7 @@ import mocha.shared.task.event.TaskEvent;
 
 public class TaskService {
 
-  private ExecutorService taskService = Executors.newFixedThreadPool(2);
+  private ExecutorService taskService = Executors.newCachedThreadPool();
 
   @Subscribe
   public void handle(TaskEvent taskEvent) {
