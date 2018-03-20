@@ -13,7 +13,7 @@ import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.brain.PickUpItemCommand;
+import mocha.game.world.entity.PickUpItemCommand;
 
 public class PickUpItemsRule implements GameRule {
 

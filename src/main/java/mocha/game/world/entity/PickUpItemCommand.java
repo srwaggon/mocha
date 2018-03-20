@@ -1,9 +1,8 @@
-package mocha.game.world.entity.brain;
+package mocha.game.world.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import mocha.game.command.Command;
-import mocha.game.world.entity.Entity;
 
 @Data
 @AllArgsConstructor

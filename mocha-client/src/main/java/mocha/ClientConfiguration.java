@@ -26,8 +26,6 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
-import mocha.game.world.entity.brain.BrainFactory;
-import mocha.game.world.entity.brain.rule.BrainRule;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
@@ -61,11 +59,6 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public BrainFactory brainFactory() {
-    return new BrainFactory();
-  }
-
-  @Bean
   public CollisionFactory collisionFactory(World world) {
     return new CollisionFactory(world);
   }
@@ -81,8 +74,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public EntityFactory entityFactory(BrainFactory brainFactory, MovementFactory movementFactory, IdFactory<Entity> idFactory) {
-    return new EntityFactory(brainFactory, movementFactory, idFactory);
+  public EntityFactory entityFactory(MovementFactory movementFactory, IdFactory<Entity> idFactory) {
+    return new EntityFactory(movementFactory, idFactory);
   }
 
   @Bean
@@ -111,7 +104,7 @@ public class ClientConfiguration {
     RemoveEntityRule removeEntityRule = new RemoveEntityRule(world);
     clientEventBus.register(removeEntityRule);
 
-    return Lists.newArrayList(new BrainRule(), movementRule, pickUpItemsRule, removeEntityRule);
+    return Lists.newArrayList(movementRule, pickUpItemsRule, removeEntityRule);
   }
 
   @Bean

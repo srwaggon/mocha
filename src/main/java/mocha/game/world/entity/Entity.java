@@ -3,8 +3,6 @@ package mocha.game.world.entity;
 import lombok.Builder;
 import mocha.game.Identified;
 import mocha.game.world.Location;
-import mocha.game.world.entity.brain.Brain;
-import mocha.game.world.entity.brain.SimpleBrain;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.SimpleMovement;
 import mocha.game.world.entity.movement.collision.SimpleCollision;
@@ -13,7 +11,6 @@ public class Entity implements Identified {
   private int id;
   private Location location = new Location();
   private Movement movement = new SimpleMovement(new SimpleCollision());
-  private Brain brain = new SimpleBrain();
 
   public Entity() {
   }
@@ -58,14 +55,5 @@ public class Entity implements Identified {
   public void setMovement(Movement movement) {
     this.movement = movement;
     movement.setEntity(this);
-  }
-
-  public Brain getBrain() {
-    return brain;
-  }
-
-  public void setBrain(Brain brain) {
-    this.brain = brain;
-    brain.setEntity(this);
   }
 }

@@ -4,7 +4,7 @@ import com.google.common.eventbus.EventBus;
 
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.brain.PickUpItemCommand;
+import mocha.game.world.entity.PickUpItemCommand;
 import mocha.game.world.entity.command.RemoveEntityCommand;
 import mocha.game.world.entity.event.AddEntityEvent;
 import mocha.game.world.entity.event.EntityUpdateEvent;

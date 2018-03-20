@@ -19,8 +19,6 @@ import mocha.game.world.World;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
-import mocha.game.world.entity.brain.BrainFactory;
-import mocha.game.world.entity.brain.rule.BrainRule;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
@@ -56,7 +54,7 @@ public class ServerConfiguration {
 
     ArtificialIntelligenceRule artificialIntelligenceRule = new ArtificialIntelligenceRule(networkedMochaEventBus);
 
-    return Lists.newArrayList(new BrainRule(),
+    return Lists.newArrayList(
         movementRule,
         pickUpItemsRule,
         removeEntityRule,
@@ -105,13 +103,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public EntityFactory getEntityFactory(BrainFactory brainFactory, MovementFactory movementFactory, IdFactory<Entity> idFactory) {
-    return new EntityFactory(brainFactory, movementFactory, idFactory);
-  }
-
-  @Bean
-  public BrainFactory brainFactory() {
-    return new BrainFactory();
+  public EntityFactory getEntityFactory(MovementFactory movementFactory, IdFactory<Entity> idFactory) {
+    return new EntityFactory(movementFactory, idFactory);
   }
 
   @Bean
