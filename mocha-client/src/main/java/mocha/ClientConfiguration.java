@@ -89,8 +89,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public GameLoop getGameLoop(Game game) {
-    return new GameLoop(game);
+  public GameLoop getGameLoop() {
+    return new GameLoop();
   }
 
   @Bean
@@ -113,10 +113,8 @@ public class ClientConfiguration {
   }
 
   @Bean()
-  public TaskService taskService(MochaEventBus eventBus) {
-    TaskService taskService = new TaskService();
-    eventBus.register(taskService);
-    return taskService;
+  public TaskService taskService() {
+    return new TaskService();
   }
 
   @Bean
@@ -127,14 +125,6 @@ public class ClientConfiguration {
   @Bean
   public ChunkFactory chunkFactory(TileFactory tileFactory) {
     return new ChunkFactory(tileFactory);
-  }
-
-  @Bean
-  public ClientPacketHandler clientPacketHandler(ClientEventBus clientEventBus, ChunkFactory chunkFactory, Game game, TaskService taskService) {
-    ClientPacketHandler clientPacketHandler = new ClientPacketHandler(chunkFactory, game, clientEventBus);
-    clientEventBus.register(clientPacketHandler);
-    taskService.submit(clientPacketHandler);
-    return clientPacketHandler;
   }
 
   @Bean

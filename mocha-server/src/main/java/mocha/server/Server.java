@@ -14,7 +14,6 @@ import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketFactory;
 import mocha.shared.task.SleepyRunnable;
-import mocha.shared.task.TaskService;
 
 @Slf4j
 @Component
@@ -26,19 +25,12 @@ public class Server implements SleepyRunnable {
   private NetworkedMochaEventBus eventBus;
 
   @Inject
-  private TaskService taskService;
-
-  @Inject
   private PacketFactory packetFactory;
 
   @Inject
   Server(@Value("${mocha.server.port}") int port) throws IOException {
     log.info("Staring server on port {}", port);
     server = new ServerSocket(port);
-  }
-
-  public void start() {
-    taskService.submit(this);
   }
 
   @Override

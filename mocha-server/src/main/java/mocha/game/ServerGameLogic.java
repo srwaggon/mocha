@@ -35,11 +35,6 @@ public class ServerGameLogic {
   @Inject
   private EntityFactory entityFactory;
 
-  @PostConstruct
-  public void init() {
-    eventBus.register(this);
-  }
-
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
     log.info(connectedEvent.toString());

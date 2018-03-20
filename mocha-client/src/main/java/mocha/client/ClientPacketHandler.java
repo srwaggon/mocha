@@ -4,7 +4,11 @@ import com.google.common.collect.Queues;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
+import org.springframework.stereotype.Component;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
 import mocha.game.Game;
@@ -20,26 +24,23 @@ import mocha.net.packet.world.entity.EntityPacket;
 import mocha.net.packet.world.entity.movement.action.MovePacket;
 import mocha.shared.task.SleepyRunnable;
 
+@Component
 public class ClientPacketHandler extends SimplePacketHandler implements SleepyRunnable {
 
-  private final ChunkFactory chunkFactory;
-  private final Game game;
+  @Inject
+  private ChunkFactory chunkFactory;
+  @Inject
+  private Game game;
+  @Inject
   private ClientEventBus eventBus;
 
-  private EventBus packetEventBus;
+  private EventBus packetEventBus = new EventBus();
 
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
 
-  public ClientPacketHandler(ChunkFactory chunkFactory, Game game, ClientEventBus eventBus) {
-    this.chunkFactory = chunkFactory;
-    this.game = game;
-    this.eventBus = eventBus;
-    packetEventBus = new EventBus();
-    packetEventBus.register(this);
-  }
-
   @Override
   public void run() {
+    packetEventBus.register(this);
     while (true) {
       if (!packets.isEmpty()) {
         packetEventBus.post(packets.poll());
@@ -51,7 +52,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Subscribe
   public void handle(ReadPacketEvent readPacketEvent) {
-      packets.offer(readPacketEvent.getPacket());
+    packets.offer(readPacketEvent.getPacket());
   }
 
   @Subscribe

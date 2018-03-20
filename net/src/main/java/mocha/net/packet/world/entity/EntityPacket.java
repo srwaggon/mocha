@@ -2,7 +2,6 @@ package mocha.net.packet.world.entity;
 
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.brain.SimpleBrain;
 import mocha.game.world.entity.movement.SimpleMovement;
 import mocha.game.world.entity.movement.collision.SimpleCollision;
 import mocha.net.packet.AbstractPacket;
@@ -45,7 +44,6 @@ public class EntityPacket extends AbstractPacket {
         .id(getId())
         .location(getLocation())
         .build();
-    entity.setBrain(new SimpleBrain());
     entity.setMovement(new SimpleMovement(new SimpleCollision()));
     return entity;
   }

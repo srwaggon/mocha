@@ -88,8 +88,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public GameLoop getGameLoop(Game game) {
-    return new GameLoop(game);
+  public GameLoop getGameLoop() {
+    return new GameLoop();
   }
 
   @Bean
@@ -133,9 +133,7 @@ public class ServerConfiguration {
   }
 
   @Bean()
-  public TaskService taskService(MochaEventBus eventBus) {
-    TaskService taskService = new TaskService();
-    eventBus.register(taskService);
-    return taskService;
+  public TaskService taskService() {
+    return new TaskService();
   }
 }
