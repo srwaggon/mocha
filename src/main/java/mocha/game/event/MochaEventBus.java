@@ -6,9 +6,9 @@ import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.PickUpItemCommand;
 import mocha.game.world.entity.command.RemoveEntityCommand;
-import mocha.game.world.entity.event.AddEntityEvent;
-import mocha.game.world.entity.event.EntityUpdateEvent;
-import mocha.game.world.entity.event.RemoveEntityEvent;
+import mocha.game.world.entity.event.EntityAddedEvent;
+import mocha.game.world.entity.event.EntityUpdatedEvent;
+import mocha.game.world.entity.event.EntityRemovedEvent;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
@@ -16,12 +16,12 @@ import mocha.shared.task.event.TaskEvent;
 
 public class MochaEventBus extends EventBus {
 
-  public void postAddEntityEvent(Entity entity) {
-    post(new AddEntityEvent(entity));
+  public void postEntityAddedEvent(Entity entity) {
+    post(new EntityAddedEvent(entity));
   }
 
-  public void postEntityUpdateEvent(Entity entity) {
-    post(new EntityUpdateEvent(entity));
+  public void postEntityUpdatedEvent(Entity entity) {
+    post(new EntityUpdatedEvent(entity));
   }
 
   public void postMoveCommand(Entity entity) {
@@ -46,8 +46,8 @@ public class MochaEventBus extends EventBus {
     post(new RemoveEntityCommand(entity));
   }
 
-  public void postRemoveEntityEvent(Entity entity) {
-    post(new RemoveEntityEvent(entity));
+  public void postEntityRemovedEvent(Entity entity) {
+    post(new EntityRemovedEvent(entity));
   }
 
   public void postPickUpItemCommand(Entity entity) {

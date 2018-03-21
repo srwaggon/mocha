@@ -6,6 +6,6 @@ import mocha.game.world.entity.Entity;
 
 @Data
 @AllArgsConstructor
-public class EntityUpdateEvent {
+public class EntityUpdatedEvent {
   private final Entity entity;
 }

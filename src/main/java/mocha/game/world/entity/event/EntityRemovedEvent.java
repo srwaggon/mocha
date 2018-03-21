@@ -6,6 +6,6 @@ import mocha.game.world.entity.Entity;
 
 @Data
 @AllArgsConstructor
-public class RemoveEntityEvent {
+public class EntityRemovedEvent {
   private final Entity entity;
 }

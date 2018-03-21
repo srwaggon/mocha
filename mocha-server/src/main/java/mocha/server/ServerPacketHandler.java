@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import mocha.game.Game;
 import mocha.game.world.Location;
-import mocha.game.world.entity.event.AddEntityEvent;
+import mocha.game.world.entity.event.EntityAddedEvent;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
@@ -63,8 +63,8 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   }
 
   @Subscribe
-  public void handle(AddEntityEvent addEntityEvent) {
-    mochaConnection.sendEntityUpdate(addEntityEvent.getEntity());
+  public void handle(EntityAddedEvent entityAddedEvent) {
+    mochaConnection.sendEntityUpdate(entityAddedEvent.getEntity());
   }
 
   @Subscribe

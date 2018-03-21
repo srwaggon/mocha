@@ -10,7 +10,7 @@ import mocha.client.event.ClientEventBus;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
-import mocha.game.world.entity.event.EntityUpdateEvent;
+import mocha.game.world.entity.event.EntityUpdatedEvent;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketFactory;
@@ -60,8 +60,8 @@ public class ClientGameLogic {
   }
 
   @Subscribe
-  public void handle(EntityUpdateEvent entityUpdateEvent) {
-    Entity entityUpdate = entityUpdateEvent.getEntity();
+  public void handle(EntityUpdatedEvent entityUpdatedEvent) {
+    Entity entityUpdate = entityUpdatedEvent.getEntity();
     createEntityIfAbsent(entityUpdate);
     updateEntity(entityUpdate);
   }

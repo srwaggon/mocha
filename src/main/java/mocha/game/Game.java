@@ -29,13 +29,13 @@ public class Game implements Tickable {
   public void addEntity(Entity entity) {
     entityRegistry.add(entity);
     world.add(entity);
-    eventBus.postAddEntityEvent(entity);
+    eventBus.postEntityAddedEvent(entity);
   }
 
   private void removeEntity(Entity entity) {
     entityRegistry.remove(entity);
     world.remove(entity);
-    eventBus.postRemoveEntityEvent(entity);
+    eventBus.postEntityRemovedEvent(entity);
   }
 
   public void addPlayer(Player player) {

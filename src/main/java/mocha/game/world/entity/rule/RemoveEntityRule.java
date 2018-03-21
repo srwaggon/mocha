@@ -9,11 +9,11 @@ import mocha.game.Game;
 import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
 import mocha.game.world.World;
-import mocha.game.world.entity.event.RemoveEntityEvent;
+import mocha.game.world.entity.event.EntityRemovedEvent;
 
 public class RemoveEntityRule implements GameRule {
 
-  private final Queue<RemoveEntityEvent> removeEntityEvents = Lists.newLinkedList();
+  private final Queue<EntityRemovedEvent> entityRemovedEvents = Lists.newLinkedList();
 
   private World world;
 
@@ -23,19 +23,19 @@ public class RemoveEntityRule implements GameRule {
 
   @Override
   public void apply(Game game) {
-    while (!removeEntityEvents.isEmpty()) {
-      removeEntity(removeEntityEvents.poll());
+    while (!entityRemovedEvents.isEmpty()) {
+      removeEntity(entityRemovedEvents.poll());
     }
   }
 
-  private void removeEntity(RemoveEntityEvent removeEntityEvent) {
-    Location entityLocation = removeEntityEvent.getEntity().getLocation();
+  private void removeEntity(EntityRemovedEvent entityRemovedEvent) {
+    Location entityLocation = entityRemovedEvent.getEntity().getLocation();
     world.getChunkAt(entityLocation)
-        .ifPresent(chunk -> chunk.remove(removeEntityEvent.getEntity()));
+        .ifPresent(chunk -> chunk.remove(entityRemovedEvent.getEntity()));
   }
 
   @Subscribe
-  public void handleRemoveEntityEvent(RemoveEntityEvent removeEntityEvent) {
-    removeEntityEvents.add(removeEntityEvent);
+  public void handle(EntityRemovedEvent entityRemovedEvent) {
+    entityRemovedEvents.add(entityRemovedEvent);
   }
 }

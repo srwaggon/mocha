@@ -66,7 +66,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   @Subscribe
   @Override
   public void handle(EntityPacket entityPacket) {
-    eventBus.postEntityUpdateEvent(entityPacket.getEntity());
+    eventBus.postEntityUpdatedEvent(entityPacket.getEntity());
   }
 
   @Subscribe
