@@ -24,18 +24,18 @@ import mocha.shared.task.SleepyRunnable;
 
 public class ServerPacketHandler extends SimplePacketHandler implements SleepyRunnable {
   private NetworkedMochaEventBus eventBus;
-  private final int clientId;
+  private final int playerId;
   private MochaConnection mochaConnection;
   private Game game;
   private EventBus packetEventBus;
 
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
 
-  ServerPacketHandler(MochaConnection mochaConnection, Game game, NetworkedMochaEventBus eventBus, int clientId) {
+  ServerPacketHandler(MochaConnection mochaConnection, Game game, NetworkedMochaEventBus eventBus, int playerId) {
     this.mochaConnection = mochaConnection;
     this.game = game;
     this.eventBus = eventBus;
-    this.clientId = clientId;
+    this.playerId = playerId;
     packetEventBus = new EventBus();
     packetEventBus.register(this);
   }
@@ -57,7 +57,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Subscribe
   public void handle(ReadPacketEvent readPacketEvent) {
-    if (readPacketEvent.getSenderId() == this.clientId) {
+    if (readPacketEvent.getSenderId() == this.playerId) {
       packets.offer(readPacketEvent.getPacket());
     }
   }
@@ -99,6 +99,11 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Subscribe
   @Override
   public void handle(MovePacket movePacket) {
-    eventBus.post(movePacket.getMoveCommand());
+    game.getPlayerRegistry().get(playerId).ifPresent(player -> {
+      EntityMoveCommand moveCommand = movePacket.getMoveCommand();
+      if (player.getEntity().getId() == moveCommand.getEntityId()) {
+        eventBus.post(moveCommand);
+      }
+    });
   }
 }

@@ -33,6 +33,7 @@ public class PacketListener implements SleepyRunnable {
   }
 
   public void remove() {
+    connection.disconnect();
     eventBus.unregister(this);
   }
 }

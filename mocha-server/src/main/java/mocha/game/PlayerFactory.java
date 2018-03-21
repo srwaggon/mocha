@@ -47,7 +47,6 @@ public class PlayerFactory {
     return NetworkPlayer.builder()
         .id(playerId)
         .entity(entity)
-        .mochaConnection(mochaConnection)
         .packetListener(packetListener)
         .serverPacketHandler(serverPacketHandler)
         .build();

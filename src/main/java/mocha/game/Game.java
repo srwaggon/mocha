@@ -56,4 +56,8 @@ public class Game implements Tickable {
   public Registry<Entity> getEntityRegistry() {
     return entityRegistry;
   }
+
+  public Registry<Player> getPlayerRegistry() {
+    return playerRegistry;
+  }
 }
