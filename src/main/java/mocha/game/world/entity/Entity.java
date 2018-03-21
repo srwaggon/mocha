@@ -1,11 +1,11 @@
 package mocha.game.world.entity;
 
 import lombok.Builder;
-import mocha.game.Identified;
 import mocha.game.world.Location;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.SimpleMovement;
 import mocha.game.world.entity.movement.collision.SimpleCollision;
+import mocha.shared.Identified;
 
 public class Entity implements Identified {
   private int id;

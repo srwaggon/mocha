@@ -4,7 +4,6 @@ import com.google.common.eventbus.Subscribe;
 
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +14,7 @@ import mocha.server.ClientWorker;
 import mocha.server.ClientWorkerFactory;
 import mocha.server.event.ClientConnectedEvent;
 import mocha.server.event.ServerEventBus;
+import mocha.shared.Registry;
 
 @Slf4j
 @Component

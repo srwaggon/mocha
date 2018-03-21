@@ -1,4 +1,4 @@
-package mocha.game;
+package mocha.shared;
 
 public interface Identified {
 

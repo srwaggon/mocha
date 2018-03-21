@@ -6,13 +6,14 @@ import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.World;
 import mocha.game.world.entity.Entity;
+import mocha.shared.Registry;
 
 public class Game implements Tickable {
 
   private MochaEventBus eventBus;
   private World world;
   private List<GameRule> gameRules;
-  protected Registry<Entity> entityRegistry;
+  private Registry<Entity> entityRegistry;
 
   public Game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Registry<Entity> entityRegistry) {
     this.eventBus = eventBus;

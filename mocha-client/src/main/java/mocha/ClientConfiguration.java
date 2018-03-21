@@ -12,12 +12,9 @@ import org.springframework.context.annotation.Scope;
 
 import java.util.List;
 
-import mocha.client.ClientPacketHandler;
 import mocha.client.event.ClientEventBus;
 import mocha.game.Game;
 import mocha.game.GameLoop;
-import mocha.game.IdFactory;
-import mocha.game.Registry;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
@@ -35,6 +32,8 @@ import mocha.game.world.tile.TileFactory;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketListenerFactory;
 import mocha.net.packet.PacketSenderFactory;
+import mocha.shared.IdFactory;
+import mocha.shared.Registry;
 import mocha.shared.task.TaskService;
 
 @Configuration

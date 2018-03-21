@@ -10,8 +10,6 @@ import java.util.List;
 
 import mocha.game.Game;
 import mocha.game.GameLoop;
-import mocha.game.IdFactory;
-import mocha.game.Registry;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.ArtificialIntelligenceRule;
 import mocha.game.rule.GameRule;
@@ -31,6 +29,8 @@ import mocha.net.packet.PacketListenerFactory;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.server.ClientWorker;
 import mocha.server.event.ServerEventBus;
+import mocha.shared.IdFactory;
+import mocha.shared.Registry;
 import mocha.shared.task.TaskService;
 
 @Configuration()

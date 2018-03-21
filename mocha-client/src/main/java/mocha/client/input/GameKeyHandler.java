@@ -11,11 +11,11 @@ import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
 import mocha.client.input.event.KeyDownEvent;
-import mocha.game.Registry;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.packet.PacketFactory;
+import mocha.shared.Registry;
 
 @Component
 public class GameKeyHandler {

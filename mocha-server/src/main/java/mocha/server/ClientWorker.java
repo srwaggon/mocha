@@ -3,10 +3,10 @@ package mocha.server;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import mocha.game.Identified;
 import mocha.game.world.entity.Entity;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketListener;
+import mocha.shared.Identified;
 
 @Data
 @Builder

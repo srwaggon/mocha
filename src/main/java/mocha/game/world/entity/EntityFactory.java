@@ -1,9 +1,9 @@
 package mocha.game.world.entity;
 
-import mocha.game.IdFactory;
 import mocha.game.world.Location;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.SimpleMovement;
+import mocha.shared.IdFactory;
 
 public class EntityFactory {
 
