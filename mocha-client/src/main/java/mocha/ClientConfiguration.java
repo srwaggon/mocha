@@ -28,7 +28,6 @@ import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
-import mocha.game.world.entity.rule.RemoveEntityRule;
 import mocha.game.world.tile.TileFactory;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketListenerFactory;
@@ -111,10 +110,7 @@ public class ClientConfiguration {
     PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(clientEventBus);
     clientEventBus.register(pickUpItemsRule);
 
-    RemoveEntityRule removeEntityRule = new RemoveEntityRule(world);
-    clientEventBus.register(removeEntityRule);
-
-    return Lists.newArrayList(movementRule, pickUpItemsRule, removeEntityRule);
+    return Lists.newArrayList(movementRule, pickUpItemsRule);
   }
 
   @Bean

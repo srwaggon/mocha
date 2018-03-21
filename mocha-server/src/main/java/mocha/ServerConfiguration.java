@@ -22,7 +22,6 @@ import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
-import mocha.game.world.entity.rule.RemoveEntityRule;
 import mocha.game.world.tile.TileFactory;
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.PacketFactory;
@@ -42,22 +41,18 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public List<GameRule> getRules(World world, NetworkedMochaEventBus networkedMochaEventBus) {
+  public List<GameRule> getRules(NetworkedMochaEventBus networkedMochaEventBus) {
     MovementRule movementRule = new MovementRule(networkedMochaEventBus);
     networkedMochaEventBus.register(movementRule);
 
     PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(networkedMochaEventBus);
     networkedMochaEventBus.register(pickUpItemsRule);
 
-    RemoveEntityRule removeEntityRule = new RemoveEntityRule(world);
-    networkedMochaEventBus.register(removeEntityRule);
-
     ArtificialIntelligenceRule artificialIntelligenceRule = new ArtificialIntelligenceRule(networkedMochaEventBus);
 
     return Lists.newArrayList(
         movementRule,
         pickUpItemsRule,
-        removeEntityRule,
         artificialIntelligenceRule
     );
   }
