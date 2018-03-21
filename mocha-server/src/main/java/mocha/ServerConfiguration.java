@@ -10,6 +10,7 @@ import java.util.List;
 
 import mocha.game.Game;
 import mocha.game.GameLoop;
+import mocha.game.Player;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.ArtificialIntelligenceRule;
 import mocha.game.rule.GameRule;
@@ -27,7 +28,6 @@ import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketListenerFactory;
 import mocha.net.packet.PacketSenderFactory;
-import mocha.server.ClientWorker;
 import mocha.server.event.ServerEventBus;
 import mocha.shared.IdFactory;
 import mocha.shared.Registry;
@@ -63,16 +63,6 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Registry<ClientWorker> clientWorkerRegistry() {
-    return new Registry<>();
-  }
-
-  @Bean
-  public IdFactory<ClientWorker> clientWorkerIdFactory(Registry<ClientWorker> clientWorkerRegistry) {
-    return new IdFactory<>(clientWorkerRegistry);
-  }
-
-  @Bean
   public PacketListenerFactory packetListenerFactory(ServerEventBus eventBus) {
     return new PacketListenerFactory(eventBus);
   }
@@ -83,8 +73,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Game game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Registry<Entity> entityRegistry) {
-    return new Game(eventBus, world, gameRules, entityRegistry);
+  public Game game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Registry<Entity> entityRegistry, Registry<Player> playerRegistry) {
+    return new Game(eventBus, world, gameRules, entityRegistry, playerRegistry);
   }
 
   @Bean
@@ -100,6 +90,16 @@ public class ServerConfiguration {
   @Bean
   public IdFactory<Entity> entityIdFactory(Registry<Entity> entityRegistry) {
     return new IdFactory<>(entityRegistry);
+  }
+
+  @Bean
+  public Registry<Player> playerRegistry() {
+    return new Registry<>();
+  }
+
+  @Bean
+  public IdFactory<Player> playerIdFactory(Registry<Player> playerRegistry) {
+    return new IdFactory<>(playerRegistry);
   }
 
   @Bean

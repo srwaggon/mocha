@@ -78,7 +78,7 @@ public class ClientGameLogic {
       Entity entity = entityFactory.createSlider();
       entity.setId(entityUpdate.getId());
       entity.getLocation().set(entityUpdate.getLocation());
-      game.add(entity);
+      game.addEntity(entity);
     }
   }
 

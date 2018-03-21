@@ -23,10 +23,10 @@ import mocha.net.packet.world.entity.movement.action.MovePacket;
 import mocha.shared.task.SleepyRunnable;
 
 public class ServerPacketHandler extends SimplePacketHandler implements SleepyRunnable {
-  private MochaConnection mochaConnection;
-  private Game game;
   private NetworkedMochaEventBus eventBus;
   private final int clientId;
+  private MochaConnection mochaConnection;
+  private Game game;
   private EventBus packetEventBus;
 
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
@@ -40,9 +40,14 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
     packetEventBus.register(this);
   }
 
+  public void remove() {
+    eventBus.unregister(this);
+    packetEventBus.unregister(this);
+  }
+
   @Override
   public void run() {
-    while (true) {
+    while (mochaConnection.isConnected()) {
       if (!packets.isEmpty()) {
         packetEventBus.post(packets.poll());
         nap();

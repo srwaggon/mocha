@@ -31,4 +31,8 @@ public class PacketListener implements SleepyRunnable {
       nap();
     }
   }
+
+  public void remove() {
+    eventBus.unregister(this);
+  }
 }

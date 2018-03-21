@@ -15,6 +15,7 @@ import java.util.List;
 import mocha.client.event.ClientEventBus;
 import mocha.game.Game;
 import mocha.game.GameLoop;
+import mocha.game.Player;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
@@ -83,8 +84,18 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public Game game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Registry<Entity> entityRegistry) {
-    return new Game(eventBus, world, gameRules, entityRegistry);
+  public Registry<Player> playerRegistry() {
+    return new Registry<>();
+  }
+
+  @Bean
+  public IdFactory<Player> playerIdFactory(Registry<Player> playerRegistry) {
+    return new IdFactory<>(playerRegistry);
+  }
+
+  @Bean
+  public Game game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Registry<Entity> entityRegistry, Registry<Player> playerRegistry) {
+    return new Game(eventBus, world, gameRules, entityRegistry, playerRegistry);
   }
 
   @Bean
