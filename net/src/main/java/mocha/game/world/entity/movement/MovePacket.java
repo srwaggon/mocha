@@ -24,7 +24,7 @@ public class MovePacket extends AbstractEntityPacket {
 
   @Override
   public PacketType getType() {
-    return PacketType.MOVE_REQUEST;
+    return PacketType.MOVE;
   }
 
   public Location getLocation() {

@@ -15,13 +15,14 @@ import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
+import mocha.game.world.chunk.ChunkPacket;
+import mocha.game.world.entity.EntityPacket;
+import mocha.game.world.entity.EntityRemovedPacket;
+import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
 import mocha.net.packet.event.ReadPacketEvent;
-import mocha.game.world.chunk.ChunkPacket;
-import mocha.game.world.entity.EntityPacket;
-import mocha.game.world.entity.movement.MovePacket;
 import mocha.shared.task.SleepyRunnable;
 
 @Component
@@ -76,5 +77,10 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
     game.getEntityRegistry().get(moveCommand.getEntityId())
         .ifPresent(entity -> entity.getLocation().set(moveCommand.getLocation()));
     eventBus.post(moveCommand);
+  }
+
+  @Subscribe
+  public void handle(EntityRemovedPacket entityRemovedPacket) {
+    game.removeEntity(entityRemovedPacket.getId());
   }
 }

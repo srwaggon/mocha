@@ -8,7 +8,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import mocha.game.Game;
 import mocha.game.world.Location;
+import mocha.game.world.chunk.RequestChunkPacket;
+import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.event.EntityAddedEvent;
+import mocha.game.world.entity.event.EntityRemovedEvent;
+import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
@@ -17,14 +21,11 @@ import mocha.net.packet.MochaConnection;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
 import mocha.net.packet.event.ReadPacketEvent;
-import mocha.game.world.chunk.RequestChunkPacket;
-import mocha.game.world.entity.RequestEntitiesInChunkPacket;
-import mocha.game.world.entity.movement.MovePacket;
 import mocha.shared.task.SleepyRunnable;
 
 public class ServerPacketHandler extends SimplePacketHandler implements SleepyRunnable {
-  private NetworkedMochaEventBus eventBus;
   private final int playerId;
+  private NetworkedMochaEventBus eventBus;
   private MochaConnection mochaConnection;
   private Game game;
   private EventBus packetEventBus;
@@ -57,7 +58,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Subscribe
   public void handle(ReadPacketEvent readPacketEvent) {
-    if (readPacketEvent.getSenderId() == this.playerId) {
+    if (readPacketEvent.getSenderId() == playerId) {
       packets.offer(readPacketEvent.getPacket());
     }
   }
@@ -78,6 +79,11 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
         .yOffset(movement.getYOffset())
         .build();
     mochaConnection.sendMoveCommand(entityMove);
+  }
+
+  @Subscribe
+  public void handle(EntityRemovedEvent entityRemovedEvent) {
+    mochaConnection.sendEntityRemoved(entityRemovedEvent.getEntity());
   }
 
   @Subscribe

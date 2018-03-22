@@ -45,7 +45,7 @@ public class GameKeyHandler {
   }
 
   private void sendMovePacket(EntityMoveCommand entityMove) {
-    eventBus.postSendPacketEvent(packetFactory.movePacket(entityMove));
+    eventBus.postSendPacketEvent(packetFactory.newMovePacket(entityMove));
   }
 
   private Optional<EntityMoveCommand> getEntityMove(KeyDownEvent keyDownEvent, Entity entity) {

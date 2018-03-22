@@ -22,10 +22,8 @@ public enum PacketType {
   REQUEST_ENTITIES_IN_CHUNK(RequestEntitiesInChunkPacket.class),
   REQUEST_ENTITY_BY_ID(RequestEntityByIdPacket.class),
   ENTITY(EntityPacket.class),
-  ENTITY_ADDED(null),
   ENTITY_REMOVED(EntityRemovedPacket.class),
-
-  MOVE_REQUEST(MovePacket.class),;
+  MOVE(MovePacket.class);
 
   public static final String SEPARATOR = " ";
   private final Class<? extends Packet> packetClass;

@@ -21,11 +21,15 @@ public class MochaConnection extends PacketConnection {
   }
 
   public void sendEntityUpdate(Entity entity) {
-    sendPacket(packetFactory.entityPacket(entity));
+    sendPacket(packetFactory.newEntityPacket(entity));
+  }
+
+  public void sendEntityRemoved(Entity entity) {
+    sendPacket(packetFactory.newEntityRemovedPacket(entity));
   }
 
   public void sendMoveCommand(EntityMoveCommand entityMoveCommand) {
-    sendPacket(packetFactory.movePacket(entityMoveCommand));
+    sendPacket(packetFactory.newMovePacket(entityMoveCommand));
   }
 
 }

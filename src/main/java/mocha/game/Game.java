@@ -18,6 +18,7 @@ public class Game implements Tickable {
   private Registry<Entity> entityRegistry;
   private Registry<Player> playerRegistry;
 
+  @Override
   public void tick(long now) {
     gameRules.forEach(gameRule -> gameRule.apply(this));
   }
@@ -32,7 +33,11 @@ public class Game implements Tickable {
     eventBus.postEntityAddedEvent(entity);
   }
 
-  private void removeEntity(Entity entity) {
+  public void removeEntity(int entityId) {
+    entityRegistry.get(entityId).ifPresent(this::removeEntity);
+  }
+
+  public void removeEntity(Entity entity) {
     entityRegistry.remove(entity);
     world.remove(entity);
     eventBus.postEntityRemovedEvent(entity);

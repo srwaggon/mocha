@@ -2,13 +2,14 @@ package mocha.net.packet;
 
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.chunk.ChunkPacket;
 import mocha.game.world.chunk.RequestChunkPacket;
+import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityPacket;
+import mocha.game.world.entity.EntityRemovedPacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.movement.MovePacket;
+import mocha.game.world.entity.movement.command.EntityMoveCommand;
 
 public class PacketFactory {
 
@@ -24,11 +25,15 @@ public class PacketFactory {
     return new RequestEntitiesInChunkPacket(location);
   }
 
-  public EntityPacket entityPacket(Entity entity) {
+  public EntityPacket newEntityPacket(Entity entity) {
     return new EntityPacket(entity);
   }
 
-  public MovePacket movePacket(EntityMoveCommand entityMoveCommand) {
+  public MovePacket newMovePacket(EntityMoveCommand entityMoveCommand) {
     return new MovePacket(entityMoveCommand);
+  }
+
+  public EntityRemovedPacket newEntityRemovedPacket(Entity entity) {
+    return new EntityRemovedPacket(entity.getId());
   }
 }
