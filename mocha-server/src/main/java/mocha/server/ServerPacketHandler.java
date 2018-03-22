@@ -107,9 +107,10 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   public void handle(MovePacket movePacket) {
     game.getPlayerRegistry().get(playerId).ifPresent(player -> {
       EntityMoveCommand moveCommand = movePacket.getMoveCommand();
-      if (player.getEntity().getId() == moveCommand.getEntityId()) {
-        eventBus.post(moveCommand);
-      }
+      moveCommand.setEntityId(player.getEntity().getId());
+//      if (player.getEntity().getId() == moveCommand.getEntityId()) {
+      eventBus.post(moveCommand);
+//      }
     });
   }
 }
