@@ -4,11 +4,11 @@ import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
-import mocha.net.packet.world.chunk.ChunkPacket;
-import mocha.net.packet.world.chunk.RequestChunkPacket;
-import mocha.net.packet.world.entity.EntityPacket;
-import mocha.net.packet.world.entity.RequestEntitiesInChunkPacket;
-import mocha.net.packet.world.entity.movement.action.MovePacket;
+import mocha.game.world.chunk.ChunkPacket;
+import mocha.game.world.chunk.RequestChunkPacket;
+import mocha.game.world.entity.EntityPacket;
+import mocha.game.world.entity.RequestEntitiesInChunkPacket;
+import mocha.game.world.entity.movement.MovePacket;
 
 public class PacketFactory {
 

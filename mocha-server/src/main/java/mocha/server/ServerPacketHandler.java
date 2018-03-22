@@ -17,9 +17,9 @@ import mocha.net.packet.MochaConnection;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
 import mocha.net.packet.event.ReadPacketEvent;
-import mocha.net.packet.world.chunk.RequestChunkPacket;
-import mocha.net.packet.world.entity.RequestEntitiesInChunkPacket;
-import mocha.net.packet.world.entity.movement.action.MovePacket;
+import mocha.game.world.chunk.RequestChunkPacket;
+import mocha.game.world.entity.RequestEntitiesInChunkPacket;
+import mocha.game.world.entity.movement.MovePacket;
 import mocha.shared.task.SleepyRunnable;
 
 public class ServerPacketHandler extends SimplePacketHandler implements SleepyRunnable {

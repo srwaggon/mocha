@@ -19,9 +19,9 @@ import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
 import mocha.net.packet.event.ReadPacketEvent;
-import mocha.net.packet.world.chunk.ChunkPacket;
-import mocha.net.packet.world.entity.EntityPacket;
-import mocha.net.packet.world.entity.movement.action.MovePacket;
+import mocha.game.world.chunk.ChunkPacket;
+import mocha.game.world.entity.EntityPacket;
+import mocha.game.world.entity.movement.MovePacket;
 import mocha.shared.task.SleepyRunnable;
 
 @Component

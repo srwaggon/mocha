@@ -1,4 +1,4 @@
-package mocha.net.packet.world.chunk;
+package mocha.game.world.chunk;
 
 import org.junit.Before;
 import org.junit.Test;

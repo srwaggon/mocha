@@ -1,14 +1,18 @@
 package mocha.net.packet;
 
+import mocha.game.LoginSuccessPacket;
+import mocha.game.world.chunk.ChunkPacket;
+import mocha.game.world.chunk.RequestChunkPacket;
+import mocha.game.world.entity.EntityPacket;
+import mocha.game.world.entity.EntityRemovedPacket;
+import mocha.game.world.entity.RequestEntitiesInChunkPacket;
+import mocha.game.world.entity.RequestEntityByIdPacket;
+import mocha.game.world.entity.movement.MovePacket;
 import mocha.net.packet.message.GlobalMessagePacket;
-import mocha.net.packet.world.chunk.ChunkPacket;
-import mocha.net.packet.world.chunk.RequestChunkPacket;
-import mocha.net.packet.world.entity.EntityPacket;
-import mocha.net.packet.world.entity.RequestEntitiesInChunkPacket;
-import mocha.net.packet.world.entity.RequestEntityByIdPacket;
-import mocha.net.packet.world.entity.movement.action.MovePacket;
 
 public enum PacketType {
+
+  LOGIN_SUCCESS(LoginSuccessPacket.class),
 
   GLOBAL_MESSAGE(GlobalMessagePacket.class),
 
@@ -18,9 +22,10 @@ public enum PacketType {
   REQUEST_ENTITIES_IN_CHUNK(RequestEntitiesInChunkPacket.class),
   REQUEST_ENTITY_BY_ID(RequestEntityByIdPacket.class),
   ENTITY(EntityPacket.class),
+  ENTITY_ADDED(null),
+  ENTITY_REMOVED(EntityRemovedPacket.class),
 
-  MOVE_REQUEST(MovePacket.class),
-  ;
+  MOVE_REQUEST(MovePacket.class),;
 
   public static final String SEPARATOR = " ";
   private final Class<? extends Packet> packetClass;
