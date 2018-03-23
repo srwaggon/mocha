@@ -4,12 +4,15 @@ import com.google.common.collect.Queues;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.RequestChunkPacket;
+import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
+import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.event.EntityAddedEvent;
 import mocha.game.world.entity.event.EntityRemovedEvent;
 import mocha.game.world.entity.movement.MovePacket;
@@ -94,6 +97,18 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
         .ifPresent(chunk -> mochaConnection.sendChunkUpdate(location, chunk));
   }
 
+  @Override
+  @Subscribe
+  public void handle(RequestEntityByIdPacket requestEntityByIdPacket) {
+    int entityId = requestEntityByIdPacket.getId();
+    Optional<Entity> optionalEntity = game.getEntityRegistry().get(entityId);
+    if (optionalEntity.isPresent()) {
+      mochaConnection.sendEntityUpdate(optionalEntity.get());
+    } else {
+      mochaConnection.sendEntityRemoved(new Entity(entityId, new Location()));
+    }
+  }
+
   @Subscribe
   @Override
   public void handle(RequestEntitiesInChunkPacket requestEntitiesInChunkPacket) {
@@ -108,9 +123,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
     game.getPlayerRegistry().get(playerId).ifPresent(player -> {
       EntityMoveCommand moveCommand = movePacket.getMoveCommand();
       moveCommand.setEntityId(player.getEntity().getId());
-//      if (player.getEntity().getId() == moveCommand.getEntityId()) {
       eventBus.post(moveCommand);
-//      }
     });
   }
 }
