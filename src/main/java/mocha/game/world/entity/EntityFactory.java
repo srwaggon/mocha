@@ -29,7 +29,7 @@ public class EntityFactory {
         .id(entityIdFactory.newId())
         .location(new Location())
         .build();
-    entity.setMovement(movementFactory.newSlidingMovement());
+    entity.setMovement(movementFactory.newSlidingMovement(entity));
     return entity;
   }
 
@@ -38,7 +38,7 @@ public class EntityFactory {
         .id(entityIdFactory.newId())
         .location(new Location())
         .build();
-    entity.setMovement(movementFactory.newSlidingMovement());
+    entity.setMovement(movementFactory.newSlidingMovement(entity));
     return entity;
   }
 

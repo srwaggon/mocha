@@ -58,8 +58,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public CollisionFactory collisionFactory(World world) {
-    return new CollisionFactory(world);
+  public CollisionFactory collisionFactory(Game game) {
+    return new CollisionFactory(game);
   }
 
   @Bean

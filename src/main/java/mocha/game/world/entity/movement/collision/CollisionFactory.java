@@ -1,33 +1,37 @@
 package mocha.game.world.entity.movement.collision;
 
-import org.springframework.stereotype.Component;
+import mocha.game.Game;
+import mocha.game.world.entity.Entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import mocha.game.world.World;
-
-@Builder
-@AllArgsConstructor
-@Component
 public class CollisionFactory {
 
-  private World world;
+  private Game game;
+
+  public CollisionFactory(Game game) {
+    this.game = game;
+  }
 
   public SimpleCollision newSimpleCollision() {
     return new SimpleCollision();
   }
 
   private TileCollision newTileCollision() {
-    return TileCollision.builder()
-        .world(world)
-        .build();
+    return new TileCollision(game.getWorld());
   }
 
-  public HitBoxCollision newHitBoxCollision() {
-    return HitBoxCollision.builder()
-        .width(24)
-        .height(24)
-        .tileCollision(newTileCollision())
-        .build();
+  public HitBoxCollision newTileHitBoxCollision(int width, int height) {
+    return new HitBoxCollision(newTileCollision(), width, height);
+  }
+
+  public EntityCollision newEntityCollision(Entity entity, int width, int height) {
+    return new EntityCollision(game, entity, width, height);
+  }
+
+  public HitBoxCollision newEntityHitBoxCollision(Entity entity, int width, int height) {
+    return new HitBoxCollision(newEntityTileCollision(entity, width, height), width, height);
+  }
+
+  private Collision newEntityTileCollision(Entity entity, int width, int height) {
+    return location -> newTileCollision().collides(location) || newEntityCollision(entity, width, height).collides(location);
   }
 }

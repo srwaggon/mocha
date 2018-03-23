@@ -18,8 +18,8 @@ public class Connection {
   public Connection(Socket socket) {
     try {
       this.socket = socket;
-      this.in = new Scanner(new InputStreamReader(socket.getInputStream()));
-      this.out = new PrintWriter(socket.getOutputStream());
+      in = new Scanner(new InputStreamReader(socket.getInputStream()));
+      out = new PrintWriter(socket.getOutputStream());
     } catch (IOException ioException) {
       ioException.printStackTrace();
     }
@@ -41,7 +41,7 @@ public class Connection {
 //      System.out.println("reading: " + nextLine);
       return nextLine;
     } catch (NoSuchElementException e) {
-      this.disconnect();
+      disconnect();
       throw new DisconnectedException(e);
     }
   }
@@ -58,7 +58,7 @@ public class Connection {
   }
 
   public void send(String message) {
-//    System.out.println("sending: " +message);
+//    System.out.println("sending: " + message);
     out.println(message);
     out.flush();
   }

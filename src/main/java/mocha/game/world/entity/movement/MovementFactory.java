@@ -1,5 +1,6 @@
 package mocha.game.world.entity.movement;
 
+import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 
 public class MovementFactory {
@@ -16,7 +17,7 @@ public class MovementFactory {
         .build();
   }
 
-  public SlidingMovement newSlidingMovement() {
-    return new SlidingMovement(collisionFactory.newHitBoxCollision());
+  public SlidingMovement newSlidingMovement(Entity entity) {
+    return new SlidingMovement(collisionFactory.newEntityHitBoxCollision(entity, 32, 32));
   }
 }
