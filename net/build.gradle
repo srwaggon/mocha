@@ -2,21 +2,14 @@ group 'swagnificent.party'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext {
-        springBootVersion = '1.5.4.RELEASE'
-    }
     repositories {
         mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
 apply plugin: 'application'
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'net'
@@ -25,8 +18,6 @@ jar {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-mainClassName = "mocha.Main"
 
 repositories {
     jcenter()
@@ -37,11 +28,11 @@ dependencies {
     compile("com.google.guava:guava:19.0")
     compile("com.google.inject:guice:4.0")
     compile("commons-io:commons-io:2.4")
-    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+
+    compile project(":mocha-game")
 
     compileOnly "org.projectlombok:lombok:1.16.16"
 
     testCompile('org.assertj:assertj-core:3.3.0')
     testCompile("org.mockito:mockito-all:1.9.5")
-    testCompile('org.springframework.boot:spring-boot-starter-test')
 }

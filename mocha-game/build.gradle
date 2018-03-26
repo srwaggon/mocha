@@ -1,6 +1,7 @@
 group 'swagnificent.party'
 version '1.0-SNAPSHOT'
 
+
 buildscript {
     ext {
         springBootVersion = '1.5.4.RELEASE'
@@ -21,8 +22,6 @@ apply plugin: 'org.springframework.boot'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-mainClassName = "mocha.Main"
-
 repositories {
     jcenter()
     mavenCentral()
@@ -34,12 +33,10 @@ dependencies {
     compile("commons-io:commons-io:2.4")
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 
-    compile project(":mocha-game")
-    compile project(":net")
-
     compileOnly "org.projectlombok:lombok:1.16.16"
 
     testCompile('org.assertj:assertj-core:3.3.0')
     testCompile("org.mockito:mockito-all:1.9.5")
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
