@@ -1,10 +1,8 @@
 package mocha.net.packet.event;
 
-import lombok.Data;
 import mocha.game.world.Location;
 import mocha.net.packet.Packet;
 
-@Data
 public class SendPacketToAllNearEvent extends SendPacketEvent {
   private final Location location;
   private final int distance;
@@ -13,5 +11,13 @@ public class SendPacketToAllNearEvent extends SendPacketEvent {
     super(packet);
     this.location = location;
     this.distance = distance;
+  }
+
+  public Location getLocation() {
+    return location;
+  }
+
+  public int getDistance() {
+    return distance;
   }
 }

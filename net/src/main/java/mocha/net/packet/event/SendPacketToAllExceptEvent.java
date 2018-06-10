@@ -2,10 +2,8 @@ package mocha.net.packet.event;
 
 import java.util.Set;
 
-import lombok.Data;
 import mocha.net.packet.Packet;
 
-@Data
 public class SendPacketToAllExceptEvent extends SendPacketEvent {
 
   private final Set<Integer> playerIds;
@@ -13,5 +11,9 @@ public class SendPacketToAllExceptEvent extends SendPacketEvent {
   public SendPacketToAllExceptEvent(Packet packet, Set<Integer> playerIds) {
     super(packet);
     this.playerIds = playerIds;
+  }
+
+  public Set<Integer> getPlayerIds() {
+    return playerIds;
   }
 }

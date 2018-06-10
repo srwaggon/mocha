@@ -10,12 +10,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import lombok.Builder;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.tile.TileType;
 
-@Builder
 public class Chunk {
 
   public final static int SIZE = 16;
@@ -46,7 +44,7 @@ public class Chunk {
   }
 
   public TileType getTile(int x, int y) {
-    return tiles[x + y * SIZE];
+    return tiles[getTileIndex(x, y)];
   }
 
   private Optional<TileType> getTileAt(int x, int y) {
@@ -108,7 +106,38 @@ public class Chunk {
   }
 
   private Set<Entity> getEntities(int x, int y) {
-    int tileIndex = x + y * SIZE;
+    int tileIndex = getTileIndex(x, y);
     return entities;
+  }
+
+  private int getTileIndex(int x, int y) {
+    return x + y * SIZE;
+  }
+
+  public static ChunkBuilder builder() {
+    return new ChunkBuilder();
+  }
+
+  static class ChunkBuilder {
+
+    private TileType[] tiles;
+    private Set<Entity> entities;
+
+    private ChunkBuilder() {
+    }
+
+    public ChunkBuilder tiles(TileType[] tiles) {
+      this.tiles = tiles;
+      return this;
+    }
+
+    public ChunkBuilder entities(Set<Entity> entities) {
+      this.entities = entities;
+      return this;
+    }
+
+    public Chunk build() {
+      return new Chunk(tiles, entities);
+    }
   }
 }

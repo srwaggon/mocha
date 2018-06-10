@@ -2,14 +2,12 @@ package mocha.game;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.World;
 import mocha.game.world.entity.Entity;
 import mocha.shared.Registry;
 
-@AllArgsConstructor
 public class Game implements Tickable {
 
   private MochaEventBus eventBus;
@@ -17,6 +15,14 @@ public class Game implements Tickable {
   private List<GameRule> gameRules;
   private Registry<Entity> entityRegistry;
   private Registry<Player> playerRegistry;
+
+  public Game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Registry<Entity> entityRegistry, Registry<Player> playerRegistry) {
+    this.eventBus = eventBus;
+    this.world = world;
+    this.gameRules = gameRules;
+    this.entityRegistry = entityRegistry;
+    this.playerRegistry = playerRegistry;
+  }
 
   @Override
   public void tick(long now) {

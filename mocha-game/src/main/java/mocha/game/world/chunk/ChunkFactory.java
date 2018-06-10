@@ -2,11 +2,9 @@ package mocha.game.world.chunk;
 
 import com.google.common.collect.Sets;
 
-import lombok.Builder;
 import mocha.game.world.tile.TileFactory;
 import mocha.game.world.tile.TileType;
 
-@Builder
 public class ChunkFactory {
 
   private static int mapId = 0;

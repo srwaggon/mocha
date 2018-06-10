@@ -37,8 +37,6 @@ dependencies {
     compile project(":mocha-game")
     compile project(":net")
 
-    compileOnly "org.projectlombok:lombok:1.16.16"
-
     testCompile('org.assertj:assertj-core:3.3.0')
     testCompile("org.mockito:mockito-all:1.9.5")
     testCompile('org.springframework.boot:spring-boot-starter-test')

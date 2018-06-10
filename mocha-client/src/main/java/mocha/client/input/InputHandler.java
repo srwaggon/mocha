@@ -13,15 +13,9 @@ import javax.inject.Inject;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 import mocha.client.event.ClientEventBus;
 
-@Builder
 @Component
-@NoArgsConstructor
-@AllArgsConstructor
 public class InputHandler {
 
   @Inject

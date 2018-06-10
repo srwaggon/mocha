@@ -2,17 +2,17 @@ package mocha.game.world.chunk;
 
 import com.google.common.io.Files;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Component
 public class ChunkIO {
 
+  private Logger log = LoggerFactory.getLogger(ChunkIO.class);
   private File dataDirectory = new File("data");
   private File mapsDirectory = new File(dataDirectory, "maps");
 

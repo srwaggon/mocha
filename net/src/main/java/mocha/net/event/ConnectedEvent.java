@@ -1,11 +1,15 @@
 package mocha.net.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import mocha.net.packet.MochaConnection;
 
-@Data
-@AllArgsConstructor
 public class ConnectedEvent {
   private final MochaConnection mochaConnection;
+
+  public ConnectedEvent(MochaConnection mochaConnection) {
+    this.mochaConnection = mochaConnection;
+  }
+
+  public MochaConnection getMochaConnection() {
+    return mochaConnection;
+  }
 }

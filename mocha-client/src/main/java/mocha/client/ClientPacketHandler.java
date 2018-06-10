@@ -4,6 +4,8 @@ import com.google.common.collect.Queues;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -28,6 +30,8 @@ import mocha.shared.task.SleepyRunnable;
 @Component
 public class ClientPacketHandler extends SimplePacketHandler implements SleepyRunnable {
 
+  private static final Logger log = LoggerFactory.getLogger(ClientPacketHandler.class);
+
   @Inject
   private ChunkFactory chunkFactory;
   @Inject
@@ -42,6 +46,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   @Override
   public void run() {
     packetEventBus.register(this);
+    //noinspection InfiniteLoopStatement
     while (true) {
       if (!packets.isEmpty()) {
         packetEventBus.post(packets.poll());
@@ -49,7 +54,6 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
       }
     }
   }
-
 
   @Subscribe
   public void handle(ReadPacketEvent readPacketEvent) {

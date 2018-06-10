@@ -1,5 +1,7 @@
 package mocha.client;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -9,14 +11,14 @@ import java.net.UnknownHostException;
 
 import javax.inject.Inject;
 
-import lombok.extern.slf4j.Slf4j;
 import mocha.client.event.ClientEventBus;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketFactory;
 
 @Component
-@Slf4j
 public class Client implements Runnable {
+
+  private final Logger log = LoggerFactory.getLogger(Client.class);
 
   @Inject
   private ClientEventBus eventBus;

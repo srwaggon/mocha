@@ -1,17 +1,19 @@
 package mocha.client.gfx;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
 import javafx.animation.AnimationTimer;
-import lombok.extern.slf4j.Slf4j;
+import mocha.client.Client;
 import mocha.client.gfx.view.GameView;
 
 @Component
-@Slf4j
 public class RenderLoop extends AnimationTimer {
 
+  private final Logger log = LoggerFactory.getLogger(Client.class);
   private static final double NANOSECONDS_PER_SECOND = 1000000000.0;
   private static final int FRAMES_PER_SECOND = 60;
   private static final double FRAME_LIFESPAN = NANOSECONDS_PER_SECOND / FRAMES_PER_SECOND;

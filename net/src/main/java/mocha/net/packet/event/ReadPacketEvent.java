@@ -1,12 +1,21 @@
 package mocha.net.packet.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import mocha.net.packet.Packet;
 
-@Data
-@AllArgsConstructor
 public class ReadPacketEvent {
-  private int senderId;
-  private Packet packet;
+  private final int senderId;
+  private final Packet packet;
+
+  public ReadPacketEvent(int senderId, Packet packet) {
+    this.senderId = senderId;
+    this.packet = packet;
+  }
+
+  public int getSenderId() {
+    return senderId;
+  }
+
+  public Packet getPacket() {
+    return packet;
+  }
 }

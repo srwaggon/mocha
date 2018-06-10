@@ -2,18 +2,20 @@ package mocha.game;
 
 import com.google.common.eventbus.Subscribe;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import lombok.extern.slf4j.Slf4j;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.server.event.ServerEventBus;
 
-@Slf4j
 @Component
 public class ServerGameLogic {
+
+  private Logger log = LoggerFactory.getLogger(ServerGameLogic.class);
 
   @Inject
   private ServerEventBus eventBus;

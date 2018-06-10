@@ -6,18 +6,15 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class World {
 
   private Map<Location, Chunk> chunks = Maps.newConcurrentMap();
+
+  public World() {
+  }
 
   public Optional<Chunk> getChunkAt(Location location) {
     return Optional.ofNullable(chunks.get(location.getChunkIndex()));

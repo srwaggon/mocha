@@ -1,5 +1,7 @@
 package mocha.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -9,15 +11,15 @@ import java.net.Socket;
 
 import javax.inject.Inject;
 
-import lombok.extern.slf4j.Slf4j;
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketFactory;
 import mocha.shared.task.SleepyRunnable;
 
-@Slf4j
 @Component
 public class Server implements SleepyRunnable {
+
+  private Logger log = LoggerFactory.getLogger(Server.class);
 
   private ServerSocket server;
 

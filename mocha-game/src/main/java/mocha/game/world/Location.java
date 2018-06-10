@@ -1,19 +1,29 @@
 package mocha.game.world;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import java.util.Objects;
+
 import mocha.game.world.chunk.Chunk;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
 public class Location {
 
   private int x;
   private int y;
+
+  public Location() {
+  }
+
+  public Location(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  public int getX() {
+    return x;
+  }
+
+  public int getY() {
+    return y;
+  }
 
   public static Location at(int x, int y) {
     return new Location(x, y);
@@ -69,5 +79,20 @@ public class Location {
 
   public Location copy() {
     return new Location(x, y);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Location location = (Location) o;
+    return x == location.x &&
+        y == location.y;
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(x, y);
   }
 }
