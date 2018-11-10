@@ -37,7 +37,7 @@ public class Entity implements Identified {
   }
 
   public int getSpriteId() {
-    return 130;
+    return 128;
   }
 
   public double getScale() {
@@ -73,7 +73,7 @@ public class Entity implements Identified {
     private EntityBuilder() {
     }
 
-    public EntityBuilder id(int id) {
+    EntityBuilder id(int id) {
       this.id = id;
       return this;
     }

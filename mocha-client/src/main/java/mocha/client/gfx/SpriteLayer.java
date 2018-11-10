@@ -51,9 +51,9 @@ public class SpriteLayer extends Group {
     getChildren().remove(entityView);
   }
 
-  public void render() {
+  public void render(long now) {
     this.removeEntityViews();
     addEntityViews();
-    entityViews.values().forEach(EntityView::render);
+    entityViews.values().forEach(entityView -> entityView.render(now));
   }
 }

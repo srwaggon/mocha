@@ -16,9 +16,9 @@ public class GameView {
   @Inject
   private SpriteLayer spriteLayer;
 
-  public void render() {
+  public void render(long now) {
     backgroundLayer.render();
-    spriteLayer.render();
+    spriteLayer.render(now);
   }
 
 }

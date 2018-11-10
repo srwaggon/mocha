@@ -16,7 +16,7 @@ public class RenderLoop extends AnimationTimer {
   private final Logger log = LoggerFactory.getLogger(Client.class);
   private static final double NANOSECONDS_PER_SECOND = 1000000000.0;
   private static final int FRAMES_PER_SECOND = 60;
-  private static final double FRAME_LIFESPAN = NANOSECONDS_PER_SECOND / FRAMES_PER_SECOND;
+  public static final double FRAME_LIFESPAN = NANOSECONDS_PER_SECOND / FRAMES_PER_SECOND;
 
   @Inject
   private GameView gameView;
@@ -36,7 +36,7 @@ public class RenderLoop extends AnimationTimer {
       return;
     }
 
-    gameView.render();
+    gameView.render(now);
     renders++;
 
     last = now;
@@ -51,6 +51,6 @@ public class RenderLoop extends AnimationTimer {
   }
 
   private boolean skipRendering(long now) {
-    return now - last < FRAME_LIFESPAN;
+    return now - last <= FRAME_LIFESPAN;
   }
 }
