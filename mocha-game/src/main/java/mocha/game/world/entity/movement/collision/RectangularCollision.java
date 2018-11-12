@@ -8,14 +8,14 @@ public class RectangularCollision extends SimpleCollision {
   private final int height;
   private final Location location;
 
-  public RectangularCollision(Location location, int width, int height) {
+  RectangularCollision(Location location, int width, int height) {
     this.width = width;
     this.height = height;
     this.location = location;
   }
 
   @Override
-  public boolean collides(Location location) {
+  public boolean isColliding(Location location) {
     return isBetween(left(), location.getX(), right())
         && isBetween(top(), location.getY(), bottom());
   }

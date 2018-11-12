@@ -5,4 +5,9 @@ public class Pickaxe extends Entity {
   public int getSpriteId() {
     return 100;
   }
+
+  @Override
+  public boolean isBlocking() {
+    return false;
+  }
 }

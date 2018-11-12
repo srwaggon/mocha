@@ -23,7 +23,7 @@ public class CollisionFactory {
     return new HitBoxCollision(newTileCollision(), width, height);
   }
 
-  public EntityCollision newEntityCollision(Entity entity, int width, int height) {
+  private EntityCollision newEntityCollision(Entity entity, int width, int height) {
     return new EntityCollision(game, entity, width, height);
   }
 
@@ -32,6 +32,6 @@ public class CollisionFactory {
   }
 
   private Collision newEntityTileCollision(Entity entity, int width, int height) {
-    return location -> newTileCollision().collides(location) || newEntityCollision(entity, width, height).collides(location);
+    return new UnionCollision(newEntityCollision(entity, width, height), newTileCollision());
   }
 }

@@ -57,7 +57,7 @@ public class ServerConfiguration {
       game.addEntity(entityFactory.createRandomSlider().at(128, 128));
       game.addEntity(entityFactory.createRandomSlider().at(192, 192));
       game.addEntity(entityFactory.createRandomSlider().at(384, 384));
-//      game.addEntity(entityFactory.newPickaxe());
+      game.addEntity(entityFactory.newPickaxe());
     };
   }
 

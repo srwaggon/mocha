@@ -1,5 +1,9 @@
 package mocha.game.world.entity.movement.collision;
 
+import com.google.common.collect.Sets;
+
+import java.util.Set;
+
 import mocha.game.world.Location;
 
 public class HitBoxCollision extends SimpleCollision {
@@ -8,19 +12,22 @@ public class HitBoxCollision extends SimpleCollision {
   private int height;
   private Collision collision;
 
-  public HitBoxCollision(Collision collision, int width, int height) {
+  HitBoxCollision(Collision collision, int width, int height) {
     this.width = width;
     this.height = height;
     this.collision = collision;
   }
 
   @Override
-  public boolean collides(Location location) {
-    boolean tl = collision.collides(topLeft(location));
-    boolean tr = collision.collides(topRight(location));
-    boolean bl = collision.collides(bottomLeft(location));
-    boolean br = collision.collides(bottomRight(location));
-    return tl || tr || bl || br;
+  public Set<Collider> getColliders(Location location) {
+    Set<Collider> colliders = Sets.newHashSet();
+
+    colliders.addAll(collision.getColliders(topLeft(location)));
+    colliders.addAll(collision.getColliders(topRight(location)));
+    colliders.addAll(collision.getColliders(bottomLeft(location)));
+    colliders.addAll(collision.getColliders(bottomRight(location)));
+
+    return colliders;
   }
 
   private Location topLeft(Location location) {

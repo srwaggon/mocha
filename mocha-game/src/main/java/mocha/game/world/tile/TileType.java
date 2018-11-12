@@ -3,7 +3,9 @@ package mocha.game.world.tile;
 
 import java.util.Arrays;
 
-public enum TileType {
+import mocha.game.world.entity.movement.collision.Collider;
+
+public enum TileType implements Collider {
 
   GRID('x', false),
   DIRT('.', false),
@@ -26,6 +28,7 @@ public enum TileType {
     return symbol;
   }
 
+  @Override
   public boolean isBlocking() {
     return isBlocking;
   }

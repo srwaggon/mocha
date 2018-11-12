@@ -102,8 +102,13 @@ public class Chunk {
     int xIndex = x / TileType.SIZE;
     int yIndex = y / TileType.SIZE;
     return inBounds(xIndex) && inBounds(yIndex)
-        ? getEntities()
+        ? getEntities(x, y)
         : Collections.emptySet();
+  }
+
+  private Set<Entity> getEntities(int x, int y) {
+    int tileIndex = getTileIndex(x, y);
+    return entities;
   }
 
   private int getTileIndex(int x, int y) {

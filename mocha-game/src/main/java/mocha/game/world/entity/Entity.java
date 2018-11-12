@@ -3,10 +3,12 @@ package mocha.game.world.entity;
 import mocha.game.world.Location;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.SimpleMovement;
+import mocha.game.world.entity.movement.collision.Collider;
 import mocha.game.world.entity.movement.collision.SimpleCollision;
 import mocha.shared.Identified;
 
-public class Entity implements Identified {
+public class Entity implements Collider, Identified {
+
   private int id;
   private Location location = new Location();
   private Movement movement = new SimpleMovement(new SimpleCollision());
@@ -96,5 +98,10 @@ public class Entity implements Identified {
   public Entity at(int x, int y) {
     this.location.set(x, y);
     return this;
+  }
+
+  @Override
+  public boolean isBlocking() {
+    return true;
   }
 }
