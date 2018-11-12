@@ -18,6 +18,6 @@ public class MovementFactory {
   }
 
   public SlidingMovement newSlidingMovement(Entity entity) {
-    return new SlidingMovement(collisionFactory.newEntityHitBoxCollision(entity, 32, 32));
+    return new SlidingMovement(entity, collisionFactory.newEntityHitBoxCollision(entity, 32, 32));
   }
 }

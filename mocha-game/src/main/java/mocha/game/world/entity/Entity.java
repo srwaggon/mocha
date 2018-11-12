@@ -104,4 +104,9 @@ public class Entity implements Collider, Identified {
   public boolean isBlocking() {
     return true;
   }
+
+  @Override
+  public void collide(Collider collider) {
+
+  }
 }

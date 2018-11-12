@@ -33,6 +33,11 @@ public enum TileType implements Collider {
     return isBlocking;
   }
 
+  @Override
+  public void collide(Collider collider) {
+
+  }
+
   public static int count() {
     return values().length;
   }

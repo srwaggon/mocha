@@ -31,7 +31,7 @@ public class CollisionFactory {
     return new HitBoxCollision(newEntityTileCollision(entity, width, height), width, height);
   }
 
-  private Collision newEntityTileCollision(Entity entity, int width, int height) {
+  private UnionCollision newEntityTileCollision(Entity entity, int width, int height) {
     return new UnionCollision(newEntityCollision(entity, width, height), newTileCollision());
   }
 }

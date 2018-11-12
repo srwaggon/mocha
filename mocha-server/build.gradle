@@ -33,7 +33,16 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
 dependencies {
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    
     compile("com.google.guava:guava:19.0")
     compile("com.google.inject:guice:4.0")
     compile("commons-io:commons-io:2.4")

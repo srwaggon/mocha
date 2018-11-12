@@ -1,9 +1,11 @@
 package mocha.game.world.entity.movement;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
+import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.collision.Collider;
 import mocha.game.world.entity.movement.collision.Collision;
 import mocha.game.world.tile.TileType;
@@ -11,9 +13,11 @@ import mocha.game.world.tile.TileType;
 public class SlidingMovement extends BaseMovement {
 
   private static final int WALK_SPEED = 1;
+  private final Entity entity;
 
-  SlidingMovement(Collision collision) {
+  SlidingMovement(Entity entity, Collision collision) {
     super(collision);
+    this.entity = entity;
   }
 
   @Override
@@ -71,9 +75,14 @@ public class SlidingMovement extends BaseMovement {
 
     Location next = getLocation().addNew(xDelta, yDelta);
 
-    if (collision.getColliders(next).stream().noneMatch(Collider::isBlocking)) {
+    Set<Collider> colliders = collision.getColliders(next);
+
+    colliders.stream()
+        .filter(collider -> !collider.isBlocking())
+        .forEach(collider -> collider.collide(entity));
+
+    if (colliders.stream().noneMatch(Collider::isBlocking)) {
       getLocation().set(next);
     }
-
   }
 }
