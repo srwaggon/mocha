@@ -45,13 +45,15 @@ public class MovementRule implements GameRule {
   }
 
   private void processEntityMovement(Game game) {
-    game.getEntityRegistry().getMembers().forEach((entity) -> {
-      Location start = entity.getLocation().copy();
-      entity.getMovement().tick(0L);
-      Location finish = entity.getLocation();
+    game.getEntityRegistry()
+        .getMembers()
+        .forEach((entity) -> {
+          Location start = entity.getLocation().copy();
+          entity.getMovement().tick(0L);
+          Location finish = entity.getLocation();
 
-      updateChunkOccupants(game, entity, start, finish);
-    });
+          updateChunkOccupants(game, entity, start, finish);
+        });
   }
 
   private void updateChunkOccupants(Game game, Entity entity, Location start, Location finish) {

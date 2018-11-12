@@ -6,7 +6,6 @@ import org.junit.Test;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkDescription;
 import mocha.game.world.chunk.ChunkFactory;
-import mocha.game.world.tile.TileFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,13 +13,11 @@ public class TileSpriteSelectorTest {
 
   private TileSpriteSelector testObject;
 
-  private TileFactory tileFactory;
   private ChunkFactory chunkFactory;
 
   @Before
   public void setUp() {
-    tileFactory = new TileFactory();
-    chunkFactory = ChunkFactory.builder().tileFactory(tileFactory).build();
+    chunkFactory = new ChunkFactory();
     testObject = new TileSpriteSelector();
   }
 
@@ -30,9 +27,7 @@ public class TileSpriteSelectorTest {
         "................" +
         ".w.............." +
         "................";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(0);
@@ -44,9 +39,7 @@ public class TileSpriteSelectorTest {
         ".w.............." +
         ".w.............." +
         "................";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(1);
@@ -58,9 +51,7 @@ public class TileSpriteSelectorTest {
         "................" +
         ".ww............." +
         "................";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(2);
@@ -72,9 +63,7 @@ public class TileSpriteSelectorTest {
         ".w.............." +
         ".ww............." +
         "................";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(3);
@@ -86,9 +75,7 @@ public class TileSpriteSelectorTest {
         "................" +
         ".w.............." +
         ".w..............";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(4);
@@ -100,9 +87,7 @@ public class TileSpriteSelectorTest {
         ".w.............." +
         ".w.............." +
         ".w..............";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(5);
@@ -114,9 +99,7 @@ public class TileSpriteSelectorTest {
         "................" +
         ".ww............." +
         ".w..............";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(6);
@@ -128,9 +111,7 @@ public class TileSpriteSelectorTest {
         ".w.............." +
         ".ww............." +
         ".w..............";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(7);
@@ -142,9 +123,7 @@ public class TileSpriteSelectorTest {
         "................" +
         "ww.............." +
         "................";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(8);
@@ -156,9 +135,7 @@ public class TileSpriteSelectorTest {
         ".w.............." +
         "ww.............." +
         "................";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(9);
@@ -170,9 +147,7 @@ public class TileSpriteSelectorTest {
         "................" +
         "www............." +
         "................";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(10);
@@ -184,9 +159,7 @@ public class TileSpriteSelectorTest {
         ".w.............." +
         "www............." +
         "................";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(11);
@@ -198,9 +171,7 @@ public class TileSpriteSelectorTest {
         "................" +
         "ww.............." +
         ".w..............";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(12);
@@ -212,9 +183,7 @@ public class TileSpriteSelectorTest {
         ".w.............." +
         "ww.............." +
         ".w..............";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(13);
@@ -226,9 +195,7 @@ public class TileSpriteSelectorTest {
         "................" +
         "www............." +
         ".w..............";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(14);
@@ -240,9 +207,7 @@ public class TileSpriteSelectorTest {
         ".w.............." +
         "www............." +
         ".w..............";
-    ChunkDescription chunkDescription = ChunkDescription.builder()
-        .tiles(tilesString)
-        .build();
+    ChunkDescription chunkDescription = new ChunkDescription(tilesString);
     Chunk chunk = chunkFactory.read(chunkDescription);
 
     assertThat(testObject.selectSprite(chunk, 1, 1)).isEqualTo(15);

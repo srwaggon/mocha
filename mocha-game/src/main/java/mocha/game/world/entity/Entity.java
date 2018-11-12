@@ -92,4 +92,9 @@ public class Entity implements Identified {
       return new Entity(id, location, movement);
     }
   }
+
+  public Entity at(int x, int y) {
+    this.location.set(x, y);
+    return this;
+  }
 }

@@ -2,7 +2,6 @@ package mocha.game.world;
 
 import com.google.common.collect.Maps;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
@@ -12,9 +11,6 @@ import mocha.game.world.entity.Entity;
 public class World {
 
   private Map<Location, Chunk> chunks = Maps.newConcurrentMap();
-
-  public World() {
-  }
 
   public Optional<Chunk> getChunkAt(Location location) {
     return Optional.ofNullable(chunks.get(location.getChunkIndex()));
@@ -31,9 +27,5 @@ public class World {
   public Chunk put(Location location, Chunk chunk) {
     chunks.put(location.getChunkIndex(), chunk);
     return chunk;
-  }
-
-  public Collection<Chunk> getChunks() {
-    return chunks.values();
   }
 }

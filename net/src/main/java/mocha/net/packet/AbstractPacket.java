@@ -1,5 +1,7 @@
 package mocha.net.packet;
 
+import java.util.Arrays;
+
 public abstract class AbstractPacket implements Packet {
 
   protected String[] data;
@@ -20,5 +22,10 @@ public abstract class AbstractPacket implements Packet {
   @Override
   public String[] getData() {
     return data;
+  }
+
+  @Override
+  public String toString() {
+    return Arrays.toString(data);
   }
 }

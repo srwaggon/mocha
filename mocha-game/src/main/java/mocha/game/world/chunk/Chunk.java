@@ -73,9 +73,10 @@ public class Chunk {
     return (width + xAsInt % width) % width;
   }
 
-  public String buildTileData() {
+  String buildTileData() {
     return Arrays.stream(tiles)
         .map(TileType::getSymbol)
+        .map(String::valueOf)
         .collect(Collectors.joining());
   }
 
@@ -87,27 +88,22 @@ public class Chunk {
     entities.remove(entity);
   }
 
-  public List<Entity> getEntities() {
-    return Lists.newArrayList(entities);
+  public Set<Entity> getEntities() {
+    return Sets.newHashSet(entities);
   }
 
-  public List<Entity> getEntitiesAt(Location location) {
+  public Set<Entity> getEntitiesAt(Location location) {
     int x = getXBoundToChunk(location);
     int y = getYBoundToChunk(location);
     return getEntitiesAt(x, y);
   }
 
-  private List<Entity> getEntitiesAt(int x, int y) {
+  private Set<Entity> getEntitiesAt(int x, int y) {
     int xIndex = x / TileType.SIZE;
     int yIndex = y / TileType.SIZE;
     return inBounds(xIndex) && inBounds(yIndex)
-        ? Lists.newLinkedList(getEntities(xIndex, yIndex))
-        : Collections.emptyList();
-  }
-
-  private Set<Entity> getEntities(int x, int y) {
-    int tileIndex = getTileIndex(x, y);
-    return entities;
+        ? getEntities()
+        : Collections.emptySet();
   }
 
   private int getTileIndex(int x, int y) {
@@ -126,12 +122,12 @@ public class Chunk {
     private ChunkBuilder() {
     }
 
-    public ChunkBuilder tiles(TileType[] tiles) {
+    ChunkBuilder tiles(TileType[] tiles) {
       this.tiles = tiles;
       return this;
     }
 
-    public ChunkBuilder entities(Set<Entity> entities) {
+    ChunkBuilder entities(Set<Entity> entities) {
       this.entities = entities;
       return this;
     }

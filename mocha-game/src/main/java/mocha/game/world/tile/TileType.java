@@ -1,26 +1,28 @@
 package mocha.game.world.tile;
 
 
+import java.util.Arrays;
+
 public enum TileType {
 
-  GRID("x", false),
-  DIRT(".", false),
-  STONE("o", true),
-  GRASS("w", false),
-  WATER("~", false),
+  GRID('x', false),
+  DIRT('.', false),
+  STONE('o', true),
+  GRASS('w', false),
+  WATER('~', false),
   ;
 
   public static final int SIZE = 32;
 
-  private String symbol;
+  private char symbol;
   private boolean isBlocking;
 
-  TileType(String symbol, boolean isBlocking) {
+  TileType(char symbol, boolean isBlocking) {
     this.symbol = symbol;
     this.isBlocking = isBlocking;
   }
 
-  public String getSymbol() {
+  public char getSymbol() {
     return symbol;
   }
 
@@ -30,6 +32,13 @@ public enum TileType {
 
   public static int count() {
     return values().length;
+  }
+
+  public static TileType valueOf(char c) {
+    return Arrays.stream(TileType.values())
+        .filter(tileType -> tileType.getSymbol() == c)
+        .findFirst()
+        .orElse(GRID);
   }
 
   public static TileType random() {

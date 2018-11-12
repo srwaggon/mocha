@@ -28,7 +28,6 @@ import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
-import mocha.game.world.tile.TileFactory;
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketListenerFactory;
@@ -43,17 +42,22 @@ public class ServerConfiguration {
 
   @Bean
   public CommandLineRunner demo(ItemRepository itemRepository, ItemPrototypeRepository itemPrototypeRepository) {
-
     return (args) -> {
       itemRepository.count();
-
       ItemPrototype pickaxe = itemPrototypeRepository.save(new ItemPrototype(0L, "Pickaxe", 100, ItemType.TOOL));
-
       itemRepository.save(new Item(0L, pickaxe, 0, 0, 0, 0, 0));
-
       itemRepository.count();
-
       itemPrototypeRepository.count();
+    };
+  }
+
+  @Bean
+  public CommandLineRunner populate(Game game, EntityFactory entityFactory) {
+    return (args) -> {
+      game.addEntity(entityFactory.createRandomSlider().at(128, 128));
+      game.addEntity(entityFactory.createRandomSlider().at(192, 192));
+      game.addEntity(entityFactory.createRandomSlider().at(384, 384));
+//      game.addEntity(entityFactory.newPickaxe());
     };
   }
 
@@ -140,13 +144,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public TileFactory tileFactory() {
-    return new TileFactory();
-  }
-
-  @Bean
-  public ChunkFactory chunkFactory(TileFactory tileFactory) {
-    return new ChunkFactory(tileFactory);
+  public ChunkFactory chunkFactory() {
+    return new ChunkFactory();
   }
 
   @Bean()

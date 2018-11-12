@@ -25,6 +25,19 @@ public class Location {
     return y;
   }
 
+  public void setX(int x) {
+    this.x = x;
+  }
+
+  public void setY(int y) {
+    this.y = y;
+  }
+
+  public void set(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
+
   public static Location at(int x, int y) {
     return new Location(x, y);
   }
@@ -92,7 +105,6 @@ public class Location {
 
   @Override
   public int hashCode() {
-
     return Objects.hash(x, y);
   }
 }

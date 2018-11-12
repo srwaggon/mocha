@@ -49,7 +49,9 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
     //noinspection InfiniteLoopStatement
     while (true) {
       if (!packets.isEmpty()) {
-        packetEventBus.post(packets.poll());
+        Packet packet = packets.poll();
+        System.out.println(packet);
+        packetEventBus.post(packet);
         nap();
       }
     }
