@@ -40,11 +40,7 @@ public class MochaClient {
 
   @PostConstruct
   public void init() {
-    clientEventBus.register(taskService);
-    clientEventBus.register(gameLogic);
-
     if (isOnline) {
-      clientEventBus.register(clientPacketHandler);
       taskService.submit(clientPacketHandler);
       taskService.submit(networkClient);
     }

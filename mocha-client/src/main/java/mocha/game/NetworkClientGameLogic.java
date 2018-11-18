@@ -11,6 +11,7 @@ import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.event.EntityUpdatedEvent;
+import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.packet.MochaConnection;
@@ -94,11 +95,12 @@ public class NetworkClientGameLogic implements GameLogic {
   }
 
   @Subscribe
-  public void entityMoveCommandSubScription(EntityMoveCommand entityMoveCommand) {
+  public void entityMoveCommandSubscription(EntityMoveCommand entityMoveCommand) {
     game.getEntityRegistry()
         .get(entityMoveCommand.getEntityId())
-        .map(Entity::getMovement)
-        .ifPresent(movement -> {
+        .ifPresent(entity -> {
+          entity.getLocation().set(entityMoveCommand.getLocation());
+          Movement movement = entity.getMovement();
           movement.handle(entityMoveCommand);
           eventBus.postMoveEvent(movement);
         });

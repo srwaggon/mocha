@@ -21,7 +21,6 @@ import mocha.game.world.chunk.ChunkPacket;
 import mocha.game.world.entity.EntityPacket;
 import mocha.game.world.entity.EntityRemovedPacket;
 import mocha.game.world.entity.movement.MovePacket;
-import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
 import mocha.net.packet.event.ReadPacketEvent;
@@ -37,7 +36,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   @Inject
   private Game game;
   @Inject
-  private ClientEventBus eventBus;
+  private ClientEventBus clientEventBus;
 
   private EventBus packetEventBus = new EventBus();
 
@@ -45,6 +44,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Override
   public void run() {
+    clientEventBus.register(this);
     packetEventBus.register(this);
     //noinspection InfiniteLoopStatement
     while (true) {
@@ -73,16 +73,13 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   @Subscribe
   @Override
   public void handle(EntityPacket entityPacket) {
-    eventBus.postEntityUpdatedEvent(entityPacket.getEntity());
+    clientEventBus.postEntityUpdatedEvent(entityPacket.getEntity());
   }
 
   @Subscribe
   @Override
   public void handle(MovePacket movePacket) {
-    EntityMoveCommand moveCommand = movePacket.getMoveCommand();
-    game.getEntityRegistry().get(moveCommand.getEntityId())
-        .ifPresent(entity -> entity.getLocation().set(moveCommand.getLocation()));
-    eventBus.post(moveCommand);
+    clientEventBus.post(movePacket.getMoveCommand());
   }
 
   @Subscribe

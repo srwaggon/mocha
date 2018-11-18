@@ -1,7 +1,6 @@
 package mocha;
 
 import com.google.common.collect.Lists;
-import com.google.common.eventbus.EventBus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
 import mocha.game.Game;
@@ -45,14 +46,19 @@ public class ClientConfiguration {
   @Value("${mocha.client.online}")
   private boolean isOnline;
 
+  @Inject
+  private ClientEventBus clientEventBus;
+
   @Bean
   public GameLogic gameLogic(NetworkClientGameLogic networkClientGameLogic, LocalClientGameLogic localClientGameLogic) {
-    return isOnline ? networkClientGameLogic : localClientGameLogic;
+    GameLogic gameLogic = isOnline ? networkClientGameLogic : localClientGameLogic;
+    clientEventBus.register(gameLogic);
+    return gameLogic;
   }
 
   @Bean
-  public PacketListenerFactory packetListenerFactory(ClientEventBus eventBus) {
-    return new PacketListenerFactory(eventBus);
+  public PacketListenerFactory packetListenerFactory() {
+    return new PacketListenerFactory(clientEventBus);
   }
 
   @Bean
@@ -114,7 +120,7 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public List<GameRule> getRules(ClientEventBus clientEventBus) {
+  public List<GameRule> getRules() {
     MovementRule movementRule = new MovementRule();
     clientEventBus.register(movementRule);
 
@@ -125,13 +131,15 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public PacketSenderFactory packetSenderFactory(EventBus eventBus) {
-    return new PacketSenderFactory(eventBus);
+  public PacketSenderFactory packetSenderFactory() {
+    return new PacketSenderFactory(clientEventBus);
   }
 
   @Bean()
   public TaskService taskService() {
-    return new TaskService();
+    TaskService taskService = new TaskService();
+    clientEventBus.register(taskService);
+    return taskService;
   }
 
   @Bean
