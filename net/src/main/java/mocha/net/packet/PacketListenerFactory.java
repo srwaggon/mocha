@@ -10,7 +10,7 @@ public class PacketListenerFactory {
     this.eventBus = eventBus;
   }
 
-  public PacketListener newPacketListener(MochaConnection packetConnection, int senderId) {
-    return new PacketListener(eventBus, packetConnection, senderId);
+  public PacketListener newPacketListener(MochaConnection packetConnection, int senderId, PacketHandler packetHandler) {
+    return new PacketListener(eventBus, packetConnection, senderId, packetHandler);
   }
 }

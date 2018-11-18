@@ -10,6 +10,11 @@ import mocha.game.world.entity.movement.MovePacket;
 
 public class SimplePacketHandler implements PacketHandler {
   @Override
+  public void handle(int senderId, Packet packet) {
+
+  }
+
+  @Override
   public void handle(ChunkPacket chunkPacket) {
 
   }

@@ -10,6 +10,8 @@ import mocha.game.world.entity.movement.MovePacket;
 
 public interface PacketHandler {
 
+  void handle(int senderId, Packet packet);
+
   void handle(ChunkPacket chunkPacket);
 
   void handle(RequestChunkPacket requestChunkPacket);

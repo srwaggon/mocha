@@ -23,7 +23,6 @@ import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
-import mocha.net.packet.event.ReadPacketEvent;
 import mocha.shared.task.SleepyRunnable;
 
 public class ServerPacketHandler extends SimplePacketHandler implements SleepyRunnable {
@@ -59,10 +58,10 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
     }
   }
 
-  @Subscribe
-  public void handle(ReadPacketEvent readPacketEvent) {
-    if (readPacketEvent.getSenderId() == playerId) {
-      packets.offer(readPacketEvent.getPacket());
+  @Override
+  public void handle(int senderId, Packet packet) {
+    if (senderId == playerId) {
+      packets.offer(packet);
     }
   }
 

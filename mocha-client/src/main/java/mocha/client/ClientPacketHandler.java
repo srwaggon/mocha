@@ -23,7 +23,6 @@ import mocha.game.world.entity.EntityRemovedPacket;
 import mocha.game.world.entity.movement.MovePacket;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
-import mocha.net.packet.event.ReadPacketEvent;
 import mocha.shared.task.SleepyRunnable;
 
 @Component
@@ -57,9 +56,9 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
     }
   }
 
-  @Subscribe
-  public void handle(ReadPacketEvent readPacketEvent) {
-    packets.offer(readPacketEvent.getPacket());
+  @Override
+  public void handle(int senderId, Packet packet) {
+    packets.offer(packet);
   }
 
   @Subscribe

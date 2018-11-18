@@ -35,10 +35,10 @@ public class PlayerFactory {
   public NetworkPlayer newNetworkPlayer(MochaConnection mochaConnection) {
     int playerId = playerIdFactory.newId();
 
-    PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection, playerId);
-    eventBus.postTaskEvent(packetListener);
-
     ServerPacketHandler serverPacketHandler = serverPacketHandlerFactory.newServerPacketHandler(mochaConnection, playerId);
+    PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection, playerId, serverPacketHandler);
+
+    eventBus.postTaskEvent(packetListener);
     eventBus.postTaskEvent(serverPacketHandler);
     eventBus.register(serverPacketHandler);
 
