@@ -11,7 +11,7 @@ public class PacketListener implements SleepyRunnable {
   private final int senderId;
   private PacketHandler packetHandler;
 
-  PacketListener(NetworkedMochaEventBus eventBus, MochaConnection connection, int senderId, PacketHandler packetHandler) {
+  public PacketListener(NetworkedMochaEventBus eventBus, MochaConnection connection, int senderId, PacketHandler packetHandler) {
     this.connection = connection;
     this.eventBus = eventBus;
     this.senderId = senderId;

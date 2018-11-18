@@ -7,9 +7,7 @@ import javax.inject.Inject;
 import mocha.game.world.entity.EntityFactory;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketListener;
-import mocha.net.packet.PacketListenerFactory;
 import mocha.server.ServerPacketHandler;
-import mocha.server.ServerPacketHandlerFactory;
 import mocha.server.event.ServerEventBus;
 import mocha.shared.IdFactory;
 
@@ -17,28 +15,25 @@ import mocha.shared.IdFactory;
 public class PlayerFactory {
 
   @Inject
-  private ServerEventBus eventBus;
+  private ServerEventBus serverEventBus;
 
   @Inject
   private IdFactory<Player> playerIdFactory;
 
   @Inject
-  private ServerPacketHandlerFactory serverPacketHandlerFactory;
-
-  @Inject
-  private PacketListenerFactory packetListenerFactory;
-
-  @Inject
   private EntityFactory entityFactory;
 
-  public NetworkPlayer newNetworkPlayer(MochaConnection mochaConnection) {
+  @Inject
+  private Game game;
+
+  NetworkPlayer newNetworkPlayer(MochaConnection mochaConnection) {
     int playerId = playerIdFactory.newId();
 
-    ServerPacketHandler serverPacketHandler = serverPacketHandlerFactory.newServerPacketHandler(mochaConnection, playerId);
-    PacketListener packetListener = packetListenerFactory.newPacketListener(mochaConnection, playerId, serverPacketHandler);
+    ServerPacketHandler serverPacketHandler = new ServerPacketHandler(mochaConnection, game, serverEventBus, playerId);
+    PacketListener packetListener = new PacketListener(serverEventBus, mochaConnection, playerId, serverPacketHandler);
 
-    eventBus.postTaskEvent(packetListener);
-    eventBus.postTaskEvent(serverPacketHandler);
+    serverEventBus.postTaskEvent(packetListener);
+    serverEventBus.postTaskEvent(serverPacketHandler);
 
     return NetworkPlayer.builder()
         .id(playerId)

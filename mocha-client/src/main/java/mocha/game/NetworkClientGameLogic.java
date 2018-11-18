@@ -18,7 +18,6 @@ import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketHandler;
 import mocha.net.packet.PacketListener;
-import mocha.net.packet.PacketListenerFactory;
 import mocha.net.packet.PacketSender;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.shared.task.TaskService;
@@ -42,9 +41,6 @@ public class NetworkClientGameLogic implements GameLogic {
   private PacketSenderFactory packetSenderFactory;
 
   @Inject
-  private PacketListenerFactory packetListenerFactory;
-
-  @Inject
   private TaskService taskService;
 
   @Inject
@@ -54,7 +50,7 @@ public class NetworkClientGameLogic implements GameLogic {
   public void handle(ConnectedEvent connectedEvent) {
     MochaConnection connection = connectedEvent.getMochaConnection();
     PacketSender packetSender = packetSenderFactory.newPacketSender(connection);
-    PacketListener packetListener = packetListenerFactory.newPacketListener(connection, -1, packetHandler);
+    PacketListener packetListener = new PacketListener(eventBus, connection, -1, packetHandler);
     eventBus.register(packetSender);
     eventBus.register(packetListener);
     taskService.submit(packetListener);

@@ -30,7 +30,6 @@ import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.PacketFactory;
-import mocha.net.packet.PacketListenerFactory;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.server.event.ServerEventBus;
 import mocha.shared.IdFactory;
@@ -81,11 +80,6 @@ public class ServerConfiguration {
         pickUpItemsRule,
         artificialIntelligenceRule
     );
-  }
-
-  @Bean
-  public PacketListenerFactory packetListenerFactory(ServerEventBus eventBus) {
-    return new PacketListenerFactory(eventBus);
   }
 
   @Bean

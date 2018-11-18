@@ -30,7 +30,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
 
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
 
-  ServerPacketHandler(MochaConnection mochaConnection, Game game, ServerEventBus serverEventBus, int playerId) {
+  public ServerPacketHandler(MochaConnection mochaConnection, Game game, ServerEventBus serverEventBus, int playerId) {
     this.mochaConnection = mochaConnection;
     this.game = game;
     this.serverEventBus = serverEventBus;

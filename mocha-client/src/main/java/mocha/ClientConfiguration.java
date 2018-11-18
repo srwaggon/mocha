@@ -34,7 +34,6 @@ import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
 import mocha.net.packet.PacketFactory;
-import mocha.net.packet.PacketListenerFactory;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.shared.IdFactory;
 import mocha.shared.Registry;
@@ -54,11 +53,6 @@ public class ClientConfiguration {
     GameLogic gameLogic = isOnline ? networkClientGameLogic : localClientGameLogic;
     clientEventBus.register(gameLogic);
     return gameLogic;
-  }
-
-  @Bean
-  public PacketListenerFactory packetListenerFactory() {
-    return new PacketListenerFactory(clientEventBus);
   }
 
   @Bean
