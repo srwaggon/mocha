@@ -1,7 +1,6 @@
 package mocha;
 
 import com.google.common.collect.Lists;
-import com.google.common.eventbus.EventBus;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -9,10 +8,11 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import mocha.game.Game;
 import mocha.game.GameLoop;
 import mocha.game.Player;
-import mocha.game.event.MochaEventBus;
 import mocha.game.item.Item;
 import mocha.game.item.ItemPrototype;
 import mocha.game.item.ItemPrototypeRepository;
@@ -28,7 +28,6 @@ import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
-import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.server.event.ServerEventBus;
@@ -38,6 +37,9 @@ import mocha.shared.task.TaskService;
 
 @Configuration()
 public class ServerConfiguration {
+
+  @Inject
+  private ServerEventBus serverEventBus;
 
   @Bean
   public CommandLineRunner demo(ItemRepository itemRepository, ItemPrototypeRepository itemPrototypeRepository) {
@@ -51,29 +53,14 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public CommandLineRunner populate(Game game, EntityFactory entityFactory) {
-    return (args) -> {
-      game.addEntity(entityFactory.newRandomSlider().at(128, 128));
-      game.addEntity(entityFactory.newRandomSlider().at(192, 192));
-      game.addEntity(entityFactory.newRandomSlider().at(384, 384));
-      game.addEntity(entityFactory.newPickaxe());
-    };
-  }
-
-  @Bean
-  public ServerEventBus getEventBus() {
-    return new ServerEventBus();
-  }
-
-  @Bean
-  public List<GameRule> getRules(NetworkedMochaEventBus networkedMochaEventBus) {
+  public List<GameRule> getRules() {
     MovementRule movementRule = new MovementRule();
-    networkedMochaEventBus.register(movementRule);
+    serverEventBus.register(movementRule);
 
-    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(networkedMochaEventBus);
-    networkedMochaEventBus.register(pickUpItemsRule);
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(serverEventBus);
+    serverEventBus.register(pickUpItemsRule);
 
-    ArtificialIntelligenceRule artificialIntelligenceRule = new ArtificialIntelligenceRule(networkedMochaEventBus);
+    ArtificialIntelligenceRule artificialIntelligenceRule = new ArtificialIntelligenceRule(serverEventBus);
 
     return Lists.newArrayList(
         movementRule,
@@ -88,8 +75,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Game game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Registry<Entity> entityRegistry, Registry<Player> playerRegistry) {
-    return new Game(eventBus, world, gameRules, entityRegistry, playerRegistry);
+  public Game game(World world, List<GameRule> gameRules, Registry<Entity> entityRegistry, Registry<Player> playerRegistry) {
+    return new Game(serverEventBus, world, gameRules, entityRegistry, playerRegistry);
   }
 
   @Bean
@@ -133,8 +120,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public PacketSenderFactory packetSenderFactory(EventBus eventBus) {
-    return new PacketSenderFactory(eventBus);
+  public PacketSenderFactory packetSenderFactory() {
+    return new PacketSenderFactory(serverEventBus);
   }
 
   @Bean

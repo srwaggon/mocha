@@ -1,18 +1,18 @@
 package mocha.net.packet;
 
-import com.google.common.eventbus.EventBus;
+import mocha.net.event.NetworkedMochaEventBus;
 
 public class PacketSenderFactory {
 
-  private EventBus eventBus;
+  private NetworkedMochaEventBus networkedMochaEventBus;
 
-  public PacketSenderFactory(EventBus eventBus) {
-    this.eventBus = eventBus;
+  public PacketSenderFactory(NetworkedMochaEventBus networkedMochaEventBus) {
+    this.networkedMochaEventBus = networkedMochaEventBus;
   }
 
   public PacketSender newPacketSender(PacketConnection packetConnection) {
     PacketSender packetSender = new PacketSender(packetConnection);
-    eventBus.register(packetSender);
+    networkedMochaEventBus.register(packetSender);
     return packetSender;
   }
 }
