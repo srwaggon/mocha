@@ -21,6 +21,6 @@ public class Setup implements CommandLineRunner {
     game.addEntity(entityFactory.newRandomSlider().at(128, 128));
     game.addEntity(entityFactory.newRandomSlider().at(192, 192));
     game.addEntity(entityFactory.newRandomSlider().at(384, 384));
-    game.addEntity(entityFactory.newPickaxe());
+    game.addEntity(entityFactory.newPickaxe().at(64,64));
   }
 }
