@@ -43,7 +43,6 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Override
   public void run() {
-    clientEventBus.register(this);
     packetEventBus.register(this);
     //noinspection InfiniteLoopStatement
     while (true) {

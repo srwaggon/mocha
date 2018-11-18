@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketListener;
@@ -40,13 +39,10 @@ public class PlayerFactory {
 
     eventBus.postTaskEvent(packetListener);
     eventBus.postTaskEvent(serverPacketHandler);
-    eventBus.register(serverPacketHandler);
-
-    Entity entity = entityFactory.newSlider();
 
     return NetworkPlayer.builder()
         .id(playerId)
-        .entity(entity)
+        .entity(entityFactory.newSlider())
         .packetListener(packetListener)
         .serverPacketHandler(serverPacketHandler)
         .build();

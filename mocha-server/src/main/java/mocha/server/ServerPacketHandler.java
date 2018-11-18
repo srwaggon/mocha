@@ -13,38 +13,33 @@ import mocha.game.world.chunk.RequestChunkPacket;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
-import mocha.game.world.entity.event.EntityAddedEvent;
-import mocha.game.world.entity.event.EntityRemovedEvent;
 import mocha.game.world.entity.movement.MovePacket;
-import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
-import mocha.game.world.entity.movement.event.EntityMovementEvent;
-import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
+import mocha.server.event.ServerEventBus;
 import mocha.shared.task.SleepyRunnable;
 
 public class ServerPacketHandler extends SimplePacketHandler implements SleepyRunnable {
   private final int playerId;
-  private NetworkedMochaEventBus eventBus;
+  private ServerEventBus serverEventBus;
   private MochaConnection mochaConnection;
   private Game game;
   private EventBus packetEventBus;
 
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
 
-  ServerPacketHandler(MochaConnection mochaConnection, Game game, NetworkedMochaEventBus eventBus, int playerId) {
+  ServerPacketHandler(MochaConnection mochaConnection, Game game, ServerEventBus serverEventBus, int playerId) {
     this.mochaConnection = mochaConnection;
     this.game = game;
-    this.eventBus = eventBus;
+    this.serverEventBus = serverEventBus;
     this.playerId = playerId;
     packetEventBus = new EventBus();
     packetEventBus.register(this);
   }
 
   public void remove() {
-    eventBus.unregister(this);
     packetEventBus.unregister(this);
   }
 
@@ -63,29 +58,6 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
     if (senderId == playerId) {
       packets.offer(packet);
     }
-  }
-
-  @Subscribe
-  public void handle(EntityAddedEvent entityAddedEvent) {
-    mochaConnection.sendEntityUpdate(entityAddedEvent.getEntity());
-  }
-
-  @Subscribe
-  public void handle(EntityMovementEvent entityMovementEvent) {
-    Movement movement = entityMovementEvent.getMovement();
-    EntityMoveCommand entityMove = EntityMoveCommand.builder()
-        .entityId(movement.getEntity().getId())
-        .location(movement.getLocation())
-        .direction(movement.getDirection())
-        .xOffset(movement.getXOffset())
-        .yOffset(movement.getYOffset())
-        .build();
-    mochaConnection.sendMoveCommand(entityMove);
-  }
-
-  @Subscribe
-  public void handle(EntityRemovedEvent entityRemovedEvent) {
-    mochaConnection.sendEntityRemoved(entityRemovedEvent.getEntity());
   }
 
   @Subscribe
@@ -122,7 +94,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
     game.getPlayerRegistry().get(playerId).ifPresent(player -> {
       EntityMoveCommand moveCommand = movePacket.getMoveCommand();
       moveCommand.setEntityId(player.getEntity().getId());
-      eventBus.post(moveCommand);
+      serverEventBus.post(moveCommand);
     });
   }
 }
