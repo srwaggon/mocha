@@ -18,10 +18,14 @@ import mocha.client.event.ClientEventBus;
 @Component
 public class InputHandler {
 
-  @Inject
+  private final Map<KeyCode, GameKey> keyMap = Maps.newHashMap();
+
   private ClientEventBus eventBus;
 
-  private final Map<KeyCode, GameKey> keyMap = Maps.newHashMap();
+  @Inject
+  public InputHandler(ClientEventBus eventBus) {
+    this.eventBus = eventBus;
+  }
 
   @PostConstruct
   public void init() {
@@ -30,10 +34,6 @@ public class InputHandler {
     keyMap.put(KeyCode.DOWN, GameKey.DOWN);
     keyMap.put(KeyCode.LEFT, GameKey.LEFT);
     keyMap.put(KeyCode.ENTER, GameKey.PICKUP);
-  }
-
-  private void down(KeyCode keyCode) {
-    Optional.ofNullable(keyMap.get(keyCode)).ifPresent(this::down);
   }
 
   private void down(GameKey gameKey) {
@@ -49,15 +49,11 @@ public class InputHandler {
     }
   }
 
-  private void up(KeyCode keyCode) {
-    Optional.ofNullable(keyMap.get(keyCode)).ifPresent(this::up);
-  }
-
   public EventHandler<KeyEvent> getKeyPressedHandler() {
-    return event -> this.down(event.getCode());
+    return event -> Optional.ofNullable(keyMap.get(event.getCode())).ifPresent(this::down);
   }
 
   public EventHandler<KeyEvent> getKeyReleasedHandler() {
-    return event -> this.up(event.getCode());
+    return event -> Optional.ofNullable(keyMap.get(event.getCode())).ifPresent(this::up);
   }
 }

@@ -30,27 +30,10 @@ public class GameKeyTest {
   }
 
   @Test
-  public void key_StaysUpEvenWhenPressed() {
-    testObject.down();
-
-    assertThat(testObject.isDown()).isFalse();
-  }
-
-  @Test
   public void tick_SetsKeyStateToDown_WhenKeyWasPressed() {
     testObject.down();
 
     testObject.tick();
-
-    assertThat(testObject.isDown()).isTrue();
-  }
-
-  @Test
-  public void key_StaysDownEvenWhenReleased() {
-    testObject.down();
-    testObject.tick();
-
-    testObject.up();
 
     assertThat(testObject.isDown()).isTrue();
   }

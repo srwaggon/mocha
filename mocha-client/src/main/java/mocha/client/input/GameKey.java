@@ -1,7 +1,5 @@
 package mocha.client.input;
 
-import java.util.Arrays;
-
 public enum GameKey {
 
   UNBOUND,
@@ -42,7 +40,4 @@ public enum GameKey {
     return isClicked;
   }
 
-  public static void tickAll() {
-    Arrays.stream(GameKey.values()).forEach(GameKey::tick);
-  }
 }
