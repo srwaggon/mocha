@@ -1,7 +1,6 @@
 package mocha.client;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,9 +15,7 @@ import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketFactory;
 
 @Component
-public class Client implements Runnable {
-
-  private final Logger log = LoggerFactory.getLogger(Client.class);
+public class NetworkClient implements Runnable {
 
   @Inject
   private ClientEventBus eventBus;
@@ -26,8 +23,8 @@ public class Client implements Runnable {
   @Inject
   private PacketFactory packetFactory;
 
-  @Inject
-  private ClientPacketHandler clientPacketHandler;
+  @Value("${server.port}")
+  private int port;
 
   @Override
   public void run() {
@@ -40,7 +37,7 @@ public class Client implements Runnable {
 
   private Socket getSocket() {
     try {
-      return new Socket(getLocalHost(), 8026);
+      return new Socket(getLocalHost(), port);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

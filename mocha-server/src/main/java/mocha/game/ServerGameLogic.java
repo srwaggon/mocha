@@ -8,12 +8,14 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
+import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.server.event.ServerEventBus;
 
 @Component
-public class ServerGameLogic {
+public class ServerGameLogic implements GameLogic {
 
   private Logger log = LoggerFactory.getLogger(ServerGameLogic.class);
 
@@ -38,4 +40,15 @@ public class ServerGameLogic {
     game.removePlayer(disconnectedEvent.getSenderId());
   }
 
+  @Subscribe
+  @Override
+  public void handle(EntityMoveCommand entityMoveCommand) {
+    game.getEntityRegistry()
+        .get(entityMoveCommand.getEntityId())
+        .map(Entity::getMovement)
+        .ifPresent(movement -> {
+          movement.handle(entityMoveCommand);
+          eventBus.postMoveEvent(movement);
+        });
+  }
 }

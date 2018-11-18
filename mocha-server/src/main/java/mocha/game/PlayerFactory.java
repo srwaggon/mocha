@@ -42,7 +42,7 @@ public class PlayerFactory {
     eventBus.postTaskEvent(serverPacketHandler);
     eventBus.register(serverPacketHandler);
 
-    Entity entity = entityFactory.createSlider();
+    Entity entity = entityFactory.newSlider();
 
     return NetworkPlayer.builder()
         .id(playerId)

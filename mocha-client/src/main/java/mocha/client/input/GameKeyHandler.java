@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
 import mocha.client.input.event.KeyDownEvent;
+import mocha.game.GameLogic;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
@@ -29,6 +30,9 @@ public class GameKeyHandler {
   @Inject
   private PacketFactory packetFactory;
 
+  @Inject
+  private GameLogic gameLogic;
+
   @PostConstruct
   public void init() {
     eventBus.register(this);
@@ -36,24 +40,22 @@ public class GameKeyHandler {
 
   @Subscribe
   public void handle(KeyDownEvent keyDownEvent) {
-    int entityId = 0;
-    entityRegistry.get(entityId)
-        .ifPresent(entity ->
-            getEntityMove(keyDownEvent, entity)
-                .ifPresent(this::sendMovePacket)
-        );
+    handleIfMove(keyDownEvent);
   }
 
-  private void sendMovePacket(EntityMoveCommand entityMove) {
-    eventBus.postSendPacketEvent(packetFactory.newMovePacket(entityMove));
+  private void handleIfMove(KeyDownEvent keyDownEvent) {
+    getDirection(keyDownEvent)
+        .ifPresent(direction -> entityRegistry.get(0)
+            .ifPresent(entity ->
+                gameLogic.handle(buildEntityMoveCommand(entity, direction))));
   }
 
-  private Optional<EntityMoveCommand> getEntityMove(KeyDownEvent keyDownEvent, Entity entity) {
-    return getDirection(keyDownEvent).map(direction -> EntityMoveCommand.builder()
+  private EntityMoveCommand buildEntityMoveCommand(Entity entity, Direction direction) {
+    return EntityMoveCommand.builder()
         .entityId(entity.getId())
         .location(entity.getLocation())
         .direction(direction)
-        .build());
+        .build();
   }
 
   private Optional<Direction> getDirection(KeyDownEvent keyDownEvent) {

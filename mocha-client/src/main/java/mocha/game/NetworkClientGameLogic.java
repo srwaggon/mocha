@@ -11,6 +11,7 @@ import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.event.EntityUpdatedEvent;
+import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketFactory;
@@ -21,7 +22,7 @@ import mocha.net.packet.PacketSenderFactory;
 import mocha.shared.task.TaskService;
 
 @Component
-public class ClientGameLogic {
+public class NetworkClientGameLogic implements GameLogic {
 
   @Inject
   private Game game;
@@ -75,7 +76,7 @@ public class ClientGameLogic {
 
   private void createEntityIfAbsent(Entity entityUpdate) {
     if (!game.getEntityRegistry().getIds().contains(entityUpdate.getId())) {
-      Entity entity = entityFactory.createSlider();
+      Entity entity = entityFactory.newSlider();
       entity.setId(entityUpdate.getId());
       entity.getLocation().set(entityUpdate.getLocation());
       game.addEntity(entity);
@@ -85,6 +86,22 @@ public class ClientGameLogic {
   private void requestMapData(Location location) {
     eventBus.postSendPacketEvent(packetFactory.newChunkRequestPacket(location));
     eventBus.postSendPacketEvent(packetFactory.newRequestEntitiesInChunkPacket(location));
+  }
+
+  @Override
+  public void handle(EntityMoveCommand entityMoveCommand) {
+    eventBus.postSendPacketEvent(packetFactory.newMovePacket(entityMoveCommand));
+  }
+
+  @Subscribe
+  public void entityMoveCommandSubScription(EntityMoveCommand entityMoveCommand) {
+    game.getEntityRegistry()
+        .get(entityMoveCommand.getEntityId())
+        .map(Entity::getMovement)
+        .ifPresent(movement -> {
+          movement.handle(entityMoveCommand);
+          eventBus.postMoveEvent(movement);
+        });
   }
 
 }

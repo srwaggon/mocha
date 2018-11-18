@@ -54,9 +54,9 @@ public class ServerConfiguration {
   @Bean
   public CommandLineRunner populate(Game game, EntityFactory entityFactory) {
     return (args) -> {
-      game.addEntity(entityFactory.createRandomSlider().at(128, 128));
-      game.addEntity(entityFactory.createRandomSlider().at(192, 192));
-      game.addEntity(entityFactory.createRandomSlider().at(384, 384));
+      game.addEntity(entityFactory.newRandomSlider().at(128, 128));
+      game.addEntity(entityFactory.newRandomSlider().at(192, 192));
+      game.addEntity(entityFactory.newRandomSlider().at(384, 384));
       game.addEntity(entityFactory.newPickaxe());
     };
   }
@@ -68,7 +68,7 @@ public class ServerConfiguration {
 
   @Bean
   public List<GameRule> getRules(NetworkedMochaEventBus networkedMochaEventBus) {
-    MovementRule movementRule = new MovementRule(networkedMochaEventBus);
+    MovementRule movementRule = new MovementRule();
     networkedMochaEventBus.register(movementRule);
 
     PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(networkedMochaEventBus);

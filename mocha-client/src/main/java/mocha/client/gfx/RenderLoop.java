@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 
 import javafx.animation.AnimationTimer;
-import mocha.client.Client;
+import mocha.client.NetworkClient;
 import mocha.client.gfx.view.GameView;
 
 @Component
 public class RenderLoop extends AnimationTimer {
 
-  private final Logger log = LoggerFactory.getLogger(Client.class);
+  private final Logger log = LoggerFactory.getLogger(NetworkClient.class);
   private static final double NANOSECONDS_PER_SECOND = 1000000000.0;
   private static final int FRAMES_PER_SECOND = 60;
   public static final double FRAME_LIFESPAN = NANOSECONDS_PER_SECOND / FRAMES_PER_SECOND;

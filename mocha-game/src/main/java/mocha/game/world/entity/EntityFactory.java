@@ -15,7 +15,7 @@ public class EntityFactory {
     this.entityIdFactory = entityIdFactory;
   }
 
-  public Entity createSimple() {
+  public Entity newSimple() {
     Entity entity = Entity.builder()
         .id(entityIdFactory.newId())
         .location(new Location())
@@ -24,7 +24,7 @@ public class EntityFactory {
     return entity;
   }
 
-  public Entity createSlider() {
+  public Entity newSlider() {
     Entity entity = Entity.builder()
         .id(entityIdFactory.newId())
         .location(new Location())
@@ -33,7 +33,7 @@ public class EntityFactory {
     return entity;
   }
 
-  public Entity createRandomSlider() {
+  public Entity newRandomSlider() {
     Entity entity = Entity.builder()
         .id(entityIdFactory.newId())
         .location(new Location())

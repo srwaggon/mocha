@@ -6,6 +6,7 @@ import com.google.common.eventbus.EventBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InjectionPoint;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -14,7 +15,10 @@ import java.util.List;
 
 import mocha.client.event.ClientEventBus;
 import mocha.game.Game;
+import mocha.game.GameLogic;
 import mocha.game.GameLoop;
+import mocha.game.LocalClientGameLogic;
+import mocha.game.NetworkClientGameLogic;
 import mocha.game.Player;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
@@ -37,6 +41,14 @@ import mocha.shared.task.TaskService;
 
 @Configuration
 public class ClientConfiguration {
+
+  @Value("${mocha.client.online}")
+  private boolean isOnline;
+
+  @Bean
+  public GameLogic gameLogic(NetworkClientGameLogic networkClientGameLogic, LocalClientGameLogic localClientGameLogic) {
+    return isOnline ? networkClientGameLogic : localClientGameLogic;
+  }
 
   @Bean
   public PacketListenerFactory packetListenerFactory(ClientEventBus eventBus) {
@@ -102,8 +114,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public List<GameRule> getRules(World world, ClientEventBus clientEventBus) {
-    MovementRule movementRule = new MovementRule(clientEventBus);
+  public List<GameRule> getRules(ClientEventBus clientEventBus) {
+    MovementRule movementRule = new MovementRule();
     clientEventBus.register(movementRule);
 
     PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(clientEventBus);
