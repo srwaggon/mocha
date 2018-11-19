@@ -6,22 +6,22 @@ import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.World;
 import mocha.game.world.entity.Entity;
-import mocha.shared.Registry;
+import mocha.shared.Repository;
 
 public class Game implements Tickable {
 
   private MochaEventBus eventBus;
   private World world;
   private List<GameRule> gameRules;
-  private Registry<Entity> entityRegistry;
-  private Registry<Player> playerRegistry;
+  private Repository<Entity, Integer> entityRepository;
+  private Repository<Player, Integer> playerRepository;
 
-  public Game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Registry<Entity> entityRegistry, Registry<Player> playerRegistry) {
+  public Game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Repository<Entity, Integer> entityRepository, Repository<Player, Integer> playerRepository) {
     this.eventBus = eventBus;
     this.world = world;
     this.gameRules = gameRules;
-    this.entityRegistry = entityRegistry;
-    this.playerRegistry = playerRegistry;
+    this.entityRepository = entityRepository;
+    this.playerRepository = playerRepository;
   }
 
   @Override
@@ -34,41 +34,41 @@ public class Game implements Tickable {
   }
 
   public void addEntity(Entity entity) {
-    entityRegistry.add(entity);
+    entityRepository.save(entity);
     world.add(entity);
     eventBus.postEntityAddedEvent(entity);
   }
 
   public void removeEntity(int entityId) {
-    entityRegistry.get(entityId).ifPresent(this::removeEntity);
+    entityRepository.findById(entityId).ifPresent(this::removeEntity);
   }
 
   public void removeEntity(Entity entity) {
-    entityRegistry.remove(entity);
+    entityRepository.delete(entity);
     world.remove(entity);
     eventBus.postEntityRemovedEvent(entity);
   }
 
   public void addPlayer(Player player) {
-    playerRegistry.add(player);
+    playerRepository.save(player);
     addEntity(player.getEntity());
   }
 
   public void removePlayer(int playerId) {
-    playerRegistry.get(playerId).ifPresent(this::removePlayer);
+    playerRepository.findById(playerId).ifPresent(this::removePlayer);
   }
 
   private void removePlayer(Player player) {
     player.remove();
     removeEntity(player.getEntity());
-    playerRegistry.remove(player);
+    playerRepository.delete(player);
   }
 
-  public Registry<Entity> getEntityRegistry() {
-    return entityRegistry;
+  public Repository<Entity, Integer> getEntityRepository() {
+    return entityRepository;
   }
 
-  public Registry<Player> getPlayerRegistry() {
-    return playerRegistry;
+  public Repository<Player, Integer> getPlayerRepository() {
+    return playerRepository;
   }
 }

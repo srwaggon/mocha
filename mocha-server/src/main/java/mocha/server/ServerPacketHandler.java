@@ -64,7 +64,8 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Override
   public void handle(RequestChunkPacket requestChunkPacket) {
     Location location = requestChunkPacket.getLocation();
-    game.getWorld().getChunkAt(location)
+    game.getWorld()
+        .getChunkAt(location)
         .ifPresent(chunk -> mochaConnection.sendChunkUpdate(location, chunk));
   }
 
@@ -72,7 +73,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Subscribe
   public void handle(RequestEntityByIdPacket requestEntityByIdPacket) {
     int entityId = requestEntityByIdPacket.getId();
-    Optional<Entity> optionalEntity = game.getEntityRegistry().get(entityId);
+    Optional<Entity> optionalEntity = game.getEntityRepository().findById(entityId);
     if (optionalEntity.isPresent()) {
       mochaConnection.sendEntityUpdate(optionalEntity.get());
     } else {
@@ -84,17 +85,21 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Override
   public void handle(RequestEntitiesInChunkPacket requestEntitiesInChunkPacket) {
     Location location = requestEntitiesInChunkPacket.getLocation();
-    game.getWorld().getChunkAt(location).ifPresent(chunk ->
-        chunk.getEntities().forEach(mochaConnection::sendEntityUpdate));
+    game.getWorld()
+        .getChunkAt(location)
+        .ifPresent(chunk ->
+            chunk.getEntities().forEach(mochaConnection::sendEntityUpdate));
   }
 
   @Subscribe
   @Override
   public void handle(MovePacket movePacket) {
-    game.getPlayerRegistry().get(playerId).ifPresent(player -> {
-      EntityMoveCommand moveCommand = movePacket.getMoveCommand();
-      moveCommand.setEntityId(player.getEntity().getId());
-      serverEventBus.post(moveCommand);
-    });
+    game.getPlayerRepository()
+        .findById(playerId)
+        .ifPresent(player -> {
+          EntityMoveCommand moveCommand = movePacket.getMoveCommand();
+          moveCommand.setEntityId(player.getEntity().getId());
+          serverEventBus.post(moveCommand);
+        });
   }
 }

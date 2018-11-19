@@ -13,7 +13,7 @@ public class ArtificialIntelligenceRule implements GameRule {
 
   @Override
   public void apply(Game game) {
-//    game.getEntityRegistry().getMembers().stream()
+//    game.getEntityRepository().findAll().stream()
 //        .filter(entity -> !entity.getMovement().isMoving())
 //        .forEach(networkedMochaEventBus::postMoveCommand);
   }

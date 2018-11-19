@@ -69,19 +69,21 @@ public class NetworkClientGameLogic implements GameLogic {
   }
 
   private void updateEntity(Entity entityUpdate) {
-    game.getEntityRegistry().get(entityUpdate.getId())
+    game.getEntityRepository()
+        .findById(entityUpdate.getId())
         .ifPresent(entity ->
             entity.getLocation()
                 .set(entityUpdate.getLocation()));
   }
 
   private void createEntityIfAbsent(Entity entityUpdate) {
-    if (!game.getEntityRegistry().getIds().contains(entityUpdate.getId())) {
-      Entity entity = entityFactory.newSlider();
-      entity.setId(entityUpdate.getId());
-      entity.getLocation().set(entityUpdate.getLocation());
-      game.addEntity(entity);
+    if (game.getEntityRepository().findById(entityUpdate.getId()).isPresent()) {
+      return;
     }
+    Entity entity = entityFactory.newSlider();
+    entity.setId(entityUpdate.getId());
+    entity.getLocation().set(entityUpdate.getLocation());
+    game.addEntity(entity);
   }
 
   private void requestMapData(Location location) {
@@ -96,8 +98,8 @@ public class NetworkClientGameLogic implements GameLogic {
 
   @Subscribe
   public void entityMoveCommandSubscription(EntityMoveCommand entityMoveCommand) {
-    game.getEntityRegistry()
-        .get(entityMoveCommand.getEntityId())
+    game.getEntityRepository()
+        .findById(entityMoveCommand.getEntityId())
         .ifPresent(entity -> {
           entity.getLocation().set(entityMoveCommand.getLocation());
           Movement movement = entity.getMovement();

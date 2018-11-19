@@ -3,15 +3,15 @@ package mocha.shared;
 public class IdFactory<T extends Identified> {
 
   private int highest = 0;
-  private Registry registry;
+  private Repository<T, Integer> repository;
 
-  public IdFactory(Registry<T> registry) {
-    this.registry = registry;
+  public IdFactory(Repository<T, Integer> repository) {
+    this.repository = repository;
   }
 
-  public int newId() {
+  public Integer newId() {
     for (int newId = 0; newId < highest; newId++) {
-      if (!registry.containsKey(newId)) {
+      if (!repository.containsKey(newId)) {
         return newId;
       }
     }

@@ -16,13 +16,13 @@ import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.packet.PacketFactory;
-import mocha.shared.Registry;
+import mocha.shared.Repository;
 
 @Component
 public class GameKeyHandler {
 
   @Inject
-  private Registry<Entity> entityRegistry;
+  private Repository<Entity, Integer> entityRepository;
 
   @Inject
   private ClientEventBus eventBus;
@@ -45,7 +45,7 @@ public class GameKeyHandler {
 
   private void handleIfMove(KeyDownEvent keyDownEvent) {
     getDirection(keyDownEvent)
-        .ifPresent(direction -> entityRegistry.get(0)
+        .ifPresent(direction -> entityRepository.findById(0)
             .ifPresent(entity ->
                 gameLogic.handle(buildEntityMoveCommand(entity, direction))));
   }

@@ -30,7 +30,8 @@ public class SpriteLayer extends Group {
   }
 
   private void addEntityViews() {
-    game.getEntityRegistry().getMembers().stream()
+    game.getEntityRepository()
+        .findAll().stream()
         .sorted(Comparator.comparingInt(entity -> entity.getLocation().getY()))
         .forEach(this::addEntityView);
   }

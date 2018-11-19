@@ -19,8 +19,8 @@ public class LocalClientGameLogic implements GameLogic {
 
   @Override
   public void handle(EntityMoveCommand entityMoveCommand) {
-    game.getEntityRegistry()
-        .get(entityMoveCommand.getEntityId())
+    game.getEntityRepository()
+        .findById(entityMoveCommand.getEntityId())
         .map(Entity::getMovement)
         .ifPresent(movement -> {
           movement.handle(entityMoveCommand);

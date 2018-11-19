@@ -13,8 +13,8 @@ public class MovementRule implements GameRule {
   }
 
   private void processEntityMovement(Game game) {
-    game.getEntityRegistry()
-        .getMembers()
+    game.getEntityRepository()
+        .findAll()
         .forEach((entity) -> {
           Location start = entity.getLocation().copy();
           entity.getMovement().tick(0L);

@@ -35,7 +35,8 @@ import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.server.event.ServerEventBus;
 import mocha.shared.IdFactory;
-import mocha.shared.Registry;
+import mocha.shared.InMemoryRepository;
+import mocha.shared.Repository;
 import mocha.shared.task.TaskService;
 
 @Configuration()
@@ -78,8 +79,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Game game(World world, List<GameRule> gameRules, Registry<Entity> entityRegistry, Registry<Player> playerRegistry) {
-    return new Game(serverEventBus, world, gameRules, entityRegistry, playerRegistry);
+  public Game game(World world, List<GameRule> gameRules, Repository<Entity, Integer> entityRepository, Repository<Player, Integer> playerRepository) {
+    return new Game(serverEventBus, world, gameRules, entityRepository, playerRepository);
   }
 
   @Bean
@@ -88,23 +89,23 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Registry<Entity> entityRegistry() {
-    return new Registry<>();
+  public Repository<Entity, Integer> entityRegistry() {
+    return new InMemoryRepository<>();
   }
 
   @Bean
-  public IdFactory<Entity> entityIdFactory(Registry<Entity> entityRegistry) {
-    return new IdFactory<>(entityRegistry);
+  public IdFactory<Entity> entityIdFactory(Repository<Entity, Integer> entityRepository) {
+    return new IdFactory<>(entityRepository);
   }
 
   @Bean
-  public Registry<Player> playerRegistry() {
-    return new Registry<>();
+  public Repository<Player, Integer> playerRegistry() {
+    return new InMemoryRepository<>();
   }
 
   @Bean
-  public IdFactory<Player> playerIdFactory(Registry<Player> playerRegistry) {
-    return new IdFactory<>(playerRegistry);
+  public IdFactory<Player> playerIdFactory(Repository<Player, Integer> playerRepository) {
+    return new IdFactory<>(playerRepository);
   }
 
   @Bean
