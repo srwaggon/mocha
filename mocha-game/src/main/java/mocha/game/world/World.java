@@ -12,7 +12,7 @@ public class World {
 
   private Map<Location, Chunk> chunks = Maps.newConcurrentMap();
 
-  public Optional<Chunk> getChunkAt(Location location) {
+  public Optional<? extends Chunk> getChunkAt(Location location) {
     return Optional.ofNullable(chunks.get(location.getChunkIndex()));
   }
 

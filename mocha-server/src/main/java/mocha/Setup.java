@@ -1,11 +1,14 @@
 package mocha;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -45,27 +48,33 @@ public class Setup implements CommandLineRunner {
   }
 
   private void createChunks() {
+    List<ServerChunk> serverChunks = Lists.newArrayList();
     for (int y = -16; y < 16; y++) {
       for (int x = -16; x < 16; x++) {
-        newServerChunkIfMissing(y, x);
+        Location chunkIndex = new Location(x, y);
+        if (!getServerChunk(chunkIndex).isPresent()) {
+          ServerChunk serverChunk = newServerChunk(chunkIndex);
+          serverChunks.add(serverChunk);
+        }
       }
     }
+    serverChunkRepository.saveAll(serverChunks);
   }
 
-  private void newServerChunkIfMissing(int y, int x) {
-    Location chunkIndex = new Location(x, y);
+  private Optional<ServerChunk> getServerChunk(Location chunkIndex) {
     int chunkId = getIdForChunkIndex(chunkIndex);
-    ServerChunk chunk = serverChunkRepository.findOne(chunkId);
-    if (chunk == null) {
-      newServerChunk(chunkId);
-    }
+    return serverChunkRepository.findById(chunkId);
   }
 
-  private void newServerChunk(int chunkId) {
+  private ServerChunk newServerChunk(Location chunkIndex) {
+    int chunkId = getIdForChunkIndex(chunkIndex);
+    return newServerChunk(chunkId);
+  }
+
+  private ServerChunk newServerChunk(int chunkId) {
     TileType[] tiles = tileSetFactory.createRandomTiles();
     HashSet<Entity> entities = Sets.newHashSet();
-    ServerChunk serverChunk = new ServerChunk(chunkId, tiles, entities);
-    serverChunkRepository.save(serverChunk);
+    return new ServerChunk(chunkId, tiles, entities);
   }
 
 }

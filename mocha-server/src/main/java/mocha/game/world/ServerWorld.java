@@ -24,9 +24,9 @@ public class ServerWorld extends World {
   }
 
   @Override
-  public Optional<Chunk> getChunkAt(Location location) {
+  public Optional<? extends Chunk> getChunkAt(Location location) {
     int chunkId = getIdForChunkAt(location);
-    return Optional.ofNullable(serverChunkRepository.findOne(chunkId));
+    return serverChunkRepository.findById(chunkId);
   }
 
   public static int getIdForChunkAt(Location location) {

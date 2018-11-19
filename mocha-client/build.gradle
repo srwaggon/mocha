@@ -17,6 +17,7 @@ apply plugin: 'application'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -38,17 +39,17 @@ configurations {
 dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
-    compile("com.google.guava:guava:19.0")
-    compile("com.google.inject:guice:4.0")
-    compile("commons-io:commons-io:2.4")
-    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    implementation("com.google.guava:guava:19.0")
+    implementation("com.google.inject:guice:4.0")
+    implementation("commons-io:commons-io:2.4")
+    implementation("org.springframework.boot:spring-boot-starter")
 
     compileOnly 'org.projectlombok:lombok:1.18.4'
 
     compile project(":mocha-game")
     compile project(":net")
 
-    testCompile('org.assertj:assertj-core:3.3.0')
-    testCompile("org.mockito:mockito-all:1.9.5")
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.assertj:assertj-core:3.3.0')
+    testImplementation("org.mockito:mockito-all:1.9.5")
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
