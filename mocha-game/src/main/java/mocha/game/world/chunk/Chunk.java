@@ -1,14 +1,10 @@
 package mocha.game.world.chunk;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
@@ -18,8 +14,8 @@ public class Chunk {
 
   public final static int SIZE = 16;
 
-  private TileType[] tiles;
-  private Set<Entity> entities;
+  TileType[] tiles;
+  Set<Entity> entities;
 
   public Chunk() {
     tiles = new TileType[Chunk.SIZE * Chunk.SIZE];
@@ -73,11 +69,8 @@ public class Chunk {
     return (width + xAsInt % width) % width;
   }
 
-  String buildTileData() {
-    return Arrays.stream(tiles)
-        .map(TileType::getSymbol)
-        .map(String::valueOf)
-        .collect(Collectors.joining());
+  public TileType[] getTiles() {
+    return tiles;
   }
 
   public void add(Entity entity) {

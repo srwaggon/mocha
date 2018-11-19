@@ -6,6 +6,8 @@ import org.junit.Test;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkDescription;
 import mocha.game.world.chunk.ChunkFactory;
+import mocha.game.world.tile.TileReader;
+import mocha.game.world.tile.TileSetFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,7 +19,9 @@ public class TileSpriteSelectorTest {
 
   @Before
   public void setUp() {
-    chunkFactory = new ChunkFactory();
+    TileReader tileReader = new TileReader();
+    TileSetFactory tileSetFactory = new TileSetFactory(tileReader);
+    chunkFactory = new ChunkFactory(tileSetFactory);
     testObject = new TileSpriteSelector();
   }
 

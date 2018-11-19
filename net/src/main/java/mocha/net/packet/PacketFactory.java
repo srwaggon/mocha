@@ -10,11 +10,21 @@ import mocha.game.world.entity.EntityRemovedPacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
+import mocha.game.world.tile.TileStringBuilder;
+import mocha.game.world.tile.TileType;
 
 public class PacketFactory {
 
+  private TileStringBuilder tileStringBuilder;
+
+  public PacketFactory(TileStringBuilder tileStringBuilder) {
+    this.tileStringBuilder = tileStringBuilder;
+  }
+
   public ChunkPacket newChunkPacket(Location location, Chunk chunk) {
-    return new ChunkPacket(location, chunk);
+    TileType[] tiles = chunk.getTiles();
+    String tileString = tileStringBuilder.build(tiles);
+    return new ChunkPacket(location, tileString);
   }
 
   public RequestChunkPacket newChunkRequestPacket(Location location) {

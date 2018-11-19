@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import mocha.game.world.tile.TileReader;
+import mocha.game.world.tile.TileSetFactory;
 import mocha.game.world.tile.TileType;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,7 +18,9 @@ public class ChunkFactoryTest {
 
   @Before
   public void setUp() {
-    testObject = new ChunkFactory();
+    TileReader tileReader = new TileReader();
+    TileSetFactory tileSetFactory = new TileSetFactory(tileReader);
+    testObject = new ChunkFactory(tileSetFactory);
   }
 
   @Test

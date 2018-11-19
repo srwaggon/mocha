@@ -9,12 +9,12 @@ public class ChunkPacket extends AbstractPacket {
   public ChunkPacket() {
   }
 
-  public ChunkPacket(Location location, Chunk chunk) {
+  public ChunkPacket(Location location, String tileData) {
     data = new String[4];
     data[0] = getType().name();
     data[1] = "" + location.getX();
     data[2] = "" + location.getY();
-    data[3] = chunk.buildTileData();
+    data[3] = tileData;
   }
 
   @Override

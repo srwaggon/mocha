@@ -28,6 +28,9 @@ import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
+import mocha.game.world.tile.TileReader;
+import mocha.game.world.tile.TileSetFactory;
+import mocha.game.world.tile.TileStringBuilder;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.server.event.ServerEventBus;
@@ -70,8 +73,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public PacketFactory getPacketFactory() {
-    return new PacketFactory();
+  public PacketFactory getPacketFactory(TileStringBuilder tileStringBuilder) {
+    return new PacketFactory(tileStringBuilder);
   }
 
   @Bean
@@ -125,8 +128,23 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public ChunkFactory chunkFactory() {
-    return new ChunkFactory();
+  public TileReader tileReader() {
+    return new TileReader();
+  }
+
+  @Bean
+  public TileStringBuilder tileStringBuilder() {
+    return new TileStringBuilder();
+  }
+
+  @Bean
+  public TileSetFactory tileSetFactory(TileReader tileReader) {
+    return new TileSetFactory(tileReader);
+  }
+
+  @Bean
+  public ChunkFactory chunkFactory(TileSetFactory tileSetFactory) {
+    return new ChunkFactory(tileSetFactory);
   }
 
   @Bean()
