@@ -13,25 +13,27 @@ import javafx.scene.Group;
 import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.client.gfx.sprite.SpriteSheetFactory;
 import mocha.client.gfx.view.EntityView;
-import mocha.game.Game;
 import mocha.game.world.entity.Entity;
+import mocha.shared.Repository;
 
 @Component
 public class SpriteLayer extends Group {
 
-  private final Game game;
   private SpriteSheet spriteSheet;
+  private Repository<Entity, Integer> entityRepository;
   private Map<Entity, EntityView> entityViews = Maps.newIdentityHashMap();
 
   @Inject
-  public SpriteLayer(Game game, SpriteSheetFactory spriteSheetFactory) {
-    this.game = game;
+  public SpriteLayer(
+      SpriteSheetFactory spriteSheetFactory,
+      Repository<Entity, Integer> entityRepository
+  ) {
     spriteSheet = spriteSheetFactory.newSpriteSheet();
+    this.entityRepository = entityRepository;
   }
 
   private void addEntityViews() {
-    game.getEntityRepository()
-        .findAll().stream()
+    entityRepository.findAll().stream()
         .sorted(Comparator.comparingInt(entity -> entity.getLocation().getY()))
         .forEach(this::addEntityView);
   }

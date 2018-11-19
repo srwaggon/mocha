@@ -20,6 +20,7 @@ import mocha.net.packet.PacketHandler;
 import mocha.net.packet.PacketListener;
 import mocha.net.packet.PacketSender;
 import mocha.net.packet.PacketSenderFactory;
+import mocha.shared.Repository;
 import mocha.shared.task.TaskService;
 
 @Component
@@ -46,6 +47,9 @@ public class NetworkClientGameLogic implements GameLogic {
   @Inject
   private PacketHandler packetHandler;
 
+  @Inject
+  private Repository<Entity, Integer> entityRepository;
+
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
     MochaConnection connection = connectedEvent.getMochaConnection();
@@ -69,7 +73,7 @@ public class NetworkClientGameLogic implements GameLogic {
   }
 
   private void updateEntity(Entity entityUpdate) {
-    game.getEntityRepository()
+    entityRepository
         .findById(entityUpdate.getId())
         .ifPresent(entity ->
             entity.getLocation()
@@ -77,7 +81,7 @@ public class NetworkClientGameLogic implements GameLogic {
   }
 
   private void createEntityIfAbsent(Entity entityUpdate) {
-    if (game.getEntityRepository().findById(entityUpdate.getId()).isPresent()) {
+    if (entityRepository.findById(entityUpdate.getId()).isPresent()) {
       return;
     }
     Entity entity = entityFactory.newSlider();
@@ -98,7 +102,7 @@ public class NetworkClientGameLogic implements GameLogic {
 
   @Subscribe
   public void entityMoveCommandSubscription(EntityMoveCommand entityMoveCommand) {
-    game.getEntityRepository()
+    entityRepository
         .findById(entityMoveCommand.getEntityId())
         .ifPresent(entity -> {
           entity.getLocation().set(entityMoveCommand.getLocation());

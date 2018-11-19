@@ -15,18 +15,14 @@ public class InMemoryRepository<T extends Identified> implements Repository<T, I
   }
 
   @Override
-  public void save(T entity) {
+  public T save(T entity) {
     members.put(entity.getId(), entity);
+    return entity;
   }
 
   @Override
   public Optional<T> findById(Integer id) {
     return Optional.ofNullable(members.get(id));
-  }
-
-  @Override
-  public boolean containsKey(Integer key) {
-    return members.containsKey(key);
   }
 
   @Override

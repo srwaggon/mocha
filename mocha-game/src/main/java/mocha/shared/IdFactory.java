@@ -11,7 +11,7 @@ public class IdFactory<T extends Identified> {
 
   public Integer newId() {
     for (int newId = 0; newId < highest; newId++) {
-      if (!repository.containsKey(newId)) {
+      if (!repository.findById(newId).isPresent()) {
         return newId;
       }
     }

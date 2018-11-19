@@ -7,19 +7,20 @@ import javax.inject.Inject;
 import mocha.game.event.MochaEventBus;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
+import mocha.shared.Repository;
 
 @Component
 public class LocalClientGameLogic implements GameLogic {
 
   @Inject
-  private Game game;
+  private MochaEventBus mochaEventBus;
 
   @Inject
-  private MochaEventBus mochaEventBus;
+  private Repository<Entity, Integer> entityRepository;
 
   @Override
   public void handle(EntityMoveCommand entityMoveCommand) {
-    game.getEntityRepository()
+    entityRepository
         .findById(entityMoveCommand.getEntityId())
         .map(Entity::getMovement)
         .ifPresent(movement -> {

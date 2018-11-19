@@ -118,8 +118,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public List<GameRule> getRules() {
-    MovementRule movementRule = new MovementRule();
+  public List<GameRule> getRules(Repository<Entity, Integer> entityRepository) {
+    MovementRule movementRule = new MovementRule(entityRepository);
     clientEventBus.register(movementRule);
 
     PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(clientEventBus);

@@ -21,6 +21,7 @@ import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.net.packet.MochaConnection;
 import mocha.server.event.ServerEventBus;
+import mocha.shared.Repository;
 
 @Component
 public class ServerGameLogic implements GameLogic {
@@ -35,6 +36,9 @@ public class ServerGameLogic implements GameLogic {
 
   @Inject
   private PlayerFactory playerFactory;
+
+  @Inject
+  private Repository<Entity, Integer> entityRepository;
 
   private List<MochaConnection> mochaConnections = Lists.newArrayList();
 
@@ -81,8 +85,7 @@ public class ServerGameLogic implements GameLogic {
   @Subscribe
   @Override
   public void handle(EntityMoveCommand entityMoveCommand) {
-    game.getEntityRepository()
-        .findById(entityMoveCommand.getEntityId())
+    entityRepository.findById(entityMoveCommand.getEntityId())
         .map(Entity::getMovement)
         .ifPresent(movement -> {
           movement.handle(entityMoveCommand);

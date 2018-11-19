@@ -64,11 +64,4 @@ public class Game implements Tickable {
     playerRepository.delete(player);
   }
 
-  public Repository<Entity, Integer> getEntityRepository() {
-    return entityRepository;
-  }
-
-  public Repository<Player, Integer> getPlayerRepository() {
-    return playerRepository;
-  }
 }

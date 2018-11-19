@@ -1,14 +1,25 @@
 package mocha.game;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
 import mocha.game.world.entity.Entity;
 import mocha.net.packet.PacketListener;
 import mocha.server.ServerPacketHandler;
 
+@javax.persistence.Entity
 public class NetworkPlayer implements Player {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
+  @Transient
   private Entity entity;
+  @Transient
   private PacketListener packetListener;
+  @Transient
   private ServerPacketHandler serverPacketHandler;
 
   private NetworkPlayer(int id, Entity entity, PacketListener packetListener, ServerPacketHandler serverPacketHandler) {
