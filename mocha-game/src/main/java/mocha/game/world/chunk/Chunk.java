@@ -40,7 +40,7 @@ public class Chunk {
   }
 
   public TileType getTile(int x, int y) {
-    return tiles[getTileIndex(x, y)];
+    return getTiles()[getTileIndex(x, y)];
   }
 
   private Optional<TileType> getTileAt(int x, int y) {
