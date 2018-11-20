@@ -14,35 +14,40 @@ import mocha.game.world.tile.TileType;
 @Entity
 public class ServerChunk extends Chunk {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Convert(converter = TileTypeArrayConverter.class)
-  @Column(length = 256)
-  private TileType[] tiles;
-
   public ServerChunk() {
-  }
-
-  public Integer getId() {
-    return id;
   }
 
   public ServerChunk(Integer id, Chunk chunk) {
     super(chunk.tiles, chunk.entities);
     this.id = id;
-    this.tiles = chunk.tiles;
   }
 
   public ServerChunk(Integer id, TileType[] tiles, Set<mocha.game.world.entity.Entity> entities) {
     super(tiles, entities);
     this.id = id;
-    this.tiles = tiles;
   }
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  @Convert(converter = TileTypeArrayConverter.class)
+  @Column(length = 256)
   @Override
   public TileType[] getTiles() {
     return tiles;
+  }
+
+  @Override
+  public void setTiles(TileType[] tiles) {
+    this.tiles = tiles;
   }
 }
