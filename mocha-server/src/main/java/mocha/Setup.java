@@ -21,7 +21,7 @@ import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.tile.TileSetFactory;
 import mocha.game.world.tile.TileType;
 
-import static mocha.game.world.ServerWorld.getIdForChunkIndex;
+import static mocha.game.world.World.getIdForChunkIndex;
 
 @Component
 public class Setup implements CommandLineRunner {

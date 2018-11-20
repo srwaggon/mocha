@@ -17,60 +17,24 @@ public class ServerWorld extends World {
   private ServerChunkRepository serverChunkRepository;
 
   @Override
-  public void putAtChunkIndex(Location chunkIndex, Chunk chunk) {
-    int chunkId = getIdForChunkIndex(chunkIndex);
+  public void put(Location location, Chunk chunk) {
+    int chunkId = getIdForChunkAt(location);
     ServerChunk serverChunk = new ServerChunk(chunkId, chunk);
-    serverChunkRepository.save(serverChunk);
+    ServerChunk savedChunk = serverChunkRepository.save(serverChunk);
+    super.put(location, savedChunk);
   }
 
   @Override
   public Optional<? extends Chunk> getChunkAt(Location location) {
+    Optional<? extends Chunk> chunkFromMemory = super.getChunkAt(location);
+    if (chunkFromMemory.isPresent()) {
+      return chunkFromMemory;
+    }
+
     int chunkId = getIdForChunkAt(location);
-    return serverChunkRepository.findById(chunkId);
+    Optional<ServerChunk> chunkFromRepository = serverChunkRepository.findById(chunkId);
+    chunkFromRepository.ifPresent(serverChunk -> super.put(location, serverChunk));
+    return chunkFromRepository;
   }
 
-  public static int getIdForChunkAt(Location location) {
-    return getIdForChunkIndex(location.getChunkIndex());
-  }
-
-  public static int getIdForChunkIndex(Location chunkIndices) {
-    int radius = Math.max(Math.abs(chunkIndices.getX()), Math.abs(chunkIndices.getY()));
-    if (radius == 0) {
-      return 1;
-    }
-    int distance = distanceFromRingOrigin(chunkIndices, radius);
-    int previousRingDiameter = 1 + ((radius - 1) * 2);
-    return (int) (Math.pow(previousRingDiameter, 2) + distance) + 1;
-  }
-
-  private static int distanceFromRingOrigin(Location chunkIndices, int radius) {
-    int x = chunkIndices.getX();
-    int y = chunkIndices.getY();
-    int stepCount = 0;
-
-    if (x == -radius && y == -radius) {
-      return 0;
-    }
-
-    if (x == -radius && y < radius) {
-      stepCount += radius - y;
-      y = radius;
-    }
-
-    if (y == radius && x < radius) {
-      stepCount += radius - x;
-      x = radius;
-    }
-
-    if (x == radius && y > -radius) {
-      stepCount += y + radius;
-      y = -radius;
-    }
-
-    if (y == -radius && x > -radius) {
-      stepCount += x + radius;
-    }
-
-    return stepCount;
-  }
 }
