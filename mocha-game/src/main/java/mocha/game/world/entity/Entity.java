@@ -7,7 +7,7 @@ import mocha.game.world.entity.movement.collision.Collider;
 import mocha.game.world.entity.movement.collision.SimpleCollision;
 import mocha.shared.Identified;
 
-public class Entity implements Collider, Identified {
+public class Entity implements Collider, Identified<Integer> {
 
   int id;
   Location location = new Location();
@@ -34,7 +34,7 @@ public class Entity implements Collider, Identified {
         "}";
   }
 
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 

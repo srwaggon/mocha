@@ -20,7 +20,7 @@ public class ServerEntity extends Entity {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Override
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 

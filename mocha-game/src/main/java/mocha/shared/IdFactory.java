@@ -2,7 +2,7 @@ package mocha.shared;
 
 import java.util.Comparator;
 
-public class IdFactory<T extends Identified> {
+public class IdFactory<T extends Identified<Integer>> {
 
   private Repository<T, Integer> repository;
 

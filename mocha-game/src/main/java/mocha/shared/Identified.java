@@ -1,6 +1,6 @@
 package mocha.shared;
 
-public interface Identified {
+public interface Identified<ID> {
 
-  int getId();
+  ID getId();
 }

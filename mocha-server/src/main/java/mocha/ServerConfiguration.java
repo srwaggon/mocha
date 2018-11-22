@@ -24,6 +24,7 @@ import mocha.game.world.World;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
+import mocha.game.world.entity.ServerEntityToEntityRepositoryAdapter;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
@@ -34,6 +35,7 @@ import mocha.game.world.tile.TileStringBuilder;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.server.event.ServerEventBus;
+import mocha.shared.CachingRepository;
 import mocha.shared.IdFactory;
 import mocha.shared.InMemoryRepository;
 import mocha.shared.Repository;
@@ -146,5 +148,10 @@ public class ServerConfiguration {
   @Bean()
   public TaskService taskService() {
     return new TaskService();
+  }
+
+  @Bean
+  public Repository<Entity, Integer> entityRepository(ServerEntityToEntityRepositoryAdapter entityRepository) {
+    return new CachingRepository<>(entityRepository);
   }
 }

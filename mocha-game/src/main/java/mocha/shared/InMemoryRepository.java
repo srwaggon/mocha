@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class InMemoryRepository<T extends Identified> implements Repository<T, Integer> {
+public class InMemoryRepository<T extends Identified<Integer>> implements Repository<T, Integer> {
   private Map<Integer, T> members = Maps.newConcurrentMap();
 
   @Override

@@ -3,7 +3,7 @@ package mocha.shared;
 import java.util.List;
 import java.util.Optional;
 
-public interface Repository<T, ID> {
+public interface Repository<T extends Identified<ID>, ID> {
 
   List<T> findAll();
 
