@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.ServerChunk;
-import mocha.game.world.chunk.ServerChunkRepository;
+import mocha.game.world.chunk.ServerChunkJpaRepository;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.tile.TileSetFactory;
@@ -34,7 +34,7 @@ public class Setup implements CommandLineRunner {
   private EntityFactory entityFactory;
 
   @Inject
-  private ServerChunkRepository serverChunkRepository;
+  private ServerChunkJpaRepository serverChunkJpaRepository;
 
   @Inject
   private TileSetFactory tileSetFactory;
@@ -68,12 +68,12 @@ public class Setup implements CommandLineRunner {
         }
       }
     }
-    serverChunkRepository.saveAll(serverChunks);
+    serverChunkJpaRepository.saveAll(serverChunks);
   }
 
   private Optional<ServerChunk> getServerChunk(Location chunkIndex) {
     int chunkId = getIdForChunkIndex(chunkIndex);
-    return serverChunkRepository.findById(chunkId);
+    return serverChunkJpaRepository.findById(chunkId);
   }
 
   private ServerChunk newServerChunk(Location chunkIndex) {

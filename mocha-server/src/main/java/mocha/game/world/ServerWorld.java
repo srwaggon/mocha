@@ -8,19 +8,19 @@ import javax.inject.Inject;
 
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ServerChunk;
-import mocha.game.world.chunk.ServerChunkRepository;
+import mocha.game.world.chunk.ServerChunkJpaRepository;
 
 @Component
 public class ServerWorld extends World {
 
   @Inject
-  private ServerChunkRepository serverChunkRepository;
+  private ServerChunkJpaRepository serverChunkJpaRepository;
 
   @Override
   public void put(Location location, Chunk chunk) {
     int chunkId = getIdForChunkAt(location);
     ServerChunk serverChunk = new ServerChunk(chunkId, chunk);
-    ServerChunk savedChunk = serverChunkRepository.save(serverChunk);
+    ServerChunk savedChunk = serverChunkJpaRepository.save(serverChunk);
     super.put(location, savedChunk);
   }
 
@@ -32,7 +32,7 @@ public class ServerWorld extends World {
     }
 
     int chunkId = getIdForChunkAt(location);
-    Optional<ServerChunk> chunkFromRepository = serverChunkRepository.findById(chunkId);
+    Optional<ServerChunk> chunkFromRepository = serverChunkJpaRepository.findById(chunkId);
     chunkFromRepository.ifPresent(serverChunk -> super.put(location, serverChunk));
     return chunkFromRepository;
   }
