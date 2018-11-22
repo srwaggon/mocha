@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -41,10 +42,19 @@ public class Setup implements CommandLineRunner {
   @Override
   public void run(String... args) {
     createChunks();
-    game.addEntity(entityFactory.newRandomSlider().at(128, 128));
-    game.addEntity(entityFactory.newRandomSlider().at(192, 192));
-    game.addEntity(entityFactory.newRandomSlider().at(384, 384));
-    game.addEntity(entityFactory.newPickaxe().at(64, 64));
+    addEntity();
+  }
+
+  private void addEntity() {
+    game.addEntity(newRandomEntity());
+  }
+
+  private Entity newRandomEntity() {
+    return entityFactory.newRandomSlider().at(random(), random());
+  }
+
+  private int random() {
+    return new Random().nextInt(16) * 32;
   }
 
   private void createChunks() {
