@@ -1,5 +1,6 @@
 package mocha.net.packet;
 
+import mocha.game.LoginSuccessPacket;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkPacket;
@@ -7,7 +8,9 @@ import mocha.game.world.chunk.RequestChunkPacket;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityPacket;
 import mocha.game.world.entity.EntityRemovedPacket;
+import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
+import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.tile.TileStringBuilder;
@@ -21,21 +24,25 @@ public class PacketFactory {
     this.tileStringBuilder = tileStringBuilder;
   }
 
-  public ChunkPacket newChunkPacket(Location location, Chunk chunk) {
+  LoginSuccessPacket newLoginSuccessPacket(int playerId) {
+    return new LoginSuccessPacket(playerId);
+  }
+
+  ChunkPacket newChunkPacket(Location location, Chunk chunk) {
     TileType[] tiles = chunk.getTiles();
     String tileString = tileStringBuilder.build(tiles);
     return new ChunkPacket(location, tileString);
   }
 
-  public RequestChunkPacket newChunkRequestPacket(Location location) {
+  RequestChunkPacket newChunkRequestPacket(Location location) {
     return new RequestChunkPacket(location);
   }
 
-  public RequestEntitiesInChunkPacket newRequestEntitiesInChunkPacket(Location location) {
+  RequestEntitiesInChunkPacket newRequestEntitiesInChunkPacket(Location location) {
     return new RequestEntitiesInChunkPacket(location);
   }
 
-  public EntityPacket newEntityPacket(Entity entity) {
+  EntityPacket newEntityPacket(Entity entity) {
     return new EntityPacket(entity);
   }
 
@@ -43,7 +50,15 @@ public class PacketFactory {
     return new MovePacket(entityMoveCommand);
   }
 
-  public EntityRemovedPacket newEntityRemovedPacket(Entity entity) {
+  EntityRemovedPacket newEntityRemovedPacket(Entity entity) {
     return new EntityRemovedPacket(entity.getId());
+  }
+
+  public RequestEntityByIdPacket newRequestEntityByIdPacket(int entityId) {
+    return new RequestEntityByIdPacket(entityId);
+  }
+
+  RequestEntitiesByPlayerIdPacket newRequestEntitiesByPlayerIdPacket(int playerId, int... entityIds) {
+    return new RequestEntitiesByPlayerIdPacket(playerId, entityIds);
   }
 }

@@ -33,10 +33,11 @@ public class Game implements Tickable {
     return world;
   }
 
-  public void addEntity(Entity entity) {
-    entityRepository.save(entity);
-    world.add(entity);
-    eventBus.postEntityAddedEvent(entity);
+  public Entity addEntity(Entity entity) {
+    Entity result = entityRepository.save(entity);
+    world.add(result);
+    eventBus.postEntityAddedEvent(result);
+    return result;
   }
 
   public void removeEntity(int entityId) {
@@ -51,17 +52,19 @@ public class Game implements Tickable {
 
   public void addPlayer(Player player) {
     playerRepository.save(player);
-    addEntity(player.getEntity());
+    eventBus.postPlayerAddedEvent(player);
   }
 
-  public void removePlayer(int playerId) {
-    playerRepository.findById(playerId).ifPresent(this::removePlayer);
+  void removePlayer(int playerId) {
+    playerRepository.findById(playerId)
+        .ifPresent(this::removePlayer);
   }
 
   private void removePlayer(Player player) {
     player.remove();
     removeEntity(player.getEntity());
     playerRepository.delete(player);
+    eventBus.postPlayerRemovedEvent(player);
   }
 
 }

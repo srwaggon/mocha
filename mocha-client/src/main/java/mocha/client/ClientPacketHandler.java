@@ -14,15 +14,22 @@ import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
 import mocha.game.Game;
+import mocha.game.LocalPlayer;
+import mocha.game.LoginSuccessPacket;
+import mocha.game.Player;
+import mocha.game.PlayerIdentityPacket;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.chunk.ChunkPacket;
+import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityPacket;
 import mocha.game.world.entity.EntityRemovedPacket;
+import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
+import mocha.shared.Repository;
 import mocha.shared.task.SleepyRunnable;
 
 @Component
@@ -36,6 +43,10 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   private Game game;
   @Inject
   private ClientEventBus clientEventBus;
+  @Inject
+  private Repository<Player, Integer> playerRepository;
+  @Inject
+  private Repository<Entity, Integer> entityRepository;
 
   private EventBus packetEventBus = new EventBus();
 
@@ -58,6 +69,24 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   @Override
   public void handle(int senderId, Packet packet) {
     packets.offer(packet);
+  }
+
+  @Subscribe
+  public void handle(LoginSuccessPacket loginSuccessPacket) {
+    game.addPlayer(new LocalPlayer(loginSuccessPacket.getPlayerId()));
+  }
+
+  @Subscribe
+  public void handle(PlayerIdentityPacket playerIdentityPacket) {
+
+  }
+
+  @Subscribe
+  public void handle(RequestEntitiesByPlayerIdPacket requestEntitiesByPlayerIdPacket) {
+    playerRepository.findById(requestEntitiesByPlayerIdPacket.getPlayerId())
+        .ifPresent(player -> requestEntitiesByPlayerIdPacket.getEntityIds()
+            .forEach(entityId -> entityRepository.findById(entityId)
+                .ifPresent(player::setEntity)));
   }
 
   @Subscribe

@@ -29,6 +29,7 @@ public class Setup implements CommandLineRunner {
       Entity playerEntity = entityFactory.newSlider();
       LocalPlayer player = new LocalPlayer(playerEntity);
       game.addPlayer(player);
+      game.addEntity(playerEntity);
     }
   }
 }

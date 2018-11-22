@@ -1,17 +1,21 @@
 package mocha.game;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
 
 import javax.inject.Inject;
 
+import mocha.game.event.PlayerAddedEvent;
+import mocha.game.event.PlayerRemovedEvent;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.event.EntityAddedEvent;
 import mocha.game.world.entity.event.EntityRemovedEvent;
 import mocha.game.world.entity.movement.Movement;
@@ -21,6 +25,7 @@ import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.net.packet.MochaConnection;
 import mocha.server.event.ServerEventBus;
+import mocha.shared.IdFactory;
 import mocha.shared.Repository;
 
 @Component
@@ -35,20 +40,33 @@ public class ServerGameLogic implements GameLogic {
   private Game game;
 
   @Inject
+  private IdFactory<Player> playerIdFactory;
+
+  @Inject
   private PlayerFactory playerFactory;
+
+  @Inject
+  private EntityFactory entityFactory;
 
   @Inject
   private Repository<Entity, Integer> entityRepository;
 
-  private List<MochaConnection> mochaConnections = Lists.newArrayList();
+  private Map<Integer, MochaConnection> mochaConnectionsByPlayerId = Maps.newConcurrentMap();
 
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
     log.info(connectedEvent.toString());
 
     MochaConnection mochaConnection = connectedEvent.getMochaConnection();
-    mochaConnections.add(mochaConnection);
-    game.addPlayer(playerFactory.newNetworkPlayer(mochaConnection));
+
+    int playerId = playerIdFactory.newId();
+    Entity playerEntity = entityFactory.newSlider();
+    Entity entity = game.addEntity(playerEntity);
+    NetworkPlayer player = playerFactory.newNetworkPlayer(mochaConnection, playerId, entity);
+    mochaConnectionsByPlayerId.put(playerId, mochaConnection);
+    game.addPlayer(player);
+
+    mochaConnection.sendLoginSuccessful(playerId);
   }
 
   @Subscribe
@@ -58,14 +76,24 @@ public class ServerGameLogic implements GameLogic {
   }
 
   @Subscribe
+  public void handle(PlayerAddedEvent playerAddedEvent) {
+
+  }
+
+  @Subscribe
+  public void handle(PlayerRemovedEvent playerRemovedEvent) {
+
+  }
+
+  @Subscribe
   public void handle(EntityAddedEvent entityAddedEvent) {
-    mochaConnections.forEach(mochaConnection ->
+    getConnections().forEach(mochaConnection ->
         mochaConnection.sendEntityUpdate(entityAddedEvent.getEntity()));
   }
 
   @Subscribe
   public void handle(EntityRemovedEvent entityRemovedEvent) {
-    mochaConnections.forEach(mochaConnection ->
+    getConnections().forEach(mochaConnection ->
         mochaConnection.sendEntityRemoved(entityRemovedEvent.getEntity()));
   }
 
@@ -79,7 +107,11 @@ public class ServerGameLogic implements GameLogic {
         .xOffset(movement.getXOffset())
         .yOffset(movement.getYOffset())
         .build();
-    mochaConnections.forEach(mochaConnection -> mochaConnection.sendMoveCommand(entityMove));
+    getConnections().forEach(mochaConnection -> mochaConnection.sendMoveCommand(entityMove));
+  }
+
+  private Collection<MochaConnection> getConnections() {
+    return mochaConnectionsByPlayerId.values();
   }
 
   @Subscribe

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
+import mocha.game.event.PlayerAddedEvent;
+import mocha.game.event.PlayerRemovedEvent;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
@@ -50,19 +52,38 @@ public class NetworkClientGameLogic implements GameLogic {
   @Inject
   private Repository<Entity, Integer> entityRepository;
 
+  private MochaConnection mochaConnection;
+
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
-    MochaConnection connection = connectedEvent.getMochaConnection();
-    PacketSender packetSender = packetSenderFactory.newPacketSender(connection);
-    PacketListener packetListener = new PacketListener(eventBus, connection, -1, packetHandler);
+    mochaConnection = connectedEvent.getMochaConnection();
+    PacketSender packetSender = packetSenderFactory.newPacketSender(mochaConnection);
+    PacketListener packetListener = new PacketListener(eventBus, mochaConnection, -1, packetHandler);
     eventBus.register(packetSender);
     eventBus.register(packetListener);
     taskService.submit(packetListener);
+  }
 
-    requestMapData(new Location(-1, -1));
-    requestMapData(new Location(-1, 0));
-    requestMapData(new Location(0, -1));
-    requestMapData(new Location(0, 0));
+  private void requestChunkData(int x, int y) {
+    Location location = new Location(x, y);
+    mochaConnection.requestChunk(location);
+    mochaConnection.requestEntitiesInChunk(location);
+  }
+
+  @Subscribe
+  public void handle(PlayerAddedEvent playerAddedEvent) {
+    int playerId = playerAddedEvent.getPlayer().getId();
+    mochaConnection.requestEntitiesByPlayerId(playerId);
+
+    requestChunkData(-1, -1);
+    requestChunkData(-1, 0);
+    requestChunkData(0, -1);
+    requestChunkData(0, 0);
+  }
+
+  @Subscribe
+  public void handle(PlayerRemovedEvent playerRemovedEvent) {
+
   }
 
   @Subscribe
@@ -88,11 +109,6 @@ public class NetworkClientGameLogic implements GameLogic {
     entity.setId(entityUpdate.getId());
     entity.getLocation().set(entityUpdate.getLocation());
     game.addEntity(entity);
-  }
-
-  private void requestMapData(Location location) {
-    eventBus.postSendPacketEvent(packetFactory.newChunkRequestPacket(location));
-    eventBus.postSendPacketEvent(packetFactory.newRequestEntitiesInChunkPacket(location));
   }
 
   @Override

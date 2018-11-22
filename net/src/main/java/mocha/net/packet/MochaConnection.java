@@ -16,6 +16,22 @@ public class MochaConnection extends PacketConnection {
     this.packetFactory = packetFactory;
   }
 
+  public void sendLoginSuccessful(int playerId) {
+    sendPacket(packetFactory.newLoginSuccessPacket(playerId));
+  }
+
+  public void requestChunk(Location location) {
+    sendPacket(packetFactory.newChunkRequestPacket(location));
+  }
+
+  public void requestEntitiesInChunk(Location location) {
+    sendPacket(packetFactory.newRequestEntitiesInChunkPacket(location));
+  }
+
+  public void requestEntitiesByPlayerId(int playerId, int... entityIds) {
+    sendPacket(packetFactory.newRequestEntitiesByPlayerIdPacket(playerId, entityIds));
+  }
+
   public void sendChunkUpdate(Location location, Chunk chunk) {
     sendPacket(packetFactory.newChunkPacket(location, chunk));
   }

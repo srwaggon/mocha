@@ -2,19 +2,28 @@ package mocha.game.event;
 
 import com.google.common.eventbus.EventBus;
 
+import mocha.game.Player;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.PickUpItemCommand;
 import mocha.game.world.entity.command.RemoveEntityCommand;
 import mocha.game.world.entity.event.EntityAddedEvent;
-import mocha.game.world.entity.event.EntityUpdatedEvent;
 import mocha.game.world.entity.event.EntityRemovedEvent;
+import mocha.game.world.entity.event.EntityUpdatedEvent;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
 import mocha.shared.task.event.TaskEvent;
 
 public class MochaEventBus extends EventBus {
+
+  public void postPlayerAddedEvent(Player player) {
+    post(new PlayerAddedEvent(player));
+  }
+
+  public void postPlayerRemovedEvent(Player player) {
+    post(new PlayerRemovedEvent(player));
+  }
 
   public void postEntityAddedEvent(Entity entity) {
     post(new EntityAddedEvent(entity));

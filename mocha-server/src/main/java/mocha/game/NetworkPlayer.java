@@ -39,11 +39,17 @@ public class NetworkPlayer implements Player {
     return id;
   }
 
+  @Override
   public Entity getEntity() {
     return entity;
   }
 
-  public static NetworkPlayerBuilder builder() {
+  @Override
+  public void setEntity(Entity entity) {
+    this.entity = entity;
+  }
+
+  static NetworkPlayerBuilder builder() {
     return new NetworkPlayerBuilder();
   }
 
@@ -53,7 +59,7 @@ public class NetworkPlayer implements Player {
     private PacketListener packetListener;
     private ServerPacketHandler serverPacketHandler;
 
-    public NetworkPlayerBuilder id(int id) {
+    NetworkPlayerBuilder id(int id) {
       this.id = id;
       return this;
     }
@@ -63,17 +69,17 @@ public class NetworkPlayer implements Player {
       return this;
     }
 
-    public NetworkPlayerBuilder packetListener(PacketListener packetListener) {
+    NetworkPlayerBuilder packetListener(PacketListener packetListener) {
       this.packetListener = packetListener;
       return this;
     }
 
-    public NetworkPlayerBuilder serverPacketHandler(ServerPacketHandler serverPacketHandler) {
+    NetworkPlayerBuilder serverPacketHandler(ServerPacketHandler serverPacketHandler) {
       this.serverPacketHandler = serverPacketHandler;
       return this;
     }
 
-    public NetworkPlayer build() {
+    NetworkPlayer build() {
       return new NetworkPlayer(id, entity, packetListener, serverPacketHandler);
     }
   }

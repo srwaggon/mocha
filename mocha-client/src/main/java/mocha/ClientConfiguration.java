@@ -73,8 +73,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public CollisionFactory collisionFactory(Game game) {
-    return new CollisionFactory(game);
+  public CollisionFactory collisionFactory(World world) {
+    return new CollisionFactory(world);
   }
 
   @Bean
@@ -88,8 +88,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public EntityFactory entityFactory(MovementFactory movementFactory, IdFactory<Entity> idFactory) {
-    return new EntityFactory(movementFactory, idFactory);
+  public EntityFactory entityFactory(MovementFactory movementFactory) {
+    return new EntityFactory(movementFactory);
   }
 
   @Bean

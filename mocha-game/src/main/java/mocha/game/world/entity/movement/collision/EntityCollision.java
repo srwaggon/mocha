@@ -4,20 +4,20 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import mocha.game.Game;
 import mocha.game.world.Location;
+import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 
 public class EntityCollision extends SimpleCollision {
 
-  private Game game;
+  private World world;
   private Entity entity;
   private int width;
   private int height;
 
-  EntityCollision(Game game, Entity entity, int width, int height) {
-    this.game = game;
+  EntityCollision(World world, Entity entity, int width, int height) {
+    this.world = world;
     this.entity = entity;
     this.width = width;
     this.height = height;
@@ -25,7 +25,7 @@ public class EntityCollision extends SimpleCollision {
 
   @Override
   public Set<Collider> getColliders(Location location) {
-    return game.getWorld()
+    return world
         .getChunkAt(entity.getLocation())
         .map(chunk -> getColliders(location, chunk))
         .orElse(Collections.emptySet());

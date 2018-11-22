@@ -6,28 +6,17 @@ import javax.inject.Inject;
 
 import mocha.game.world.World;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityFactory;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketListener;
 import mocha.server.ServerPacketHandler;
 import mocha.server.event.ServerEventBus;
-import mocha.shared.IdFactory;
 import mocha.shared.Repository;
 
 @Component
-public class PlayerFactory {
+class PlayerFactory {
 
   @Inject
   private ServerEventBus serverEventBus;
-
-  @Inject
-  private IdFactory<Player> playerIdFactory;
-
-  @Inject
-  private EntityFactory entityFactory;
-
-  @Inject
-  private Game game;
 
   @Inject
   private World world;
@@ -38,18 +27,15 @@ public class PlayerFactory {
   @Inject
   private Repository<Entity, Integer> entityRepository;
 
-  NetworkPlayer newNetworkPlayer(MochaConnection mochaConnection) {
-    int playerId = playerIdFactory.newId();
-
+  NetworkPlayer newNetworkPlayer(MochaConnection mochaConnection, int playerId, Entity entity) {
     ServerPacketHandler serverPacketHandler = newServerPacketHandler(mochaConnection, playerId);
     PacketListener packetListener = newPacketListener(mochaConnection, playerId, serverPacketHandler);
-
     serverEventBus.postTaskEvent(packetListener);
     serverEventBus.postTaskEvent(serverPacketHandler);
 
     return NetworkPlayer.builder()
         .id(playerId)
-        .entity(entityFactory.newSlider())
+        .entity(entity)
         .packetListener(packetListener)
         .serverPacketHandler(serverPacketHandler)
         .build();

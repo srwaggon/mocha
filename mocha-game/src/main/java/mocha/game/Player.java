@@ -7,5 +7,7 @@ public interface Player extends Identified {
 
   Entity getEntity();
 
+  void setEntity(Entity entity);
+
   void remove();
 }

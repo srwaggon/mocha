@@ -5,6 +5,9 @@ import mocha.net.packet.PacketType;
 
 public class LoginSuccessPacket extends AbstractPacket {
 
+  public LoginSuccessPacket() {
+  }
+
   public LoginSuccessPacket(int playerId) {
     data = new String[2];
     data[0] = getType().name();

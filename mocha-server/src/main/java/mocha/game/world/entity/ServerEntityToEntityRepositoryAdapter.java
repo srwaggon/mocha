@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
+import mocha.game.world.entity.movement.MovementFactory;
 import mocha.shared.Repository;
 
 @Component
@@ -16,6 +17,9 @@ public class ServerEntityToEntityRepositoryAdapter implements Repository<Entity,
 
   @Inject
   private ServerEntityRepository serverEntityRepository;
+
+  @Inject
+  private MovementFactory movementFactory;
 
   @Override
   public List<Entity> findAll() {
@@ -31,7 +35,13 @@ public class ServerEntityToEntityRepositoryAdapter implements Repository<Entity,
   @Override
   public Optional<Entity> findById(Integer id) {
     Optional<ServerEntity> maybeEntity = serverEntityRepository.findById(id);
-    return maybeEntity.isPresent() ? Optional.of(maybeEntity.get()) : Optional.empty();
+    if (maybeEntity.isPresent()) {
+      ServerEntity entity = maybeEntity.get();
+      entity.setMovement(movementFactory.newSlidingMovement(entity));
+      return Optional.of(entity);
+    } else {
+      return Optional.empty();
+    }
   }
 
   @Override

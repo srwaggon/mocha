@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import mocha.client.event.ClientEventBus;
 import mocha.client.input.event.KeyDownEvent;
 import mocha.game.GameLogic;
+import mocha.game.Player;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
@@ -20,6 +21,9 @@ import mocha.shared.Repository;
 
 @Component
 public class GameKeyHandler {
+
+  @Inject
+  private Repository<Player, Integer> playerRepository;
 
   @Inject
   private Repository<Entity, Integer> entityRepository;
@@ -45,9 +49,17 @@ public class GameKeyHandler {
 
   private void handleIfMove(KeyDownEvent keyDownEvent) {
     getDirection(keyDownEvent)
-        .ifPresent(direction -> entityRepository.findById(0)
-            .ifPresent(entity ->
+        .ifPresent(direction ->
+            findPlayerEntity().ifPresent(entity ->
                 gameLogic.handle(buildEntityMoveCommand(entity, direction))));
+  }
+
+  private Optional<Entity> findPlayerEntity() {
+    return entityRepository.findById(getPlayer().getEntity().getId());
+  }
+
+  private Player getPlayer() {
+    return playerRepository.findAll().get(0);
   }
 
   private EntityMoveCommand buildEntityMoveCommand(Entity entity, Direction direction) {

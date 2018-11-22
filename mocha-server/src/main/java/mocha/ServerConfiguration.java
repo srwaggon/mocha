@@ -104,8 +104,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public EntityFactory getEntityFactory(MovementFactory movementFactory, IdFactory<Entity> idFactory) {
-    return new EntityFactory(movementFactory, idFactory);
+  public EntityFactory getEntityFactory(MovementFactory movementFactory) {
+    return new EntityFactory(movementFactory);
   }
 
   @Bean
@@ -114,8 +114,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public CollisionFactory collisionFactory(Game game) {
-    return new CollisionFactory(game);
+  public CollisionFactory collisionFactory(World world) {
+    return new CollisionFactory(world);
   }
 
   @Bean

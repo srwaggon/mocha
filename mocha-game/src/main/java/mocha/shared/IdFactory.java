@@ -1,8 +1,9 @@
 package mocha.shared;
 
+import java.util.Comparator;
+
 public class IdFactory<T extends Identified> {
 
-  private int highest = 0;
   private Repository<T, Integer> repository;
 
   public IdFactory(Repository<T, Integer> repository) {
@@ -10,11 +11,9 @@ public class IdFactory<T extends Identified> {
   }
 
   public Integer newId() {
-    for (int newId = 0; newId < highest; newId++) {
-      if (!repository.findById(newId).isPresent()) {
-        return newId;
-      }
-    }
-    return highest++;
+    return repository.findAll().stream()
+        .max(Comparator.comparing(T::getId))
+        .map(Identified::getId)
+        .orElse(0) + 1;
   }
 }
