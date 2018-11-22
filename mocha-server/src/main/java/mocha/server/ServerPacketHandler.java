@@ -8,8 +8,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import mocha.game.Player;
+import mocha.game.world.ChunkRepository;
 import mocha.game.world.Location;
-import mocha.game.world.World;
 import mocha.game.world.chunk.RequestChunkPacket;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
@@ -29,7 +29,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   private ServerEventBus serverEventBus;
   private MochaConnection mochaConnection;
   private EventBus packetEventBus;
-  private World world;
+  private ChunkRepository chunkRepository;
   private Repository<Entity, Integer> entityRepository;
   private Repository<Player, Integer> playerRepository;
 
@@ -39,14 +39,14 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
       MochaConnection mochaConnection,
       ServerEventBus serverEventBus,
       int playerId,
-      World world,
+      ChunkRepository chunkRepository,
       Repository<Entity, Integer> entityRepository,
       Repository<Player, Integer> playerRepository
   ) {
     this.mochaConnection = mochaConnection;
     this.serverEventBus = serverEventBus;
     this.playerId = playerId;
-    this.world = world;
+    this.chunkRepository = chunkRepository;
     this.entityRepository = entityRepository;
     this.playerRepository = playerRepository;
     packetEventBus = new EventBus();
@@ -88,7 +88,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Override
   public void handle(RequestChunkPacket requestChunkPacket) {
     Location location = requestChunkPacket.getLocation();
-    world.getChunkAt(location)
+    chunkRepository.getChunkAt(location)
         .ifPresent(chunk -> mochaConnection.sendChunkUpdate(location, chunk));
   }
 
@@ -108,7 +108,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Override
   public void handle(RequestEntitiesInChunkPacket requestEntitiesInChunkPacket) {
     Location location = requestEntitiesInChunkPacket.getLocation();
-    world.getChunkAt(location)
+    chunkRepository.getChunkAt(location)
         .ifPresent(chunk ->
             chunk.getEntities().forEach(mochaConnection::sendEntityUpdate));
   }

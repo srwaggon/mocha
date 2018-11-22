@@ -11,7 +11,7 @@ import mocha.game.world.chunk.ServerChunk;
 import mocha.game.world.chunk.ServerChunkJpaRepository;
 
 @Component
-public class ServerWorld extends World {
+public class ServerChunkRepository extends ChunkRepository {
 
   @Inject
   private ServerChunkJpaRepository serverChunkJpaRepository;

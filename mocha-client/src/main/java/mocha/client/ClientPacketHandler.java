@@ -94,7 +94,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   public void handle(ChunkPacket chunkPacket) {
     Location location = chunkPacket.getLocation();
     Chunk chunk = chunkFactory.read(chunkPacket.getChunkDescription());
-    game.getWorld().put(location, chunk);
+    game.getChunkRepository().put(location, chunk);
   }
 
   @Subscribe

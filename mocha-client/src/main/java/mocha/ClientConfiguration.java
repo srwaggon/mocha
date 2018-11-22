@@ -23,8 +23,8 @@ import mocha.game.NetworkClientGameLogic;
 import mocha.game.Player;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
+import mocha.game.world.ChunkRepository;
 import mocha.game.world.Location;
-import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.Entity;
@@ -65,16 +65,16 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public World world(ChunkFactory chunkFactory) {
-    World world = new World();
+  public ChunkRepository chunkRepository(ChunkFactory chunkFactory) {
+    ChunkRepository chunkRepository = new ChunkRepository();
     Chunk chunk = chunkFactory.newRandomDefault();
-    world.put(new Location(0, 0), chunk);
-    return world;
+    chunkRepository.put(new Location(0, 0), chunk);
+    return chunkRepository;
   }
 
   @Bean
-  public CollisionFactory collisionFactory(World world) {
-    return new CollisionFactory(world);
+  public CollisionFactory collisionFactory(ChunkRepository chunkRepository) {
+    return new CollisionFactory(chunkRepository);
   }
 
   @Bean
@@ -108,8 +108,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public Game game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Repository<Entity, Integer> entityRepository, Repository<Player, Integer> playerRepository) {
-    return new Game(eventBus, world, gameRules, entityRepository, playerRepository);
+  public Game game(MochaEventBus eventBus, ChunkRepository chunkRepository, List<GameRule> gameRules, Repository<Entity, Integer> entityRepository, Repository<Player, Integer> playerRepository) {
+    return new Game(eventBus, chunkRepository, gameRules, entityRepository, playerRepository);
   }
 
   @Bean

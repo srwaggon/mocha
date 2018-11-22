@@ -20,7 +20,7 @@ import mocha.game.item.ItemRepository;
 import mocha.game.item.ItemType;
 import mocha.game.rule.ArtificialIntelligenceRule;
 import mocha.game.rule.GameRule;
-import mocha.game.world.World;
+import mocha.game.world.ChunkRepository;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
@@ -81,8 +81,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Game game(World world, List<GameRule> gameRules, Repository<Entity, Integer> entityRepository, Repository<Player, Integer> playerRepository) {
-    return new Game(serverEventBus, world, gameRules, entityRepository, playerRepository);
+  public Game game(ChunkRepository chunkRepository, List<GameRule> gameRules, Repository<Entity, Integer> entityRepository, Repository<Player, Integer> playerRepository) {
+    return new Game(serverEventBus, chunkRepository, gameRules, entityRepository, playerRepository);
   }
 
   @Bean
@@ -116,8 +116,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public CollisionFactory collisionFactory(World world) {
-    return new CollisionFactory(world);
+  public CollisionFactory collisionFactory(ChunkRepository chunkRepository) {
+    return new CollisionFactory(chunkRepository);
   }
 
   @Bean

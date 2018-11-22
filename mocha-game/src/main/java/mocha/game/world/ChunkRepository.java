@@ -8,7 +8,7 @@ import java.util.Optional;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 
-public class World {
+public class ChunkRepository {
 
   private Map<Integer, Chunk> chunks = Maps.newConcurrentMap();
 

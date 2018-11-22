@@ -6,22 +6,22 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
+import mocha.game.world.ChunkRepository;
 import mocha.game.world.Location;
-import mocha.game.world.World;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.tile.TileType;
 
 public class TileCollision extends SimpleCollision {
 
-  private World world;
+  private ChunkRepository chunkRepository;
 
-  TileCollision(World world) {
-    this.world = world;
+  TileCollision(ChunkRepository chunkRepository) {
+    this.chunkRepository = chunkRepository;
   }
 
   @Override
   public Set<Collider> getColliders(Location location) {
-    return world.getChunkAt(location)
+    return chunkRepository.getChunkAt(location)
         .map(chunk -> getCollisions(location, chunk))
         .orElse(Collections.emptySet());
   }

@@ -36,7 +36,7 @@ public class PickUpItemsRule implements GameRule {
   }
 
   private void pickUpItem(Game game, PickUpItemCommand pickUpItemCommand) {
-    game.getWorld()
+    game.getChunkRepository()
         .getChunkAt(pickUpItemCommand.getPickingUpEntity().getLocation())
         .ifPresent(chunk -> removeEntity(game, pickUpItemCommand.getPickingUpEntity(), chunk));
   }

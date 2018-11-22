@@ -1,14 +1,14 @@
 package mocha.game.world.entity.movement.collision;
 
-import mocha.game.world.World;
+import mocha.game.world.ChunkRepository;
 import mocha.game.world.entity.Entity;
 
 public class CollisionFactory {
 
-  private World world;
+  private ChunkRepository chunkRepository;
 
-  public CollisionFactory(World world) {
-    this.world = world;
+  public CollisionFactory(ChunkRepository chunkRepository) {
+    this.chunkRepository = chunkRepository;
   }
 
   public SimpleCollision newSimpleCollision() {
@@ -16,7 +16,7 @@ public class CollisionFactory {
   }
 
   private TileCollision newTileCollision() {
-    return new TileCollision(world);
+    return new TileCollision(chunkRepository);
   }
 
   public HitBoxCollision newTileHitBoxCollision(int width, int height) {
@@ -24,7 +24,7 @@ public class CollisionFactory {
   }
 
   private EntityCollision newEntityCollision(Entity entity, int width, int height) {
-    return new EntityCollision(world, entity, width, height);
+    return new EntityCollision(chunkRepository, entity, width, height);
   }
 
   public HitBoxCollision newEntityHitBoxCollision(Entity entity, int width, int height) {

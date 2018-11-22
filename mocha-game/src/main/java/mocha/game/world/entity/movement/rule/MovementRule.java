@@ -33,10 +33,10 @@ public class MovementRule implements GameRule {
 
   private void updateChunkOccupants(Game game, Entity entity, Location start, Location finish) {
     if (!start.equals(finish)) {
-      game.getWorld().getChunkAt(start)
+      game.getChunkRepository().getChunkAt(start)
           .ifPresent(chunk -> chunk.remove(entity));
 
-      game.getWorld().getChunkAt(finish)
+      game.getChunkRepository().getChunkAt(finish)
           .ifPresent(chunk -> chunk.add(entity));
     }
   }

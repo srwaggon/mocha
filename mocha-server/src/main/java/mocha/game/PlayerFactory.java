@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.world.World;
+import mocha.game.world.ChunkRepository;
 import mocha.game.world.entity.Entity;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketListener;
@@ -19,7 +19,7 @@ class PlayerFactory {
   private ServerEventBus serverEventBus;
 
   @Inject
-  private World world;
+  private ChunkRepository chunkRepository;
 
   @Inject
   private Repository<Player, Integer> playerRepository;
@@ -49,7 +49,7 @@ class PlayerFactory {
         mochaConnection,
         serverEventBus,
         playerId,
-        world,
+        chunkRepository,
         entityRepository,
         playerRepository
     );

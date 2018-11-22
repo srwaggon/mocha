@@ -4,21 +4,21 @@ import java.util.List;
 
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
-import mocha.game.world.World;
+import mocha.game.world.ChunkRepository;
 import mocha.game.world.entity.Entity;
 import mocha.shared.Repository;
 
 public class Game implements Tickable {
 
   private MochaEventBus eventBus;
-  private World world;
+  private ChunkRepository chunkRepository;
   private List<GameRule> gameRules;
   private Repository<Entity, Integer> entityRepository;
   private Repository<Player, Integer> playerRepository;
 
-  public Game(MochaEventBus eventBus, World world, List<GameRule> gameRules, Repository<Entity, Integer> entityRepository, Repository<Player, Integer> playerRepository) {
+  public Game(MochaEventBus eventBus, ChunkRepository chunkRepository, List<GameRule> gameRules, Repository<Entity, Integer> entityRepository, Repository<Player, Integer> playerRepository) {
     this.eventBus = eventBus;
-    this.world = world;
+    this.chunkRepository = chunkRepository;
     this.gameRules = gameRules;
     this.entityRepository = entityRepository;
     this.playerRepository = playerRepository;
@@ -29,13 +29,13 @@ public class Game implements Tickable {
     gameRules.forEach(gameRule -> gameRule.apply(this));
   }
 
-  public World getWorld() {
-    return world;
+  public ChunkRepository getChunkRepository() {
+    return chunkRepository;
   }
 
   public Entity addEntity(Entity entity) {
     Entity result = entityRepository.save(entity);
-    world.add(result);
+    chunkRepository.add(result);
     eventBus.postEntityAddedEvent(result);
     return result;
   }
@@ -46,7 +46,7 @@ public class Game implements Tickable {
 
   public void removeEntity(Entity entity) {
     entityRepository.delete(entity);
-    world.remove(entity);
+    chunkRepository.remove(entity);
     eventBus.postEntityRemovedEvent(entity);
   }
 
