@@ -1,11 +1,11 @@
 package mocha.shared;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface Repository<T, ID> {
 
-  Collection<T> findAll();
+  List<T> findAll();
 
   T save(T entity);
 

@@ -86,6 +86,7 @@ public class ServerGameLogic implements GameLogic {
   @Override
   public void handle(EntityMoveCommand entityMoveCommand) {
     entityRepository.findById(entityMoveCommand.getEntityId())
+        // todo gotta fix
         .map(Entity::getMovement)
         .ifPresent(movement -> {
           movement.handle(entityMoveCommand);

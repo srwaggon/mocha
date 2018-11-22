@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ServerEntityJpaRepository extends JpaRepository<ServerEntity, Integer>, mocha.shared.Repository<ServerEntity, Integer> {
+interface ServerEntityRepository extends JpaRepository<ServerEntity, Integer> {
 }

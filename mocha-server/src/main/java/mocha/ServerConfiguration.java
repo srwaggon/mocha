@@ -89,11 +89,6 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Repository<Entity, Integer> entityRegistry() {
-    return new InMemoryRepository<>();
-  }
-
-  @Bean
   public IdFactory<Entity> entityIdFactory(Repository<Entity, Integer> entityRepository) {
     return new IdFactory<>(entityRepository);
   }

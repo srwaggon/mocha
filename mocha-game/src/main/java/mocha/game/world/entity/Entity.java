@@ -9,8 +9,8 @@ import mocha.shared.Identified;
 
 public class Entity implements Collider, Identified {
 
-  private int id;
-  private Location location = new Location();
+  int id;
+  Location location = new Location();
   private Movement movement = new SimpleMovement(new SimpleCollision());
 
   public Entity() {
@@ -34,6 +34,14 @@ public class Entity implements Collider, Identified {
         "}";
   }
 
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
   public Location getLocation() {
     return location;
   }
@@ -44,14 +52,6 @@ public class Entity implements Collider, Identified {
 
   public double getScale() {
     return 2.0;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
   }
 
   public Movement getMovement() {

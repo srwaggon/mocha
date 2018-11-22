@@ -1,8 +1,9 @@
 package mocha.shared;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -10,8 +11,8 @@ public class InMemoryRepository<T extends Identified> implements Repository<T, I
   private Map<Integer, T> members = Maps.newConcurrentMap();
 
   @Override
-  public Collection<T> findAll() {
-    return members.values();
+  public List<T> findAll() {
+    return Lists.newArrayList(members.values());
   }
 
   @Override
