@@ -1,18 +1,24 @@
 package mocha.client.gfx.view;
 
+import java.util.Optional;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import mocha.client.gfx.RenderLoop;
 import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.movement.Movement;
+import mocha.shared.Repository;
 
 public class EntityView extends Canvas {
 
   private Entity entity;
+  private Repository<Movement, Integer> movementRepository;
   private SpriteSheet spriteSheet;
 
-  public EntityView(Entity entity, SpriteSheet spriteSheet) {
+  public EntityView(Entity entity, Repository<Movement, Integer> movementRepository, SpriteSheet spriteSheet) {
     this.entity = entity;
+    this.movementRepository = movementRepository;
     this.spriteSheet = spriteSheet;
     this.setOnMouseClicked(event -> System.out.println(this.entity + " clicked!"));
   }
@@ -34,7 +40,9 @@ public class EntityView extends Canvas {
 
   private int getSpriteId(long now) {
     int spriteId = entity.getSpriteId();
-    if (!entity.getMovement().isMoving()) {
+
+    Optional<Movement> movement = movementRepository.findById(entity.getId());
+    if (!movement.isPresent() || !movement.get().isMoving()) {
       return spriteId;
     }
 

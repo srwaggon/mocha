@@ -2,25 +2,23 @@ package mocha.game.world.entity.movement;
 
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
-import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.collision.Collision;
-import mocha.game.world.entity.movement.collision.SimpleCollision;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 
 public class SimpleMovement implements Movement {
 
-  protected Entity entity;
   protected Collision collision;
   protected Direction direction;
   int xOffset = 0;
   int yOffset = 0;
 
-  public static SimpleMovementBuilder builder() {
-    return new SimpleMovementBuilder();
+  SimpleMovement(Collision collision) {
+    this.collision = collision;
   }
 
-  public SimpleMovement(Collision collision) {
-    this.collision = collision;
+  @Override
+  public Integer getId() {
+    return null;
   }
 
   @Override
@@ -54,23 +52,13 @@ public class SimpleMovement implements Movement {
   }
 
   @Override
-  public Entity getEntity() {
-    return entity;
-  }
-
-  @Override
-  public void setEntity(Entity entity) {
-    this.entity = entity;
-  }
-
-  @Override
   public boolean isMoving() {
     return false;
   }
 
   @Override
   public Location getLocation() {
-    return entity.getLocation();
+    return null;
   }
 
   public int getXOffset() {
@@ -96,18 +84,4 @@ public class SimpleMovement implements Movement {
     this.collision = collision;
   }
 
-  static class SimpleMovementBuilder {
-
-    protected Location location = new Location();
-    protected Collision collision = new SimpleCollision();
-
-    public SimpleMovementBuilder collision(Collision collision) {
-      this.collision = collision;
-      return this;
-    }
-
-    public SimpleMovement build() {
-      return new SimpleMovement(collision);
-    }
-  }
 }

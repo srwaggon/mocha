@@ -14,11 +14,12 @@ import javax.inject.Inject;
 
 import mocha.game.event.PlayerAddedEvent;
 import mocha.game.event.PlayerRemovedEvent;
+import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.event.EntityAddedEvent;
 import mocha.game.world.entity.event.EntityRemovedEvent;
 import mocha.game.world.entity.movement.Movement;
+import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
 import mocha.net.event.ConnectedEvent;
@@ -46,10 +47,13 @@ public class ServerGameLogic implements GameLogic {
   private PlayerFactory playerFactory;
 
   @Inject
-  private EntityFactory entityFactory;
+  private Repository<Entity, Integer> entityRepository;
 
   @Inject
-  private Repository<Entity, Integer> entityRepository;
+  private Repository<Movement, Integer> movementRepository;
+
+  @Inject
+  private MovementFactory movementFactory;
 
   private Map<Integer, MochaConnection> mochaConnectionsByPlayerId = Maps.newConcurrentMap();
 
@@ -60,8 +64,9 @@ public class ServerGameLogic implements GameLogic {
     MochaConnection mochaConnection = connectedEvent.getMochaConnection();
 
     int playerId = playerIdFactory.newId();
-    Entity playerEntity = entityFactory.newSlider();
+    Entity playerEntity = new Entity();
     Entity entity = game.addEntity(playerEntity);
+    movementRepository.save(movementFactory.newSlidingMovement(entity));
     NetworkPlayer player = playerFactory.newNetworkPlayer(mochaConnection, playerId, entity);
     mochaConnectionsByPlayerId.put(playerId, mochaConnection);
     game.addPlayer(player);
@@ -101,8 +106,8 @@ public class ServerGameLogic implements GameLogic {
   public void handle(EntityMovementEvent entityMovementEvent) {
     Movement movement = entityMovementEvent.getMovement();
     EntityMoveCommand entityMove = EntityMoveCommand.builder()
-        .entityId(movement.getEntity().getId())
-        .location(movement.getLocation())
+        .entityId(movement.getId())
+        .location(new Location(0, 0))
         .direction(movement.getDirection())
         .xOffset(movement.getXOffset())
         .yOffset(movement.getYOffset())
@@ -117,9 +122,7 @@ public class ServerGameLogic implements GameLogic {
   @Subscribe
   @Override
   public void handle(EntityMoveCommand entityMoveCommand) {
-    entityRepository.findById(entityMoveCommand.getEntityId())
-        // todo gotta fix
-        .map(Entity::getMovement)
+    movementRepository.findById(entityMoveCommand.getEntityId())
         .ifPresent(movement -> {
           movement.handle(entityMoveCommand);
           eventBus.postMoveEvent(movement);

@@ -11,9 +11,9 @@ import mocha.game.event.PlayerAddedEvent;
 import mocha.game.event.PlayerRemovedEvent;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.event.EntityUpdatedEvent;
 import mocha.game.world.entity.movement.Movement;
+import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.packet.MochaConnection;
@@ -32,9 +32,6 @@ public class NetworkClientGameLogic implements GameLogic {
   private Game game;
 
   @Inject
-  private EntityFactory entityFactory;
-
-  @Inject
   private ClientEventBus eventBus;
 
   @Inject
@@ -51,6 +48,12 @@ public class NetworkClientGameLogic implements GameLogic {
 
   @Inject
   private Repository<Entity, Integer> entityRepository;
+
+  @Inject
+  private MovementFactory movementFactory;
+
+  @Inject
+  private Repository<Movement, Integer> movementRepository;
 
   private MochaConnection mochaConnection;
 
@@ -94,21 +97,16 @@ public class NetworkClientGameLogic implements GameLogic {
   }
 
   private void updateEntity(Entity entityUpdate) {
-    entityRepository
-        .findById(entityUpdate.getId())
+    entityRepository.findById(entityUpdate.getId())
         .ifPresent(entity ->
-            entity.getLocation()
-                .set(entityUpdate.getLocation()));
+            entity.getLocation().set(entityUpdate.getLocation()));
   }
 
-  private void createEntityIfAbsent(Entity entityUpdate) {
-    if (entityRepository.findById(entityUpdate.getId()).isPresent()) {
-      return;
+  private void createEntityIfAbsent(Entity entity) {
+    if (!entityRepository.findById(entity.getId()).isPresent()) {
+      Entity resultEntity = game.addEntity(entity);
+      movementRepository.save(movementFactory.newSlidingMovement(resultEntity));
     }
-    Entity entity = entityFactory.newSlider();
-    entity.setId(entityUpdate.getId());
-    entity.getLocation().set(entityUpdate.getLocation());
-    game.addEntity(entity);
   }
 
   @Override
@@ -122,9 +120,12 @@ public class NetworkClientGameLogic implements GameLogic {
         .findById(entityMoveCommand.getEntityId())
         .ifPresent(entity -> {
           entity.getLocation().set(entityMoveCommand.getLocation());
-          Movement movement = entity.getMovement();
-          movement.handle(entityMoveCommand);
-          eventBus.postMoveEvent(movement);
+
+          movementRepository.findById(entity.getId())
+              .ifPresent(movement -> {
+                movement.handle(entityMoveCommand);
+                eventBus.postMoveEvent(movement);
+              });
         });
   }
 

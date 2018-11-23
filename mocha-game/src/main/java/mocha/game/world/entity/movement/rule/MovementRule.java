@@ -7,34 +7,39 @@ import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.movement.Movement;
 import mocha.shared.Repository;
 
 public class MovementRule implements GameRule {
 
   private Repository<Entity, Integer> entityRepository;
   private Repository<Chunk, Integer> chunkRepository;
+  private Repository<Movement, Integer> movementRepository;
 
   public MovementRule(
       Repository<Entity, Integer> entityRepository,
-      Repository<Chunk, Integer> chunkRepository
-  ) {
+      Repository<Chunk, Integer> chunkRepository,
+      Repository<Movement, Integer> movementRepository) {
     this.entityRepository = entityRepository;
     this.chunkRepository = chunkRepository;
+    this.movementRepository = movementRepository;
   }
 
   @Override
   public void apply(Game game) {
+    // todo: forget game
+    // todo: accept time;
     processEntityMovement();
   }
 
   private void processEntityMovement() {
-    entityRepository
-        .findAll()
-        .forEach((entity) -> {
-          Location start = entity.getLocation().copy();
-          entity.getMovement().tick(0L);
-          Location finish = entity.getLocation();
-          updateChunkOccupants(entity, start, finish);
+    movementRepository.findAll()
+        .forEach((movement) -> {
+          Location start = movement.getLocation().copy();
+          movement.tick(0L);
+          Location finish = movement.getLocation();
+          entityRepository.findById(movement.getId())
+              .ifPresent(entity -> updateChunkOccupants(entity, start, finish));
         });
   }
 

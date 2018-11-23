@@ -21,8 +21,8 @@ public class ServerChunkToChunkAdapterRepository implements Repository<Chunk, In
   }
 
   @Override
-  public Chunk save(Chunk chunk) {
-    return serverChunkJpaRepository.save(new ServerChunk(chunk));
+  public Chunk save(Chunk element) {
+    return serverChunkJpaRepository.save(new ServerChunk(element));
   }
 
   @Override
@@ -32,8 +32,8 @@ public class ServerChunkToChunkAdapterRepository implements Repository<Chunk, In
   }
 
   @Override
-  public void delete(Chunk member) {
-    serverChunkJpaRepository.findById(member.getId())
+  public void delete(Chunk element) {
+    serverChunkJpaRepository.findById(element.getId())
         .ifPresent(serverChunkJpaRepository::delete);
   }
 }

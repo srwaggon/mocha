@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 
 import mocha.game.event.MochaEventBus;
-import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.shared.Repository;
 
@@ -16,17 +16,19 @@ public class LocalClientGameLogic implements GameLogic {
   private MochaEventBus mochaEventBus;
 
   @Inject
-  private Repository<Entity, Integer> entityRepository;
+  private Repository<Movement, Integer> movementRepository;
 
   @Override
   public void handle(EntityMoveCommand entityMoveCommand) {
-    entityRepository
-        .findById(entityMoveCommand.getEntityId())
-        .map(Entity::getMovement)
-        .ifPresent(movement -> {
-          movement.handle(entityMoveCommand);
-          mochaEventBus.postMoveEvent(movement);
-        });
+    int entityId = entityMoveCommand.getEntityId();
+    movementRepository.findById(entityId)
+        .ifPresent(movement ->
+            moveEntity(entityMoveCommand, movement));
+  }
+
+  private void moveEntity(EntityMoveCommand entityMoveCommand, Movement movement) {
+    movement.handle(entityMoveCommand);
+    mochaEventBus.postMoveEvent(movement);
   }
 
 }

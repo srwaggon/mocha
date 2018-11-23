@@ -2,22 +2,26 @@ package mocha.game.world.entity.movement;
 
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
+import mocha.shared.Repository;
 
 public class MovementFactory {
 
   private CollisionFactory collisionFactory;
+  private Repository<Entity, Integer> entityRepository;
 
-  public MovementFactory(CollisionFactory collisionFactory) {
+  public MovementFactory(
+      CollisionFactory collisionFactory,
+      Repository<Entity, Integer> entityRepository
+  ) {
     this.collisionFactory = collisionFactory;
+    this.entityRepository = entityRepository;
   }
 
   public SimpleMovement newSimpleMovement() {
-    return SimpleMovement.builder()
-        .collision(collisionFactory.newSimpleCollision())
-        .build();
+    return new SimpleMovement(collisionFactory.newSimpleCollision());
   }
 
   public SlidingMovement newSlidingMovement(Entity entity) {
-    return new SlidingMovement(entity, collisionFactory.newEntityHitBoxCollision(entity, 32, 32));
+    return new SlidingMovement(entity.getId(), collisionFactory.newEntityHitBoxCollision(entity, 32, 32), entityRepository);
   }
 }

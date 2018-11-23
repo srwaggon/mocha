@@ -10,9 +10,11 @@ import javax.inject.Inject;
 
 import mocha.game.Game;
 import mocha.game.LocalPlayer;
+import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityFactory;
+import mocha.game.world.entity.movement.Movement;
+import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.tile.TileSetFactory;
 import mocha.shared.Repository;
 
@@ -29,7 +31,10 @@ public class ClientSetup implements CommandLineRunner {
   private Repository<Chunk, Integer> chunkRepository;
 
   @Inject
-  private EntityFactory entityFactory;
+  private MovementFactory movementFactory;
+
+  @Inject
+  private Repository<Movement, Integer> movementRepository;
 
   @Value("${mocha.client.online}")
   private boolean isOnline;
@@ -40,10 +45,13 @@ public class ClientSetup implements CommandLineRunner {
     chunkRepository.save(new Chunk(1, tileSetFactory.createRandomTiles(), Sets.newHashSet()));
 
     if (!isOnline) {
-      Entity playerEntity = entityFactory.newSlider();
+      Entity playerEntity = new Entity(0, new Location(0, 0));
       LocalPlayer player = new LocalPlayer(playerEntity);
+
       game.addPlayer(player);
-      game.addEntity(playerEntity);
+      Entity entity = game.addEntity(playerEntity);
+
+      movementRepository.save(movementFactory.newSlidingMovement(entity));
     }
   }
 }

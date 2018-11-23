@@ -23,8 +23,8 @@ public class CachingRepository<T extends Identified<ID>, ID> implements Reposito
   }
 
   @Override
-  public T save(T t) {
-    T member = repository.save(t);
+  public T save(T element) {
+    T member = repository.save(element);
     cache(member);
     return member;
   }
@@ -45,8 +45,8 @@ public class CachingRepository<T extends Identified<ID>, ID> implements Reposito
   }
 
   @Override
-  public void delete(T member) {
-    repository.delete(member);
-    members.remove(member.getId());
+  public void delete(T element) {
+    repository.delete(element);
+    members.remove(element.getId());
   }
 }

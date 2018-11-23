@@ -3,7 +3,6 @@ package mocha.game.event;
 import com.google.common.eventbus.EventBus;
 
 import mocha.game.Player;
-import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.PickUpItemCommand;
 import mocha.game.world.entity.command.RemoveEntityCommand;
@@ -31,16 +30,6 @@ public class MochaEventBus extends EventBus {
 
   public void postEntityUpdatedEvent(Entity entity) {
     post(new EntityUpdatedEvent(entity));
-  }
-
-  public void postMoveCommand(Entity entity) {
-    EntityMoveCommand moveCommand = EntityMoveCommand.builder()
-        .entityId(entity.getId())
-        .direction(Direction.random())
-        .xOffset(entity.getMovement().getXOffset())
-        .yOffset(entity.getMovement().getYOffset())
-        .build();
-    postMoveCommand(moveCommand);
   }
 
   public void postMoveCommand(EntityMoveCommand entityMoveCommand) {

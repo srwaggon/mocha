@@ -1,12 +1,9 @@
 package mocha.game.world.entity;
 
 import mocha.game.world.Location;
-import mocha.game.world.entity.movement.SimpleMovement;
-import mocha.game.world.entity.movement.collision.SimpleCollision;
 import mocha.net.packet.PacketType;
 
 public class EntityPacket extends AbstractEntityPacket {
-
 
   public EntityPacket() {
   }
@@ -25,12 +22,7 @@ public class EntityPacket extends AbstractEntityPacket {
   }
 
   public Entity getEntity() {
-    Entity entity = Entity.builder()
-        .id(getId())
-        .location(getLocation())
-        .build();
-    entity.setMovement(new SimpleMovement(new SimpleCollision()));
-    return entity;
+    return new Entity(getId(), getLocation());
   }
 
   public Location getLocation() {

@@ -25,8 +25,8 @@ These represent units of work **to be done.**
 - [ ] Bushes exist in the world.
 - [ ] Bushes disappear when struck by a sword.
 - [ ] Stones disappear when struck by a pickaxe.
-- [ ] I can save and load maps to disk.
-- [ ] I can persist entities and tiles to a database for loading.
+- [x] I can save and load maps to disk.
+- [x] I can persist entities and tiles to a database for loading.
 
 ### Pets
 - [ ] There exist wild mobs.

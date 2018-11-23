@@ -1,7 +1,6 @@
 package mocha.game.world.entity.movement;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
@@ -9,15 +8,17 @@ import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.collision.Collider;
 import mocha.game.world.entity.movement.collision.Collision;
 import mocha.game.world.tile.TileType;
+import mocha.shared.Repository;
 
 public class SlidingMovement extends BaseMovement {
 
   private static final int WALK_SPEED = 1;
-  private final Entity entity;
 
-  SlidingMovement(Entity entity, Collision collision) {
-    super(collision);
-    this.entity = entity;
+  private Repository<Entity, Integer> entityRepository;
+
+  SlidingMovement(int id, Collision collision, Repository<Entity, Integer> entityRepository) {
+    super(collision, id);
+    this.entityRepository = entityRepository;
   }
 
   @Override
@@ -77,12 +78,21 @@ public class SlidingMovement extends BaseMovement {
 
     Set<Collider> colliders = collision.getColliders(next);
 
-    colliders.stream()
-        .filter(collider -> !collider.isBlocking())
-        .forEach(collider -> collider.collide(entity));
+    entityRepository.findById(this.getId())
+        .ifPresent(entity -> colliders.stream()
+            .filter(collider -> !collider.isBlocking())
+            .forEach(collider -> collider.collide(entity)));
 
     if (colliders.stream().noneMatch(Collider::isBlocking)) {
       getLocation().set(next);
     }
   }
+
+  @Override
+  public Location getLocation() {
+    return entityRepository.findById(this.getId())
+        .map(Entity::getLocation)
+        .orElse(null);
+  }
+
 }

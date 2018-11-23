@@ -4,11 +4,9 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import mocha.game.world.entity.movement.MovementFactory;
 import mocha.shared.Repository;
 
 
@@ -18,43 +16,26 @@ public class ServerEntityToEntityRepositoryAdapter implements Repository<Entity,
   @Inject
   private ServerEntityRepository serverEntityRepository;
 
-  @Inject
-  private MovementFactory movementFactory;
-
   @Override
   public List<Entity> findAll() {
-    return Lists.newArrayList(serverEntityRepository.findAll()).stream()
-        .peek(this::addMovement)
-        .collect(Collectors.toList());
+    return Lists.newArrayList(serverEntityRepository.findAll());
   }
 
   @Override
-  public Entity save(Entity entity) {
-    ServerEntity toBeSaved = entity instanceof ServerEntity ? (ServerEntity) entity : new ServerEntity(entity);
-    ServerEntity saved = serverEntityRepository.save(toBeSaved);
-    addMovement(saved);
-    return saved;
-  }
-
-  private void addMovement(ServerEntity saved) {
-    saved.setMovement(movementFactory.newSlidingMovement(saved));
+  public Entity save(Entity element) {
+    ServerEntity toBeSaved = element instanceof ServerEntity ? (ServerEntity) element : new ServerEntity(element);
+    return serverEntityRepository.save(toBeSaved);
   }
 
   @Override
   public Optional<Entity> findById(Integer id) {
     Optional<ServerEntity> maybeEntity = serverEntityRepository.findById(id);
-    if (maybeEntity.isPresent()) {
-      ServerEntity entity = maybeEntity.get();
-      addMovement(entity);
-      return Optional.of(entity);
-    } else {
-      return Optional.empty();
-    }
+    return maybeEntity.isPresent() ? Optional.of(maybeEntity.get()) : Optional.empty();
   }
 
   @Override
-  public void delete(Entity member) {
-    serverEntityRepository.findById(member.getId())
+  public void delete(Entity element) {
+    serverEntityRepository.findById(element.getId())
         .ifPresent(serverEntityRepository::delete);
   }
 }

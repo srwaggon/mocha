@@ -3,11 +3,11 @@ package mocha.game.world.entity.movement;
 import mocha.game.Tickable;
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
-import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.collision.Collision;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
+import mocha.shared.Identified;
 
-public interface Movement extends Tickable {
+public interface Movement extends Tickable, Identified<Integer> {
 
   Collision getCollision();
 
@@ -20,10 +20,6 @@ public interface Movement extends Tickable {
   int getYOffset();
 
   Direction getDirection();
-
-  Entity getEntity();
-
-  void setEntity(Entity entity);
 
   boolean isMoving();
 

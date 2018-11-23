@@ -25,7 +25,7 @@ import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityFactory;
+import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
@@ -67,18 +67,16 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public MovementFactory movementFactory(CollisionFactory collisionFactory) {
-    return new MovementFactory(collisionFactory);
+  public MovementFactory movementFactory(
+      CollisionFactory collisionFactory,
+      Repository<Entity, Integer> entityRepository
+  ) {
+    return new MovementFactory(collisionFactory, entityRepository);
   }
 
   @Bean
   public IdFactory<Entity> entityIdFactory(Repository<Entity, Integer> repository) {
     return new IdFactory<>(repository);
-  }
-
-  @Bean
-  public EntityFactory entityFactory(MovementFactory movementFactory) {
-    return new EntityFactory(movementFactory);
   }
 
   @Bean
@@ -97,6 +95,11 @@ public class ClientConfiguration {
   }
 
   @Bean
+  public Repository<Movement, Integer> movementRepository() {
+    return new InMemoryRepository<>();
+  }
+
+  @Bean
   public IdFactory<Player> playerIdFactory(Repository<Player, Integer> playerRepository) {
     return new IdFactory<>(playerRepository);
   }
@@ -107,10 +110,10 @@ public class ClientConfiguration {
       List<GameRule> gameRules,
       Repository<Entity, Integer> entityRepository,
       Repository<Player, Integer> playerRepository,
-      Repository<Chunk, Integer> chunkRepository
-
+      Repository<Chunk, Integer> chunkRepository,
+      Repository<Movement, Integer> movementRepository
   ) {
-    return new Game(eventBus, gameRules, playerRepository, entityRepository, chunkRepository);
+    return new Game(eventBus, gameRules, playerRepository, entityRepository, chunkRepository, movementRepository);
   }
 
   @Bean
@@ -121,9 +124,10 @@ public class ClientConfiguration {
   @Bean
   public List<GameRule> getRules(
       Repository<Entity, Integer> entityRepository,
-      Repository<Chunk, Integer> chunkRepository
+      Repository<Chunk, Integer> chunkRepository,
+      Repository<Movement, Integer> movementRepository
   ) {
-    MovementRule movementRule = new MovementRule(entityRepository, chunkRepository);
+    MovementRule movementRule = new MovementRule(entityRepository, chunkRepository, movementRepository);
     clientEventBus.register(movementRule);
 
     PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkRepository);

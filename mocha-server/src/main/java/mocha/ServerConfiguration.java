@@ -18,12 +18,11 @@ import mocha.game.item.ItemPrototype;
 import mocha.game.item.ItemPrototypeRepository;
 import mocha.game.item.ItemRepository;
 import mocha.game.item.ItemType;
-import mocha.game.rule.ArtificialIntelligenceRule;
 import mocha.game.rule.GameRule;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.ServerEntityToEntityRepositoryAdapter;
+import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
@@ -60,20 +59,18 @@ public class ServerConfiguration {
   @Bean
   public List<GameRule> getRules(
       Repository<Entity, Integer> entityRepository,
-      Repository<Chunk, Integer> chunkRepository
+      Repository<Chunk, Integer> chunkRepository,
+      Repository<Movement, Integer> movementRepository
   ) {
-    MovementRule movementRule = new MovementRule(entityRepository, chunkRepository);
+    MovementRule movementRule = new MovementRule(entityRepository, chunkRepository, movementRepository);
     serverEventBus.register(movementRule);
 
     PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkRepository);
     serverEventBus.register(pickUpItemsRule);
 
-    ArtificialIntelligenceRule artificialIntelligenceRule = new ArtificialIntelligenceRule(serverEventBus);
-
     return Lists.newArrayList(
         movementRule,
-        pickUpItemsRule,
-        artificialIntelligenceRule
+        pickUpItemsRule
     );
   }
 
@@ -87,9 +84,10 @@ public class ServerConfiguration {
       Repository<Chunk, Integer> chunkRepository,
       List<GameRule> gameRules,
       Repository<Entity, Integer> entityRepository,
-      Repository<Player, Integer> playerRepository
+      Repository<Player, Integer> playerRepository,
+      Repository<Movement, Integer> movementRepository
   ) {
-    return new Game(serverEventBus, gameRules, playerRepository, entityRepository, chunkRepository);
+    return new Game(serverEventBus, gameRules, playerRepository, entityRepository, chunkRepository, movementRepository);
   }
 
   @Bean
@@ -113,13 +111,13 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public EntityFactory getEntityFactory(MovementFactory movementFactory) {
-    return new EntityFactory(movementFactory);
+  public MovementFactory movementFactory(CollisionFactory collisionFactory, Repository<Entity, Integer> entityRepository) {
+    return new MovementFactory(collisionFactory, entityRepository);
   }
 
   @Bean
-  public MovementFactory movementFactory(CollisionFactory collisionFactory) {
-    return new MovementFactory(collisionFactory);
+  public Repository<Movement, Integer> movementRepository() {
+    return new InMemoryRepository<>();
   }
 
   @Bean

@@ -18,7 +18,6 @@ import mocha.game.world.Location;
 import mocha.game.world.chunk.ServerChunk;
 import mocha.game.world.chunk.ServerChunkJpaRepository;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.tile.TileSetFactory;
 import mocha.game.world.tile.TileType;
 
@@ -29,9 +28,6 @@ public class ServerSetup implements CommandLineRunner {
 
   @Inject
   private Game game;
-
-  @Inject
-  private EntityFactory entityFactory;
 
   @Inject
   private ServerChunkJpaRepository serverChunkJpaRepository;
@@ -50,7 +46,7 @@ public class ServerSetup implements CommandLineRunner {
   }
 
   private Entity newRandomEntity() {
-    return entityFactory.newRandomSlider().at(random(), random());
+    return new Entity().at(random(), random());
   }
 
   private int random() {
