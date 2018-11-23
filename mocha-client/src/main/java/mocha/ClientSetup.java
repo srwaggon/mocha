@@ -17,7 +17,7 @@ import mocha.game.world.tile.TileSetFactory;
 import mocha.shared.Repository;
 
 @Component
-public class Setup implements CommandLineRunner {
+public class ClientSetup implements CommandLineRunner {
 
   @Inject
   private Game game;

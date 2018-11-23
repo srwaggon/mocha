@@ -25,7 +25,7 @@ import mocha.game.world.tile.TileType;
 import static mocha.game.world.chunk.Chunk.getIdForChunkIndex;
 
 @Component
-public class Setup implements CommandLineRunner {
+public class ServerSetup implements CommandLineRunner {
 
   @Inject
   private Game game;
