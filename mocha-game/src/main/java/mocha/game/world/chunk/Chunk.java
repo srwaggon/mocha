@@ -41,6 +41,11 @@ public class Chunk implements Identified<Integer> {
     return id;
   }
 
+  @Override
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
   public static int getIdForChunkAt(Location location) {
     return getIdForChunkIndex(location.getChunkIndex());
   }

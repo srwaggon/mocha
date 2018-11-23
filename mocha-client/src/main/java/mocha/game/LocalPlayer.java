@@ -35,7 +35,8 @@ public class LocalPlayer implements Player {
     return id;
   }
 
-  public void setId(int id) {
+  @Override
+  public void setId(Integer id) {
     this.id = id;
   }
 }

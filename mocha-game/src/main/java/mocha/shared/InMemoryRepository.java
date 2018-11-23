@@ -9,7 +9,12 @@ import java.util.Optional;
 
 public class InMemoryRepository<T extends Identified<Integer>> implements Repository<T, Integer> {
 
+  private final IdFactory<T> idFactory;
   private Map<Integer, T> members = Maps.newConcurrentMap();
+
+  public InMemoryRepository() {
+    this.idFactory = new IdFactory<T>(this);
+  }
 
   @Override
   public List<T> findAll() {
@@ -18,7 +23,9 @@ public class InMemoryRepository<T extends Identified<Integer>> implements Reposi
 
   @Override
   public T save(T element) {
-    members.put(element.getId(), element);
+    Integer id = Optional.ofNullable(element.getId()).orElse(idFactory.newId());
+    element.setId(id);
+    members.put(id, element);
     return element;
   }
 

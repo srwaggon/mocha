@@ -12,7 +12,7 @@ public class Entity implements Collider, Identified<Integer> {
   public Entity() {
   }
 
-  public Entity(int id, Location location) {
+  public Entity(Integer id, Location location) {
     this.id = id;
     this.location = location;
   }
@@ -26,6 +26,11 @@ public class Entity implements Collider, Identified<Integer> {
 
   public Integer getId() {
     return id;
+  }
+
+  @Override
+  public void setId(Integer id) {
+    this.id = id;
   }
 
   public void setId(int id) {
@@ -42,11 +47,6 @@ public class Entity implements Collider, Identified<Integer> {
 
   public double getScale() {
     return 2.0;
-  }
-
-  public Entity at(int x, int y) {
-    this.location.set(x, y);
-    return this;
   }
 
   @Override

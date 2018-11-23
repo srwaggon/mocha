@@ -22,6 +22,11 @@ public class SimpleMovement implements Movement {
   }
 
   @Override
+  public void setId(Integer id) {
+
+  }
+
+  @Override
   public void up() {
 
   }

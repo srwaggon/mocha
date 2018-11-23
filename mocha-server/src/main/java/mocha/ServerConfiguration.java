@@ -153,6 +153,7 @@ public class ServerConfiguration {
   @Bean
   public Repository<Entity, Integer> entityRepository(ServerEntityToEntityRepositoryAdapter entityRepository) {
     return new CachingRepository<>(entityRepository);
+//    return new InMemoryRepository<>();
   }
 
   @Bean

@@ -29,6 +29,11 @@ public class BaseMovement extends SimpleMovement {
   }
 
   @Override
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  @Override
   public void handle(EntityMoveCommand moveCommand) {
     moveMap.get(moveCommand.getDirection()).run();
   }

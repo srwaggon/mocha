@@ -40,6 +40,11 @@ public class NetworkPlayer implements Player {
   }
 
   @Override
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  @Override
   public Entity getEntity() {
     return entity;
   }
