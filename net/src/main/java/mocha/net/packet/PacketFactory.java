@@ -29,9 +29,10 @@ public class PacketFactory {
   }
 
   ChunkPacket newChunkPacket(Location location, Chunk chunk) {
+    int chunkId = chunk.getId();
     TileType[] tiles = chunk.getTiles();
     String tileString = tileStringBuilder.build(tiles);
-    return new ChunkPacket(location, tileString);
+    return new ChunkPacket(chunkId, location, tileString);
   }
 
   RequestChunkPacket newChunkRequestPacket(Location location) {

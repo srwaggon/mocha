@@ -3,17 +3,20 @@ package mocha.game.world.chunk;
 import com.google.common.collect.Sets;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.tile.TileType;
+import mocha.shared.Identified;
 
-public class Chunk {
+public class Chunk implements Identified<Integer> {
 
   public final static int SIZE = 16;
 
+  int id;
   TileType[] tiles;
   Set<Entity> entities;
 
@@ -25,6 +28,62 @@ public class Chunk {
   public Chunk(TileType[] tiles, Set<Entity> entities) {
     this.tiles = tiles;
     this.entities = entities;
+  }
+
+  public Chunk(int id, TileType[] tiles, HashSet<Entity> entities) {
+    this.id = id;
+    this.tiles = tiles;
+    this.entities = entities;
+  }
+
+  @Override
+  public Integer getId() {
+    return id;
+  }
+
+  public static int getIdForChunkAt(Location location) {
+    return getIdForChunkIndex(location.getChunkIndex());
+  }
+
+  public static int getIdForChunkIndex(Location chunkIndices) {
+    int radius = Math.max(Math.abs(chunkIndices.getX()), Math.abs(chunkIndices.getY()));
+    if (radius == 0) {
+      return 1;
+    }
+    int distance = distanceFromRingOrigin(chunkIndices, radius);
+    int previousRingDiameter = 1 + ((radius - 1) * 2);
+    return (int) (Math.pow(previousRingDiameter, 2) + distance) + 1;
+  }
+
+  private static int distanceFromRingOrigin(Location chunkIndices, int radius) {
+    int x = chunkIndices.getX();
+    int y = chunkIndices.getY();
+    int stepCount = 0;
+
+    if (x == -radius && y == -radius) {
+      return 0;
+    }
+
+    if (x == -radius && y < radius) {
+      stepCount += radius - y;
+      y = radius;
+    }
+
+    if (y == radius && x < radius) {
+      stepCount += radius - x;
+      x = radius;
+    }
+
+    if (x == radius && y > -radius) {
+      stepCount += y + radius;
+      y = -radius;
+    }
+
+    if (y == -radius && x > -radius) {
+      stepCount += x + radius;
+    }
+
+    return stepCount;
   }
 
   private boolean inBounds(int value) {
@@ -112,30 +171,4 @@ public class Chunk {
     return x + y * SIZE;
   }
 
-  public static ChunkBuilder builder() {
-    return new ChunkBuilder();
-  }
-
-  static class ChunkBuilder {
-
-    private TileType[] tiles;
-    private Set<Entity> entities;
-
-    private ChunkBuilder() {
-    }
-
-    ChunkBuilder tiles(TileType[] tiles) {
-      this.tiles = tiles;
-      return this;
-    }
-
-    ChunkBuilder entities(Set<Entity> entities) {
-      this.entities = entities;
-      return this;
-    }
-
-    public Chunk build() {
-      return new Chunk(tiles, entities);
-    }
-  }
 }

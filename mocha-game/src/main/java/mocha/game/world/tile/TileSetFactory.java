@@ -1,7 +1,6 @@
 package mocha.game.world.tile;
 
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.chunk.ChunkDescription;
 
 public class TileSetFactory {
 
@@ -24,8 +23,8 @@ public class TileSetFactory {
     return tiles;
   }
 
-  public TileType[] newTilesFromDescription(ChunkDescription chunkDescription) {
-    return tileReader.readTiles(chunkDescription.getTiles());
+  public TileType[] newTilesFromString(String tilesString) {
+    return tileReader.readTiles(tilesString);
   }
 
 }

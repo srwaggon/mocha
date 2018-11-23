@@ -7,20 +7,21 @@ import com.google.common.eventbus.Subscribe;
 import java.util.Queue;
 
 import mocha.game.Game;
-import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
+import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.PickUpItemCommand;
+import mocha.shared.Repository;
 
 public class PickUpItemsRule implements GameRule {
 
-  private MochaEventBus eventBus;
+  private Repository<Chunk, Integer> chunkRepository;
 
   private Queue<PickUpItemCommand> pickUpItemCommands = Lists.newLinkedList();
 
-  public PickUpItemsRule(MochaEventBus eventBus) {
-    this.eventBus = eventBus;
+  public PickUpItemsRule(Repository<Chunk, Integer> chunkRepository) {
+    this.chunkRepository = chunkRepository;
   }
 
   @Subscribe
@@ -36,8 +37,8 @@ public class PickUpItemsRule implements GameRule {
   }
 
   private void pickUpItem(Game game, PickUpItemCommand pickUpItemCommand) {
-    game.getChunkRepository()
-        .getChunkAt(pickUpItemCommand.getPickingUpEntity().getLocation())
+    Location location = pickUpItemCommand.getPickingUpEntity().getLocation();
+    chunkRepository.findById(Chunk.getIdForChunkAt(location))
         .ifPresent(chunk -> removeEntity(game, pickUpItemCommand.getPickingUpEntity(), chunk));
   }
 

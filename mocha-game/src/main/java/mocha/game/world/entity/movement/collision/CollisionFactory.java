@@ -1,13 +1,14 @@
 package mocha.game.world.entity.movement.collision;
 
-import mocha.game.world.ChunkRepository;
+import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
+import mocha.shared.Repository;
 
 public class CollisionFactory {
 
-  private ChunkRepository chunkRepository;
+  private Repository<Chunk, Integer> chunkRepository;
 
-  public CollisionFactory(ChunkRepository chunkRepository) {
+  public CollisionFactory(Repository<Chunk, Integer> chunkRepository) {
     this.chunkRepository = chunkRepository;
   }
 

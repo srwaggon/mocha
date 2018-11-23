@@ -5,14 +5,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import mocha.client.gfx.TileSpriteSelector;
 import mocha.client.gfx.sprite.SpriteSheet;
-import mocha.game.Game;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.tile.TileType;
 
 public class ChunkView extends Group {
 
   private Chunk chunk;
-  private Game game;
   private SpriteSheet spriteSheet;
   private SpriteSheet dirtTiles;
   private SpriteSheet grassTiles;
@@ -21,9 +19,16 @@ public class ChunkView extends Group {
   private TileSpriteSelector tileSpriteSelector;
   private Canvas tileCanvas;
 
-  public ChunkView(Chunk chunk, Game game, SpriteSheet spriteSheet, SpriteSheet dirtTiles, SpriteSheet grassTiles, SpriteSheet waterTiles, SpriteSheet stoneTiles, TileSpriteSelector tileSpriteSelector) {
+  public ChunkView(
+      Chunk chunk,
+      SpriteSheet spriteSheet,
+      SpriteSheet dirtTiles,
+      SpriteSheet grassTiles,
+      SpriteSheet waterTiles,
+      SpriteSheet stoneTiles,
+      TileSpriteSelector tileSpriteSelector
+  ) {
     this.chunk = chunk;
-    this.game = game;
     this.dirtTiles = dirtTiles;
     this.spriteSheet = spriteSheet;
     this.grassTiles = grassTiles;

@@ -4,19 +4,25 @@ import java.util.List;
 
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
-import mocha.game.world.ChunkRepository;
+import mocha.game.world.Location;
+import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 import mocha.shared.Repository;
 
 public class Game implements Tickable {
 
   private MochaEventBus eventBus;
-  private ChunkRepository chunkRepository;
   private List<GameRule> gameRules;
   private Repository<Entity, Integer> entityRepository;
   private Repository<Player, Integer> playerRepository;
+  private Repository<Chunk, Integer> chunkRepository;
 
-  public Game(MochaEventBus eventBus, ChunkRepository chunkRepository, List<GameRule> gameRules, Repository<Entity, Integer> entityRepository, Repository<Player, Integer> playerRepository) {
+  public Game(
+      MochaEventBus eventBus,
+      List<GameRule> gameRules,
+      Repository<Player, Integer> playerRepository, Repository<Entity, Integer> entityRepository,
+      Repository<Chunk, Integer> chunkRepository
+  ) {
     this.eventBus = eventBus;
     this.chunkRepository = chunkRepository;
     this.gameRules = gameRules;
@@ -29,13 +35,11 @@ public class Game implements Tickable {
     gameRules.forEach(gameRule -> gameRule.apply(this));
   }
 
-  public ChunkRepository getChunkRepository() {
-    return chunkRepository;
-  }
-
   public Entity addEntity(Entity entity) {
     Entity result = entityRepository.save(entity);
-    chunkRepository.add(result);
+    int chunkId = Chunk.getIdForChunkAt(result.getLocation());
+    chunkRepository.findById(chunkId)
+        .ifPresent(chunk -> chunk.add(result));
     eventBus.postEntityAddedEvent(result);
     return result;
   }
@@ -46,7 +50,10 @@ public class Game implements Tickable {
 
   public void removeEntity(Entity entity) {
     entityRepository.delete(entity);
-    chunkRepository.remove(entity);
+    Location entityLocation = entity.getLocation();
+    int chunkId = Chunk.getIdForChunkAt(entityLocation);
+    chunkRepository.findById(chunkId)
+        .ifPresent(chunk -> chunk.remove(entity));
     eventBus.postEntityRemovedEvent(entity);
   }
 

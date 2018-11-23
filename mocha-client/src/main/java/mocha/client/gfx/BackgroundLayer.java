@@ -12,23 +12,27 @@ import javafx.scene.Group;
 import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.client.gfx.sprite.SpriteSheetFactory;
 import mocha.client.gfx.view.ChunkView;
-import mocha.game.Game;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
+import mocha.shared.Repository;
 
 @Component
 public class BackgroundLayer extends Group {
 
-  private final Game game;
   private SpriteSheetFactory spriteSheetFactory;
   private TileSpriteSelector tileSpriteSelector;
   private Map<Location, ChunkView> chunkViews = Maps.newConcurrentMap();
+  private Repository<Chunk, Integer> chunkRepository;
 
   @Inject
-  public BackgroundLayer(Game game, SpriteSheetFactory spriteSheetFactory, TileSpriteSelector tileSpriteSelector) {
-    this.game = game;
+  public BackgroundLayer(
+      SpriteSheetFactory spriteSheetFactory,
+      TileSpriteSelector tileSpriteSelector,
+      Repository<Chunk, Integer> chunkRepository
+  ) {
     this.spriteSheetFactory = spriteSheetFactory;
     this.tileSpriteSelector = tileSpriteSelector;
+    this.chunkRepository = chunkRepository;
   }
 
   public void render() {
@@ -45,7 +49,7 @@ public class BackgroundLayer extends Group {
   }
 
   private boolean isChunkOffScreen(Location chunkLocation) {
-    Location location = Location.at(0,0);
+    Location location = Location.at(0, 0);
     return chunkLocation.getX() < location.getX() - Chunk.getWidth() ||
         chunkLocation.getX() > location.getX() + Chunk.getWidth() ||
         chunkLocation.getY() < location.getY() - Chunk.getHeight() ||
@@ -53,15 +57,16 @@ public class BackgroundLayer extends Group {
   }
 
   private void drawChunks() {
-    Location location = Location.at(0,0);
+    Location location = Location.at(0, 0);
     for (int y = 0; y < 1; y++) {
       for (int x = 0; x < 1; x++) {
         Location chunkLocation = new Location(location.getX() + x * Chunk.getWidth(), location.getY() + y * Chunk.getHeight());
-        game.getChunkRepository().getChunkAt(chunkLocation).ifPresent((chunk) -> {
-          ChunkView chunkView = getChunkView(chunkLocation, chunk);
-          chunkView.setChunk(chunk);
-          chunkView.render();
-        });
+        chunkRepository.findById(Chunk.getIdForChunkAt(chunkLocation))
+            .ifPresent((chunk) -> {
+              ChunkView chunkView = getChunkView(chunkLocation, chunk);
+              chunkView.setChunk(chunk);
+              chunkView.render();
+            });
       }
     }
   }
@@ -75,7 +80,7 @@ public class BackgroundLayer extends Group {
     SpriteSheet grassTiles = spriteSheetFactory.newGrassTiles();
     SpriteSheet waterTiles = spriteSheetFactory.newWaterTiles();
     SpriteSheet stoneTiles = spriteSheetFactory.newStoneTiles();
-    ChunkView chunkView = new ChunkView(chunk, game, spriteSheet, dirtTiles, grassTiles, waterTiles, stoneTiles, tileSpriteSelector);
+    ChunkView chunkView = new ChunkView(chunk, spriteSheet, dirtTiles, grassTiles, waterTiles, stoneTiles, tileSpriteSelector);
     chunkViews.put(chunkLocation, chunkView);
     getChildren().add(chunkView);
     return chunkView;

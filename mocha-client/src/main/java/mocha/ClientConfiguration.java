@@ -23,10 +23,7 @@ import mocha.game.NetworkClientGameLogic;
 import mocha.game.Player;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
-import mocha.game.world.ChunkRepository;
-import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.movement.MovementFactory;
@@ -65,15 +62,7 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public ChunkRepository chunkRepository(ChunkFactory chunkFactory) {
-    ChunkRepository chunkRepository = new ChunkRepository();
-    Chunk chunk = chunkFactory.newRandomDefault();
-    chunkRepository.put(new Location(0, 0), chunk);
-    return chunkRepository;
-  }
-
-  @Bean
-  public CollisionFactory collisionFactory(ChunkRepository chunkRepository) {
+  public CollisionFactory collisionFactory(Repository<Chunk, Integer> chunkRepository) {
     return new CollisionFactory(chunkRepository);
   }
 
@@ -103,13 +92,25 @@ public class ClientConfiguration {
   }
 
   @Bean
+  public Repository<Chunk, Integer> chunkRepository() {
+    return new InMemoryRepository<>();
+  }
+
+  @Bean
   public IdFactory<Player> playerIdFactory(Repository<Player, Integer> playerRepository) {
     return new IdFactory<>(playerRepository);
   }
 
   @Bean
-  public Game game(MochaEventBus eventBus, ChunkRepository chunkRepository, List<GameRule> gameRules, Repository<Entity, Integer> entityRepository, Repository<Player, Integer> playerRepository) {
-    return new Game(eventBus, chunkRepository, gameRules, entityRepository, playerRepository);
+  public Game game(
+      MochaEventBus eventBus,
+      List<GameRule> gameRules,
+      Repository<Entity, Integer> entityRepository,
+      Repository<Player, Integer> playerRepository,
+      Repository<Chunk, Integer> chunkRepository
+
+  ) {
+    return new Game(eventBus, gameRules, playerRepository, entityRepository, chunkRepository);
   }
 
   @Bean
@@ -118,11 +119,14 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public List<GameRule> getRules(Repository<Entity, Integer> entityRepository) {
-    MovementRule movementRule = new MovementRule(entityRepository);
+  public List<GameRule> getRules(
+      Repository<Entity, Integer> entityRepository,
+      Repository<Chunk, Integer> chunkRepository
+  ) {
+    MovementRule movementRule = new MovementRule(entityRepository, chunkRepository);
     clientEventBus.register(movementRule);
 
-    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(clientEventBus);
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkRepository);
     clientEventBus.register(pickUpItemsRule);
 
     return Lists.newArrayList(movementRule, pickUpItemsRule);
@@ -153,11 +157,6 @@ public class ClientConfiguration {
   @Bean
   public TileSetFactory tileSetFactory(TileReader tileReader) {
     return new TileSetFactory(tileReader);
-  }
-
-  @Bean
-  public ChunkFactory chunkFactory(TileSetFactory tileSetFactory) {
-    return new ChunkFactory(tileSetFactory);
   }
 
   @Bean

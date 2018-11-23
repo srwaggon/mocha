@@ -20,8 +20,7 @@ import mocha.game.item.ItemRepository;
 import mocha.game.item.ItemType;
 import mocha.game.rule.ArtificialIntelligenceRule;
 import mocha.game.rule.GameRule;
-import mocha.game.world.ChunkRepository;
-import mocha.game.world.chunk.ChunkFactory;
+import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.ServerEntityToEntityRepositoryAdapter;
@@ -59,11 +58,14 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public List<GameRule> getRules(Repository<Entity, Integer> entityRepository) {
-    MovementRule movementRule = new MovementRule(entityRepository);
+  public List<GameRule> getRules(
+      Repository<Entity, Integer> entityRepository,
+      Repository<Chunk, Integer> chunkRepository
+  ) {
+    MovementRule movementRule = new MovementRule(entityRepository, chunkRepository);
     serverEventBus.register(movementRule);
 
-    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(serverEventBus);
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkRepository);
     serverEventBus.register(pickUpItemsRule);
 
     ArtificialIntelligenceRule artificialIntelligenceRule = new ArtificialIntelligenceRule(serverEventBus);
@@ -81,8 +83,13 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Game game(ChunkRepository chunkRepository, List<GameRule> gameRules, Repository<Entity, Integer> entityRepository, Repository<Player, Integer> playerRepository) {
-    return new Game(serverEventBus, chunkRepository, gameRules, entityRepository, playerRepository);
+  public Game game(
+      Repository<Chunk, Integer> chunkRepository,
+      List<GameRule> gameRules,
+      Repository<Entity, Integer> entityRepository,
+      Repository<Player, Integer> playerRepository
+  ) {
+    return new Game(serverEventBus, gameRules, playerRepository, entityRepository, chunkRepository);
   }
 
   @Bean
@@ -116,7 +123,7 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public CollisionFactory collisionFactory(ChunkRepository chunkRepository) {
+  public CollisionFactory collisionFactory(Repository<Chunk, Integer> chunkRepository) {
     return new CollisionFactory(chunkRepository);
   }
 
@@ -140,11 +147,6 @@ public class ServerConfiguration {
     return new TileSetFactory(tileReader);
   }
 
-  @Bean
-  public ChunkFactory chunkFactory(TileSetFactory tileSetFactory) {
-    return new ChunkFactory(tileSetFactory);
-  }
-
   @Bean()
   public TaskService taskService() {
     return new TaskService();
@@ -153,5 +155,10 @@ public class ServerConfiguration {
   @Bean
   public Repository<Entity, Integer> entityRepository(ServerEntityToEntityRepositoryAdapter entityRepository) {
     return new CachingRepository<>(entityRepository);
+  }
+
+  @Bean
+  public Repository<Chunk, Integer> chunkRepository(Repository<Chunk, Integer> chunkRepository) {
+    return new CachingRepository<>(chunkRepository);
   }
 }

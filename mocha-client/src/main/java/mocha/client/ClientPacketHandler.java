@@ -1,6 +1,7 @@
 package mocha.client;
 
 import com.google.common.collect.Queues;
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
@@ -18,15 +19,15 @@ import mocha.game.LocalPlayer;
 import mocha.game.LoginSuccessPacket;
 import mocha.game.Player;
 import mocha.game.PlayerIdentityPacket;
-import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.chunk.ChunkPacket;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityPacket;
 import mocha.game.world.entity.EntityRemovedPacket;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
+import mocha.game.world.tile.TileSetFactory;
+import mocha.game.world.tile.TileType;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
 import mocha.shared.Repository;
@@ -38,8 +39,6 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   private static final Logger log = LoggerFactory.getLogger(ClientPacketHandler.class);
 
   @Inject
-  private ChunkFactory chunkFactory;
-  @Inject
   private Game game;
   @Inject
   private ClientEventBus clientEventBus;
@@ -47,6 +46,11 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   private Repository<Player, Integer> playerRepository;
   @Inject
   private Repository<Entity, Integer> entityRepository;
+  @Inject
+  private Repository<Chunk, Integer> chunkRepository;
+  @Inject
+  private TileSetFactory tileSetFactory;
+
 
   private EventBus packetEventBus = new EventBus();
 
@@ -92,9 +96,11 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   @Subscribe
   @Override
   public void handle(ChunkPacket chunkPacket) {
-    Location location = chunkPacket.getLocation();
-    Chunk chunk = chunkFactory.read(chunkPacket.getChunkDescription());
-    game.getChunkRepository().put(location, chunk);
+    int chunkId = chunkPacket.getChunkId();
+    TileType[] tiles = tileSetFactory.newTilesFromString(chunkPacket.getTilesString());
+    Chunk chunk = new Chunk(chunkId, tiles, Sets.newHashSet());
+
+    chunkRepository.save(chunk);
   }
 
   @Subscribe

@@ -47,6 +47,6 @@ public class CachingRepository<T extends Identified<ID>, ID> implements Reposito
   @Override
   public void delete(T member) {
     repository.delete(member);
-    members.remove(member);
+    members.remove(member.getId());
   }
 }

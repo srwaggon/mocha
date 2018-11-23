@@ -14,8 +14,6 @@ import mocha.game.world.tile.TileType;
 @Entity
 public class ServerChunk extends Chunk {
 
-  private Integer id;
-
   public ServerChunk() {
   }
 
@@ -27,6 +25,11 @@ public class ServerChunk extends Chunk {
   public ServerChunk(Integer id, TileType[] tiles, Set<mocha.game.world.entity.Entity> entities) {
     super(tiles, entities);
     this.id = id;
+  }
+
+  public ServerChunk(Chunk chunk) {
+    super(chunk.tiles, chunk.entities);
+    this.id = chunk.id;
   }
 
   @Id

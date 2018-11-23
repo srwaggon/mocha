@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class InMemoryRepository<T extends Identified<Integer>> implements Repository<T, Integer> {
+
   private Map<Integer, T> members = Maps.newConcurrentMap();
 
   @Override
@@ -16,9 +17,9 @@ public class InMemoryRepository<T extends Identified<Integer>> implements Reposi
   }
 
   @Override
-  public T save(T entity) {
-    members.put(entity.getId(), entity);
-    return entity;
+  public T save(T element) {
+    members.put(element.getId(), element);
+    return element;
   }
 
   @Override
@@ -27,7 +28,7 @@ public class InMemoryRepository<T extends Identified<Integer>> implements Reposi
   }
 
   @Override
-  public void delete(T member) {
-    members.remove(member.getId());
+  public void delete(T element) {
+    members.remove(element.getId());
   }
 }
