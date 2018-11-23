@@ -36,7 +36,7 @@ public class ServerSetup implements CommandLineRunner {
   @Override
   public void run(String... args) {
     createChunks();
-    addEntity();
+//    addEntity();
   }
 
   private void addEntity() {

@@ -107,7 +107,7 @@ public class ServerGameLogic implements GameLogic {
     Movement movement = entityMovementEvent.getMovement();
     EntityMoveCommand entityMove = EntityMoveCommand.builder()
         .entityId(movement.getId())
-        .location(new Location(0, 0))
+        .location(movement.getLocation())
         .direction(movement.getDirection())
         .xOffset(movement.getXOffset())
         .yOffset(movement.getYOffset())

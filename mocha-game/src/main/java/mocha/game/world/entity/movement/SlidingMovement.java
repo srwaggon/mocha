@@ -60,7 +60,7 @@ public class SlidingMovement extends BaseMovement {
   @Override
   public void tick(long now) {
     if (isMoving()) {
-      updateLocation();
+      move();
     }
   }
 
@@ -68,12 +68,18 @@ public class SlidingMovement extends BaseMovement {
     return xOffset != 0 || yOffset != 0;
   }
 
-  private void updateLocation() {
+  private void move() {
     int xDelta = WALK_SPEED * direction.getXMultiplier();
-    int yDelta = WALK_SPEED * direction.getYMultiplier();
     xOffset -= xDelta;
+
+    int yDelta = WALK_SPEED * direction.getYMultiplier();
     yOffset -= yDelta;
 
+    move2(xDelta, 0);
+    move2(0, yDelta);
+  }
+
+  private void move2(int xDelta, int yDelta) {
     Location next = getLocation().addNew(xDelta, yDelta);
 
     Set<Collider> colliders = collision.getColliders(next);
@@ -85,6 +91,14 @@ public class SlidingMovement extends BaseMovement {
 
     if (colliders.stream().noneMatch(Collider::isBlocking)) {
       getLocation().set(next);
+    } else {
+      if (xDelta != 0) {
+        this.xOffset = 0;
+      }
+
+      if (yDelta != 0) {
+        this.yOffset = 0;
+      }
     }
   }
 
