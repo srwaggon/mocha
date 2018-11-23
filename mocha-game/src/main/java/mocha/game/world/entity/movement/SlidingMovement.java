@@ -84,14 +84,9 @@ public class SlidingMovement extends BaseMovement {
 
     Set<Collider> colliders = collision.getColliders(next);
 
-    entityRepository.findById(this.getId())
-        .ifPresent(entity -> colliders.stream()
-            .filter(collider -> !collider.isBlocking())
-            .forEach(collider -> collider.collide(entity)));
+    informColliders(colliders);
 
-    if (colliders.stream().noneMatch(Collider::isBlocking)) {
-      getLocation().set(next);
-    } else {
+    if (colliders.stream().anyMatch(Collider::isBlocking)) {
       if (xDelta != 0) {
         this.xOffset = 0;
       }
@@ -99,7 +94,16 @@ public class SlidingMovement extends BaseMovement {
       if (yDelta != 0) {
         this.yOffset = 0;
       }
+      return;
     }
+
+    getLocation().set(next);
+  }
+
+  private void informColliders(Set<Collider> colliders) {
+    entityRepository.findById(this.getId())
+        .ifPresent(entity -> colliders
+            .forEach(collider -> collider.collide(entity)));
   }
 
   @Override
