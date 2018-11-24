@@ -7,10 +7,10 @@ import mocha.game.world.entity.movement.collision.Collider;
 
 public enum TileType implements Collider {
 
-  GRID('x', false),
+  GRID('+', false),
   DIRT('.', false),
-  STONE('o', true),
-  GRASS('w', false),
+  STONE('#', true),
+  GRASS('_', false),
   WATER('~', false),
   ;
 
