@@ -5,15 +5,16 @@ import mocha.game.PlayerIdentityPacket;
 import mocha.game.world.chunk.ChunkUpdatePacket;
 import mocha.game.world.chunk.RequestChunkByIdPacket;
 import mocha.game.world.chunk.RequestChunkByLocationPacket;
-import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.EntityRemovedPacket;
-import mocha.game.world.item.ItemEntityUpdatePacket;
+import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
+import mocha.game.world.item.ItemEntityUpdatePacket;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
+import mocha.game.world.tile.TileUpdatePacket;
 import mocha.net.packet.message.GlobalMessagePacket;
 
 public enum PacketType {
@@ -26,6 +27,7 @@ public enum PacketType {
   REQUEST_CHUNK_BY_ID(RequestChunkByIdPacket.class),
   REQUEST_CHUNK_BY_LOCATION(RequestChunkByLocationPacket.class),
   CHUNK_UPDATE(ChunkUpdatePacket.class),
+  TILE_UPDATE(TileUpdatePacket.class),
 
   REQUEST_ENTITY_BY_ID(RequestEntityByIdPacket.class),
   REQUEST_ENTITIES_BY_PLAYER_ID(RequestEntitiesByPlayerIdPacket.class),

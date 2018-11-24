@@ -39,6 +39,10 @@ public class MochaConnection extends PacketConnection {
     sendPacket(packetFactory.newChunkPacket(chunk));
   }
 
+  public void sendTileUpdate(Chunk chunk, int x, int y) {
+    sendPacket(packetFactory.newTileUpdatePacket(chunk, x, y));
+  }
+
   public void sendEntityUpdate(Entity entity) {
     sendPacket(packetFactory.newEntityPacket(entity));
   }

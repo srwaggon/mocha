@@ -14,6 +14,10 @@ public abstract class AbstractPacket implements Packet {
     return Integer.parseInt(getData()[index]);
   }
 
+  protected char getDataAsChar(int index) {
+    return getData()[index].charAt(0);
+  }
+
   @Override
   public void build(String[] data) {
     this.data = data;

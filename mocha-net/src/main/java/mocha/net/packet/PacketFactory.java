@@ -21,6 +21,7 @@ import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
 import mocha.game.world.tile.TileStringBuilder;
 import mocha.game.world.tile.TileType;
+import mocha.game.world.tile.TileUpdatePacket;
 
 public class PacketFactory {
 
@@ -81,4 +82,7 @@ public class PacketFactory {
     return new ItemEntityUpdatePacket(itemEntity);
   }
 
+  public Packet newTileUpdatePacket(Chunk chunk, int x, int y) {
+    return new TileUpdatePacket(chunk, x, y);
+  }
 }

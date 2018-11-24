@@ -14,6 +14,7 @@ import mocha.game.world.entity.event.EntityUpdatedEvent;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
+import mocha.game.world.tile.event.TileUpdatedEvent;
 import mocha.shared.task.event.TaskEvent;
 
 public class MochaEventBus extends EventBus {
@@ -36,6 +37,10 @@ public class MochaEventBus extends EventBus {
 
   public void postChunkUpdatedEvent(Chunk chunk) {
     post(new ChunkUpdatedEvent(chunk));
+  }
+
+  public void postTileUpdatedEvent(Chunk chunk, int x, int y) {
+    post(new TileUpdatedEvent(chunk, x, y));
   }
 
   public void postMoveCommand(EntityMoveCommand entityMoveCommand) {

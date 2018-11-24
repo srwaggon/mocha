@@ -30,6 +30,7 @@ import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
 import mocha.game.world.tile.TileSetFactory;
 import mocha.game.world.tile.TileType;
+import mocha.game.world.tile.TileUpdatePacket;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
 import mocha.shared.Repository;
@@ -110,6 +111,15 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
     Chunk chunk = new Chunk(chunkId, tiles);
 
     chunkRepository.save(chunk);
+  }
+
+  @Subscribe
+  public void handle(TileUpdatePacket tileUpdatePacket) {
+    chunkRepository.findById(tileUpdatePacket.getChunkId())
+        .ifPresent(chunk -> {
+          chunk.setTile(tileUpdatePacket.getTileX(), tileUpdatePacket.getTileY(), tileUpdatePacket.getTileType());
+          chunkRepository.save(chunk);
+        });
   }
 
   @Subscribe

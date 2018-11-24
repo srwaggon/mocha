@@ -27,7 +27,6 @@ public class GrassGrowsRule implements GameRule {
     chunkRepository.findAll().forEach(chunk -> {
       if (tryGrowGrass(chunk)) {
         chunkRepository.save(chunk);
-        mochaEventBus.postChunkUpdatedEvent(chunk);
       }
     });
   }
@@ -39,6 +38,7 @@ public class GrassGrowsRule implements GameRule {
         if (shouldGrassGrow(chunk, x, y)) {
           chunk.setTile(x, y, TileType.GRASS);
           updated = true;
+          mochaEventBus.postTileUpdatedEvent(chunk, x, y);
         }
       }
     }

@@ -27,7 +27,6 @@ public class WaterEvaporatesRule implements GameRule {
     chunkRepository.findAll().forEach(chunk -> {
       if (tryEvaporateWater(chunk)) {
         chunkRepository.save(chunk);
-        mochaEventBus.postChunkUpdatedEvent(chunk);
       }
     });
   }
@@ -38,6 +37,7 @@ public class WaterEvaporatesRule implements GameRule {
       for (int x = 0; x < Chunk.SIZE; x++) {
         if (shouldEvaporateWater(chunk, x, y)) {
           chunk.setTile(x, y, TileType.DIRT);
+          mochaEventBus.postTileUpdatedEvent(chunk, x, y);
           updated = true;
         }
       }

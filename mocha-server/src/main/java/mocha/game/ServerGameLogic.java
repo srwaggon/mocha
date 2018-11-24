@@ -25,6 +25,7 @@ import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
+import mocha.game.world.tile.event.TileUpdatedEvent;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.net.packet.MochaConnection;
@@ -106,6 +107,15 @@ public class ServerGameLogic implements GameLogic {
   public void handle(ChunkUpdatedEvent chunkUpdatedEvent) {
     Chunk chunk = chunkUpdatedEvent.getChunk();
     getConnections().forEach(mochaConnection -> mochaConnection.sendChunkUpdate(chunk));
+  }
+
+  @Subscribe
+  public void handle(TileUpdatedEvent tileUpdatedEvent) {
+    Chunk chunk = tileUpdatedEvent.getChunk();
+    int x = tileUpdatedEvent.getX();
+    int y = tileUpdatedEvent.getY();
+    getConnections().forEach(mochaConnection ->
+            mochaConnection.sendTileUpdate(chunk, x, y));
   }
 
   @Subscribe
