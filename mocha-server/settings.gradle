@@ -3,5 +3,5 @@ rootProject.name = 'mocha-server'
 include ':mocha-game'
 project(":mocha-game").projectDir = new File(settingsDir, "../mocha-game")
 
-include ':net'
-project(":net").projectDir = new File(settingsDir, "../net")
+include ':mocha-net'
+project(":mocha-net").projectDir = new File(settingsDir, "../mocha-net")

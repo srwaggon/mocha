@@ -23,8 +23,11 @@ public class NetworkClient implements Runnable {
   @Inject
   private PacketFactory packetFactory;
 
-  @Value("${server.port}")
+  @Value("${mocha.server.port}")
   private int port;
+
+  @Value("${mocha.server.host}")
+  private String host;
 
   @Override
   public void run() {
@@ -37,7 +40,7 @@ public class NetworkClient implements Runnable {
 
   private Socket getSocket() {
     try {
-      return new Socket(getLocalHost(), port);
+      return new Socket(host, port);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

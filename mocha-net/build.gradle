@@ -7,14 +7,8 @@ buildscript {
     }
 }
 
-apply plugin: 'application'
 apply plugin: 'java'
 apply plugin: 'idea'
-
-jar {
-    baseName = 'net'
-    version = '0.0.1-SNAPSHOT'
-}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8

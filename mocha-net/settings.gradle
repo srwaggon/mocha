@@ -1,4 +1,4 @@
-rootProject.name = 'net'
+rootProject.name = 'mocha-net'
 
 include ':mocha-game'
 project(":mocha-game").projectDir = new File(settingsDir, "../mocha-game")

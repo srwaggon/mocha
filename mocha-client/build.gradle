@@ -47,7 +47,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.4'
 
     compile project(":mocha-game")
-    compile project(":net")
+    compile project(":mocha-net")
 
     testImplementation('org.assertj:assertj-core:3.3.0')
     testImplementation("org.mockito:mockito-all:1.9.5")

@@ -1,8 +1,6 @@
 group 'swagnificent.party'
 version '1.0-SNAPSHOT'
 
-
-apply plugin: 'application'
 apply plugin: 'java'
 apply plugin: 'idea'
 
