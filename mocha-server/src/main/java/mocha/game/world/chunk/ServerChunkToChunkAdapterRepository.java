@@ -21,8 +21,8 @@ public class ServerChunkToChunkAdapterRepository implements Repository<Chunk, In
   }
 
   @Override
-  public Chunk save(Chunk element) {
-    return serverChunkJpaRepository.save(new ServerChunk(element));
+  public Chunk save(Chunk chunk) {
+    return serverChunkJpaRepository.save(new ServerChunk(chunk.getId(), chunk.getTiles()));
   }
 
   @Override

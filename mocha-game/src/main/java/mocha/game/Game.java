@@ -5,7 +5,9 @@ import java.util.List;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
+import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
+import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.Movement;
 import mocha.shared.Repository;
@@ -18,13 +20,16 @@ public class Game implements Tickable {
   private Repository<Player, Integer> playerRepository;
   private Repository<Movement, Integer> movementRepository;
   private ChunkService chunkService;
+  private EntitiesInChunkService entitiesInChunkService;
 
   public Game(
       MochaEventBus eventBus,
       List<GameRule> gameRules,
-      Repository<Player, Integer> playerRepository, Repository<Entity, Integer> entityRepository,
+      Repository<Player, Integer> playerRepository,
+      Repository<Entity, Integer> entityRepository,
       Repository<Movement, Integer> movementRepository,
-      ChunkService chunkService
+      ChunkService chunkService,
+      EntitiesInChunkService entitiesInChunkService
   ) {
     this.eventBus = eventBus;
     this.gameRules = gameRules;
@@ -32,6 +37,7 @@ public class Game implements Tickable {
     this.playerRepository = playerRepository;
     this.movementRepository = movementRepository;
     this.chunkService = chunkService;
+    this.entitiesInChunkService = entitiesInChunkService;
   }
 
   @Override
@@ -41,10 +47,15 @@ public class Game implements Tickable {
 
   public Entity addEntity(Entity entity) {
     Entity result = entityRepository.save(entity);
-    Location entityLocation = result.getLocation();
-    chunkService.getChunkAt(entityLocation).add(result);
+    addEntityToChunk(result);
     eventBus.postEntityAddedEvent(result);
     return result;
+  }
+
+  private void addEntityToChunk(Entity entity) {
+    Location entityLocation = entity.getLocation();
+    Chunk chunk = chunkService.getChunkAt(entityLocation);
+    entitiesInChunkService.put(chunk, entity);
   }
 
   public void removeEntity(int entityId) {
@@ -53,10 +64,15 @@ public class Game implements Tickable {
 
   public void removeEntity(Entity entity) {
     entityRepository.delete(entity);
-    Location entityLocation = entity.getLocation();
-    chunkService.getChunkAt(entityLocation).remove(entity);
+    removeEntityFromChunk(entity);
     movementRepository.findById(entity.getId()).ifPresent(movementRepository::delete);
     eventBus.postEntityRemovedEvent(entity);
+  }
+
+  private void removeEntityFromChunk(Entity entity) {
+    Location entityLocation = entity.getLocation();
+    Chunk chunk = chunkService.getChunkAt(entityLocation);
+    entitiesInChunkService.remove(chunk, entity);
   }
 
   public void addPlayer(Player player) {

@@ -26,6 +26,7 @@ import mocha.game.rule.GameRule;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.chunk.ChunkService;
+import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
@@ -64,8 +65,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public CollisionFactory collisionFactory(ChunkService chunkService) {
-    return new CollisionFactory(chunkService);
+  public CollisionFactory collisionFactory(ChunkService chunkService, EntitiesInChunkService entitiesInChunkService) {
+    return new CollisionFactory(chunkService, entitiesInChunkService);
   }
 
   @Bean
@@ -113,9 +114,10 @@ public class ClientConfiguration {
       Repository<Entity, Integer> entityRepository,
       Repository<Player, Integer> playerRepository,
       Repository<Movement, Integer> movementRepository,
-      ChunkService chunkService
+      ChunkService chunkService,
+      EntitiesInChunkService entitiesInChunkService
   ) {
-    return new Game(eventBus, gameRules, playerRepository, entityRepository, movementRepository, chunkService);
+    return new Game(eventBus, gameRules, playerRepository, entityRepository, movementRepository, chunkService, entitiesInChunkService);
   }
 
   @Bean
@@ -126,13 +128,12 @@ public class ClientConfiguration {
   @Bean
   public List<GameRule> getRules(
       Repository<Entity, Integer> entityRepository,
-      Repository<Chunk, Integer> chunkRepository,
       Repository<Movement, Integer> movementRepository,
-      ChunkService chunkService
-  ) {
-    MovementRule movementRule = new MovementRule(entityRepository, movementRepository, chunkService);
+      ChunkService chunkService,
+      EntitiesInChunkService entitiesInChunkService) {
+    MovementRule movementRule = new MovementRule(entityRepository, movementRepository, chunkService, entitiesInChunkService);
 
-    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkRepository, chunkService);
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService);
     clientEventBus.register(pickUpItemsRule);
 
     return Lists.newArrayList(
@@ -182,6 +183,11 @@ public class ClientConfiguration {
   @Scope("prototype")
   Logger logger(InjectionPoint injectionPoint) {
     return LoggerFactory.getLogger(injectionPoint.getMethodParameter().getContainingClass());
+  }
+
+  @Bean
+  public EntitiesInChunkService entitiesInChunkService(Repository<Entity, Integer> entityRepository) {
+    return new EntitiesInChunkService(entityRepository);
   }
 
 }

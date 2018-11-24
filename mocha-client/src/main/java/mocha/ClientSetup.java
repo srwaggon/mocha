@@ -1,7 +1,5 @@
 package mocha;
 
-import com.google.common.collect.Sets;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -42,7 +40,7 @@ public class ClientSetup implements CommandLineRunner {
   @Override
   public void run(String... args) {
     if (!isOnline) {
-      chunkRepository.save(new Chunk(1, tileSetFactory.createRandomTiles(), Sets.newHashSet()));
+      chunkRepository.save(new Chunk(1, tileSetFactory.createRandomTiles()));
       Entity playerEntity = new Entity(0, new Location(0, 0));
       LocalPlayer player = new LocalPlayer(playerEntity);
 

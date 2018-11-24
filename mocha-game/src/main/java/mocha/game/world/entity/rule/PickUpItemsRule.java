@@ -13,17 +13,14 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.PickUpItemCommand;
-import mocha.shared.Repository;
 
 public class PickUpItemsRule implements GameRule {
 
-  private Repository<Chunk, Integer> chunkRepository;
   private ChunkService chunkService;
 
   private Queue<PickUpItemCommand> pickUpItemCommands = Lists.newLinkedList();
 
-  public PickUpItemsRule(Repository<Chunk, Integer> chunkRepository, ChunkService chunkService) {
-    this.chunkRepository = chunkRepository;
+  public PickUpItemsRule(ChunkService chunkService) {
     this.chunkService = chunkService;
   }
 
@@ -47,7 +44,7 @@ public class PickUpItemsRule implements GameRule {
 
   private void removeEntity(Game game, Entity pickingUpEntity, Chunk chunk) {
     chunk.getEntitiesAt(pickingUpEntity.getLocation()).stream()
-        .filter(entity -> entity.getId() != pickingUpEntity.getId())
+        .filter(entity -> !entity.getId().equals(pickingUpEntity.getId()))
         .findFirst()
         .ifPresent(game::removeEntity);
   }

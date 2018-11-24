@@ -4,8 +4,8 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
+import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketListener;
@@ -16,20 +16,26 @@ import mocha.shared.Repository;
 @Component
 class PlayerFactory {
 
-  @Inject
   private ServerEventBus serverEventBus;
-
-  @Inject
-  private Repository<Chunk, Integer> chunkRepository;
-
-  @Inject
   private Repository<Player, Integer> playerRepository;
-
-  @Inject
   private Repository<Entity, Integer> entityRepository;
+  private ChunkService chunkService;
+  private EntitiesInChunkService entitiesInChunkService;
 
   @Inject
-  private ChunkService chunkService;
+  public PlayerFactory(
+      ServerEventBus serverEventBus,
+      Repository<Player, Integer> playerRepository,
+      Repository<Entity, Integer> entityRepository,
+      ChunkService chunkService,
+      EntitiesInChunkService entitiesInChunkService
+  ) {
+    this.serverEventBus = serverEventBus;
+    this.playerRepository = playerRepository;
+    this.entityRepository = entityRepository;
+    this.chunkService = chunkService;
+    this.entitiesInChunkService = entitiesInChunkService;
+  }
 
   NetworkPlayer newNetworkPlayer(MochaConnection mochaConnection, int playerId, Entity entity) {
     ServerPacketHandler serverPacketHandler = newServerPacketHandler(mochaConnection, playerId, chunkService);
@@ -55,7 +61,8 @@ class PlayerFactory {
         playerId,
         entityRepository,
         playerRepository,
-        chunkService
+        chunkService,
+        entitiesInChunkService
     );
   }
 

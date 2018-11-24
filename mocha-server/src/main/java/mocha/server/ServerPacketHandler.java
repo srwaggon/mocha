@@ -9,8 +9,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import mocha.game.Player;
 import mocha.game.world.Location;
+import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.chunk.RequestChunkPacket;
+import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
@@ -32,6 +34,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   private Repository<Entity, Integer> entityRepository;
   private Repository<Player, Integer> playerRepository;
   private ChunkService chunkService;
+  private EntitiesInChunkService entitiesInChunkService;
 
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
 
@@ -41,13 +44,14 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
       int playerId,
       Repository<Entity, Integer> entityRepository,
       Repository<Player, Integer> playerRepository,
-      ChunkService chunkService) {
+      ChunkService chunkService, EntitiesInChunkService entitiesInChunkService) {
     this.mochaConnection = mochaConnection;
     this.serverEventBus = serverEventBus;
     this.playerId = playerId;
     this.entityRepository = entityRepository;
     this.playerRepository = playerRepository;
     this.chunkService = chunkService;
+    this.entitiesInChunkService = entitiesInChunkService;
     packetEventBus = new EventBus();
     packetEventBus.register(this);
   }
@@ -106,7 +110,9 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Override
   public void handle(RequestEntitiesInChunkPacket requestEntitiesInChunkPacket) {
     Location location = requestEntitiesInChunkPacket.getLocation();
-    chunkService.getChunkAt(location).getEntities().forEach(mochaConnection::sendEntityUpdate);
+    Chunk chunk = chunkService.getChunkAt(location);
+    entitiesInChunkService.getEntitiesInChunk(chunk)
+        .forEach(mochaConnection::sendEntityUpdate);
   }
 
   @Subscribe

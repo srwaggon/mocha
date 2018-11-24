@@ -1,14 +1,20 @@
 package mocha.game.world.entity.movement.collision;
 
 import mocha.game.world.chunk.ChunkService;
+import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 
 public class CollisionFactory {
 
   private ChunkService chunkService;
+  private EntitiesInChunkService entitiesInChunkService;
 
-  public CollisionFactory(ChunkService chunkService) {
+  public CollisionFactory(
+      ChunkService chunkService,
+      EntitiesInChunkService entitiesInChunkService
+  ) {
     this.chunkService = chunkService;
+    this.entitiesInChunkService = entitiesInChunkService;
   }
 
   public SimpleCollision newSimpleCollision() {
@@ -24,7 +30,7 @@ public class CollisionFactory {
   }
 
   private EntityCollision newEntityCollision(Entity entity, int width, int height) {
-    return new EntityCollision(chunkService, entity, width, height);
+    return new EntityCollision(chunkService, entitiesInChunkService, entity, width, height);
   }
 
   public HitBoxCollision newEntityHitBoxCollision(Entity entity, int width, int height) {

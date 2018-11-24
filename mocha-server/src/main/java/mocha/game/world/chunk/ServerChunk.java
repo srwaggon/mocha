@@ -1,7 +1,5 @@
 package mocha.game.world.chunk;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -17,19 +15,8 @@ public class ServerChunk extends Chunk {
   public ServerChunk() {
   }
 
-  public ServerChunk(Integer id, Chunk chunk) {
-    super(chunk.tiles, chunk.entities);
-    this.id = id;
-  }
-
-  public ServerChunk(Integer id, TileType[] tiles, Set<mocha.game.world.entity.Entity> entities) {
-    super(tiles, entities);
-    this.id = id;
-  }
-
-  public ServerChunk(Chunk chunk) {
-    super(chunk.tiles, chunk.entities);
-    this.id = chunk.id;
+  public ServerChunk(Integer id, TileType[] tiles) {
+    super(id, tiles);
   }
 
   @Id

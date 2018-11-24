@@ -1,7 +1,6 @@
 package mocha.client;
 
 import com.google.common.collect.Queues;
-import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
@@ -98,7 +97,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   public void handle(ChunkPacket chunkPacket) {
     int chunkId = chunkPacket.getChunkId();
     TileType[] tiles = tileSetFactory.newTilesFromString(chunkPacket.getTilesString());
-    Chunk chunk = new Chunk(chunkId, tiles, Sets.newHashSet());
+    Chunk chunk = new Chunk(chunkId, tiles);
 
     chunkRepository.save(chunk);
   }

@@ -22,6 +22,7 @@ import mocha.game.rule.GameRule;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.chunk.ChunkService;
+import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.ServerEntityToEntityRepositoryAdapter;
 import mocha.game.world.entity.movement.Movement;
@@ -65,12 +66,12 @@ public class ServerConfiguration {
       Repository<Entity, Integer> entityRepository,
       Repository<Chunk, Integer> chunkRepository,
       Repository<Movement, Integer> movementRepository,
-      ChunkService chunkService
-  ) {
-    MovementRule movementRule = new MovementRule(entityRepository, movementRepository, chunkService);
+      ChunkService chunkService,
+      EntitiesInChunkService entitiesInChunkService) {
+    MovementRule movementRule = new MovementRule(entityRepository, movementRepository, chunkService, entitiesInChunkService);
     serverEventBus.register(movementRule);
 
-    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkRepository, chunkService);
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService);
     serverEventBus.register(pickUpItemsRule);
 
     GrassGrowsRule grassGrowsRule = new GrassGrowsRule(chunkRepository, serverEventBus);
@@ -96,8 +97,9 @@ public class ServerConfiguration {
       Repository<Entity, Integer> entityRepository,
       Repository<Player, Integer> playerRepository,
       Repository<Movement, Integer> movementRepository,
-      ChunkService chunkService) {
-    return new Game(serverEventBus, gameRules, playerRepository, entityRepository, movementRepository, chunkService);
+      ChunkService chunkService, EntitiesInChunkService entitiesInChunkService
+  ) {
+    return new Game(serverEventBus, gameRules, playerRepository, entityRepository, movementRepository, chunkService, entitiesInChunkService);
   }
 
   @Bean
@@ -131,8 +133,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public CollisionFactory collisionFactory(ChunkService chunkService) {
-    return new CollisionFactory(chunkService);
+  public CollisionFactory collisionFactory(ChunkService chunkService, EntitiesInChunkService entitiesInChunkService) {
+    return new CollisionFactory(chunkService, entitiesInChunkService);
   }
 
   @Bean
@@ -178,5 +180,10 @@ public class ServerConfiguration {
   @Bean
   public ChunkService chunkService(ChunkFactory chunkFactory, Repository<Chunk, Integer> chunkRepository) {
     return new ChunkService(chunkFactory, chunkRepository);
+  }
+
+  @Bean
+  public EntitiesInChunkService entitiesInChunkService(Repository<Entity, Integer> entityRepository) {
+    return new EntitiesInChunkService(entityRepository);
   }
 }

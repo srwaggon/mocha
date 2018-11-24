@@ -20,24 +20,9 @@ public class Chunk implements Identified<Integer> {
 
   int id;
   TileType[] tiles = new TileType[Chunk.SIZE * Chunk.SIZE];
-  Set<Entity> entities = Sets.newHashSet();
+  private Set<Entity> entities = Sets.newHashSet();
 
   public Chunk() {
-  }
-
-  public Chunk(TileType[] tiles) {
-    this.tiles = tiles;
-  }
-
-  public Chunk(TileType[] tiles, Set<Entity> entities) {
-    this.tiles = tiles;
-    this.entities = entities;
-  }
-
-  public Chunk(int id, TileType[] tiles, Set<Entity> entities) {
-    this.id = id;
-    this.tiles = tiles;
-    this.entities = entities;
   }
 
   public Chunk(int id, TileType[] tiles) {
@@ -122,16 +107,8 @@ public class Chunk implements Identified<Integer> {
     return results;
   }
 
-  public void add(Entity entity) {
-    entities.add(entity);
-  }
-
   public void remove(Entity entity) {
     entities.remove(entity);
-  }
-
-  public Set<Entity> getEntities() {
-    return Sets.newHashSet(entities);
   }
 
   public Set<Entity> getEntitiesAt(Location location) {
