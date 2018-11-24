@@ -44,6 +44,6 @@ public class EntityCollision extends SimpleCollision {
   }
 
   private boolean isNotSelf(Entity entity) {
-    return entity.getId() != this.entity.getId();
+    return !entity.getId().equals(this.entity.getId());
   }
 }

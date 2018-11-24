@@ -3,8 +3,6 @@ package mocha.game.world.chunk;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import mocha.game.world.tile.TileType;
@@ -15,29 +13,28 @@ public class ServerChunk extends Chunk {
   public ServerChunk() {
   }
 
-  public ServerChunk(Integer id, TileType[] tiles) {
+  ServerChunk(Integer id, TileType[] tiles) {
     super(id, tiles);
   }
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   public Integer getId() {
-    return id;
+    return super.getId();
   }
 
   public void setId(Integer id) {
-    this.id = id;
+    super.setId(id);
   }
 
   @Convert(converter = TileTypeArrayConverter.class)
   @Column(length = 256)
   @Override
   public TileType[] getTiles() {
-    return tiles;
+    return super.getTiles();
   }
 
   @Override
   public void setTiles(TileType[] tiles) {
-    this.tiles = tiles;
+    super.setTiles(tiles);
   }
 }

@@ -18,8 +18,8 @@ public class Chunk implements Identified<Integer> {
 
   public final static int SIZE = 16;
 
-  int id;
-  TileType[] tiles = new TileType[Chunk.SIZE * Chunk.SIZE];
+  private int id;
+  private TileType[] tiles = new TileType[Chunk.SIZE * Chunk.SIZE];
   private Set<Entity> entities = Sets.newHashSet();
 
   public Chunk() {
