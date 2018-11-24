@@ -4,12 +4,12 @@ import mocha.game.world.Location;
 import mocha.net.packet.AbstractPacket;
 import mocha.net.packet.PacketType;
 
-public class RequestChunkPacket extends AbstractPacket {
+public class RequestChunkByLocationPacket extends AbstractPacket {
 
-  public RequestChunkPacket() {
+  public RequestChunkByLocationPacket() {
   }
 
-  public RequestChunkPacket(Location location) {
+  public RequestChunkByLocationPacket(Location location) {
     data = new String[3];
     data[0] = getType().name();
     data[1] = "" + location.getX();
@@ -18,7 +18,7 @@ public class RequestChunkPacket extends AbstractPacket {
 
   @Override
   public PacketType getType() {
-    return PacketType.REQUEST_CHUNK;
+    return PacketType.REQUEST_CHUNK_BY_LOCATION;
   }
 
   public Location getLocation() {

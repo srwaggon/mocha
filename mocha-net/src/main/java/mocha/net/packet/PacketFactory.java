@@ -3,16 +3,22 @@ package mocha.net.packet;
 import mocha.game.LoginSuccessPacket;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.chunk.ChunkPacket;
-import mocha.game.world.chunk.RequestChunkPacket;
+import mocha.game.world.chunk.ChunkUpdatePacket;
+import mocha.game.world.chunk.RequestChunkByLocationPacket;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityPacket;
+import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.EntityRemovedPacket;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
+import mocha.game.world.item.Item;
+import mocha.game.world.item.ItemEntity;
+import mocha.game.world.item.ItemEntityUpdatePacket;
+import mocha.game.world.item.ItemPrototype;
+import mocha.game.world.item.ItemPrototypeUpdatePacket;
+import mocha.game.world.item.ItemUpdatePacket;
 import mocha.game.world.tile.TileStringBuilder;
 import mocha.game.world.tile.TileType;
 
@@ -28,23 +34,23 @@ public class PacketFactory {
     return new LoginSuccessPacket(playerId);
   }
 
-  ChunkPacket newChunkPacket(Chunk chunk) {
+  ChunkUpdatePacket newChunkPacket(Chunk chunk) {
     int chunkId = chunk.getId();
     TileType[] tiles = chunk.getTiles();
     String tileString = tileStringBuilder.build(tiles);
-    return new ChunkPacket(chunkId, tileString);
+    return new ChunkUpdatePacket(chunkId, tileString);
   }
 
-  RequestChunkPacket newChunkRequestPacket(Location location) {
-    return new RequestChunkPacket(location);
+  RequestChunkByLocationPacket newChunkRequestPacket(Location location) {
+    return new RequestChunkByLocationPacket(location);
   }
 
   RequestEntitiesInChunkPacket newRequestEntitiesInChunkPacket(Location location) {
     return new RequestEntitiesInChunkPacket(location);
   }
 
-  EntityPacket newEntityPacket(Entity entity) {
-    return new EntityPacket(entity);
+  EntityUpdatePacket newEntityPacket(Entity entity) {
+    return new EntityUpdatePacket(entity);
   }
 
   public MovePacket newMovePacket(EntityMoveCommand entityMoveCommand) {
@@ -62,4 +68,17 @@ public class PacketFactory {
   RequestEntitiesByPlayerIdPacket newRequestEntitiesByPlayerIdPacket(int playerId, int... entityIds) {
     return new RequestEntitiesByPlayerIdPacket(playerId, entityIds);
   }
+
+  ItemPrototypeUpdatePacket newItemPrototypeUpdatePacket(ItemPrototype itemPrototype) {
+    return new ItemPrototypeUpdatePacket(itemPrototype);
+  }
+
+  ItemUpdatePacket newItemUpdatePacket(Item item) {
+    return new ItemUpdatePacket(item);
+  }
+
+  ItemEntityUpdatePacket newItemEntityUpdatePacket(ItemEntity itemEntity) {
+    return new ItemEntityUpdatePacket(itemEntity);
+  }
+
 }

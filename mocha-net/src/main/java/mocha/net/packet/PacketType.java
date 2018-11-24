@@ -2,14 +2,18 @@ package mocha.net.packet;
 
 import mocha.game.LoginSuccessPacket;
 import mocha.game.PlayerIdentityPacket;
-import mocha.game.world.chunk.ChunkPacket;
-import mocha.game.world.chunk.RequestChunkPacket;
-import mocha.game.world.entity.EntityPacket;
+import mocha.game.world.chunk.ChunkUpdatePacket;
+import mocha.game.world.chunk.RequestChunkByIdPacket;
+import mocha.game.world.chunk.RequestChunkByLocationPacket;
+import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.EntityRemovedPacket;
+import mocha.game.world.item.ItemEntityUpdatePacket;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
+import mocha.game.world.item.ItemPrototypeUpdatePacket;
+import mocha.game.world.item.ItemUpdatePacket;
 import mocha.net.packet.message.GlobalMessagePacket;
 
 public enum PacketType {
@@ -19,15 +23,22 @@ public enum PacketType {
 
   GLOBAL_MESSAGE(GlobalMessagePacket.class),
 
-  REQUEST_CHUNK(RequestChunkPacket.class),
-  CHUNK(ChunkPacket.class),
+  REQUEST_CHUNK_BY_ID(RequestChunkByIdPacket.class),
+  REQUEST_CHUNK_BY_LOCATION(RequestChunkByLocationPacket.class),
+  CHUNK_UPDATE(ChunkUpdatePacket.class),
 
   REQUEST_ENTITY_BY_ID(RequestEntityByIdPacket.class),
   REQUEST_ENTITIES_BY_PLAYER_ID(RequestEntitiesByPlayerIdPacket.class),
   REQUEST_ENTITIES_IN_CHUNK(RequestEntitiesInChunkPacket.class),
-  ENTITY(EntityPacket.class),
+
+  ENTITY_UPDATE(EntityUpdatePacket.class),
   ENTITY_REMOVED(EntityRemovedPacket.class),
-  MOVE(MovePacket.class);
+  MOVE(MovePacket.class),
+
+  ITEM_PROTOTYPE_UPDATE(ItemPrototypeUpdatePacket.class),
+  ITEM_UPDATE(ItemUpdatePacket.class),
+  ITEM_ENTITY_UPDATE(ItemEntityUpdatePacket.class),
+  ;
 
   public static final String SEPARATOR = " ";
   private final Class<? extends Packet> packetClass;

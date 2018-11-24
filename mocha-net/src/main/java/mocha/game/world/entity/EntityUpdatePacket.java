@@ -3,12 +3,12 @@ package mocha.game.world.entity;
 import mocha.game.world.Location;
 import mocha.net.packet.PacketType;
 
-public class EntityPacket extends AbstractEntityPacket {
+public class EntityUpdatePacket extends AbstractEntityPacket {
 
-  public EntityPacket() {
+  public EntityUpdatePacket() {
   }
 
-  public EntityPacket(Entity entity) {
+  public EntityUpdatePacket(Entity entity) {
     data = new String[4];
     data[0] = getType().name();
     data[1] = "" + entity.getId();
@@ -18,7 +18,7 @@ public class EntityPacket extends AbstractEntityPacket {
 
   @Override
   public PacketType getType() {
-    return PacketType.ENTITY;
+    return PacketType.ENTITY_UPDATE;
   }
 
   public Entity getEntity() {

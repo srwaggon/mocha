@@ -1,4 +1,4 @@
-package mocha.game.item;
+package mocha.game.world.item;
 
 public enum ItemType {
   ARMOR,

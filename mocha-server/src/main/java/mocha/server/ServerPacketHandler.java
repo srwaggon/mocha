@@ -11,7 +11,7 @@ import mocha.game.Player;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
-import mocha.game.world.chunk.RequestChunkPacket;
+import mocha.game.world.chunk.RequestChunkByLocationPacket;
 import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
@@ -89,8 +89,8 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Subscribe
   @Override
-  public void handle(RequestChunkPacket requestChunkPacket) {
-    Location location = requestChunkPacket.getLocation();
+  public void handle(RequestChunkByLocationPacket requestChunkByLocationPacket) {
+    Location location = requestChunkByLocationPacket.getLocation();
     mochaConnection.sendChunkUpdate(chunkService.getChunkAt(location));
   }
 

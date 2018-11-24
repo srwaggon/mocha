@@ -1,9 +1,9 @@
 package mocha.net.packet;
 
 import mocha.net.packet.message.GlobalMessagePacket;
-import mocha.game.world.chunk.ChunkPacket;
-import mocha.game.world.chunk.RequestChunkPacket;
-import mocha.game.world.entity.EntityPacket;
+import mocha.game.world.chunk.ChunkUpdatePacket;
+import mocha.game.world.chunk.RequestChunkByLocationPacket;
+import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
@@ -12,9 +12,9 @@ public interface PacketHandler {
 
   void handle(int senderId, Packet packet);
 
-  void handle(ChunkPacket chunkPacket);
+  void handle(ChunkUpdatePacket chunkUpdatePacket);
 
-  void handle(RequestChunkPacket requestChunkPacket);
+  void handle(RequestChunkByLocationPacket requestChunkByLocationPacket);
 
   void handle(UnknownPacket unknownPacket);
 
@@ -22,7 +22,7 @@ public interface PacketHandler {
 
   void handle(RequestEntityByIdPacket requestEntityByIdPacket);
 
-  void handle(EntityPacket entityPacket);
+  void handle(EntityUpdatePacket entityUpdatePacket);
 
   void handle(RequestEntitiesInChunkPacket requestEntitiesInChunkPacket);
 

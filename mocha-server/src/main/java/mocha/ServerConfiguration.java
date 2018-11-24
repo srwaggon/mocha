@@ -2,7 +2,6 @@ package mocha;
 
 import com.google.common.collect.Lists;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,11 +12,6 @@ import javax.inject.Inject;
 import mocha.game.Game;
 import mocha.game.GameLoop;
 import mocha.game.Player;
-import mocha.game.item.Item;
-import mocha.game.item.ItemPrototype;
-import mocha.game.item.ItemPrototypeRepository;
-import mocha.game.item.ItemRepository;
-import mocha.game.item.ItemType;
 import mocha.game.rule.GameRule;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
@@ -51,23 +45,13 @@ public class ServerConfiguration {
   private ServerEventBus serverEventBus;
 
   @Bean
-  public CommandLineRunner demo(ItemRepository itemRepository, ItemPrototypeRepository itemPrototypeRepository) {
-    return (args) -> {
-      itemRepository.count();
-      ItemPrototype pickaxe = itemPrototypeRepository.save(new ItemPrototype(0L, "Pickaxe", 100, ItemType.TOOL));
-      itemRepository.save(new Item(0L, pickaxe, 0, 0, 0, 0, 0));
-      itemRepository.count();
-      itemPrototypeRepository.count();
-    };
-  }
-
-  @Bean
   public List<GameRule> getRules(
       Repository<Entity, Integer> entityRepository,
       Repository<Chunk, Integer> chunkRepository,
       Repository<Movement, Integer> movementRepository,
       ChunkService chunkService,
-      EntitiesInChunkService entitiesInChunkService) {
+      EntitiesInChunkService entitiesInChunkService
+  ) {
     MovementRule movementRule = new MovementRule(entityRepository, movementRepository, chunkService, entitiesInChunkService);
     serverEventBus.register(movementRule);
 

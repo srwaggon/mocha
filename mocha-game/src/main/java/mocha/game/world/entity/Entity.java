@@ -6,8 +6,8 @@ import mocha.shared.Identified;
 
 public class Entity implements Collider, Identified<Integer> {
 
-  Integer id;
-  Location location = new Location();
+  private Integer id;
+  private Location location = new Location();
 
   public Entity() {
   }

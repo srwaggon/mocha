@@ -14,6 +14,8 @@ import javax.inject.Inject;
 
 import mocha.game.event.PlayerAddedEvent;
 import mocha.game.event.PlayerRemovedEvent;
+import mocha.game.item.ItemPrototypeRepository;
+import mocha.game.item.ItemRepository;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.event.ChunkUpdatedEvent;
 import mocha.game.world.entity.Entity;
@@ -34,29 +36,36 @@ import mocha.shared.Repository;
 public class ServerGameLogic implements GameLogic {
 
   private Logger log = LoggerFactory.getLogger(ServerGameLogic.class);
-
-  @Inject
-  private ServerEventBus eventBus;
-
-  @Inject
-  private Game game;
-
-  @Inject
-  private IdFactory<Player> playerIdFactory;
-
-  @Inject
-  private PlayerFactory playerFactory;
-
-  @Inject
-  private Repository<Entity, Integer> entityRepository;
-
-  @Inject
-  private Repository<Movement, Integer> movementRepository;
-
-  @Inject
-  private MovementFactory movementFactory;
-
   private Map<Integer, MochaConnection> mochaConnectionsByPlayerId = Maps.newConcurrentMap();
+
+  private ServerEventBus eventBus;
+  private Game game;
+  private IdFactory<Player> playerIdFactory;
+  private PlayerFactory playerFactory;
+  private Repository<Movement, Integer> movementRepository;
+  private MovementFactory movementFactory;
+  private ItemPrototypeRepository itemPrototypeRepository;
+  private ItemRepository itemRepository;
+
+
+  @Inject
+  public ServerGameLogic(
+      ServerEventBus eventBus,
+      Game game,
+      IdFactory<Player> playerIdFactory,
+      PlayerFactory playerFactory,
+      Repository<Movement, Integer> movementRepository,
+      MovementFactory movementFactory,
+      ItemPrototypeRepository itemPrototypeRepository, ItemRepository itemRepository) {
+    this.eventBus = eventBus;
+    this.game = game;
+    this.playerIdFactory = playerIdFactory;
+    this.playerFactory = playerFactory;
+    this.movementRepository = movementRepository;
+    this.movementFactory = movementFactory;
+    this.itemPrototypeRepository = itemPrototypeRepository;
+    this.itemRepository = itemRepository;
+  }
 
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
@@ -65,12 +74,14 @@ public class ServerGameLogic implements GameLogic {
     MochaConnection mochaConnection = connectedEvent.getMochaConnection();
 
     int playerId = playerIdFactory.newId();
-    Entity playerEntity = new Entity();
-    Entity entity = game.addEntity(playerEntity);
+    Entity entity = game.addEntity(new Entity());
     movementRepository.save(movementFactory.newSlidingMovement(entity));
     NetworkPlayer player = playerFactory.newNetworkPlayer(mochaConnection, playerId, entity);
     mochaConnectionsByPlayerId.put(playerId, mochaConnection);
     game.addPlayer(player);
+
+    itemPrototypeRepository.findAll().forEach(mochaConnection::sendItemPrototypeUpdate);
+    itemRepository.findAll().forEach(mochaConnection::sendItemUpdate);
 
     mochaConnection.sendLoginSuccessful(playerId);
   }

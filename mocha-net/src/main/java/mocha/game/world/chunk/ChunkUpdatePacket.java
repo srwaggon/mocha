@@ -3,15 +3,15 @@ package mocha.game.world.chunk;
 import mocha.net.packet.AbstractPacket;
 import mocha.net.packet.PacketType;
 
-public class ChunkPacket extends AbstractPacket {
+public class ChunkUpdatePacket extends AbstractPacket {
 
   private static final int ID_INDEX = 1;
   private static final int TILE_DATA_INDEX = 2;
 
-  public ChunkPacket() {
+  public ChunkUpdatePacket() {
   }
 
-  public ChunkPacket(int chunkId, String tileData) {
+  public ChunkUpdatePacket(int chunkId, String tileData) {
     data = new String[3];
     data[0] = getType().name();
     data[ID_INDEX] = "" + chunkId;
@@ -20,7 +20,7 @@ public class ChunkPacket extends AbstractPacket {
 
   @Override
   public PacketType getType() {
-    return PacketType.CHUNK;
+    return PacketType.CHUNK_UPDATE;
   }
 
   public int getChunkId() {

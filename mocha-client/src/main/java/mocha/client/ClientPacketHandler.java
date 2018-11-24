@@ -19,12 +19,15 @@ import mocha.game.LoginSuccessPacket;
 import mocha.game.Player;
 import mocha.game.PlayerIdentityPacket;
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.chunk.ChunkPacket;
+import mocha.game.world.chunk.ChunkUpdatePacket;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityPacket;
+import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.EntityRemovedPacket;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
+import mocha.game.world.item.ItemEntityUpdatePacket;
+import mocha.game.world.item.ItemPrototypeUpdatePacket;
+import mocha.game.world.item.ItemUpdatePacket;
 import mocha.game.world.tile.TileSetFactory;
 import mocha.game.world.tile.TileType;
 import mocha.net.packet.Packet;
@@ -36,24 +39,32 @@ import mocha.shared.task.SleepyRunnable;
 public class ClientPacketHandler extends SimplePacketHandler implements SleepyRunnable {
 
   private static final Logger log = LoggerFactory.getLogger(ClientPacketHandler.class);
+  private EventBus packetEventBus = new EventBus();
+  private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
 
-  @Inject
   private Game game;
-  @Inject
   private ClientEventBus clientEventBus;
-  @Inject
   private Repository<Player, Integer> playerRepository;
-  @Inject
   private Repository<Entity, Integer> entityRepository;
-  @Inject
   private Repository<Chunk, Integer> chunkRepository;
-  @Inject
   private TileSetFactory tileSetFactory;
 
-
-  private EventBus packetEventBus = new EventBus();
-
-  private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
+  @Inject
+  public ClientPacketHandler(
+      Game game,
+      ClientEventBus clientEventBus,
+      Repository<Player, Integer> playerRepository,
+      Repository<Entity, Integer> entityRepository,
+      Repository<Chunk, Integer> chunkRepository,
+      TileSetFactory tileSetFactory
+  ) {
+    this.game = game;
+    this.clientEventBus = clientEventBus;
+    this.playerRepository = playerRepository;
+    this.entityRepository = entityRepository;
+    this.chunkRepository = chunkRepository;
+    this.tileSetFactory = tileSetFactory;
+  }
 
   @Override
   public void run() {
@@ -62,7 +73,6 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
     while (true) {
       if (!packets.isEmpty()) {
         Packet packet = packets.poll();
-        System.out.println(packet);
         packetEventBus.post(packet);
         nap();
       }
@@ -94,9 +104,9 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Subscribe
   @Override
-  public void handle(ChunkPacket chunkPacket) {
-    int chunkId = chunkPacket.getChunkId();
-    TileType[] tiles = tileSetFactory.newTilesFromString(chunkPacket.getTilesString());
+  public void handle(ChunkUpdatePacket chunkUpdatePacket) {
+    int chunkId = chunkUpdatePacket.getChunkId();
+    TileType[] tiles = tileSetFactory.newTilesFromString(chunkUpdatePacket.getTilesString());
     Chunk chunk = new Chunk(chunkId, tiles);
 
     chunkRepository.save(chunk);
@@ -104,8 +114,8 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Subscribe
   @Override
-  public void handle(EntityPacket entityPacket) {
-    clientEventBus.postEntityUpdatedEvent(entityPacket.getEntity());
+  public void handle(EntityUpdatePacket entityUpdatePacket) {
+    clientEventBus.postEntityUpdatedEvent(entityUpdatePacket.getEntity());
   }
 
   @Subscribe
@@ -117,5 +127,17 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   @Subscribe
   public void handle(EntityRemovedPacket entityRemovedPacket) {
     game.removeEntity(entityRemovedPacket.getId());
+  }
+
+  @Subscribe
+  public void handle(ItemPrototypeUpdatePacket itemPrototypeUpdatePacket) {
+  }
+
+  @Subscribe
+  public void handle(ItemUpdatePacket itemUpdatePacket) {
+  }
+
+  @Subscribe
+  public void handle(ItemEntityUpdatePacket itemEntityUpdatePacket) {
   }
 }

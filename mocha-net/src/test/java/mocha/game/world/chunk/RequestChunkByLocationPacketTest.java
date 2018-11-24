@@ -8,24 +8,24 @@ import mocha.net.packet.PacketType;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class RequestChunkPacketTest {
+public class RequestChunkByLocationPacketTest {
 
-  private RequestChunkPacket testObject;
+  private RequestChunkByLocationPacket testObject;
 
   @Before
   public void setUp() {
     Location location = new Location(32, 64);
-    testObject = new RequestChunkPacket(location);
+    testObject = new RequestChunkByLocationPacket(location);
   }
 
   @Test
   public void getType_ReturnsChunkPacketRequest() {
-    assertThat(testObject.getType()).isEqualTo(PacketType.REQUEST_CHUNK);
+    assertThat(testObject.getType()).isEqualTo(PacketType.REQUEST_CHUNK_BY_LOCATION);
   }
 
   @Test
   public void construct_ContainsTheChunkTypeAsTheZeroethPhrase() {
-    String expected = PacketType.REQUEST_CHUNK.name();
+    String expected = PacketType.REQUEST_CHUNK_BY_LOCATION.name();
     String actual = testObject.construct().split(PacketType.SEPARATOR)[0];
     assertThat(actual).isEqualTo(expected);
   }
@@ -46,7 +46,7 @@ public class RequestChunkPacketTest {
 
   @Test
   public void getDate_ReturnsTheChunkTypeAsTheZeroethPhrase() {
-    String expected = PacketType.REQUEST_CHUNK.name();
+    String expected = PacketType.REQUEST_CHUNK_BY_LOCATION.name();
     String actual = testObject.getData()[0];
     assertThat(actual).isEqualTo(expected);
   }

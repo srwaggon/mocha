@@ -13,32 +13,32 @@ public class ServerEntity extends Entity {
   }
 
   ServerEntity(Entity entity) {
-    this.id = entity.id;
-    this.location.set(entity.getLocation());
+    this.setId(entity.getId());
+    getLocation().set(entity.getLocation());
   }
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Override
   public Integer getId() {
-    return id;
+    return super.getId();
   }
 
   @Column
   public int getX() {
-    return location.getX();
+    return getLocation().getX();
   }
 
   public void setX(int x) {
-    this.location.setX(x);
+    getLocation().setX(x);
   }
 
   @Column
   public int getY() {
-    return location.getY();
+    return getLocation().getY();
   }
 
   public void setY(int y) {
-    this.location.setY(y);
+    getLocation().setY(y);
   }
 }

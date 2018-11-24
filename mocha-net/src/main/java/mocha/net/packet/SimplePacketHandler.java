@@ -1,9 +1,9 @@
 package mocha.net.packet;
 
 import mocha.net.packet.message.GlobalMessagePacket;
-import mocha.game.world.chunk.ChunkPacket;
-import mocha.game.world.chunk.RequestChunkPacket;
-import mocha.game.world.entity.EntityPacket;
+import mocha.game.world.chunk.ChunkUpdatePacket;
+import mocha.game.world.chunk.RequestChunkByLocationPacket;
+import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
@@ -15,12 +15,12 @@ public class SimplePacketHandler implements PacketHandler {
   }
 
   @Override
-  public void handle(ChunkPacket chunkPacket) {
+  public void handle(ChunkUpdatePacket chunkUpdatePacket) {
 
   }
 
   @Override
-  public void handle(RequestChunkPacket requestChunkPacket) {
+  public void handle(RequestChunkByLocationPacket requestChunkByLocationPacket) {
 
   }
 
@@ -40,7 +40,7 @@ public class SimplePacketHandler implements PacketHandler {
   }
 
   @Override
-  public void handle(EntityPacket entityPacket) {
+  public void handle(EntityUpdatePacket entityUpdatePacket) {
 
   }
 
