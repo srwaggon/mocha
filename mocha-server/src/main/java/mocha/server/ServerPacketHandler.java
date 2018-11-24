@@ -11,6 +11,7 @@ import mocha.game.Player;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
+import mocha.game.world.chunk.RequestChunkByIdPacket;
 import mocha.game.world.chunk.RequestChunkByLocationPacket;
 import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
@@ -85,6 +86,12 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
       entityRepository.findById(entityId).ifPresent(mochaConnection::sendEntityUpdate);
       mochaConnection.requestEntitiesByPlayerId(playerId, entityId);
     });
+  }
+
+  @Subscribe
+  public void handle(RequestChunkByIdPacket requestChunkByIdPacket) {
+    int chunkId = requestChunkByIdPacket.getChunkId();
+    mochaConnection.sendChunkUpdate(chunkService.getChunkById(chunkId));
   }
 
   @Subscribe

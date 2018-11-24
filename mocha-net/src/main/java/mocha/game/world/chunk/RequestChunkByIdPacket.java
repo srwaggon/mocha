@@ -19,7 +19,7 @@ public class RequestChunkByIdPacket extends AbstractPacket {
     return PacketType.REQUEST_CHUNK_BY_ID;
   }
 
-  private int getId() {
+  public int getChunkId() {
     return getDataAsInt(1);
   }
 }

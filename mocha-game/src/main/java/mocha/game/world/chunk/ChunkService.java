@@ -31,7 +31,7 @@ public class ChunkService {
     return getChunkById(chunkId);
   }
 
-  private Chunk getChunkById(int chunkId) {
+  public Chunk getChunkById(int chunkId) {
     return chunkRepository.findById(chunkId).orElseGet(() ->
         chunkRepository.save(chunkFactory.newRandomChunk(chunkId)));
   }
