@@ -52,8 +52,9 @@ public class ServerSetup implements CommandLineRunner {
   }
 
   private void createChunks() {
-    for (int y = -16; y < 16; y++) {
-      for (int x = -16; x < 16; x++) {
+    int radius = 0;
+    for (int y = -radius; y <= radius; y++) {
+      for (int x = -radius; x <= radius; x++) {
         Location chunkIndex = new Location(x, y);
         int chunkId = getIdForChunkIndex(chunkIndex);
         if (!chunkRepository.findById(chunkId).isPresent()) {

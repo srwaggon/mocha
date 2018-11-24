@@ -28,11 +28,11 @@ public class PacketFactory {
     return new LoginSuccessPacket(playerId);
   }
 
-  ChunkPacket newChunkPacket(Location location, Chunk chunk) {
+  ChunkPacket newChunkPacket(Chunk chunk) {
     int chunkId = chunk.getId();
     TileType[] tiles = chunk.getTiles();
     String tileString = tileStringBuilder.build(tiles);
-    return new ChunkPacket(chunkId, location, tileString);
+    return new ChunkPacket(chunkId, tileString);
   }
 
   RequestChunkPacket newChunkRequestPacket(Location location) {

@@ -30,6 +30,8 @@ import mocha.game.world.entity.rule.PickUpItemsRule;
 import mocha.game.world.tile.TileReader;
 import mocha.game.world.tile.TileSetFactory;
 import mocha.game.world.tile.TileStringBuilder;
+import mocha.game.world.tile.rule.GrassGrowsRule;
+import mocha.game.world.tile.rule.WaterEvaporatesRule;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.server.event.ServerEventBus;
@@ -68,8 +70,14 @@ public class ServerConfiguration {
     PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkRepository);
     serverEventBus.register(pickUpItemsRule);
 
+    GrassGrowsRule grassGrowsRule = new GrassGrowsRule(chunkRepository, serverEventBus);
+
+    WaterEvaporatesRule waterEvaporatesRule = new WaterEvaporatesRule(chunkRepository, serverEventBus);
+
     return Lists.newArrayList(
         movementRule,
+        grassGrowsRule,
+        waterEvaporatesRule,
         pickUpItemsRule
     );
   }

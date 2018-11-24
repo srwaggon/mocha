@@ -14,7 +14,8 @@ import javax.inject.Inject;
 
 import mocha.game.event.PlayerAddedEvent;
 import mocha.game.event.PlayerRemovedEvent;
-import mocha.game.world.Location;
+import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.event.ChunkUpdatedEvent;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.event.EntityAddedEvent;
 import mocha.game.world.entity.event.EntityRemovedEvent;
@@ -88,6 +89,12 @@ public class ServerGameLogic implements GameLogic {
   @Subscribe
   public void handle(PlayerRemovedEvent playerRemovedEvent) {
 
+  }
+
+  @Subscribe
+  public void handle(ChunkUpdatedEvent chunkUpdatedEvent) {
+    Chunk chunk = chunkUpdatedEvent.getChunk();
+    getConnections().forEach(mochaConnection -> mochaConnection.sendChunkUpdate(chunk));
   }
 
   @Subscribe

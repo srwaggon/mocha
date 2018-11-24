@@ -3,6 +3,8 @@ package mocha.game.event;
 import com.google.common.eventbus.EventBus;
 
 import mocha.game.Player;
+import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.event.ChunkUpdatedEvent;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.PickUpItemCommand;
 import mocha.game.world.entity.command.RemoveEntityCommand;
@@ -30,6 +32,10 @@ public class MochaEventBus extends EventBus {
 
   public void postEntityUpdatedEvent(Entity entity) {
     post(new EntityUpdatedEvent(entity));
+  }
+
+  public void postChunkUpdatedEvent(Chunk chunk) {
+    post(new ChunkUpdatedEvent(chunk));
   }
 
   public void postMoveCommand(EntityMoveCommand entityMoveCommand) {

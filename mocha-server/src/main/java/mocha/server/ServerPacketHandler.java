@@ -89,7 +89,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   public void handle(RequestChunkPacket requestChunkPacket) {
     Location location = requestChunkPacket.getLocation();
     chunkRepository.findById(Chunk.getIdForChunkAt(location))
-        .ifPresent(chunk -> mochaConnection.sendChunkUpdate(location, chunk));
+        .ifPresent(chunk -> mochaConnection.sendChunkUpdate(chunk));
   }
 
   @Override

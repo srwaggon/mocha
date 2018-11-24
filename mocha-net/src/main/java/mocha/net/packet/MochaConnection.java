@@ -32,8 +32,8 @@ public class MochaConnection extends PacketConnection {
     sendPacket(packetFactory.newRequestEntitiesByPlayerIdPacket(playerId, entityIds));
   }
 
-  public void sendChunkUpdate(Location location, Chunk chunk) {
-    sendPacket(packetFactory.newChunkPacket(location, chunk));
+  public void sendChunkUpdate(Chunk chunk) {
+    sendPacket(packetFactory.newChunkPacket(chunk));
   }
 
   public void sendEntityUpdate(Entity entity) {
