@@ -5,7 +5,7 @@ import java.util.List;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
-import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.Movement;
 import mocha.shared.Repository;
@@ -16,22 +16,22 @@ public class Game implements Tickable {
   private List<GameRule> gameRules;
   private Repository<Entity, Integer> entityRepository;
   private Repository<Player, Integer> playerRepository;
-  private Repository<Chunk, Integer> chunkRepository;
   private Repository<Movement, Integer> movementRepository;
+  private ChunkService chunkService;
 
   public Game(
       MochaEventBus eventBus,
       List<GameRule> gameRules,
       Repository<Player, Integer> playerRepository, Repository<Entity, Integer> entityRepository,
-      Repository<Chunk, Integer> chunkRepository,
-      Repository<Movement, Integer> movementRepository
+      Repository<Movement, Integer> movementRepository,
+      ChunkService chunkService
   ) {
     this.eventBus = eventBus;
-    this.chunkRepository = chunkRepository;
     this.gameRules = gameRules;
     this.entityRepository = entityRepository;
     this.playerRepository = playerRepository;
     this.movementRepository = movementRepository;
+    this.chunkService = chunkService;
   }
 
   @Override
@@ -41,8 +41,8 @@ public class Game implements Tickable {
 
   public Entity addEntity(Entity entity) {
     Entity result = entityRepository.save(entity);
-    int chunkId = Chunk.getIdForChunkAt(result.getLocation());
-    chunkRepository.findById(chunkId).ifPresent(chunk -> chunk.add(result));
+    Location entityLocation = result.getLocation();
+    chunkService.getChunkAt(entityLocation).add(result);
     eventBus.postEntityAddedEvent(result);
     return result;
   }
@@ -54,8 +54,7 @@ public class Game implements Tickable {
   public void removeEntity(Entity entity) {
     entityRepository.delete(entity);
     Location entityLocation = entity.getLocation();
-    int chunkId = Chunk.getIdForChunkAt(entityLocation);
-    chunkRepository.findById(chunkId).ifPresent(chunk -> chunk.remove(entity));
+    chunkService.getChunkAt(entityLocation).remove(entity);
     movementRepository.findById(entity.getId()).ifPresent(movementRepository::delete);
     eventBus.postEntityRemovedEvent(entity);
   }

@@ -14,7 +14,7 @@ import mocha.client.gfx.sprite.SpriteSheetFactory;
 import mocha.client.gfx.view.ChunkView;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
-import mocha.shared.Repository;
+import mocha.game.world.chunk.ChunkService;
 
 @Component
 public class BackgroundLayer extends Group {
@@ -22,17 +22,17 @@ public class BackgroundLayer extends Group {
   private SpriteSheetFactory spriteSheetFactory;
   private TileSpriteSelector tileSpriteSelector;
   private Map<Location, ChunkView> chunkViews = Maps.newConcurrentMap();
-  private Repository<Chunk, Integer> chunkRepository;
+  private ChunkService chunkService;
 
   @Inject
   public BackgroundLayer(
       SpriteSheetFactory spriteSheetFactory,
       TileSpriteSelector tileSpriteSelector,
-      Repository<Chunk, Integer> chunkRepository
+      ChunkService chunkService
   ) {
     this.spriteSheetFactory = spriteSheetFactory;
     this.tileSpriteSelector = tileSpriteSelector;
-    this.chunkRepository = chunkRepository;
+    this.chunkService = chunkService;
   }
 
   public void render() {
@@ -61,14 +61,16 @@ public class BackgroundLayer extends Group {
     for (int y = 0; y < 1; y++) {
       for (int x = 0; x < 1; x++) {
         Location chunkLocation = new Location(location.getX() + x * Chunk.getWidth(), location.getY() + y * Chunk.getHeight());
-        chunkRepository.findById(Chunk.getIdForChunkAt(chunkLocation))
-            .ifPresent((chunk) -> {
-              ChunkView chunkView = getChunkView(chunkLocation, chunk);
-              chunkView.setChunk(chunk);
-              chunkView.render();
-            });
+        Chunk chunk = chunkService.getChunkAt(chunkLocation);
+        drawChunk(chunkLocation, chunk);
       }
     }
+  }
+
+  private void drawChunk(Location chunkLocation, Chunk chunk) {
+    ChunkView chunkView = getChunkView(chunkLocation, chunk);
+    chunkView.setChunk(chunk);
+    chunkView.render();
   }
 
   private ChunkView getChunkView(Location chunkLocation, Chunk chunk) {

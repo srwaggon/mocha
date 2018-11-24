@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 
 import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketListener;
@@ -27,8 +28,11 @@ class PlayerFactory {
   @Inject
   private Repository<Entity, Integer> entityRepository;
 
+  @Inject
+  private ChunkService chunkService;
+
   NetworkPlayer newNetworkPlayer(MochaConnection mochaConnection, int playerId, Entity entity) {
-    ServerPacketHandler serverPacketHandler = newServerPacketHandler(mochaConnection, playerId);
+    ServerPacketHandler serverPacketHandler = newServerPacketHandler(mochaConnection, playerId, chunkService);
     PacketListener packetListener = newPacketListener(mochaConnection, playerId, serverPacketHandler);
     serverEventBus.postTaskEvent(packetListener);
     serverEventBus.postTaskEvent(serverPacketHandler);
@@ -43,15 +47,15 @@ class PlayerFactory {
 
   private ServerPacketHandler newServerPacketHandler(
       MochaConnection mochaConnection,
-      int playerId
-  ) {
+      int playerId,
+      ChunkService chunkService) {
     return new ServerPacketHandler(
         mochaConnection,
         serverEventBus,
         playerId,
-        chunkRepository,
         entityRepository,
-        playerRepository
+        playerRepository,
+        chunkService
     );
   }
 

@@ -8,22 +8,21 @@ import java.util.Set;
 
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.tile.TileType;
-import mocha.shared.Repository;
 
 public class TileCollision extends SimpleCollision {
 
-  private Repository<Chunk, Integer> chunkRepository;
+  private ChunkService chunkService;
 
-  TileCollision(Repository<Chunk, Integer> chunkRepository) {
-    this.chunkRepository = chunkRepository;
+  TileCollision(ChunkService chunkService) {
+    this.chunkService = chunkService;
   }
 
   @Override
   public Set<Collider> getColliders(Location location) {
-    return chunkRepository.findById(Chunk.getIdForChunkAt(location))
-        .map(chunk -> getCollisions(location, chunk))
-        .orElse(Collections.emptySet());
+    Chunk chunk = chunkService.getChunkAt(location);
+    return getCollisions(location, chunk);
   }
 
   private Set<Collider> getCollisions(Location location, Chunk chunk) {

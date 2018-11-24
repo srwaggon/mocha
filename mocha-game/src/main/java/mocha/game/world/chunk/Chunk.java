@@ -5,7 +5,6 @@ import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -20,12 +19,14 @@ public class Chunk implements Identified<Integer> {
   public final static int SIZE = 16;
 
   int id;
-  TileType[] tiles;
-  Set<Entity> entities;
+  TileType[] tiles = new TileType[Chunk.SIZE * Chunk.SIZE];
+  Set<Entity> entities = Sets.newHashSet();
 
   public Chunk() {
-    tiles = new TileType[Chunk.SIZE * Chunk.SIZE];
-    entities = Sets.newHashSet();
+  }
+
+  public Chunk(TileType[] tiles) {
+    this.tiles = tiles;
   }
 
   public Chunk(TileType[] tiles, Set<Entity> entities) {
@@ -33,10 +34,15 @@ public class Chunk implements Identified<Integer> {
     this.entities = entities;
   }
 
-  public Chunk(int id, TileType[] tiles, HashSet<Entity> entities) {
+  public Chunk(int id, TileType[] tiles, Set<Entity> entities) {
     this.id = id;
     this.tiles = tiles;
     this.entities = entities;
+  }
+
+  public Chunk(int id, TileType[] tiles) {
+    this.id = id;
+    this.tiles = tiles;
   }
 
   @Override
@@ -47,51 +53,6 @@ public class Chunk implements Identified<Integer> {
   @Override
   public void setId(Integer id) {
     this.id = id;
-  }
-
-  public static int getIdForChunkAt(Location location) {
-    return getIdForChunkIndex(location.getChunkIndex());
-  }
-
-  public static int getIdForChunkIndex(Location chunkIndices) {
-    int radius = Math.max(Math.abs(chunkIndices.getX()), Math.abs(chunkIndices.getY()));
-    if (radius == 0) {
-      return 1;
-    }
-    int distance = distanceFromRingOrigin(chunkIndices, radius);
-    int previousRingDiameter = 1 + ((radius - 1) * 2);
-    return (int) (Math.pow(previousRingDiameter, 2) + distance) + 1;
-  }
-
-  private static int distanceFromRingOrigin(Location chunkIndices, int radius) {
-    int x = chunkIndices.getX();
-    int y = chunkIndices.getY();
-    int stepCount = 0;
-
-    if (x == -radius && y == -radius) {
-      return 0;
-    }
-
-    if (x == -radius && y < radius) {
-      stepCount += radius - y;
-      y = radius;
-    }
-
-    if (y == radius && x < radius) {
-      stepCount += radius - x;
-      x = radius;
-    }
-
-    if (x == radius && y > -radius) {
-      stepCount += y + radius;
-      y = -radius;
-    }
-
-    if (y == -radius && x > -radius) {
-      stepCount += x + radius;
-    }
-
-    return stepCount;
   }
 
   private boolean inBounds(int value) {

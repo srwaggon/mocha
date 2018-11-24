@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import mocha.game.Player;
 import mocha.game.world.Location;
-import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.chunk.RequestChunkPacket;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
@@ -29,9 +29,9 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   private ServerEventBus serverEventBus;
   private MochaConnection mochaConnection;
   private EventBus packetEventBus;
-  private Repository<Chunk, Integer> chunkRepository;
   private Repository<Entity, Integer> entityRepository;
   private Repository<Player, Integer> playerRepository;
+  private ChunkService chunkService;
 
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
 
@@ -39,16 +39,15 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
       MochaConnection mochaConnection,
       ServerEventBus serverEventBus,
       int playerId,
-      Repository<Chunk, Integer> chunkRepository,
       Repository<Entity, Integer> entityRepository,
-      Repository<Player, Integer> playerRepository
-  ) {
+      Repository<Player, Integer> playerRepository,
+      ChunkService chunkService) {
     this.mochaConnection = mochaConnection;
     this.serverEventBus = serverEventBus;
     this.playerId = playerId;
-    this.chunkRepository = chunkRepository;
     this.entityRepository = entityRepository;
     this.playerRepository = playerRepository;
+    this.chunkService = chunkService;
     packetEventBus = new EventBus();
     packetEventBus.register(this);
   }
@@ -88,8 +87,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Override
   public void handle(RequestChunkPacket requestChunkPacket) {
     Location location = requestChunkPacket.getLocation();
-    chunkRepository.findById(Chunk.getIdForChunkAt(location))
-        .ifPresent(chunk -> mochaConnection.sendChunkUpdate(chunk));
+    mochaConnection.sendChunkUpdate(chunkService.getChunkAt(location));
   }
 
   @Override
@@ -108,9 +106,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Override
   public void handle(RequestEntitiesInChunkPacket requestEntitiesInChunkPacket) {
     Location location = requestEntitiesInChunkPacket.getLocation();
-    chunkRepository.findById(Chunk.getIdForChunkAt(location))
-        .ifPresent(chunk ->
-            chunk.getEntities().forEach(mochaConnection::sendEntityUpdate));
+    chunkService.getChunkAt(location).getEntities().forEach(mochaConnection::sendEntityUpdate);
   }
 
   @Subscribe

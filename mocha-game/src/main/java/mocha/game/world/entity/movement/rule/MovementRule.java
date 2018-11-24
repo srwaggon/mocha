@@ -1,11 +1,9 @@
 package mocha.game.world.entity.movement.rule;
 
-import java.util.Optional;
-
 import mocha.game.Game;
 import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
-import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.Movement;
 import mocha.shared.Repository;
@@ -13,16 +11,17 @@ import mocha.shared.Repository;
 public class MovementRule implements GameRule {
 
   private Repository<Entity, Integer> entityRepository;
-  private Repository<Chunk, Integer> chunkRepository;
   private Repository<Movement, Integer> movementRepository;
+  private ChunkService chunkService;
 
   public MovementRule(
       Repository<Entity, Integer> entityRepository,
-      Repository<Chunk, Integer> chunkRepository,
-      Repository<Movement, Integer> movementRepository) {
+      Repository<Movement, Integer> movementRepository,
+      ChunkService chunkService
+  ) {
     this.entityRepository = entityRepository;
-    this.chunkRepository = chunkRepository;
     this.movementRepository = movementRepository;
+    this.chunkService = chunkService;
   }
 
   @Override
@@ -43,14 +42,10 @@ public class MovementRule implements GameRule {
         });
   }
 
-  private void updateChunkOccupants(Entity entity, Location start, Location finish) {
-    if (!start.equals(finish)) {
-      getChunkAt(start).ifPresent(chunk -> chunk.remove(entity));
-      getChunkAt(finish).ifPresent(chunk -> chunk.add(entity));
+  private void updateChunkOccupants(Entity entity, Location startLocation, Location finishLocation) {
+    if (!startLocation.equals(finishLocation)) {
+      chunkService.getChunkAt(startLocation).remove(entity);
+      chunkService.getChunkAt(finishLocation).add(entity);
     }
-  }
-
-  private Optional<? extends Chunk> getChunkAt(Location location) {
-    return chunkRepository.findById(Chunk.getIdForChunkAt(location));
   }
 }
