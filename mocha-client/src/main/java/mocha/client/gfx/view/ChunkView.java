@@ -5,7 +5,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import mocha.client.gfx.TileSpriteSelector;
 import mocha.client.gfx.sprite.SpriteSheet;
+import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.tile.TileType;
 
 public class ChunkView extends Group {
@@ -18,6 +20,7 @@ public class ChunkView extends Group {
   private SpriteSheet stoneTiles;
   private TileSpriteSelector tileSpriteSelector;
   private Canvas tileCanvas;
+  private ChunkService chunkService;
 
   public ChunkView(
       Chunk chunk,
@@ -26,7 +29,8 @@ public class ChunkView extends Group {
       SpriteSheet grassTiles,
       SpriteSheet waterTiles,
       SpriteSheet stoneTiles,
-      TileSpriteSelector tileSpriteSelector
+      TileSpriteSelector tileSpriteSelector,
+      ChunkService chunkService
   ) {
     this.chunk = chunk;
     this.dirtTiles = dirtTiles;
@@ -35,6 +39,7 @@ public class ChunkView extends Group {
     this.waterTiles = waterTiles;
     this.stoneTiles = stoneTiles;
     this.tileSpriteSelector = tileSpriteSelector;
+    this.chunkService = chunkService;
 
     tileCanvas = new Canvas();
     tileCanvas.setHeight(512);
@@ -51,33 +56,45 @@ public class ChunkView extends Group {
   }
 
   private void drawTiles() {
-    for (int tileY = 0; tileY < Chunk.SIZE; tileY++) {
-      for (int tileX = 0; tileX < Chunk.SIZE; tileX++) {
-        drawTile(tileX, tileY);
+    for (int tileY = 0; tileY < Chunk.getHeight(); tileY += TileType.SIZE) {
+      for (int tileX = 0; tileX < Chunk.getWidth(); tileX += TileType.SIZE) {
+        drawTileAtLocation(tileX, tileY);
       }
     }
   }
 
-  private void drawTile(int xIndex, int yIndex) {
-    tileCanvas.getGraphicsContext2D().drawImage(getSprite(xIndex, yIndex), getSpriteX(xIndex), getSpriteY(yIndex));
+  private void drawTileAtLocation(int tileX, int tileY) {
+    int xIndex = tileX / TileType.SIZE;
+    int yIndex = tileY / TileType.SIZE;
+    Location tileLocation = chunkService.getLocationOfChunk(chunk).addNew(tileX, tileY);
+    Image sprite = getSprite(tileLocation);
+    tileCanvas.getGraphicsContext2D().drawImage(sprite, getSpriteX(xIndex), getSpriteY(yIndex));
   }
 
-  private Image getSprite(int xIndex, int yIndex) {
-    TileType tile = chunk.getTile(xIndex, yIndex);
-    int spriteId = tileSpriteSelector.selectSprite(chunk, xIndex, yIndex);
-    if (tile == TileType.DIRT) {
-      return dirtTiles.getSprite(spriteId, getScale());
+  private Image getSprite(Location tileLocation) {
+    TileType tileType = chunkService.getTileAt(tileLocation).orElse(TileType.DIRT);
+    SpriteSheet spriteSheet = selectSpriteSheet(tileType);
+    return getSprite(spriteSheet, tileLocation);
+  }
+
+  private SpriteSheet selectSpriteSheet(TileType tileType) {
+    switch (tileType) {
+      case DIRT:
+        return dirtTiles;
+      case GRASS:
+        return grassTiles;
+      case WATER:
+        return waterTiles;
+      case STONE:
+        return stoneTiles;
+      default:
+        return spriteSheet;
     }
-    if (tile == TileType.GRASS) {
-      return grassTiles.getSprite(spriteId, getScale());
-    }
-    if (tile == TileType.WATER) {
-      return waterTiles.getSprite(spriteId, getScale());
-    }
-    if (tile == TileType.STONE) {
-      return stoneTiles.getSprite(spriteId, getScale());
-    }
-    return spriteSheet.getSprite(spriteId, getScale());
+  }
+
+  private Image getSprite(SpriteSheet spriteSheet, Location tileLocation) {
+    int spriteIndex = tileSpriteSelector.selectSprite(tileLocation);
+    return spriteSheet.getSprite(spriteIndex, getScale());
   }
 
   private int getSpriteX(int xIndex) {

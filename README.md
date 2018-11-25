@@ -32,7 +32,7 @@ These represent units of work **to be done.**
 - [ ] There exist wild mobs.
 
 ### Graphics
-- [ ] Tile graphics connect across chunks.
+- [x] Tile graphics connect across chunks.
 - [ ] Graphics are layered (background, mask, foreground, sprites, particles, UI)
 - [x] Spike: Can I handle click events directly on graphical components?: Yes.
 - [x] Spike: Can I draw directly on the canvas instead of using a writable image? Yes, but it's more performant to use many canvases.

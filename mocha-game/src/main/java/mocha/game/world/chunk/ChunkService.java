@@ -1,13 +1,18 @@
 package mocha.game.world.chunk;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+import java.util.Optional;
+
 import mocha.game.world.Location;
+import mocha.game.world.tile.TileType;
 import mocha.shared.Repository;
 
 public class ChunkService {
 
   private ChunkFactory chunkFactory;
   private Repository<Chunk, Integer> chunkRepository;
-
 
   public ChunkService(
       ChunkFactory chunkFactory,
@@ -18,16 +23,12 @@ public class ChunkService {
   }
 
   public Chunk getChunkAt(Location location) {
-    int chunkId = getIdForChunkAt(location);
+    int chunkId = ChunkIdHelper.getIdForChunkAt(location);
     return getChunkById(chunkId);
   }
 
-  private int getIdForChunkAt(Location location) {
-    return getIdForChunkIndex(location.getChunkIndex());
-  }
-
   public Chunk getChunkByIndex(Location chunkIndex) {
-    int chunkId = getIdForChunkIndex(chunkIndex);
+    int chunkId = ChunkIdHelper.getIdForChunkIndex(chunkIndex);
     return getChunkById(chunkId);
   }
 
@@ -36,45 +37,22 @@ public class ChunkService {
         chunkRepository.save(chunkFactory.newRandomChunk(chunkId)));
   }
 
-  private int getIdForChunkIndex(Location chunkIndices) {
-    int radius = Math.max(Math.abs(chunkIndices.getX()), Math.abs(chunkIndices.getY()));
-    if (radius == 0) {
-      return 1;
-    }
-    int distance = distanceFromRingOrigin(chunkIndices, radius);
-    int previousRingDiameter = 1 + ((radius - 1) * 2);
-    return (int) (Math.pow(previousRingDiameter, 2) + distance) + 1;
+  public List<TileType> getTileNeighbors(Location location) {
+    List<TileType> results = Lists.newArrayList();
+    getTileAt(location.north()).ifPresent(results::add);
+    getTileAt(location.east()).ifPresent(results::add);
+    getTileAt(location.south()).ifPresent(results::add);
+    getTileAt(location.west()).ifPresent(results::add);
+    return results;
   }
 
-
-  private int distanceFromRingOrigin(Location chunkIndices, int radius) {
-    int x = chunkIndices.getX();
-    int y = chunkIndices.getY();
-    int stepCount = 0;
-
-    if (x == -radius && y == -radius) {
-      return 0;
-    }
-
-    if (x == -radius && y < radius) {
-      stepCount += radius - y;
-      y = radius;
-    }
-
-    if (y == radius && x < radius) {
-      stepCount += radius - x;
-      x = radius;
-    }
-
-    if (x == radius && y > -radius) {
-      stepCount += y + radius;
-      y = -radius;
-    }
-
-    if (y == -radius && x > -radius) {
-      stepCount += x + radius;
-    }
-
-    return stepCount;
+  public Optional<TileType> getTileAt(Location location) {
+    return getChunkAt(location).getTileAt(location);
   }
+
+  public Location getLocationOfChunk(Chunk chunk) {
+    Integer chunkId = chunk.getId();
+    return ChunkIdHelper.getLocationOfChunkById(chunkId);
+  }
+
 }

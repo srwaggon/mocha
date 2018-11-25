@@ -2,17 +2,29 @@ package mocha.client.gfx;
 
 import org.springframework.stereotype.Component;
 
-import mocha.game.world.chunk.Chunk;
+import java.util.Optional;
+
+import javax.inject.Inject;
+
+import mocha.game.world.Location;
+import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.tile.TileType;
 
 @Component
 public class TileSpriteSelector {
-  public int selectSprite(Chunk chunk, int x, int y) {
-    TileType type = chunk.getTile(x, y);
 
-    return isConnectedTileSprite(type)
-        ? getSpriteOffset(chunk, x, y, type)
-        : 0;
+  @Inject
+  private ChunkService chunkService;
+
+  public int selectSprite(Location tileLocation) {
+    Optional<TileType> tileAt = chunkService.getTileAt(tileLocation);
+    if (!tileAt.isPresent()) {
+      return 0;
+    }
+
+    TileType type = tileAt.get();
+
+    return isConnectedTileSprite(type) ? getSpriteOffset(tileLocation, type) : 0;
   }
 
   private boolean isConnectedTileSprite(TileType type) {
@@ -21,16 +33,15 @@ public class TileSpriteSelector {
         || type.equals(TileType.STONE);
   }
 
-  private int getSpriteOffset(Chunk chunk, int x, int y, TileType type) {
-    int offset = 0;
-    boolean north = y != 0 && chunk.getTile(x, y - 1).equals(type);
-    boolean east = x != Chunk.SIZE - 1 && chunk.getTile(x + 1, y).equals(type);
-    boolean south = y != Chunk.SIZE - 1 && chunk.getTile(x, y + 1).equals(type);
-    boolean west = x != 0 && chunk.getTile(x - 1, y).equals(type);
-    offset += north ? 1 : 0;
-    offset += east ? 2 : 0;
-    offset += south ? 4 : 0;
-    offset += west ? 8 : 0;
-    return offset;
+  private int getSpriteOffset(Location location, TileType type) {
+    return (isType(location.north(), type) ? 1 : 0) +
+        (isType(location.east(), type) ? 2 : 0) +
+        (isType(location.south(), type) ? 4 : 0) +
+        (isType(location.west(), type) ? 8 : 0);
+  }
+
+  private boolean isType(Location location, TileType type) {
+    Optional<TileType> tileAt = chunkService.getTileAt(location);
+    return tileAt.isPresent() && tileAt.get().equals(type);
   }
 }

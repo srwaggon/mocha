@@ -12,6 +12,7 @@ import javafx.scene.Group;
 import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.client.gfx.sprite.SpriteSheetFactory;
 import mocha.client.gfx.view.ChunkView;
+import mocha.game.PlayerService;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
@@ -23,16 +24,19 @@ public class BackgroundLayer extends Group {
   private TileSpriteSelector tileSpriteSelector;
   private Map<Location, ChunkView> chunkViews = Maps.newConcurrentMap();
   private ChunkService chunkService;
+  private PlayerService playerService;
 
   @Inject
   public BackgroundLayer(
       SpriteSheetFactory spriteSheetFactory,
       TileSpriteSelector tileSpriteSelector,
-      ChunkService chunkService
+      ChunkService chunkService,
+      PlayerService playerService
   ) {
     this.spriteSheetFactory = spriteSheetFactory;
     this.tileSpriteSelector = tileSpriteSelector;
     this.chunkService = chunkService;
+    this.playerService = playerService;
   }
 
   public void render() {
@@ -49,7 +53,7 @@ public class BackgroundLayer extends Group {
   }
 
   private boolean isChunkOffScreen(Location chunkLocation) {
-    Location location = Location.at(0, 0);
+    Location location = getCenter();
     return chunkLocation.getX() < location.getX() - Chunk.getWidth() ||
         chunkLocation.getX() > location.getX() + Chunk.getWidth() ||
         chunkLocation.getY() < location.getY() - Chunk.getHeight() ||
@@ -57,7 +61,7 @@ public class BackgroundLayer extends Group {
   }
 
   private void drawChunks() {
-    Location location = Location.at(0, 0);
+    Location location = getCenter();
     for (int y = 0; y < 1; y++) {
       for (int x = 0; x < 1; x++) {
         Location chunkLocation = new Location(location.getX() + x * Chunk.getWidth(), location.getY() + y * Chunk.getHeight());
@@ -65,6 +69,10 @@ public class BackgroundLayer extends Group {
         drawChunk(chunkLocation, chunk);
       }
     }
+  }
+
+  private Location getCenter() {
+    return playerService.getEntityForPlayer().getLocation();
   }
 
   private void drawChunk(Location chunkLocation, Chunk chunk) {
@@ -82,7 +90,7 @@ public class BackgroundLayer extends Group {
     SpriteSheet grassTiles = spriteSheetFactory.newGrassTiles();
     SpriteSheet waterTiles = spriteSheetFactory.newWaterTiles();
     SpriteSheet stoneTiles = spriteSheetFactory.newStoneTiles();
-    ChunkView chunkView = new ChunkView(chunk, spriteSheet, dirtTiles, grassTiles, waterTiles, stoneTiles, tileSpriteSelector);
+    ChunkView chunkView = new ChunkView(chunk, spriteSheet, dirtTiles, grassTiles, waterTiles, stoneTiles, tileSpriteSelector, chunkService);
     chunkViews.put(chunkLocation, chunkView);
     getChildren().add(chunkView);
     return chunkView;

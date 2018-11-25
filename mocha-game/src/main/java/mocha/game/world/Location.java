@@ -3,6 +3,7 @@ package mocha.game.world;
 import java.util.Objects;
 
 import mocha.game.world.chunk.Chunk;
+import mocha.game.world.tile.TileType;
 
 public class Location {
 
@@ -56,11 +57,11 @@ public class Location {
     addY(y);
   }
 
-  public void addX(int x) {
+  private void addX(int x) {
     this.x = this.x + x;
   }
 
-  public void addY(int y) {
+  private void addY(int y) {
     this.y = this.y + y;
   }
 
@@ -106,5 +107,25 @@ public class Location {
   @Override
   public int hashCode() {
     return Objects.hash(x, y);
+  }
+
+  public Location north() {
+    return from(Direction.NORTH);
+  }
+
+  public Location east() {
+    return from(Direction.EAST);
+  }
+
+  public Location south() {
+    return from(Direction.SOUTH);
+  }
+
+  public Location west() {
+    return from(Direction.WEST);
+  }
+
+  private Location from(Direction direction) {
+    return addNew(direction.getXMultiplier() * TileType.SIZE, direction.getYMultiplier() * TileType.SIZE);
   }
 }

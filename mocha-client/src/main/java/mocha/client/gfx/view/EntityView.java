@@ -6,6 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import mocha.client.gfx.RenderLoop;
 import mocha.client.gfx.sprite.SpriteSheet;
+import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.Movement;
 import mocha.shared.Repository;
@@ -24,8 +25,8 @@ public class EntityView extends Canvas {
   }
 
   public void render(long now) {
-    this.setLayoutX(entity.getLocation().getX());
-    this.setLayoutY(entity.getLocation().getY());
+    this.setLayoutX(entity.getLocation().getX() % (Chunk.getWidth()));
+    this.setLayoutY(entity.getLocation().getY() % (Chunk.getHeight()));
     this.setWidth(32);
     this.setHeight(32);
     Image sprite = getFrame(now);
