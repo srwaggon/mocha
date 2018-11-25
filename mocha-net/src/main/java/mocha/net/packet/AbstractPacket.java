@@ -18,6 +18,10 @@ public abstract class AbstractPacket implements Packet {
     data += data.isEmpty() ? s : PacketType.SEPARATOR + s;
   }
 
+  protected void addToData(char c) {
+    addToData("" + c);
+  }
+
   protected void addToData(int i) {
     addToData("" + i);
   }
