@@ -78,10 +78,10 @@ public class NetworkClientGameLogic implements GameLogic {
     int playerId = playerAddedEvent.getPlayer().getId();
     mochaConnection.requestEntitiesByPlayerId(playerId);
 
-    requestChunkData(-1, -1);
-    requestChunkData(-1, 0);
-    requestChunkData(0, -1);
-    requestChunkData(0, 0);
+//    requestChunkData(-1, -1);
+//    requestChunkData(-1, 0);
+//    requestChunkData(0, -1);
+//    requestChunkData(0, 0);
   }
 
   @Subscribe

@@ -16,8 +16,11 @@ import mocha.game.event.PlayerAddedEvent;
 import mocha.game.event.PlayerRemovedEvent;
 import mocha.game.item.ItemPrototypeRepository;
 import mocha.game.item.ItemRepository;
+import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.chunk.event.ChunkUpdatedEvent;
+import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.event.EntityAddedEvent;
 import mocha.game.world.entity.event.EntityRemovedEvent;
@@ -47,7 +50,8 @@ public class ServerGameLogic implements GameLogic {
   private MovementFactory movementFactory;
   private ItemPrototypeRepository itemPrototypeRepository;
   private ItemRepository itemRepository;
-
+  private EntitiesInChunkService entitiesInChunkService;
+  private ChunkService chunkService;
 
   @Inject
   public ServerGameLogic(
@@ -57,7 +61,10 @@ public class ServerGameLogic implements GameLogic {
       PlayerFactory playerFactory,
       Repository<Movement, Integer> movementRepository,
       MovementFactory movementFactory,
-      ItemPrototypeRepository itemPrototypeRepository, ItemRepository itemRepository) {
+      ItemPrototypeRepository itemPrototypeRepository, ItemRepository itemRepository,
+      EntitiesInChunkService entitiesInChunkService,
+      ChunkService chunkService
+  ) {
     this.eventBus = eventBus;
     this.game = game;
     this.playerIdFactory = playerIdFactory;
@@ -66,25 +73,40 @@ public class ServerGameLogic implements GameLogic {
     this.movementFactory = movementFactory;
     this.itemPrototypeRepository = itemPrototypeRepository;
     this.itemRepository = itemRepository;
+    this.entitiesInChunkService = entitiesInChunkService;
+    this.chunkService = chunkService;
   }
 
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
     log.info(connectedEvent.toString());
 
-    MochaConnection mochaConnection = connectedEvent.getMochaConnection();
+    MochaConnection playerConnection = connectedEvent.getMochaConnection();
 
     int playerId = playerIdFactory.newId();
-    Entity entity = game.addEntity(new Entity());
-    movementRepository.save(movementFactory.newSlidingMovement(entity));
-    NetworkPlayer player = playerFactory.newNetworkPlayer(mochaConnection, playerId, entity);
-    mochaConnectionsByPlayerId.put(playerId, mochaConnection);
+    Entity playerEntity = game.addEntity(new Entity());
+    movementRepository.save(movementFactory.newSlidingMovement(playerEntity));
+    NetworkPlayer player = playerFactory.newNetworkPlayer(playerConnection, playerId, playerEntity);
+    mochaConnectionsByPlayerId.put(playerId, playerConnection);
     game.addPlayer(player);
 
-    itemPrototypeRepository.findAll().forEach(mochaConnection::sendItemPrototypeUpdate);
-    itemRepository.findAll().forEach(mochaConnection::sendItemUpdate);
+    itemPrototypeRepository.findAll().forEach(playerConnection::sendItemPrototypeUpdate);
+    itemRepository.findAll().forEach(playerConnection::sendItemUpdate);
 
-    mochaConnection.sendLoginSuccessful(playerId);
+
+
+    Chunk playerChunk = getPlayerChunk(player);
+    playerConnection.sendChunkUpdate(playerChunk);
+    entitiesInChunkService.getEntitiesInChunk(playerChunk)
+        .forEach(playerConnection::sendEntityUpdate);
+
+    playerConnection.sendLoginSuccessful(playerId);
+  }
+
+  private Chunk getPlayerChunk(Player player) {
+    Entity playerEntity = player.getEntity();
+    Location playerEntityLocation = playerEntity.getLocation();
+    return chunkService.getChunkAt(playerEntityLocation);
   }
 
   @Subscribe
