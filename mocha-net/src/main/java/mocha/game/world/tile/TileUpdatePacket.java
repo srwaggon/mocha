@@ -10,12 +10,10 @@ public class TileUpdatePacket extends AbstractPacket {
   }
 
   public TileUpdatePacket(Chunk chunk, int x, int y) {
-    this.data = new String[5];
-    this.data[0] = getType().name();
-    this.data[1] = "" + chunk.getId();
-    this.data[2] = "" + x;
-    this.data[3] = "" + y;
-    this.data[4] = "" + chunk.getTile(x, y).getSymbol();
+    addToData(chunk.getId());
+    addToData(x);
+    addToData(y);
+    addToData(chunk.getTile(x, y).getSymbol());
   }
 
   @Override

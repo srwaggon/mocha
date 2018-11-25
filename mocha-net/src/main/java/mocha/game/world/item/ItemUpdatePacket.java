@@ -9,13 +9,11 @@ public class ItemUpdatePacket extends AbstractPacket {
   }
 
   public ItemUpdatePacket(Item item) {
-    data = new String[6];
-    data[0] = "" + getType().name();
-    data[1] = "" + item.getId();
-    data[2] = "" + item.getItemPrototype().getId();
-    data[3] = "" + item.getData0();
-    data[4] = "" + item.getData1();
-    data[5] = "" + item.getData2();
+    addToData(item.getId());
+    addToData(item.getItemPrototype().getId());
+    addToData(item.getData0());
+    addToData(item.getData1());
+    addToData(item.getData2());
   }
 
 

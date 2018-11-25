@@ -21,18 +21,8 @@ public class UnknownPacketTest {
   }
 
   @Test
-  public void testBuild() {
-
-  }
-
-  @Test
   public void getCode_ReturnsIdForData() {
     assertEquals(PacketType.GLOBAL_MESSAGE, testObject.getType());
-  }
-
-  @Test
-  public void getData_ReturnsDataForUnderlyingPacket() {
-    assertEquals(Arrays.toString(packet.getData()), Arrays.toString(testObject.getData()));
   }
 
   @Test

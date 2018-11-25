@@ -1,5 +1,6 @@
 package mocha.game.world.entity;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -13,12 +14,8 @@ public class RequestEntitiesByPlayerIdPacket extends AbstractPacket {
   }
 
   public RequestEntitiesByPlayerIdPacket(int playerId, int... entityIds) {
-    data = new String[2 + entityIds.length];
-    data[0] = getType().name();
-    data[1] = "" + playerId;
-    for (int i = 0; i < entityIds.length; i++) {
-      data[2 + i] = "" + entityIds[i];
-    }
+    addToData(playerId);
+    Arrays.stream(entityIds).forEach(this::addToData);
   }
 
   @Override
@@ -31,7 +28,7 @@ public class RequestEntitiesByPlayerIdPacket extends AbstractPacket {
   }
 
   public List<Integer> getEntityIds() {
-    return IntStream.range(2, getData().length)
+    return IntStream.range(2, getSplitData().length)
         .mapToObj(this::getDataAsInt)
         .collect(Collectors.toList());
   }

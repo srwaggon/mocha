@@ -10,10 +10,8 @@ public class RequestEntitiesInChunkPacket extends AbstractPacket {
   }
 
   public RequestEntitiesInChunkPacket(Location location) {
-    data = new String[3];
-    data[0] = getType().name();
-    data[1] = "" + location.getX();
-    data[2] = "" + location.getY();
+    addToData(location.getX());
+    addToData(location.getY());
   }
 
   @Override

@@ -4,32 +4,52 @@ import java.util.Arrays;
 
 public abstract class AbstractPacket implements Packet {
 
-  protected String[] data;
+  private String data;
 
-  public String construct() {
-    return String.join(PacketType.SEPARATOR, getData());
+  public AbstractPacket() {
+     data = "" + getType().name();
   }
 
-  protected int getDataAsInt(int index) {
-    return Integer.parseInt(getData()[index]);
-  }
-
-  protected char getDataAsChar(int index) {
-    return getData()[index].charAt(0);
-  }
-
-  @Override
-  public void build(String[] data) {
+  public AbstractPacket(String data) {
     this.data = data;
   }
 
+  protected void addToData(String s) {
+    data += data.isEmpty() ? s : PacketType.SEPARATOR + s;
+  }
+
+  protected void addToData(int i) {
+    addToData("" + i);
+  }
+
+  public String construct() {
+    return String.join(PacketType.SEPARATOR, getSplitData());
+  }
+
+  protected int getDataAsInt(int index) {
+    return Integer.parseInt(getSplitData()[index]);
+  }
+
+  protected char getDataAsChar(int index) {
+    return getSplitData()[index].charAt(0);
+  }
+
   @Override
-  public String[] getData() {
+  public void build(String data) {
+    this.data = data;
+  }
+
+  protected String[] getSplitData() {
+    return data.split(PacketType.SEPARATOR);
+  }
+
+  @Override
+  public String getData() {
     return data;
   }
 
   @Override
   public String toString() {
-    return Arrays.toString(data);
+    return Arrays.toString(getSplitData());
   }
 }

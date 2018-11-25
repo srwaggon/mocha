@@ -8,9 +8,7 @@ public abstract class AbstractEntityPacket extends AbstractPacket {
   }
 
   public AbstractEntityPacket(int entityId) {
-    data = new String[2];
-    data[0] = getType().name();
-    data[1] = "" + entityId;
+    addToData(entityId);
   }
 
   public int getId() {

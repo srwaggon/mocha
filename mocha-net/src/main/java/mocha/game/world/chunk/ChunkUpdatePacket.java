@@ -12,10 +12,8 @@ public class ChunkUpdatePacket extends AbstractPacket {
   }
 
   public ChunkUpdatePacket(int chunkId, String tileData) {
-    data = new String[3];
-    data[0] = getType().name();
-    data[ID_INDEX] = "" + chunkId;
-    data[TILE_DATA_INDEX] = tileData;
+    addToData(chunkId);
+    addToData(tileData);
   }
 
   @Override
@@ -28,7 +26,7 @@ public class ChunkUpdatePacket extends AbstractPacket {
   }
 
   public String getTilesString() {
-    return this.data[TILE_DATA_INDEX];
+    return this.getSplitData()[TILE_DATA_INDEX];
   }
 
 }

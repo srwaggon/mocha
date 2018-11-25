@@ -9,9 +9,7 @@ public class LoginSuccessPacket extends AbstractPacket {
   }
 
   public LoginSuccessPacket(int playerId) {
-    data = new String[2];
-    data[0] = getType().name();
-    data[1] = "" + playerId;
+    addToData(playerId);
   }
 
   @Override

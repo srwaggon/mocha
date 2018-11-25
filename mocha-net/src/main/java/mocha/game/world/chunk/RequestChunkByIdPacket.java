@@ -9,9 +9,7 @@ public class RequestChunkByIdPacket extends AbstractPacket {
   }
 
   public RequestChunkByIdPacket(Integer chunkId) {
-    data = new String[3];
-    data[0] = getType().name();
-    data[1] = "" + chunkId;
+    addToData(chunkId);
   }
 
   @Override

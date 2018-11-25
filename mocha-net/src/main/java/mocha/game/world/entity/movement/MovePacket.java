@@ -12,14 +12,12 @@ public class MovePacket extends AbstractEntityPacket {
   }
 
   public MovePacket(EntityMoveCommand entityMove) {
-    data = new String[7];
-    data[0] = getType().name();
-    data[1] = "" + entityMove.getEntityId();
-    data[2] = "" + entityMove.getLocation().getX();
-    data[3] = "" + entityMove.getLocation().getY();
-    data[4] = "" + entityMove.getDirection();
-    data[5] = "" + entityMove.getXOffset();
-    data[6] = "" + entityMove.getYOffset();
+    addToData(entityMove.getEntityId());
+    addToData(entityMove.getLocation().getX());
+    addToData(entityMove.getLocation().getY());
+    addToData(entityMove.getDirection().name());
+    addToData(entityMove.getXOffset());
+    addToData(entityMove.getYOffset());
   }
 
   @Override
@@ -40,7 +38,7 @@ public class MovePacket extends AbstractEntityPacket {
   }
 
   private Direction getDirection() {
-    return Direction.valueOf(data[4]);
+    return Direction.valueOf(getSplitData()[4]);
   }
 
   private int getXOffset() {

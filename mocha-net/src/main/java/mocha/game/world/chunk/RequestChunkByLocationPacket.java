@@ -10,10 +10,8 @@ public class RequestChunkByLocationPacket extends AbstractPacket {
   }
 
   public RequestChunkByLocationPacket(Location location) {
-    data = new String[3];
-    data[0] = getType().name();
-    data[1] = "" + location.getX();
-    data[2] = "" + location.getY();
+    addToData(location.getX());
+    addToData(location.getY());
   }
 
   @Override

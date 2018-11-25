@@ -1,30 +1,14 @@
 package mocha.net.packet;
 
-public class UnknownPacket implements Packet {
+public class UnknownPacket extends AbstractPacket {
 
-  private String[] data;
-
-  public UnknownPacket(String data) {
-    this.data = data.split(PacketType.SEPARATOR);
-  }
-
-  @Override
-  public void build(String[] data) {
-    this.data = data;
+  UnknownPacket(String data) {
+    super(data);
   }
 
   @Override
   public PacketType getType() {
-    return PacketType.valueOf(data[0]);
+    return PacketType.valueOf(getSplitData()[0]);
   }
 
-  @Override
-  public String[] getData() {
-    return data;
-  }
-
-  @Override
-  public String construct() {
-    return String.join(PacketType.SEPARATOR, data);
-  }
 }
