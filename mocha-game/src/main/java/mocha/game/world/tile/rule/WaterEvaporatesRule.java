@@ -5,21 +5,26 @@ import java.util.function.Predicate;
 import mocha.game.Game;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
+import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.tile.TileType;
 import mocha.shared.Repository;
 
 public class WaterEvaporatesRule implements GameRule {
 
-  private Repository<Chunk, Integer> chunkRepository;
   private MochaEventBus mochaEventBus;
+  private Repository<Chunk, Integer> chunkRepository;
+  private ChunkService chunkService;
+
 
   public WaterEvaporatesRule(
-      Repository<Chunk, Integer> chunkRepository,
-      MochaEventBus mochaEventBus
+      MochaEventBus mochaEventBus, Repository<Chunk, Integer> chunkRepository,
+      ChunkService chunkService
   ) {
     this.chunkRepository = chunkRepository;
     this.mochaEventBus = mochaEventBus;
+    this.chunkService = chunkService;
   }
 
   @Override
@@ -46,7 +51,15 @@ public class WaterEvaporatesRule implements GameRule {
   }
 
   private boolean shouldEvaporateWater(Chunk chunk, int x, int y) {
-    return Math.random() < .0001 && chunk.getTile(x, y) == TileType.WATER && chunk.getTileNeighbors(x, y).stream().noneMatch(isWater());
+    return Math.random() < .0001
+        && chunk.getTile(x, y) == TileType.WATER
+        && isLoneWater(chunk, x, y);
+  }
+
+  private boolean isLoneWater(Chunk chunk, int x, int y) {
+    Location chunkLocation = chunk.getLocation();
+    Location tileLocation = chunkLocation.addNew(x * TileType.SIZE, y * TileType.SIZE);
+    return chunkService.getTileNeighbors(tileLocation).stream().noneMatch(isWater());
   }
 
   private Predicate<TileType> isWater() {

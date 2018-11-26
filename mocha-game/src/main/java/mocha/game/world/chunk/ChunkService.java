@@ -50,9 +50,4 @@ public class ChunkService {
     return getChunkAt(location).getTileAt(location);
   }
 
-  public Location getLocationOfChunk(Chunk chunk) {
-    Integer chunkId = chunk.getId();
-    return ChunkIdHelper.getLocationOfChunkById(chunkId);
-  }
-
 }

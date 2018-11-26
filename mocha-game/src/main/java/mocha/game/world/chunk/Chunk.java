@@ -1,11 +1,8 @@
 package mocha.game.world.chunk;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -102,15 +99,6 @@ public class Chunk implements Identified<Integer> {
 
   public TileType[] getTiles() {
     return tiles;
-  }
-
-  public List<TileType> getTileNeighbors(int x, int y) {
-    ArrayList<TileType> results = Lists.newArrayList();
-    getTileWithIndices(x, y - 1).ifPresent(results::add);
-    getTileWithIndices(x + 1, y).ifPresent(results::add);
-    getTileWithIndices(x, y + 1).ifPresent(results::add);
-    getTileWithIndices(x - 1, y).ifPresent(results::add);
-    return results;
   }
 
   public void remove(Entity entity) {

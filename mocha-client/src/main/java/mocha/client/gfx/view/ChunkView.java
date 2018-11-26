@@ -66,7 +66,7 @@ public class ChunkView extends Group {
   private void drawTileAtLocation(int tileX, int tileY) {
     int xIndex = tileX / TileType.SIZE;
     int yIndex = tileY / TileType.SIZE;
-    Location tileLocation = chunkService.getLocationOfChunk(chunk).addNew(tileX, tileY);
+    Location tileLocation = chunk.getLocation().addNew(tileX, tileY);
     Image sprite = getSprite(tileLocation);
     tileCanvas.getGraphicsContext2D().drawImage(sprite, getSpriteX(xIndex), getSpriteY(yIndex));
   }
