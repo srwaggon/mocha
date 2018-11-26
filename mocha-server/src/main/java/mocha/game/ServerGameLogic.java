@@ -106,7 +106,7 @@ public class ServerGameLogic implements GameLogic {
   private Chunk getPlayerChunk(Player player) {
     Entity playerEntity = player.getEntity();
     Location playerEntityLocation = playerEntity.getLocation();
-    return chunkService.getChunkAt(playerEntityLocation);
+    return chunkService.getOrCreateChunkAt(playerEntityLocation);
   }
 
   @Subscribe

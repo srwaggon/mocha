@@ -59,7 +59,7 @@ public class WaterEvaporatesRule implements GameRule {
   private boolean isLoneWater(Chunk chunk, int x, int y) {
     Location chunkLocation = chunk.getLocation();
     Location tileLocation = chunkLocation.addNew(x * TileType.SIZE, y * TileType.SIZE);
-    return chunkService.getTileNeighbors(tileLocation).stream().noneMatch(isWater());
+    return chunkService.getTileNeighborsInExistingChunks(tileLocation).values().stream().noneMatch(isWater());
   }
 
   private Predicate<TileType> isWater() {

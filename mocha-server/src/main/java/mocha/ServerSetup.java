@@ -71,7 +71,7 @@ public class ServerSetup implements CommandLineRunner {
     int radius = 0;
     for (int y = -radius; y <= radius; y++) {
       for (int x = -radius; x <= radius; x++) {
-        chunkService.getChunkByIndex(new Location(x, y));
+        chunkService.getOrCreateChunkByIndex(new Location(x, y));
       }
     }
   }

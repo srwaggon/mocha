@@ -1,13 +1,19 @@
 package mocha.game.world.chunk;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import mocha.game.world.Direction;
 import mocha.game.world.Location;
 import mocha.game.world.tile.TileType;
 import mocha.shared.Repository;
+
+import static mocha.game.world.Direction.EAST;
+import static mocha.game.world.Direction.NORTH;
+import static mocha.game.world.Direction.SOUTH;
+import static mocha.game.world.Direction.WEST;
 
 public class ChunkService {
 
@@ -22,32 +28,57 @@ public class ChunkService {
     this.chunkRepository = chunkRepository;
   }
 
-  public Chunk getChunkAt(Location location) {
+  public Chunk getOrCreateChunkAt(Location location) {
     int chunkId = ChunkIdHelper.getIdForChunkAt(location);
-    return getChunkById(chunkId);
+    return getOrCreateChunkById(chunkId);
   }
 
-  public Chunk getChunkByIndex(Location chunkIndex) {
+  public Chunk getOrCreateChunkByIndex(Location chunkIndex) {
     int chunkId = ChunkIdHelper.getIdForChunkIndex(chunkIndex);
-    return getChunkById(chunkId);
+    return getOrCreateChunkById(chunkId);
   }
 
-  public Chunk getChunkById(int chunkId) {
+  public Chunk getOrCreateChunkById(int chunkId) {
     return chunkRepository.findById(chunkId).orElseGet(() ->
         chunkRepository.save(chunkFactory.newRandomChunk(chunkId)));
   }
 
-  public List<TileType> getTileNeighbors(Location location) {
-    List<TileType> results = Lists.newArrayList();
-    getTileAt(location.north()).ifPresent(results::add);
-    getTileAt(location.east()).ifPresent(results::add);
-    getTileAt(location.south()).ifPresent(results::add);
-    getTileAt(location.west()).ifPresent(results::add);
-    return results;
+  public Map<Direction, TileType> getTileNeighborsInExistingChunks(Location location) {
+    Map<Direction, TileType> neighbors = Maps.newEnumMap(Direction.class);
+    putTileNeighborInExistingChunk(location, NORTH, neighbors);
+    putTileNeighborInExistingChunk(location, EAST, neighbors);
+    putTileNeighborInExistingChunk(location, SOUTH, neighbors);
+    putTileNeighborInExistingChunk(location, WEST, neighbors);
+    return neighbors;
+  }
+
+  private void putTileNeighborInExistingChunk(Location location, Direction direction, Map<Direction, TileType> neighbors) {
+    getTileNeighborInExistingChunk(location, direction).ifPresent(tileType -> neighbors.put(direction, tileType));
+  }
+
+  private Optional<TileType> getTileNeighborInExistingChunk(Location location, Direction direction) {
+    Location directionLocation = location.from(direction);
+    int chunkId = ChunkIdHelper.getIdForChunkAt(directionLocation);
+    return chunkRepository.findById(chunkId).isPresent()
+        ? getTileAt(directionLocation)
+        : Optional.empty();
+  }
+
+  public Map<Direction, TileType> getTileNeighbors(Location location) {
+    Map<Direction, TileType> neighbors = Maps.newEnumMap(Direction.class);
+    putTileNeighbor(location, NORTH, neighbors);
+    putTileNeighbor(location, EAST, neighbors);
+    putTileNeighbor(location, SOUTH, neighbors);
+    putTileNeighbor(location, WEST, neighbors);
+    return neighbors;
+  }
+
+  private void putTileNeighbor(Location location, Direction direction, Map<Direction, TileType> neighbors) {
+    getTileAt(location.from(direction)).ifPresent(tileType -> neighbors.put(direction, tileType));
   }
 
   public Optional<TileType> getTileAt(Location location) {
-    return getChunkAt(location).getTileAt(location);
+    return getOrCreateChunkAt(location).getTileAt(location);
   }
 
 }

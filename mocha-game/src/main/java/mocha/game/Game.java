@@ -54,7 +54,7 @@ public class Game implements Tickable {
 
   private void addEntityToChunk(Entity entity) {
     Location entityLocation = entity.getLocation();
-    Chunk chunk = chunkService.getChunkAt(entityLocation);
+    Chunk chunk = chunkService.getOrCreateChunkAt(entityLocation);
     entitiesInChunkService.put(chunk, entity);
   }
 
@@ -71,7 +71,7 @@ public class Game implements Tickable {
 
   private void removeEntityFromChunk(Entity entity) {
     Location entityLocation = entity.getLocation();
-    Chunk chunk = chunkService.getChunkAt(entityLocation);
+    Chunk chunk = chunkService.getOrCreateChunkAt(entityLocation);
     entitiesInChunkService.remove(chunk, entity);
   }
 

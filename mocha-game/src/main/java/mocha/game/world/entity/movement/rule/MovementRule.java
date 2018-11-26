@@ -50,8 +50,8 @@ public class MovementRule implements GameRule {
     if (startLocation.equals(finishLocation)) {
       return;
     }
-    Chunk startChunk = chunkService.getChunkAt(startLocation);
-    Chunk finishChunk = chunkService.getChunkAt(finishLocation);
+    Chunk startChunk = chunkService.getOrCreateChunkAt(startLocation);
+    Chunk finishChunk = chunkService.getOrCreateChunkAt(finishLocation);
     if (startChunk.getId().equals(finishChunk.getId())) {
       return;
     }

@@ -91,14 +91,14 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Subscribe
   public void handle(RequestChunkByIdPacket requestChunkByIdPacket) {
     int chunkId = requestChunkByIdPacket.getChunkId();
-    mochaConnection.sendChunkUpdate(chunkService.getChunkById(chunkId));
+    mochaConnection.sendChunkUpdate(chunkService.getOrCreateChunkById(chunkId));
   }
 
   @Subscribe
   @Override
   public void handle(RequestChunkByLocationPacket requestChunkByLocationPacket) {
     Location location = requestChunkByLocationPacket.getLocation();
-    mochaConnection.sendChunkUpdate(chunkService.getChunkAt(location));
+    mochaConnection.sendChunkUpdate(chunkService.getOrCreateChunkAt(location));
   }
 
   @Override
@@ -117,7 +117,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Override
   public void handle(RequestEntitiesInChunkPacket requestEntitiesInChunkPacket) {
     Location location = requestEntitiesInChunkPacket.getLocation();
-    Chunk chunk = chunkService.getChunkAt(location);
+    Chunk chunk = chunkService.getOrCreateChunkAt(location);
     entitiesInChunkService.getEntitiesInChunk(chunk)
         .forEach(mochaConnection::sendEntityUpdate);
   }

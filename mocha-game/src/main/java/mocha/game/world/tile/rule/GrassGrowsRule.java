@@ -58,7 +58,7 @@ public class GrassGrowsRule implements GameRule {
   private boolean hasGrassNeighbor(Chunk chunk, int x, int y) {
     Location chunkLocation = chunk.getLocation();
     Location tileLocation = chunkLocation.addNew(x * TileType.SIZE, y * TileType.SIZE);
-    return chunkService.getTileNeighbors(tileLocation).stream().anyMatch(isGrass());
+    return chunkService.getTileNeighborsInExistingChunks(tileLocation).values().stream().anyMatch(isGrass());
   }
 
   private Predicate<TileType> isGrass() {

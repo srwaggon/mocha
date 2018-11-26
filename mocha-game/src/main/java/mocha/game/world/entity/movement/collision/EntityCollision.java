@@ -33,7 +33,7 @@ public class EntityCollision extends SimpleCollision {
 
   @Override
   public Set<Collider> getColliders(Location location) {
-    return getColliders(location, chunkService.getChunkAt(location));
+    return getColliders(location, chunkService.getOrCreateChunkAt(location));
   }
 
   private Set<Collider> getColliders(Location location, Chunk chunk) {

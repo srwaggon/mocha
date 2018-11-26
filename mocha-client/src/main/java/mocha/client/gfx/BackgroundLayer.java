@@ -65,7 +65,7 @@ public class BackgroundLayer extends Group {
     for (int y = 0; y < 1; y++) {
       for (int x = 0; x < 1; x++) {
         Location chunkLocation = new Location(location.getX() + x * Chunk.getWidth(), location.getY() + y * Chunk.getHeight());
-        Chunk chunk = chunkService.getChunkAt(chunkLocation);
+        Chunk chunk = chunkService.getOrCreateChunkAt(chunkLocation);
         drawChunk(chunkLocation, chunk);
       }
     }

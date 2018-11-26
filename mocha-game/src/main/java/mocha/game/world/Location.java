@@ -125,7 +125,7 @@ public class Location {
     return from(Direction.WEST);
   }
 
-  private Location from(Direction direction) {
+  public Location from(Direction direction) {
     return addNew(direction.getXMultiplier() * TileType.SIZE, direction.getYMultiplier() * TileType.SIZE);
   }
 }

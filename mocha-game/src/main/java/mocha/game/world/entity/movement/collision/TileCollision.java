@@ -21,7 +21,7 @@ public class TileCollision extends SimpleCollision {
 
   @Override
   public Set<Collider> getColliders(Location location) {
-    Chunk chunk = chunkService.getChunkAt(location);
+    Chunk chunk = chunkService.getOrCreateChunkAt(location);
     return getCollisions(location, chunk);
   }
 
