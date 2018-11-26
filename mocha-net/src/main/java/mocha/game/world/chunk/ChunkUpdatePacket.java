@@ -5,14 +5,13 @@ import mocha.net.packet.PacketType;
 
 public class ChunkUpdatePacket extends AbstractPacket {
 
-  private static final int ID_INDEX = 1;
-  private static final int TILE_DATA_INDEX = 2;
-
   public ChunkUpdatePacket() {
   }
 
-  public ChunkUpdatePacket(int chunkId, String tileData) {
+  public ChunkUpdatePacket(int chunkId, int x, int y, String tileData) {
     addToData(chunkId);
+    addToData(x);
+    addToData(y);
     addToData(tileData);
   }
 
@@ -22,11 +21,19 @@ public class ChunkUpdatePacket extends AbstractPacket {
   }
 
   public int getChunkId() {
-    return getDataAsInt(ID_INDEX);
+    return getDataAsInt(1);
+  }
+
+  public int getX() {
+    return getDataAsInt(2);
+  }
+
+  public int getY() {
+    return getDataAsInt(3);
   }
 
   public String getTilesString() {
-    return this.getSplitData()[TILE_DATA_INDEX];
+    return this.getSplitData()[4];
   }
 
 }

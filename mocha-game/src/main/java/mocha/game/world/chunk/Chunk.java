@@ -19,14 +19,16 @@ public class Chunk implements Identified<Integer> {
   public final static int SIZE = 16;
 
   private int id;
+  private Location location = new Location();
   private TileType[] tiles = new TileType[Chunk.SIZE * Chunk.SIZE];
   private Set<Entity> entities = Sets.newHashSet();
 
   public Chunk() {
   }
 
-  public Chunk(int id, TileType[] tiles) {
+  public Chunk(int id, Location location, TileType[] tiles) {
     this.id = id;
+    this.location = location;
     this.tiles = tiles;
   }
 
@@ -38,6 +40,10 @@ public class Chunk implements Identified<Integer> {
   @Override
   public void setId(Integer id) {
     this.id = id;
+  }
+
+  public Location getLocation() {
+    return location;
   }
 
   private boolean inBounds(int value) {

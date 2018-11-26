@@ -6,8 +6,8 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkUpdatePacket;
 import mocha.game.world.chunk.RequestChunkByLocationPacket;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.EntityRemovedPacket;
+import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
@@ -37,9 +37,12 @@ public class PacketFactory {
 
   ChunkUpdatePacket newChunkPacket(Chunk chunk) {
     int chunkId = chunk.getId();
+    Location location = chunk.getLocation();
+    int x = location.getX();
+    int y = location.getY();
     TileType[] tiles = chunk.getTiles();
     String tileString = tileStringBuilder.build(tiles);
-    return new ChunkUpdatePacket(chunkId, tileString);
+    return new ChunkUpdatePacket(chunkId, x, y, tileString);
   }
 
   RequestChunkByLocationPacket newChunkRequestPacket(Location location) {
@@ -82,7 +85,7 @@ public class PacketFactory {
     return new ItemEntityUpdatePacket(itemEntity);
   }
 
-  public Packet newTileUpdatePacket(Chunk chunk, int x, int y) {
+  Packet newTileUpdatePacket(Chunk chunk, int x, int y) {
     return new TileUpdatePacket(chunk, x, y);
   }
 }

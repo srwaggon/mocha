@@ -18,11 +18,12 @@ import mocha.game.LocalPlayer;
 import mocha.game.LoginSuccessPacket;
 import mocha.game.Player;
 import mocha.game.PlayerIdentityPacket;
+import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkUpdatePacket;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.EntityRemovedPacket;
+import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.item.ItemEntityUpdatePacket;
@@ -107,8 +108,9 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   @Override
   public void handle(ChunkUpdatePacket chunkUpdatePacket) {
     int chunkId = chunkUpdatePacket.getChunkId();
+    Location location = new Location(chunkUpdatePacket.getX(), chunkUpdatePacket.getY());
     TileType[] tiles = tileSetFactory.newTilesFromString(chunkUpdatePacket.getTilesString());
-    Chunk chunk = new Chunk(chunkId, tiles);
+    Chunk chunk = new Chunk(chunkId, location, tiles);
 
     chunkRepository.save(chunk);
   }

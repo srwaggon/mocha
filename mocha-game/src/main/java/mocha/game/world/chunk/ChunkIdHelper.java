@@ -3,6 +3,7 @@ package mocha.game.world.chunk;
 import mocha.game.world.Location;
 
 class ChunkIdHelper {
+
   static Location getLocationOfChunkById(Integer chunkId) {
     return new Location(getChunkX(chunkId), getChunkY(chunkId));
   }

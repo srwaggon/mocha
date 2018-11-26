@@ -5,6 +5,7 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import mocha.game.world.Location;
 import mocha.game.world.tile.TileType;
 
 @Entity
@@ -13,8 +14,8 @@ public class ServerChunk extends Chunk {
   public ServerChunk() {
   }
 
-  ServerChunk(Integer id, TileType[] tiles) {
-    super(id, tiles);
+  ServerChunk(Integer id, Location location, TileType[] tiles) {
+    super(id, location, tiles);
   }
 
   @Id
@@ -36,5 +37,23 @@ public class ServerChunk extends Chunk {
   @Override
   public void setTiles(TileType[] tiles) {
     super.setTiles(tiles);
+  }
+
+  @Column
+  public int getX() {
+    return getLocation().getX();
+  }
+
+  public void setX(int x) {
+    getLocation().setX(x);
+  }
+
+  @Column
+  public int getY() {
+    return getLocation().getY();
+  }
+
+  public void setY(int y) {
+    getLocation().setY(y);
   }
 }
