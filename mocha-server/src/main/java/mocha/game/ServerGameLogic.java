@@ -52,6 +52,7 @@ public class ServerGameLogic implements GameLogic {
   private ItemRepository itemRepository;
   private EntitiesInChunkService entitiesInChunkService;
   private ChunkService chunkService;
+  private IdFactory<Entity> entityIdFactory;
 
   @Inject
   public ServerGameLogic(
@@ -63,7 +64,8 @@ public class ServerGameLogic implements GameLogic {
       MovementFactory movementFactory,
       ItemPrototypeRepository itemPrototypeRepository, ItemRepository itemRepository,
       EntitiesInChunkService entitiesInChunkService,
-      ChunkService chunkService
+      ChunkService chunkService,
+      IdFactory<Entity> entityIdFactory
   ) {
     this.eventBus = eventBus;
     this.game = game;
@@ -75,6 +77,7 @@ public class ServerGameLogic implements GameLogic {
     this.itemRepository = itemRepository;
     this.entitiesInChunkService = entitiesInChunkService;
     this.chunkService = chunkService;
+    this.entityIdFactory = entityIdFactory;
   }
 
   @Subscribe
@@ -84,7 +87,7 @@ public class ServerGameLogic implements GameLogic {
     MochaConnection playerConnection = connectedEvent.getMochaConnection();
 
     int playerId = playerIdFactory.newId();
-    Entity playerEntity = game.addEntity(new Entity());
+    Entity playerEntity = game.addEntity(new Entity(entityIdFactory.newId()));
     movementRepository.save(movementFactory.newSlidingMovement(playerEntity));
     NetworkPlayer player = playerFactory.newNetworkPlayer(playerConnection, playerId, playerEntity);
     mochaConnectionsByPlayerId.put(playerId, playerConnection);

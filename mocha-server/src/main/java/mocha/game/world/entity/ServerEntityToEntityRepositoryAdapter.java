@@ -13,8 +13,14 @@ import mocha.shared.Repository;
 @org.springframework.stereotype.Repository
 public class ServerEntityToEntityRepositoryAdapter implements Repository<Entity, Integer> {
 
-  @Inject
   private ServerEntityRepository serverEntityRepository;
+
+  @Inject
+  public ServerEntityToEntityRepositoryAdapter(
+      ServerEntityRepository serverEntityRepository
+  ) {
+    this.serverEntityRepository = serverEntityRepository;
+  }
 
   @Override
   public List<Entity> findAll() {
@@ -22,8 +28,8 @@ public class ServerEntityToEntityRepositoryAdapter implements Repository<Entity,
   }
 
   @Override
-  public Entity save(Entity element) {
-    ServerEntity toBeSaved = element instanceof ServerEntity ? (ServerEntity) element : new ServerEntity(element);
+  public Entity save(Entity entity) {
+    ServerEntity toBeSaved = entity instanceof ServerEntity ? (ServerEntity) entity : new ServerEntity(entity);
     return serverEntityRepository.save(toBeSaved);
   }
 
@@ -34,8 +40,8 @@ public class ServerEntityToEntityRepositoryAdapter implements Repository<Entity,
   }
 
   @Override
-  public void delete(Entity element) {
-    serverEntityRepository.findById(element.getId())
+  public void delete(Entity entity) {
+    serverEntityRepository.findById(entity.getId())
         .ifPresent(serverEntityRepository::delete);
   }
 }

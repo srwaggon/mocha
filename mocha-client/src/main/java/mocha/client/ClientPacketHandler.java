@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.inject.Inject;
@@ -23,10 +24,14 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkUpdatePacket;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityRemovedPacket;
+import mocha.game.world.entity.EntityType;
 import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
+import mocha.game.world.item.Item;
+import mocha.game.world.item.ItemEntity;
 import mocha.game.world.item.ItemEntityUpdatePacket;
+import mocha.game.world.item.ItemPrototype;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
 import mocha.game.world.tile.TileSetFactory;
@@ -49,6 +54,8 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   private Repository<Player, Integer> playerRepository;
   private Repository<Entity, Integer> entityRepository;
   private Repository<Chunk, Integer> chunkRepository;
+  private Repository<ItemPrototype, Integer> itemPrototypeRepository;
+  private Repository<Item, Integer> itemRepository;
   private TileSetFactory tileSetFactory;
 
   @Inject
@@ -58,13 +65,16 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
       Repository<Player, Integer> playerRepository,
       Repository<Entity, Integer> entityRepository,
       Repository<Chunk, Integer> chunkRepository,
-      TileSetFactory tileSetFactory
+      Repository<ItemPrototype, Integer> itemPrototypeRepository,
+      Repository<Item, Integer> itemRepository, TileSetFactory tileSetFactory
   ) {
     this.game = game;
     this.clientEventBus = clientEventBus;
     this.playerRepository = playerRepository;
     this.entityRepository = entityRepository;
     this.chunkRepository = chunkRepository;
+    this.itemPrototypeRepository = itemPrototypeRepository;
+    this.itemRepository = itemRepository;
     this.tileSetFactory = tileSetFactory;
   }
 
@@ -127,7 +137,23 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   @Subscribe
   @Override
   public void handle(EntityUpdatePacket entityUpdatePacket) {
-    clientEventBus.postEntityUpdatedEvent(entityUpdatePacket.getEntity());
+    clientEventBus.postEntityUpdatedEvent(createEntity(entityUpdatePacket));
+  }
+
+  private Entity createEntity(EntityUpdatePacket entityUpdatePacket) {
+    int entityId = entityUpdatePacket.getId();
+    Location location = entityUpdatePacket.getLocation();
+    EntityType entityType = entityUpdatePacket.getEntityType();
+    int typeId = entityUpdatePacket.getTypeId();
+
+    switch (entityType) {
+      case ITEM:
+        Optional<Item> item = itemRepository.findById(typeId);
+        return new ItemEntity(entityId, location, item.orElse(null));
+      case MOB:
+      default:
+        return new Entity(entityId, location);
+    }
   }
 
   @Subscribe
@@ -143,10 +169,13 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Subscribe
   public void handle(ItemPrototypeUpdatePacket itemPrototypeUpdatePacket) {
+    itemPrototypeRepository.save(itemPrototypeUpdatePacket.getItemPrototype());
   }
 
   @Subscribe
   public void handle(ItemUpdatePacket itemUpdatePacket) {
+    itemPrototypeRepository.findById(itemUpdatePacket.getItemPrototypeId())
+        .ifPresent(itemPrototype -> itemRepository.save(new Item(itemUpdatePacket.getId(), itemPrototype, itemUpdatePacket.getData0(), itemUpdatePacket.getData1(), itemUpdatePacket.getData2())));
   }
 
   @Subscribe

@@ -2,6 +2,7 @@ package mocha.game.world.item;
 
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityType;
 
 public class ItemEntity extends Entity {
 
@@ -10,12 +11,9 @@ public class ItemEntity extends Entity {
   public ItemEntity() {
   }
 
-  public ItemEntity(Item item) {
-    this.item = item;
-  }
-
-  public ItemEntity(Item item, Integer id, Location location) {
+  public ItemEntity(Integer id, Location location, Item item) {
     super(id, location);
+    this.item = item;
   }
 
   @Override
@@ -30,5 +28,20 @@ public class ItemEntity extends Entity {
 
   public Item getItem() {
     return item;
+  }
+
+  @Override
+  public EntityType getEntityType() {
+    return EntityType.ITEM;
+  }
+
+  @Override
+  public int getTypeId() {
+    return item.getId();
+  }
+
+  @Override
+  public boolean isTransient() {
+    return true;
   }
 }

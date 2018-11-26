@@ -12,15 +12,13 @@ public class EntityUpdatePacket extends AbstractEntityPacket {
     addToData(entity.getId());
     addToData(entity.getLocation().getX());
     addToData(entity.getLocation().getY());
+    addToData(entity.getEntityType().name());
+    addToData(entity.getTypeId());
   }
 
   @Override
   public PacketType getType() {
     return PacketType.ENTITY_UPDATE;
-  }
-
-  public Entity getEntity() {
-    return new Entity(getId(), getLocation());
   }
 
   public Location getLocation() {
@@ -33,5 +31,13 @@ public class EntityUpdatePacket extends AbstractEntityPacket {
 
   private int getY() {
     return getDataAsInt(3);
+  }
+
+  public EntityType getEntityType() {
+    return EntityType.valueOf(getData(4));
+  }
+
+  public int getTypeId() {
+    return getDataAsInt(5);
   }
 }

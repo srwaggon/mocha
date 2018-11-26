@@ -8,8 +8,13 @@ public class Entity implements Collider, Identified<Integer> {
 
   private Integer id;
   private Location location = new Location();
+  private EntityType entityType = EntityType.MOB;
 
   public Entity() {
+  }
+
+  public Entity(Integer id) {
+    this.id = id;
   }
 
   public Entity(Integer id, Location location) {
@@ -49,6 +54,10 @@ public class Entity implements Collider, Identified<Integer> {
     return 2.0;
   }
 
+  public EntityType getEntityType() {
+    return entityType;
+  }
+
   @Override
   public boolean isBlocking() {
     return true;
@@ -56,6 +65,13 @@ public class Entity implements Collider, Identified<Integer> {
 
   @Override
   public void collide(Collider collider) {
+  }
 
+  public int getTypeId() {
+    return 0;
+  }
+
+  public boolean isTransient() {
+    return false;
   }
 }

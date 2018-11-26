@@ -20,4 +20,28 @@ public class ItemPrototypeUpdatePacket extends AbstractPacket {
   public PacketType getType() {
     return PacketType.ITEM_PROTOTYPE_UPDATE;
   }
+
+  public int getId() {
+    return getDataAsInt(1);
+  }
+
+  public String getName() {
+    return getData(2);
+  }
+
+  public int getSpriteId() {
+    return getDataAsInt(3);
+  }
+
+  public ItemType getItemType() {
+    return ItemType.valueOf(getData(4));
+  }
+
+  public String getDescription() {
+    return getData(5);
+  }
+
+  public ItemPrototype getItemPrototype() {
+    return new ItemPrototype(getId(), getName(), getSpriteId(), getItemType(), getDescription());
+  }
 }

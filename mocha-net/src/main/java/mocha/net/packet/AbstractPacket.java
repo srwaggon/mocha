@@ -30,14 +30,6 @@ public abstract class AbstractPacket implements Packet {
     return String.join(PacketType.SEPARATOR, getSplitData());
   }
 
-  protected int getDataAsInt(int index) {
-    return Integer.parseInt(getSplitData()[index]);
-  }
-
-  protected char getDataAsChar(int index) {
-    return getSplitData()[index].charAt(0);
-  }
-
   @Override
   public void build(String data) {
     this.data = data;
@@ -50,6 +42,18 @@ public abstract class AbstractPacket implements Packet {
   @Override
   public String getData() {
     return data;
+  }
+
+  public String getData(int index) {
+    return getSplitData()[index];
+  }
+
+  protected char getDataAsChar(int index) {
+    return getData(index).charAt(0);
+  }
+
+  protected int getDataAsInt(int index) {
+    return Integer.parseInt(getData(index));
   }
 
   @Override

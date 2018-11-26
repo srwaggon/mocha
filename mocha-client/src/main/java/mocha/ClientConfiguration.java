@@ -33,6 +33,8 @@ import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
+import mocha.game.world.item.Item;
+import mocha.game.world.item.ItemPrototype;
 import mocha.game.world.tile.TileReader;
 import mocha.game.world.tile.TileSetFactory;
 import mocha.game.world.tile.TileStringBuilder;
@@ -190,4 +192,13 @@ public class ClientConfiguration {
     return new EntitiesInChunkService(entityRepository);
   }
 
+  @Bean
+  public Repository<ItemPrototype, Integer> itemPrototypeRepository() {
+    return new InMemoryRepository<>();
+  }
+
+  @Bean
+  public Repository<Item, Integer> itemRepository() {
+    return new InMemoryRepository<>();
+  }
 }
