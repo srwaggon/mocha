@@ -24,3 +24,6 @@ hs_err_pid*
 
 # Project specific
 data/
+
+# h2
+*.mv.db
