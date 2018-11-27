@@ -2,6 +2,8 @@ package mocha.game.world.entity;
 
 
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +17,9 @@ public class ServerEntity extends Entity {
   ServerEntity(Entity entity) {
     this.setId(entity.getId());
     getLocation().set(entity.getLocation());
+    this.setBlocking(entity.isBlocking());
+    this.setEntityType(entity.getEntityType());
+    this.setTypeId(entity.getTypeId());
   }
 
   @Id
@@ -41,4 +46,23 @@ public class ServerEntity extends Entity {
   public void setY(int y) {
     getLocation().setY(y);
   }
+
+  @Enumerated(EnumType.STRING)
+  public EntityType getEntityType() {
+    return super.getEntityType();
+  }
+
+  public void setEntityType(EntityType entityType) {
+    super.setEntityType(entityType);
+  }
+
+  @Column
+  public int getTypeId() {
+    return super.getTypeId();
+  }
+
+  public void setTypeId(int typeId) {
+    super.setTypeId(typeId);
+  }
+
 }

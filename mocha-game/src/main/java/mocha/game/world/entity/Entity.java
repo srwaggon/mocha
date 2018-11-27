@@ -9,6 +9,9 @@ public class Entity implements Collider, Identified<Integer> {
   private Integer id;
   private Location location = new Location();
   private EntityType entityType = EntityType.MOB;
+  private int typeId;
+  private boolean isBlocking = true;
+  private boolean isRemoved = false;
 
   public Entity() {
   }
@@ -60,7 +63,11 @@ public class Entity implements Collider, Identified<Integer> {
 
   @Override
   public boolean isBlocking() {
-    return true;
+    return isBlocking;
+  }
+
+  public void setBlocking(boolean isBlocking) {
+    this.isBlocking = isBlocking;
   }
 
   @Override
@@ -68,10 +75,26 @@ public class Entity implements Collider, Identified<Integer> {
   }
 
   public int getTypeId() {
-    return 0;
+    return typeId;
   }
 
   public boolean isTransient() {
     return false;
+  }
+
+  protected void setEntityType(EntityType entityType) {
+    this.entityType = entityType;
+  }
+
+  protected void setTypeId(int typeId) {
+    this.typeId = typeId;
+  }
+
+  public boolean isRemoved() {
+    return isRemoved;
+  }
+
+  public void setRemoved(boolean removed) {
+    isRemoved = removed;
   }
 }

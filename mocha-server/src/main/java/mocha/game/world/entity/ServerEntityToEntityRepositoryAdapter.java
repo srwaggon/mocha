@@ -30,7 +30,8 @@ public class ServerEntityToEntityRepositoryAdapter implements Repository<Entity,
   @Override
   public Entity save(Entity entity) {
     ServerEntity toBeSaved = entity instanceof ServerEntity ? (ServerEntity) entity : new ServerEntity(entity);
-    return serverEntityRepository.save(toBeSaved);
+    serverEntityRepository.save(toBeSaved);
+    return entity;
   }
 
   @Override
