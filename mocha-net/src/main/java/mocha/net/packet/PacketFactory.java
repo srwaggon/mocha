@@ -14,11 +14,10 @@ import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.item.Item;
-import mocha.game.world.item.ItemEntity;
-import mocha.game.world.item.ItemEntityUpdatePacket;
 import mocha.game.world.item.ItemPrototype;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
+import mocha.game.world.item.PickUpItemPacket;
 import mocha.game.world.tile.TileStringBuilder;
 import mocha.game.world.tile.TileType;
 import mocha.game.world.tile.TileUpdatePacket;
@@ -31,11 +30,11 @@ public class PacketFactory {
     this.tileStringBuilder = tileStringBuilder;
   }
 
-  LoginSuccessPacket newLoginSuccessPacket(int playerId) {
+  public LoginSuccessPacket newLoginSuccessPacket(int playerId) {
     return new LoginSuccessPacket(playerId);
   }
 
-  ChunkUpdatePacket newChunkPacket(Chunk chunk) {
+  public ChunkUpdatePacket newChunkPacket(Chunk chunk) {
     int chunkId = chunk.getId();
     Location location = chunk.getLocation();
     int x = location.getX();
@@ -45,15 +44,15 @@ public class PacketFactory {
     return new ChunkUpdatePacket(chunkId, x, y, tileString);
   }
 
-  RequestChunkByLocationPacket newChunkRequestPacket(Location location) {
+  public RequestChunkByLocationPacket newChunkRequestPacket(Location location) {
     return new RequestChunkByLocationPacket(location);
   }
 
-  RequestEntitiesInChunkPacket newRequestEntitiesInChunkPacket(Location location) {
+  public RequestEntitiesInChunkPacket newRequestEntitiesInChunkPacket(Location location) {
     return new RequestEntitiesInChunkPacket(location);
   }
 
-  EntityUpdatePacket newEntityPacket(Entity entity) {
+  public EntityUpdatePacket newEntityPacket(Entity entity) {
     return new EntityUpdatePacket(entity);
   }
 
@@ -61,7 +60,7 @@ public class PacketFactory {
     return new MovePacket(entityMoveCommand);
   }
 
-  EntityRemovedPacket newEntityRemovedPacket(Entity entity) {
+  public EntityRemovedPacket newEntityRemovedPacket(Entity entity) {
     return new EntityRemovedPacket(entity.getId());
   }
 
@@ -69,23 +68,23 @@ public class PacketFactory {
     return new RequestEntityByIdPacket(entityId);
   }
 
-  RequestEntitiesByPlayerIdPacket newRequestEntitiesByPlayerIdPacket(int playerId, int... entityIds) {
+  public RequestEntitiesByPlayerIdPacket newRequestEntitiesByPlayerIdPacket(int playerId, int... entityIds) {
     return new RequestEntitiesByPlayerIdPacket(playerId, entityIds);
   }
 
-  ItemPrototypeUpdatePacket newItemPrototypeUpdatePacket(ItemPrototype itemPrototype) {
+  public ItemPrototypeUpdatePacket newItemPrototypeUpdatePacket(ItemPrototype itemPrototype) {
     return new ItemPrototypeUpdatePacket(itemPrototype);
   }
 
-  ItemUpdatePacket newItemUpdatePacket(Item item) {
+  public ItemUpdatePacket newItemUpdatePacket(Item item) {
     return new ItemUpdatePacket(item);
   }
 
-  ItemEntityUpdatePacket newItemEntityUpdatePacket(ItemEntity itemEntity) {
-    return new ItemEntityUpdatePacket(itemEntity);
+  public TileUpdatePacket newTileUpdatePacket(Chunk chunk, int x, int y) {
+    return new TileUpdatePacket(chunk, x, y);
   }
 
-  Packet newTileUpdatePacket(Chunk chunk, int x, int y) {
-    return new TileUpdatePacket(chunk, x, y);
+  public PickUpItemPacket newPickUpItemPacket(Entity entity) {
+    return new PickUpItemPacket(entity.getId());
   }
 }

@@ -11,7 +11,7 @@ public abstract class AbstractEntityPacket extends AbstractPacket {
     addToData(entityId);
   }
 
-  public int getId() {
+  public int getEntityId() {
     return getDataAsInt(1);
   }
 }

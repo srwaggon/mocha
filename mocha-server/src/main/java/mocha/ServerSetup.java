@@ -13,44 +13,29 @@ import mocha.game.item.ItemRepository;
 import mocha.game.item.ServerItem;
 import mocha.game.item.ServerItemPrototype;
 import mocha.game.world.Location;
-import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
-import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.item.ItemEntity;
 import mocha.game.world.item.ItemType;
-import mocha.game.world.tile.TileSetFactory;
 import mocha.shared.IdFactory;
-import mocha.shared.Repository;
 
 @Component
 public class ServerSetup implements CommandLineRunner {
 
-  @Inject
   private Game game;
-
-  @Inject
-  private Repository<Chunk, Integer> chunkRepository;
-
-  @Inject
-  private TileSetFactory tileSetFactory;
-
-  @Inject
   private ChunkService chunkService;
-
-  @Inject
   private ItemRepository itemRepository;
-  @Inject
   private ItemPrototypeRepository itemPrototypeRepository;
-
-  @Inject
-  private EntitiesInChunkService entitiesInChunkService;
-
-  @Inject
-  private Repository<Entity, Integer> entityRepository;
-
-  @Inject
   private IdFactory<Entity> entityIdFactory;
+
+  @Inject
+  public ServerSetup(Game game, ChunkService chunkService, ItemRepository itemRepository, ItemPrototypeRepository itemPrototypeRepository, IdFactory<Entity> entityIdFactory) {
+    this.game = game;
+    this.chunkService = chunkService;
+    this.itemRepository = itemRepository;
+    this.itemPrototypeRepository = itemPrototypeRepository;
+    this.entityIdFactory = entityIdFactory;
+  }
 
   @Override
   public void run(String... args) {
@@ -65,7 +50,7 @@ public class ServerSetup implements CommandLineRunner {
     itemRepository.save(serverPickaxe);
 
     Location itemLocation = new Location(128, 128);
-    ItemEntity pickaxeEntity = new ItemEntity(100, itemLocation, serverPickaxe);
+    ItemEntity pickaxeEntity = new ItemEntity(entityIdFactory.newId(), itemLocation, serverPickaxe);
     game.addEntity(pickaxeEntity);
   }
 

@@ -50,6 +50,6 @@ public class MovePacket extends AbstractEntityPacket {
   }
 
   public EntityMoveCommand getMoveCommand() {
-    return new EntityMoveCommand(getId(), getLocation(), getDirection(), getXOffset(), getYOffset());
+    return new EntityMoveCommand(getEntityId(), getLocation(), getDirection(), getXOffset(), getYOffset());
   }
 }

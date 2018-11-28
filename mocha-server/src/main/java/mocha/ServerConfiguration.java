@@ -55,7 +55,7 @@ public class ServerConfiguration {
     MovementRule movementRule = new MovementRule(entityRepository, movementRepository, chunkService, entitiesInChunkService);
     serverEventBus.register(movementRule);
 
-    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService);
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService, entitiesInChunkService, movementRepository);
     serverEventBus.register(pickUpItemsRule);
 
     GrassGrowsRule grassGrowsRule = new GrassGrowsRule(serverEventBus, chunkRepository, chunkService);

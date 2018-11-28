@@ -20,6 +20,7 @@ import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
+import mocha.game.world.item.PickUpItemPacket;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
@@ -104,7 +105,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Override
   @Subscribe
   public void handle(RequestEntityByIdPacket requestEntityByIdPacket) {
-    int entityId = requestEntityByIdPacket.getId();
+    int entityId = requestEntityByIdPacket.getEntityId();
     Optional<Entity> optionalEntity = entityRepository.findById(entityId);
     if (optionalEntity.isPresent()) {
       mochaConnection.sendEntityUpdate(optionalEntity.get());
@@ -131,5 +132,10 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
           moveCommand.setEntityId(player.getEntity().getId());
           serverEventBus.post(moveCommand);
         });
+  }
+
+  @Subscribe
+  private void handle(PickUpItemPacket pickUpItemPacket) {
+    entityRepository.findById(pickUpItemPacket.getEntityId()).ifPresent(entity -> serverEventBus.postPickUpItemCommand(entity));
   }
 }

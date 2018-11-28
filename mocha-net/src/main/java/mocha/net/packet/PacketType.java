@@ -11,9 +11,9 @@ import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
-import mocha.game.world.item.ItemEntityUpdatePacket;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
+import mocha.game.world.item.PickUpItemPacket;
 import mocha.game.world.tile.TileUpdatePacket;
 import mocha.net.packet.message.GlobalMessagePacket;
 
@@ -39,7 +39,7 @@ public enum PacketType {
 
   ITEM_PROTOTYPE_UPDATE(ItemPrototypeUpdatePacket.class),
   ITEM_UPDATE(ItemUpdatePacket.class),
-  ITEM_ENTITY_UPDATE(ItemEntityUpdatePacket.class),
+  PICKUP_ITEM(PickUpItemPacket.class),
   ;
 
   public static final String SEPARATOR = " ";

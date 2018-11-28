@@ -22,20 +22,26 @@ import mocha.shared.Repository;
 @Component
 public class GameKeyHandler {
 
-  @Inject
   private Repository<Player, Integer> playerRepository;
-
-  @Inject
   private Repository<Entity, Integer> entityRepository;
-
-  @Inject
   private ClientEventBus eventBus;
-
-  @Inject
   private PacketFactory packetFactory;
+  private GameLogic gameLogic;
 
   @Inject
-  private GameLogic gameLogic;
+  public GameKeyHandler(
+      Repository<Player, Integer> playerRepository,
+      Repository<Entity, Integer> entityRepository,
+      ClientEventBus eventBus,
+      PacketFactory packetFactory,
+      GameLogic gameLogic
+  ) {
+    this.playerRepository = playerRepository;
+    this.entityRepository = entityRepository;
+    this.eventBus = eventBus;
+    this.packetFactory = packetFactory;
+    this.gameLogic = gameLogic;
+  }
 
   @PostConstruct
   public void init() {
@@ -45,17 +51,34 @@ public class GameKeyHandler {
   @Subscribe
   public void handle(KeyDownEvent keyDownEvent) {
     handleIfMove(keyDownEvent);
+    handleIfPickup(keyDownEvent);
   }
 
   private void handleIfMove(KeyDownEvent keyDownEvent) {
     getDirection(keyDownEvent)
         .ifPresent(direction ->
             findPlayerEntity().ifPresent(entity ->
-                gameLogic.handle(buildEntityMoveCommand(entity, direction))));
+                handle(buildEntityMoveCommand(entity, direction))));
+  }
+
+  void handle(EntityMoveCommand entityMoveCommand) {
+    eventBus.postSendPacketEvent(packetFactory.newMovePacket(entityMoveCommand));
+  }
+
+  private void handleIfPickup(KeyDownEvent keyDownEvent) {
+    if (!keyDownEvent.getGameKey().equals(GameKey.PICKUP)) {
+      return;
+    }
+    findPlayerEntity().ifPresent(entity ->
+        eventBus.postSendPacketEvent(packetFactory.newPickUpItemPacket(entity)));
   }
 
   private Optional<Entity> findPlayerEntity() {
-    return entityRepository.findById(getPlayer().getEntity().getId());
+    return entityRepository.findById(getPlayerEntityId());
+  }
+
+  private Integer getPlayerEntityId() {
+    return getPlayer().getEntity().getId();
   }
 
   private Player getPlayer() {

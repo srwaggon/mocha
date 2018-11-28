@@ -9,7 +9,7 @@ public class SimpleCollision implements Collision {
 
   @Override
   public boolean isColliding(Location location) {
-    return getColliders(location).isEmpty();
+    return !getColliders(location).isEmpty();
   }
 
   @Override

@@ -6,7 +6,6 @@ import mocha.game.Player;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.event.ChunkUpdatedEvent;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.PickUpItemCommand;
 import mocha.game.world.entity.command.RemoveEntityCommand;
 import mocha.game.world.entity.event.EntityAddedEvent;
 import mocha.game.world.entity.event.EntityRemovedEvent;
@@ -14,6 +13,7 @@ import mocha.game.world.entity.event.EntityUpdatedEvent;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
+import mocha.game.world.item.command.PickUpItemCommand;
 import mocha.game.world.tile.event.TileUpdatedEvent;
 import mocha.shared.task.event.TaskEvent;
 

@@ -30,7 +30,6 @@ import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.item.Item;
 import mocha.game.world.item.ItemEntity;
-import mocha.game.world.item.ItemEntityUpdatePacket;
 import mocha.game.world.item.ItemPrototype;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
@@ -141,7 +140,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   }
 
   private Entity createEntity(EntityUpdatePacket entityUpdatePacket) {
-    int entityId = entityUpdatePacket.getId();
+    int entityId = entityUpdatePacket.getEntityId();
     Location location = entityUpdatePacket.getLocation();
     EntityType entityType = entityUpdatePacket.getEntityType();
     int typeId = entityUpdatePacket.getTypeId();
@@ -164,7 +163,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Subscribe
   public void handle(EntityRemovedPacket entityRemovedPacket) {
-    game.removeEntity(entityRemovedPacket.getId());
+    game.removeEntity(entityRemovedPacket.getEntityId());
   }
 
   @Subscribe
@@ -178,7 +177,4 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
         .ifPresent(itemPrototype -> itemRepository.save(new Item(itemUpdatePacket.getId(), itemPrototype, itemUpdatePacket.getData0(), itemUpdatePacket.getData1(), itemUpdatePacket.getData2())));
   }
 
-  @Subscribe
-  public void handle(ItemEntityUpdatePacket itemEntityUpdatePacket) {
-  }
 }

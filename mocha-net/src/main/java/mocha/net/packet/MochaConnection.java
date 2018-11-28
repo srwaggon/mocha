@@ -7,7 +7,6 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.item.Item;
-import mocha.game.world.item.ItemEntity;
 import mocha.game.world.item.ItemPrototype;
 
 public class MochaConnection extends PacketConnection {
@@ -61,10 +60,6 @@ public class MochaConnection extends PacketConnection {
 
   public void sendItemUpdate(Item item) {
     sendPacket(packetFactory.newItemUpdatePacket(item));
-  }
-
-  public void sendItemEntityUpdate(ItemEntity itemEntity) {
-    sendPacket(packetFactory.newItemEntityUpdatePacket(itemEntity));
   }
 
 }

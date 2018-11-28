@@ -135,7 +135,7 @@ public class ClientConfiguration {
       EntitiesInChunkService entitiesInChunkService) {
     MovementRule movementRule = new MovementRule(entityRepository, movementRepository, chunkService, entitiesInChunkService);
 
-    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService);
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService, entitiesInChunkService, movementRepository);
     clientEventBus.register(pickUpItemsRule);
 
     return Lists.newArrayList(
