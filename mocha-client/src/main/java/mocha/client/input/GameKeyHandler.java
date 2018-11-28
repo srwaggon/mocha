@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
 import mocha.client.input.event.KeyDownEvent;
+import mocha.game.GameLogic;
 import mocha.game.Player;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
@@ -25,18 +26,21 @@ public class GameKeyHandler {
   private Repository<Entity, Integer> entityRepository;
   private ClientEventBus eventBus;
   private PacketFactory packetFactory;
+  private GameLogic gameLogic;
 
   @Inject
   public GameKeyHandler(
       Repository<Player, Integer> playerRepository,
       Repository<Entity, Integer> entityRepository,
       ClientEventBus eventBus,
-      PacketFactory packetFactory
+      PacketFactory packetFactory,
+      GameLogic gameLogic
   ) {
     this.playerRepository = playerRepository;
     this.entityRepository = entityRepository;
     this.eventBus = eventBus;
     this.packetFactory = packetFactory;
+    this.gameLogic = gameLogic;
   }
 
   @PostConstruct
@@ -54,11 +58,7 @@ public class GameKeyHandler {
     getDirection(keyDownEvent)
         .ifPresent(direction ->
             findPlayerEntity().ifPresent(entity ->
-                handle(buildEntityMoveCommand(entity, direction))));
-  }
-
-  private void handle(EntityMoveCommand entityMoveCommand) {
-    eventBus.postSendPacketEvent(packetFactory.newMovePacket(entityMoveCommand));
+                gameLogic.handle(buildEntityMoveCommand(entity, direction))));
   }
 
   private void handleIfPickup(KeyDownEvent keyDownEvent) {

@@ -12,11 +12,14 @@ import mocha.shared.Repository;
 @Component
 public class LocalClientGameLogic implements GameLogic {
 
-  @Inject
   private MochaEventBus mochaEventBus;
+  private Repository<Movement, Integer> movementRepository;
 
   @Inject
-  private Repository<Movement, Integer> movementRepository;
+  public LocalClientGameLogic(MochaEventBus mochaEventBus, Repository<Movement, Integer> movementRepository) {
+    this.mochaEventBus = mochaEventBus;
+    this.movementRepository = movementRepository;
+  }
 
   @Override
   public void handle(EntityMoveCommand entityMoveCommand) {

@@ -15,6 +15,7 @@ import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.packet.MochaConnection;
+import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketHandler;
 import mocha.net.packet.PacketListener;
 import mocha.net.packet.PacketSender;
@@ -34,6 +35,7 @@ public class NetworkClientGameLogic implements GameLogic {
   private MovementFactory movementFactory;
   private Repository<Movement, Integer> movementRepository;
   private MochaConnection mochaConnection;
+  private PacketFactory packetFactory;
 
   public NetworkClientGameLogic(
       Game game,
@@ -43,7 +45,8 @@ public class NetworkClientGameLogic implements GameLogic {
       PacketHandler packetHandler,
       Repository<Entity, Integer> entityRepository,
       MovementFactory movementFactory,
-      Repository<Movement, Integer> movementRepository
+      Repository<Movement, Integer> movementRepository,
+      PacketFactory packetFactory
   ) {
     this.game = game;
     this.eventBus = eventBus;
@@ -53,6 +56,7 @@ public class NetworkClientGameLogic implements GameLogic {
     this.entityRepository = entityRepository;
     this.movementFactory = movementFactory;
     this.movementRepository = movementRepository;
+    this.packetFactory = packetFactory;
   }
 
   @Subscribe
@@ -100,6 +104,11 @@ public class NetworkClientGameLogic implements GameLogic {
       Entity resultEntity = game.addEntity(entity);
       movementRepository.save(movementFactory.newSlidingMovement(resultEntity));
     }
+  }
+
+  @Override
+  public void handle(EntityMoveCommand entityMoveCommand) {
+    eventBus.postSendPacketEvent(packetFactory.newMovePacket(entityMoveCommand));
   }
 
   @Subscribe
