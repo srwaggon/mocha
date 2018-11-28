@@ -4,8 +4,6 @@ import com.google.common.eventbus.Subscribe;
 
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
-
 import mocha.client.event.ClientEventBus;
 import mocha.game.event.PlayerAddedEvent;
 import mocha.game.event.PlayerRemovedEvent;
@@ -17,7 +15,6 @@ import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.packet.MochaConnection;
-import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketHandler;
 import mocha.net.packet.PacketListener;
 import mocha.net.packet.PacketSender;
@@ -28,34 +25,35 @@ import mocha.shared.task.TaskService;
 @Component
 public class NetworkClientGameLogic implements GameLogic {
 
-  @Inject
   private Game game;
-
-  @Inject
   private ClientEventBus eventBus;
-
-  @Inject
-  private PacketFactory packetFactory;
-
-  @Inject
   private PacketSenderFactory packetSenderFactory;
-
-  @Inject
   private TaskService taskService;
-
-  @Inject
   private PacketHandler packetHandler;
-
-  @Inject
   private Repository<Entity, Integer> entityRepository;
-
-  @Inject
   private MovementFactory movementFactory;
-
-  @Inject
   private Repository<Movement, Integer> movementRepository;
-
   private MochaConnection mochaConnection;
+
+  public NetworkClientGameLogic(
+      Game game,
+      ClientEventBus eventBus,
+      PacketSenderFactory packetSenderFactory,
+      TaskService taskService,
+      PacketHandler packetHandler,
+      Repository<Entity, Integer> entityRepository,
+      MovementFactory movementFactory,
+      Repository<Movement, Integer> movementRepository
+  ) {
+    this.game = game;
+    this.eventBus = eventBus;
+    this.packetSenderFactory = packetSenderFactory;
+    this.taskService = taskService;
+    this.packetHandler = packetHandler;
+    this.entityRepository = entityRepository;
+    this.movementFactory = movementFactory;
+    this.movementRepository = movementRepository;
+  }
 
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
@@ -77,11 +75,6 @@ public class NetworkClientGameLogic implements GameLogic {
   public void handle(PlayerAddedEvent playerAddedEvent) {
     int playerId = playerAddedEvent.getPlayer().getId();
     mochaConnection.requestEntitiesByPlayerId(playerId);
-
-//    requestChunkData(-1, -1);
-//    requestChunkData(-1, 0);
-//    requestChunkData(0, -1);
-//    requestChunkData(0, 0);
   }
 
   @Subscribe
@@ -107,11 +100,6 @@ public class NetworkClientGameLogic implements GameLogic {
       Entity resultEntity = game.addEntity(entity);
       movementRepository.save(movementFactory.newSlidingMovement(resultEntity));
     }
-  }
-
-  @Override
-  public void handle(EntityMoveCommand entityMoveCommand) {
-    eventBus.postSendPacketEvent(packetFactory.newMovePacket(entityMoveCommand));
   }
 
   @Subscribe

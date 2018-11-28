@@ -11,7 +11,6 @@ import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
 import mocha.client.input.event.KeyDownEvent;
-import mocha.game.GameLogic;
 import mocha.game.Player;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
@@ -26,21 +25,18 @@ public class GameKeyHandler {
   private Repository<Entity, Integer> entityRepository;
   private ClientEventBus eventBus;
   private PacketFactory packetFactory;
-  private GameLogic gameLogic;
 
   @Inject
   public GameKeyHandler(
       Repository<Player, Integer> playerRepository,
       Repository<Entity, Integer> entityRepository,
       ClientEventBus eventBus,
-      PacketFactory packetFactory,
-      GameLogic gameLogic
+      PacketFactory packetFactory
   ) {
     this.playerRepository = playerRepository;
     this.entityRepository = entityRepository;
     this.eventBus = eventBus;
     this.packetFactory = packetFactory;
-    this.gameLogic = gameLogic;
   }
 
   @PostConstruct
@@ -61,7 +57,7 @@ public class GameKeyHandler {
                 handle(buildEntityMoveCommand(entity, direction))));
   }
 
-  void handle(EntityMoveCommand entityMoveCommand) {
+  private void handle(EntityMoveCommand entityMoveCommand) {
     eventBus.postSendPacketEvent(packetFactory.newMovePacket(entityMoveCommand));
   }
 
@@ -94,15 +90,17 @@ public class GameKeyHandler {
   }
 
   private Optional<Direction> getDirection(KeyDownEvent keyDownEvent) {
-    if (keyDownEvent.getGameKey().equals(GameKey.UP)) {
-      return Optional.of(Direction.NORTH);
-    } else if (keyDownEvent.getGameKey().equals(GameKey.RIGHT)) {
-      return Optional.of(Direction.EAST);
-    } else if (keyDownEvent.getGameKey().equals(GameKey.DOWN)) {
-      return Optional.of(Direction.SOUTH);
-    } else if (keyDownEvent.getGameKey().equals(GameKey.LEFT)) {
-      return Optional.of(Direction.WEST);
+    switch (keyDownEvent.getGameKey()) {
+      case UP:
+        return Optional.of(Direction.NORTH);
+      case RIGHT:
+        return Optional.of(Direction.EAST);
+      case DOWN:
+        return Optional.of(Direction.SOUTH);
+      case LEFT:
+        return Optional.of(Direction.WEST);
+      default:
+        return Optional.empty();
     }
-    return Optional.empty();
   }
 }
