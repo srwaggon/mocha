@@ -42,7 +42,7 @@ public class ClientSetup implements CommandLineRunner {
     if (!isOnline) {
       Location location = new Location(0, 0);
       chunkRepository.save(new Chunk(1, location, tileSetFactory.createRandomTiles()));
-      Entity playerEntity = new Entity(0, location);
+      Entity playerEntity = new Entity(1, location);
       LocalPlayer player = new LocalPlayer(playerEntity);
 
       game.addPlayer(player);

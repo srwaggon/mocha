@@ -23,7 +23,6 @@ public class ChunkView extends Group {
   private ChunkService chunkService;
 
   public ChunkView(
-      Chunk chunk,
       SpriteSheet spriteSheet,
       SpriteSheet dirtTiles,
       SpriteSheet grassTiles,
@@ -32,7 +31,6 @@ public class ChunkView extends Group {
       TileSpriteSelector tileSpriteSelector,
       ChunkService chunkService
   ) {
-    this.chunk = chunk;
     this.dirtTiles = dirtTiles;
     this.spriteSheet = spriteSheet;
     this.grassTiles = grassTiles;
@@ -47,12 +45,12 @@ public class ChunkView extends Group {
     getChildren().add(tileCanvas);
   }
 
-  public void render() {
-    drawTiles();
-  }
-
   public void setChunk(Chunk chunk) {
     this.chunk = chunk;
+  }
+
+  public void render() {
+    drawTiles();
   }
 
   private void drawTiles() {
