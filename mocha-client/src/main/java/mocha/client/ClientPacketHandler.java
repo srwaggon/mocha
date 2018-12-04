@@ -19,11 +19,13 @@ import mocha.game.LocalPlayer;
 import mocha.game.LoginSuccessPacket;
 import mocha.game.Player;
 import mocha.game.PlayerIdentityPacket;
+import mocha.game.PlayerService;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkUpdatePacket;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityRemovedPacket;
+import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.EntityType;
 import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
@@ -56,6 +58,8 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   private Repository<ItemPrototype, Integer> itemPrototypeRepository;
   private Repository<Item, Integer> itemRepository;
   private TileSetFactory tileSetFactory;
+  private EntityService entityService;
+  private PlayerService playerService;
 
   @Inject
   public ClientPacketHandler(
@@ -65,7 +69,9 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
       Repository<Entity, Integer> entityRepository,
       Repository<Chunk, Integer> chunkRepository,
       Repository<ItemPrototype, Integer> itemPrototypeRepository,
-      Repository<Item, Integer> itemRepository, TileSetFactory tileSetFactory
+      Repository<Item, Integer> itemRepository, TileSetFactory tileSetFactory,
+      EntityService entityService,
+      PlayerService playerService
   ) {
     this.game = game;
     this.clientEventBus = clientEventBus;
@@ -75,6 +81,8 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
     this.itemPrototypeRepository = itemPrototypeRepository;
     this.itemRepository = itemRepository;
     this.tileSetFactory = tileSetFactory;
+    this.entityService = entityService;
+    this.playerService = playerService;
   }
 
   @Override
@@ -97,7 +105,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Subscribe
   public void handle(LoginSuccessPacket loginSuccessPacket) {
-    game.addPlayer(new LocalPlayer(loginSuccessPacket.getPlayerId()));
+    playerService.addPlayer(new LocalPlayer(loginSuccessPacket.getPlayerId()));
   }
 
   @Subscribe
@@ -162,7 +170,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Subscribe
   public void handle(EntityRemovedPacket entityRemovedPacket) {
-    game.removeEntity(entityRemovedPacket.getEntityId());
+    entityService.removeEntity(entityRemovedPacket.getEntityId());
   }
 
   @Subscribe

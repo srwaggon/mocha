@@ -21,6 +21,7 @@ import mocha.game.GameLoop;
 import mocha.game.LocalClientGameLogic;
 import mocha.game.NetworkClientGameLogic;
 import mocha.game.Player;
+import mocha.game.PlayerService;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.chunk.Chunk;
@@ -28,6 +29,7 @@ import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
@@ -110,16 +112,24 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public Game game(
+  public EntityService entityService(Repository<Entity, Integer> entityRepository, EntitiesInChunkService entitiesInChunkService, ChunkService chunkService, Repository<Movement, Integer> movementRepository) {
+    return new EntityService(clientEventBus, entityRepository, entitiesInChunkService, chunkService, movementRepository);
+  }
+
+  @Bean
+  public PlayerService playerService(
       MochaEventBus eventBus,
-      List<GameRule> gameRules,
-      Repository<Entity, Integer> entityRepository,
       Repository<Player, Integer> playerRepository,
-      Repository<Movement, Integer> movementRepository,
-      ChunkService chunkService,
-      EntitiesInChunkService entitiesInChunkService
+      EntityService entityService
   ) {
-    return new Game(eventBus, gameRules, playerRepository, entityRepository, movementRepository, chunkService, entitiesInChunkService);
+    return new PlayerService(eventBus, playerRepository, entityService);
+  }
+
+  @Bean
+  public Game game(
+      List<GameRule> gameRules
+  ) {
+    return new Game(gameRules);
   }
 
   @Bean
@@ -132,10 +142,10 @@ public class ClientConfiguration {
       Repository<Entity, Integer> entityRepository,
       Repository<Movement, Integer> movementRepository,
       ChunkService chunkService,
-      EntitiesInChunkService entitiesInChunkService) {
+      EntitiesInChunkService entitiesInChunkService, EntityService entityService) {
     MovementRule movementRule = new MovementRule(entityRepository, movementRepository, chunkService, entitiesInChunkService);
 
-    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService, entitiesInChunkService, movementRepository);
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService, entitiesInChunkService, movementRepository, entityService);
     clientEventBus.register(pickUpItemsRule);
 
     return Lists.newArrayList(

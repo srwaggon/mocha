@@ -12,12 +12,15 @@ import javax.inject.Inject;
 import mocha.game.Game;
 import mocha.game.GameLoop;
 import mocha.game.Player;
+import mocha.game.PlayerService;
+import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.ServerEntityToEntityRepositoryAdapter;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
@@ -50,12 +53,12 @@ public class ServerConfiguration {
       Repository<Chunk, Integer> chunkRepository,
       Repository<Movement, Integer> movementRepository,
       ChunkService chunkService,
-      EntitiesInChunkService entitiesInChunkService
+      EntitiesInChunkService entitiesInChunkService, EntityService entityService
   ) {
     MovementRule movementRule = new MovementRule(entityRepository, movementRepository, chunkService, entitiesInChunkService);
     serverEventBus.register(movementRule);
 
-    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService, entitiesInChunkService, movementRepository);
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService, entitiesInChunkService, movementRepository, entityService);
     serverEventBus.register(pickUpItemsRule);
 
     GrassGrowsRule grassGrowsRule = new GrassGrowsRule(serverEventBus, chunkRepository, chunkService);
@@ -76,14 +79,27 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Game game(
-      List<GameRule> gameRules,
-      Repository<Entity, Integer> entityRepository,
+  public PlayerService playerService(
+      MochaEventBus eventBus,
       Repository<Player, Integer> playerRepository,
-      Repository<Movement, Integer> movementRepository,
-      ChunkService chunkService, EntitiesInChunkService entitiesInChunkService
+      EntityService entityService
   ) {
-    return new Game(serverEventBus, gameRules, playerRepository, entityRepository, movementRepository, chunkService, entitiesInChunkService);
+    return new PlayerService(eventBus, playerRepository, entityService);
+  }
+
+  @Bean
+  public EntityService entityService(
+      MochaEventBus eventBus, Repository<Entity, Integer> entityRepository,
+      EntitiesInChunkService entitiesInChunkService,
+      ChunkService chunkService,
+      Repository<Movement, Integer> movementRepository
+  ) {
+    return new EntityService(eventBus, entityRepository, entitiesInChunkService, chunkService, movementRepository);
+  }
+
+  @Bean
+  public Game game(List<GameRule> gameRules) {
+    return new Game(gameRules);
   }
 
   @Bean

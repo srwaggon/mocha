@@ -8,9 +8,11 @@ import javax.inject.Inject;
 
 import mocha.game.Game;
 import mocha.game.LocalPlayer;
+import mocha.game.PlayerService;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.tile.TileSetFactory;
@@ -34,6 +36,12 @@ public class ClientSetup implements CommandLineRunner {
   @Inject
   private Repository<Movement, Integer> movementRepository;
 
+  @Inject
+  private EntityService entityService;
+
+  @Inject
+  private PlayerService playerService;
+
   @Value("${mocha.client.online}")
   private boolean isOnline;
 
@@ -45,8 +53,8 @@ public class ClientSetup implements CommandLineRunner {
       Entity playerEntity = new Entity(1, location);
       LocalPlayer player = new LocalPlayer(playerEntity);
 
-      game.addPlayer(player);
-      Entity entity = game.addEntity(playerEntity);
+      playerService.addPlayer(player);
+      Entity entity = entityService.addEntity(playerEntity);
 
       movementRepository.save(movementFactory.newSlidingMovement(entity));
     }

@@ -9,6 +9,7 @@ import mocha.game.event.PlayerAddedEvent;
 import mocha.game.event.PlayerRemovedEvent;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.event.EntityUpdatedEvent;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
@@ -26,7 +27,6 @@ import mocha.shared.task.TaskService;
 @Component
 public class NetworkClientGameLogic implements GameLogic {
 
-  private Game game;
   private ClientEventBus eventBus;
   private PacketSenderFactory packetSenderFactory;
   private TaskService taskService;
@@ -36,9 +36,9 @@ public class NetworkClientGameLogic implements GameLogic {
   private Repository<Movement, Integer> movementRepository;
   private MochaConnection mochaConnection;
   private PacketFactory packetFactory;
+  private EntityService entityService;
 
   public NetworkClientGameLogic(
-      Game game,
       ClientEventBus eventBus,
       PacketSenderFactory packetSenderFactory,
       TaskService taskService,
@@ -46,9 +46,8 @@ public class NetworkClientGameLogic implements GameLogic {
       Repository<Entity, Integer> entityRepository,
       MovementFactory movementFactory,
       Repository<Movement, Integer> movementRepository,
-      PacketFactory packetFactory
-  ) {
-    this.game = game;
+      PacketFactory packetFactory,
+      EntityService entityService) {
     this.eventBus = eventBus;
     this.packetSenderFactory = packetSenderFactory;
     this.taskService = taskService;
@@ -57,6 +56,7 @@ public class NetworkClientGameLogic implements GameLogic {
     this.movementFactory = movementFactory;
     this.movementRepository = movementRepository;
     this.packetFactory = packetFactory;
+    this.entityService = entityService;
   }
 
   @Subscribe
@@ -106,7 +106,7 @@ public class NetworkClientGameLogic implements GameLogic {
 
   private void createEntityIfAbsent(Entity entity) {
     if (!entityRepository.findById(entity.getId()).isPresent()) {
-      Entity resultEntity = game.addEntity(entity);
+      Entity resultEntity = entityService.addEntity(entity);
       movementRepository.save(movementFactory.newSlidingMovement(resultEntity));
     }
   }

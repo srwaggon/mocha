@@ -13,6 +13,7 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.EntityType;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.item.command.PickUpItemCommand;
@@ -23,16 +24,18 @@ public class PickUpItemsRule implements GameRule {
   private ChunkService chunkService;
   private EntitiesInChunkService entitiesInChunkService;
   private Repository<Movement, Integer> movementRepository;
+  private EntityService entityService;
 
   private Queue<PickUpItemCommand> pickUpItemCommands = Lists.newLinkedList();
 
   public PickUpItemsRule(
       ChunkService chunkService,
       EntitiesInChunkService entitiesInChunkService,
-      Repository<Movement, Integer> movementRepository) {
+      Repository<Movement, Integer> movementRepository, EntityService entityService) {
     this.chunkService = chunkService;
     this.entitiesInChunkService = entitiesInChunkService;
     this.movementRepository = movementRepository;
+    this.entityService = entityService;
   }
 
   @Subscribe
@@ -43,24 +46,24 @@ public class PickUpItemsRule implements GameRule {
   @Override
   public void apply(Game game) {
     while (!pickUpItemCommands.isEmpty()) {
-      pickUpItem(game, pickUpItemCommands.poll());
+      pickUpItem(pickUpItemCommands.poll());
     }
   }
 
-  private void pickUpItem(Game game, PickUpItemCommand pickUpItemCommand) {
+  private void pickUpItem(PickUpItemCommand pickUpItemCommand) {
     Location location = pickUpItemCommand.getPickingUpEntity().getLocation();
     Chunk chunk = chunkService.getOrCreateChunkAt(location);
-    removeEntity(game, pickUpItemCommand.getPickingUpEntity(), chunk);
+    removeEntity(pickUpItemCommand.getPickingUpEntity(), chunk);
   }
 
-  private void removeEntity(Game game, Entity pickingUpEntity, Chunk chunk) {
+  private void removeEntity(Entity pickingUpEntity, Chunk chunk) {
     movementRepository.findById(pickingUpEntity.getId())
         .ifPresent(movement -> entitiesInChunkService.getEntitiesInChunk(chunk).stream()
             .filter(entity -> !entity.getId().equals(pickingUpEntity.getId()))
             .filter(PickUpItemsRule::isItem)
             .filter(entity -> movement.getCollision().isColliding(entity.getLocation()))
             .findFirst()
-            .ifPresent(game::removeEntity));
+            .ifPresent(entityService::removeEntity));
   }
 
   private static boolean isItem(Entity entity) {
