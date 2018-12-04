@@ -76,7 +76,7 @@ public class NetworkClientGameLogic implements GameLogic {
 
   private void requestChunkData(int x, int y) {
     Location location = new Location(x, y);
-    mochaConnection.requestChunk(location);
+    mochaConnection.requestChunkAt(location);
     mochaConnection.requestEntitiesInChunk(location);
   }
 

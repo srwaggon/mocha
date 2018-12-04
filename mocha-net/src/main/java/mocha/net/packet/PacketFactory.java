@@ -4,6 +4,7 @@ import mocha.game.LoginSuccessPacket;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkUpdatePacket;
+import mocha.game.world.chunk.RequestChunkByIdPacket;
 import mocha.game.world.chunk.RequestChunkByLocationPacket;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityRemovedPacket;
@@ -44,7 +45,11 @@ public class PacketFactory {
     return new ChunkUpdatePacket(chunkId, x, y, tileString);
   }
 
-  public RequestChunkByLocationPacket newChunkRequestPacket(Location location) {
+  public RequestChunkByIdPacket newRequestChunkById(int chunkId) {
+    return new RequestChunkByIdPacket(chunkId);
+  }
+
+  public RequestChunkByLocationPacket newRequestChunkByLocationPacket(Location location) {
     return new RequestChunkByLocationPacket(location);
   }
 

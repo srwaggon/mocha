@@ -177,11 +177,6 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public ChunkService chunkService(ChunkFactory chunkFactory, Repository<Chunk, Integer> chunkRepository) {
-    return new ChunkService(chunkFactory, chunkRepository);
-  }
-
-  @Bean
   @Scope("prototype")
   Logger logger(InjectionPoint injectionPoint) {
     return LoggerFactory.getLogger(injectionPoint.getMethodParameter().getContainingClass());

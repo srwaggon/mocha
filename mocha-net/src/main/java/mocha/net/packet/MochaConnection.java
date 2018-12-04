@@ -22,8 +22,12 @@ public class MochaConnection extends PacketConnection {
     sendPacket(packetFactory.newLoginSuccessPacket(playerId));
   }
 
-  public void requestChunk(Location location) {
-    sendPacket(packetFactory.newChunkRequestPacket(location));
+  public void requestChunkById(int chunkId) {
+    sendPacket(packetFactory.newRequestChunkById(chunkId));
+  }
+
+  public void requestChunkAt(Location location) {
+    sendPacket(packetFactory.newRequestChunkByLocationPacket(location));
   }
 
   public void requestEntitiesInChunk(Location location) {
