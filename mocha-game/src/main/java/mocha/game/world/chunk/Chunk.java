@@ -2,8 +2,6 @@ package mocha.game.world.chunk;
 
 import com.google.common.collect.Sets;
 
-import java.util.Collections;
-import java.util.Optional;
 import java.util.Set;
 
 import mocha.game.world.Location;
@@ -67,22 +65,12 @@ public class Chunk implements Identified<Integer> {
     this.tiles = tiles;
   }
 
-  private Optional<TileType> getTileAt(int x, int y) {
-    int xIndex = x / TileType.SIZE;
-    int yIndex = y / TileType.SIZE;
-    return getTileWithIndices(xIndex, yIndex);
-  }
-
-  private Optional<TileType> getTileWithIndices(int xIndex, int yIndex) {
-    return inBounds(xIndex) && inBounds(yIndex)
-        ? Optional.of(getTile(xIndex, yIndex))
-        : Optional.empty();
-  }
-
-  public Optional<TileType> getTileAt(Location location) {
+  public TileType getTileAt(Location location) {
     int x = getXBoundToChunk(location);
     int y = getYBoundToChunk(location);
-    return getTileAt(x, y);
+    int xIndex = x / TileType.SIZE;
+    int yIndex = y / TileType.SIZE;
+    return getTile(xIndex, yIndex);
   }
 
   private int getXBoundToChunk(Location location) {
@@ -105,27 +93,7 @@ public class Chunk implements Identified<Integer> {
     entities.remove(entity);
   }
 
-  public Set<Entity> getEntitiesAt(Location location) {
-    int x = getXBoundToChunk(location);
-    int y = getYBoundToChunk(location);
-    return getEntitiesAt(x, y);
-  }
-
-  private Set<Entity> getEntitiesAt(int x, int y) {
-    int xIndex = x / TileType.SIZE;
-    int yIndex = y / TileType.SIZE;
-    return inBounds(xIndex) && inBounds(yIndex)
-        ? getEntities(x, y)
-        : Collections.emptySet();
-  }
-
-  private Set<Entity> getEntities(int x, int y) {
-    int tileIndex = getTileIndex(x, y);
-    return entities;
-  }
-
   private int getTileIndex(int x, int y) {
     return x + y * SIZE;
   }
-
 }

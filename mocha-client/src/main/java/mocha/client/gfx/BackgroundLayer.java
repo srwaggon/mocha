@@ -71,7 +71,7 @@ public class BackgroundLayer {
   }
 
   private Image getSprite(Location tileLocation) {
-    TileType tileType = chunkService.getTileAt(tileLocation).orElse(TileType.DIRT);
+    TileType tileType = chunkService.getTileAt(tileLocation);
     SpriteSheet spriteSheet = selectSpriteSheet(tileType);
     int spriteIndex = tileSpriteSelector.selectSprite(tileLocation);
     return spriteSheet.getSprite(spriteIndex, getScale());

@@ -3,7 +3,6 @@ package mocha.client.gfx;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -27,13 +26,7 @@ public class TileSpriteSelector {
   private ChunkService chunkService;
 
   public int selectSprite(Location tileLocation) {
-    Optional<TileType> tileAt = chunkService.getTileAt(tileLocation);
-    if (!tileAt.isPresent()) {
-      return 0;
-    }
-
-    TileType type = tileAt.get();
-
+    TileType type = chunkService.getTileAt(tileLocation);
     return isConnectedTileSprite(type) ? getSpriteOffset(tileLocation, type) : 0;
   }
 

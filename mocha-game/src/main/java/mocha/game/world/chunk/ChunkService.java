@@ -60,7 +60,7 @@ public class ChunkService {
     Location directionLocation = location.from(direction);
     int chunkId = ChunkIdHelper.getIdForChunkAt(directionLocation);
     return chunkRepository.findById(chunkId).isPresent()
-        ? getTileAt(directionLocation)
+        ? Optional.of(getTileAt(directionLocation))
         : Optional.empty();
   }
 
@@ -74,10 +74,10 @@ public class ChunkService {
   }
 
   private void putTileNeighbor(Location location, Direction direction, Map<Direction, TileType> neighbors) {
-    getTileAt(location.from(direction)).ifPresent(tileType -> neighbors.put(direction, tileType));
+    neighbors.put(direction, getTileAt(location.from(direction)));
   }
 
-  public Optional<TileType> getTileAt(Location location) {
+  public TileType getTileAt(Location location) {
     return getOrCreateChunkAt(location).getTileAt(location);
   }
 
