@@ -4,21 +4,29 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import mocha.client.gfx.BackgroundLayer;
 import mocha.client.gfx.SpriteLayer;
 
 @Component
-public class GameView {
+public class GameView extends Canvas {
 
-  @Inject
   private BackgroundLayer backgroundLayer;
-
-  @Inject
   private SpriteLayer spriteLayer;
 
+  @Inject
+  public GameView(BackgroundLayer backgroundLayer, SpriteLayer spriteLayer) {
+    this.setHeight(512);
+    this.setWidth(512);
+    this.backgroundLayer = backgroundLayer;
+    this.spriteLayer = spriteLayer;
+  }
+
   public void render(long now) {
-    backgroundLayer.render();
-    spriteLayer.render(now);
+    GraphicsContext graphics = getGraphicsContext2D();
+    backgroundLayer.render(now, graphics);
+    spriteLayer.render(now, graphics);
   }
 
 }

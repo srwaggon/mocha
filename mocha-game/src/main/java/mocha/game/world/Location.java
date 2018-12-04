@@ -18,6 +18,11 @@ public class Location {
     this.y = y;
   }
 
+  public Location(double x, double y) {
+    this.x = (int) x;
+    this.y = (int) y;
+  }
+
   public int getX() {
     return x;
   }

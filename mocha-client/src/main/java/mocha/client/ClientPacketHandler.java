@@ -120,7 +120,6 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
     Location location = new Location(chunkUpdatePacket.getX(), chunkUpdatePacket.getY());
     TileType[] tiles = tileSetFactory.newTilesFromString(chunkUpdatePacket.getTilesString());
     Chunk chunk = new Chunk(chunkId, location, tiles);
-
     chunkRepository.save(chunk);
   }
 

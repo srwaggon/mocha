@@ -67,6 +67,11 @@ public class NetworkClientGameLogic implements GameLogic {
     eventBus.register(packetSender);
     eventBus.register(packetListener);
     taskService.submit(packetListener);
+
+    requestChunkData(-1, -1);
+    requestChunkData(-1, 0);
+    requestChunkData(0, -1);
+    requestChunkData(0, 0);
   }
 
   private void requestChunkData(int x, int y) {
