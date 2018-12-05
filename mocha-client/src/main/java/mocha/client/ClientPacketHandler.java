@@ -4,8 +4,6 @@ import com.google.common.collect.Queues;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -14,7 +12,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
-import mocha.game.Game;
 import mocha.game.LocalPlayer;
 import mocha.game.LoginSuccessPacket;
 import mocha.game.Player;
@@ -46,11 +43,9 @@ import mocha.shared.task.SleepyRunnable;
 @Component
 public class ClientPacketHandler extends SimplePacketHandler implements SleepyRunnable {
 
-  private static final Logger log = LoggerFactory.getLogger(ClientPacketHandler.class);
   private EventBus packetEventBus = new EventBus();
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
 
-  private Game game;
   private ClientEventBus clientEventBus;
   private Repository<Player, Integer> playerRepository;
   private Repository<Entity, Integer> entityRepository;
@@ -63,7 +58,6 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Inject
   public ClientPacketHandler(
-      Game game,
       ClientEventBus clientEventBus,
       Repository<Player, Integer> playerRepository,
       Repository<Entity, Integer> entityRepository,
@@ -73,7 +67,6 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
       EntityService entityService,
       PlayerService playerService
   ) {
-    this.game = game;
     this.clientEventBus = clientEventBus;
     this.playerRepository = playerRepository;
     this.entityRepository = entityRepository;

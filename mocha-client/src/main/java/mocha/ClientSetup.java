@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.Game;
 import mocha.game.LocalPlayer;
 import mocha.game.PlayerService;
 import mocha.game.world.Location;
@@ -20,9 +19,6 @@ import mocha.shared.Repository;
 
 @Component
 public class ClientSetup implements CommandLineRunner {
-
-  @Inject
-  private Game game;
 
   @Inject
   private TileSetFactory tileSetFactory;

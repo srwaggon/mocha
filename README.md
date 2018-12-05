@@ -14,7 +14,7 @@ These represent units of work **to be done.**
 - [x] Pickaxe sprite.
 - [x] Pickaxes exist in the world.
 - [x] Items disappear from the world when picked up.
-- [ ] A network player can send a command to pickup an item.
+- [x] A network player can send a command to pickup an item.
 - [ ] Swords exist in the world.
 - [ ] Swords / Pickaxes can be dropped by the player and appear in the world when dropped.
 - [ ] A player can open their inventory and view its contents.

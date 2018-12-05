@@ -2,7 +2,6 @@ package mocha.game.world.tile.rule;
 
 import java.util.function.Predicate;
 
-import mocha.game.Game;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
@@ -27,7 +26,7 @@ public class GrassGrowsRule implements GameRule {
   }
 
   @Override
-  public void apply(Game game) {
+  public void apply() {
     chunkRepository.findAll().forEach(chunk -> {
       if (tryGrowGrass(chunk)) {
         chunkRepository.save(chunk);

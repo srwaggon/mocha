@@ -15,7 +15,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
-import mocha.game.Game;
+import mocha.game.RuleService;
 import mocha.game.GameLogic;
 import mocha.game.GameLoop;
 import mocha.game.LocalClientGameLogic;
@@ -126,10 +126,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public Game game(
-      List<GameRule> gameRules
-  ) {
-    return new Game(gameRules);
+  public RuleService ruleService(List<GameRule> gameRules) {
+    return new RuleService(gameRules);
   }
 
   @Bean

@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import mocha.game.Game;
+import mocha.game.RuleService;
 import mocha.game.GameLoop;
 import mocha.game.Player;
 import mocha.game.PlayerService;
@@ -98,8 +98,8 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Game game(List<GameRule> gameRules) {
-    return new Game(gameRules);
+  public RuleService game(List<GameRule> gameRules) {
+    return new RuleService(gameRules);
   }
 
   @Bean

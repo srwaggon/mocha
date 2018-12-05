@@ -10,7 +10,7 @@ import mocha.client.ClientPacketHandler;
 import mocha.client.NetworkClient;
 import mocha.client.event.ClientEventBus;
 import mocha.client.gfx.RenderLoop;
-import mocha.game.Game;
+import mocha.game.RuleService;
 import mocha.game.GameLogic;
 import mocha.game.GameLoop;
 import mocha.shared.task.TaskService;
@@ -25,7 +25,7 @@ public class MochaClient {
   @Inject
   private GameLoop gameLoop;
   @Inject
-  private Game game;
+  private RuleService ruleService;
   @Inject
   private NetworkClient networkClient;
   @Inject
@@ -46,7 +46,7 @@ public class MochaClient {
     }
 
     taskService.submit(() -> gameLoop.start());
-    gameLoop.submit(game);
+    gameLoop.submit(ruleService);
     renderLoop.start();
   }
 

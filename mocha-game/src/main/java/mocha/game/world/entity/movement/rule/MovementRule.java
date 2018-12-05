@@ -1,6 +1,5 @@
 package mocha.game.world.entity.movement.rule;
 
-import mocha.game.Game;
 import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
@@ -29,8 +28,7 @@ public class MovementRule implements GameRule {
   }
 
   @Override
-  public void apply(Game game) {
-    // todo: forget game
+  public void apply() {
     // todo: accept time;
     processEntityMovement();
   }
