@@ -7,15 +7,6 @@ import mocha.game.world.entity.movement.command.EntityMoveCommand;
 
 public class SimpleMovement implements Movement {
 
-  protected Collision collision;
-  protected Direction direction;
-  int xOffset = 0;
-  int yOffset = 0;
-
-  SimpleMovement(Collision collision) {
-    this.collision = collision;
-  }
-
   @Override
   public Integer getId() {
     return null;
@@ -67,26 +58,26 @@ public class SimpleMovement implements Movement {
   }
 
   public int getXOffset() {
-    return xOffset;
+    return 0;
   }
 
   public int getYOffset() {
-    return yOffset;
+    return 0;
   }
 
   @Override
   public Direction getDirection() {
-    return direction;
+    return null;
   }
 
   @Override
   public Collision getCollision() {
-    return collision;
+    return null;
   }
 
   @Override
   public void setCollision(Collision collision) {
-    this.collision = collision;
+
   }
 
 }

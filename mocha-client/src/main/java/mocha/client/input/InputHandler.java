@@ -23,12 +23,12 @@ public class InputHandler {
   private ClientEventBus eventBus;
 
   @Inject
-  public InputHandler(ClientEventBus eventBus) {
+  InputHandler(ClientEventBus eventBus) {
     this.eventBus = eventBus;
   }
 
   @PostConstruct
-  public void init() {
+  void init() {
     keyMap.put(KeyCode.UP, GameKey.UP);
     keyMap.put(KeyCode.RIGHT, GameKey.RIGHT);
     keyMap.put(KeyCode.DOWN, GameKey.DOWN);
@@ -46,6 +46,7 @@ public class InputHandler {
   private void up(GameKey gameKey) {
     if (gameKey.isDown()) {
       gameKey.up();
+      eventBus.keyUp(gameKey);
     }
   }
 

@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
-import mocha.client.input.event.KeyDownEvent;
+import mocha.client.input.event.GameKeyEvent;
 import mocha.game.GameLogic;
 import mocha.game.Player;
 import mocha.game.world.Direction;
@@ -49,20 +49,34 @@ public class GameKeyHandler {
   }
 
   @Subscribe
-  public void handle(KeyDownEvent keyDownEvent) {
-    handleIfMove(keyDownEvent);
-    handleIfPickup(keyDownEvent);
+  public void handle(GameKeyEvent gameKeyEvent) {
+    handleIfStartMove(gameKeyEvent);
+    handleIfStopMove(gameKeyEvent);
+    handleIfPickup(gameKeyEvent);
   }
 
-  private void handleIfMove(KeyDownEvent keyDownEvent) {
-    getDirection(keyDownEvent)
+  private void handleIfStartMove(GameKeyEvent gameKeyEvent) {
+    if (!gameKeyEvent.isDown()) {
+      return;
+    }
+    getDirection(gameKeyEvent)
         .ifPresent(direction ->
             findPlayerEntity().ifPresent(entity ->
-                gameLogic.handle(buildEntityMoveCommand(entity, direction))));
+                gameLogic.handle(buildEntityStartMoveCommand(entity, direction))));
   }
 
-  private void handleIfPickup(KeyDownEvent keyDownEvent) {
-    if (!keyDownEvent.getGameKey().equals(GameKey.PICKUP)) {
+  private void handleIfStopMove(GameKeyEvent gameKeyEvent) {
+    if (gameKeyEvent.isDown()) {
+      return;
+    }
+    getDirection(gameKeyEvent)
+        .ifPresent(direction ->
+            findPlayerEntity().ifPresent(entity ->
+                gameLogic.handle(buildEntityStopMoveCommand(entity, direction))));
+  }
+
+  private void handleIfPickup(GameKeyEvent gameKeyEvent) {
+    if (!gameKeyEvent.getGameKey().equals(GameKey.PICKUP)) {
       return;
     }
     findPlayerEntity().ifPresent(entity ->
@@ -81,16 +95,26 @@ public class GameKeyHandler {
     return playerRepository.findAll().get(0);
   }
 
-  private EntityMoveCommand buildEntityMoveCommand(Entity entity, Direction direction) {
+  private EntityMoveCommand buildEntityStartMoveCommand(Entity entity, Direction direction) {
+    return buildEntityMoveCommand(entity, direction, true);
+  }
+
+  private EntityMoveCommand buildEntityStopMoveCommand(Entity entity, Direction direction) {
+    return buildEntityMoveCommand(entity, direction, false);
+  }
+
+  private EntityMoveCommand buildEntityMoveCommand(Entity entity, Direction direction, boolean isStart) {
     return EntityMoveCommand.builder()
         .entityId(entity.getId())
         .location(entity.getLocation())
         .direction(direction)
+        .xOffset(isStart ? direction.getXMultiplier() : 0)
+        .yOffset(isStart ? direction.getYMultiplier() : 0)
         .build();
   }
 
-  private Optional<Direction> getDirection(KeyDownEvent keyDownEvent) {
-    switch (keyDownEvent.getGameKey()) {
+  private Optional<Direction> getDirection(GameKeyEvent gameKeyEvent) {
+    switch (gameKeyEvent.getGameKey()) {
       case UP:
         return Optional.of(Direction.NORTH);
       case RIGHT:

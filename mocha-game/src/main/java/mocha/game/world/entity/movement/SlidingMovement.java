@@ -17,7 +17,7 @@ public class SlidingMovement extends BaseMovement {
   private Repository<Entity, Integer> entityRepository;
 
   SlidingMovement(int id, Collision collision, Repository<Entity, Integer> entityRepository) {
-    super(collision, id);
+    super(id, collision);
     this.entityRepository = entityRepository;
   }
 
@@ -64,16 +64,10 @@ public class SlidingMovement extends BaseMovement {
     }
   }
 
-  public boolean isMoving() {
-    return xOffset != 0 || yOffset != 0;
-  }
-
   private void move() {
     int xDelta = WALK_SPEED * direction.getXMultiplier();
-    xOffset -= xDelta;
 
     int yDelta = WALK_SPEED * direction.getYMultiplier();
-    yOffset -= yDelta;
 
     move2(xDelta, 0);
     move2(0, yDelta);

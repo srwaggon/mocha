@@ -17,10 +17,6 @@ public class MovementFactory {
     this.entityRepository = entityRepository;
   }
 
-  public SimpleMovement newSimpleMovement() {
-    return new SimpleMovement(collisionFactory.newSimpleCollision());
-  }
-
   public SlidingMovement newSlidingMovement(Entity entity) {
     return new SlidingMovement(entity.getId(), collisionFactory.newEntityHitBoxCollision(entity, 32, 32), entityRepository);
   }
