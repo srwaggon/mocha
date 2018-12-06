@@ -20,12 +20,12 @@ import static mocha.game.world.tile.TileType.STONE;
 import static mocha.game.world.tile.TileType.WATER;
 
 @Component
-public class TileSpriteSelector {
+class TileSpriteSelector {
 
   @Inject
   private ChunkService chunkService;
 
-  public int selectSprite(Location tileLocation) {
+  int selectSprite(Location tileLocation) {
     TileType type = chunkService.getTileAt(tileLocation);
     return isConnectedTileSprite(type) ? getSpriteOffset(tileLocation, type) : 0;
   }
@@ -37,10 +37,11 @@ public class TileSpriteSelector {
   }
 
   private int getSpriteOffset(Location tileLocation, TileType type) {
-    Map<Direction, TileType> tileNeighbors = chunkService.getTileNeighbors(tileLocation);
-    return (tileNeighbors.get(NORTH).equals(type) ? 1 : 0) +
-        (tileNeighbors.get(EAST).equals(type) ? 2 : 0) +
-        (tileNeighbors.get(SOUTH).equals(type) ? 4 : 0) +
-        (tileNeighbors.get(WEST).equals(type) ? 8 : 0);
+    Map<Direction, TileType> tileNeighbors = chunkService.getTileNeighborsInExistingChunks(tileLocation);
+    return (type.equals(tileNeighbors.get(NORTH)) ? 1 : 0) +
+        (type.equals(tileNeighbors.get(EAST)) ? 2 : 0) +
+        (type.equals(tileNeighbors.get(SOUTH)) ? 4 : 0) +
+        (type.equals(tileNeighbors.get(WEST)) ? 8 : 0);
   }
+
 }
