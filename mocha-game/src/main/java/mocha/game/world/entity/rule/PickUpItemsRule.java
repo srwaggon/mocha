@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.eventbus.Subscribe;
 
 import java.util.Queue;
+import java.util.Set;
 
 import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
@@ -15,6 +16,7 @@ import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.EntityType;
 import mocha.game.world.entity.movement.Movement;
+import mocha.game.world.entity.movement.collision.Collider;
 import mocha.game.world.item.command.PickUpItemCommand;
 import mocha.shared.Repository;
 
@@ -57,12 +59,15 @@ public class PickUpItemsRule implements GameRule {
 
   private void removeEntity(Entity pickingUpEntity, Chunk chunk) {
     movementRepository.findById(pickingUpEntity.getId())
-        .ifPresent(movement -> entitiesInChunkService.getEntitiesInChunk(chunk).stream()
-            .filter(entity -> !entity.getId().equals(pickingUpEntity.getId()))
-            .filter(PickUpItemsRule::isItem)
-            .filter(entity -> movement.getCollision().isColliding(entity.getLocation()))
-            .findFirst()
-            .ifPresent(entityService::removeEntity));
+        .ifPresent(movement -> {
+          Set<Collider> colliders = movement.getCollision().getColliders(pickingUpEntity.getLocation());
+          entitiesInChunkService.getEntitiesInChunk(chunk).stream()
+              .filter(entity -> !entity.getId().equals(pickingUpEntity.getId()))
+              .filter(PickUpItemsRule::isItem)
+              .filter(colliders::contains)
+              .findFirst()
+              .ifPresent(entityService::removeEntity);
+        });
   }
 
   private static boolean isItem(Entity entity) {
