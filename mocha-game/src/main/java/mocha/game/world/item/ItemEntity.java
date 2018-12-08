@@ -14,6 +14,7 @@ public class ItemEntity extends Entity {
   public ItemEntity(Integer id, Location location, Item item) {
     super(id, location);
     this.item = item;
+    this.setEntityType(EntityType.ITEM);
   }
 
   @Override

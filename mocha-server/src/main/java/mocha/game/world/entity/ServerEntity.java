@@ -4,8 +4,6 @@ package mocha.game.world.entity;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @javax.persistence.Entity
@@ -23,7 +21,6 @@ public class ServerEntity extends Entity {
   }
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   @Override
   public Integer getId() {
     return super.getId();
