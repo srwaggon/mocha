@@ -15,6 +15,7 @@ public class ItemEntity extends Entity {
     super(id, location);
     this.item = item;
     this.setEntityType(EntityType.ITEM);
+    this.setBlocking(false);
   }
 
   @Override
@@ -22,18 +23,8 @@ public class ItemEntity extends Entity {
     return item.getSpriteId();
   }
 
-  @Override
-  public boolean isBlocking() {
-    return false;
-  }
-
   public Item getItem() {
     return item;
-  }
-
-  @Override
-  public EntityType getEntityType() {
-    return EntityType.ITEM;
   }
 
   @Override

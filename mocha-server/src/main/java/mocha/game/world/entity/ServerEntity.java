@@ -45,21 +45,35 @@ public class ServerEntity extends Entity {
   }
 
   @Enumerated(EnumType.STRING)
+  @Override
   public EntityType getEntityType() {
     return super.getEntityType();
   }
 
+  @Override
   public void setEntityType(EntityType entityType) {
     super.setEntityType(entityType);
   }
 
   @Column
+  @Override
   public int getTypeId() {
     return super.getTypeId();
   }
 
+  @Override
   public void setTypeId(int typeId) {
     super.setTypeId(typeId);
   }
 
+  @Override
+  public boolean isBlocking() {
+    return super.isBlocking();
+  }
+
+  @Column
+  @Override
+  public void setBlocking(boolean isBlocking) {
+    super.setBlocking(isBlocking);
+  }
 }
