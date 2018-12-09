@@ -33,7 +33,15 @@ public class InputHandler {
     keyMap.put(KeyCode.RIGHT, GameKey.RIGHT);
     keyMap.put(KeyCode.DOWN, GameKey.DOWN);
     keyMap.put(KeyCode.LEFT, GameKey.LEFT);
-    keyMap.put(KeyCode.ENTER, GameKey.PICKUP);
+    keyMap.put(KeyCode.ESCAPE, GameKey.BACK);
+    keyMap.put(KeyCode.SPACE, GameKey.ACTION1);
+    keyMap.put(KeyCode.F, GameKey.ACTION2);
+    keyMap.put(KeyCode.E, GameKey.ACTION3);
+    keyMap.put(KeyCode.T, GameKey.USE_LEFT_HAND);
+    keyMap.put(KeyCode.R, GameKey.USE_RIGHT_HAND);
+    keyMap.put(KeyCode.Z, GameKey.CYCLE_LEFT_HAND);
+    keyMap.put(KeyCode.X, GameKey.CYCLE_RIGHT_HAND);
+    keyMap.put(KeyCode.ENTER, GameKey.MENU);
   }
 
   private void down(GameKey gameKey) {

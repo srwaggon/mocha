@@ -14,8 +14,8 @@ import javax.inject.Inject;
 
 import mocha.game.event.PlayerAddedEvent;
 import mocha.game.event.PlayerRemovedEvent;
-import mocha.game.item.ItemPrototypeRepository;
-import mocha.game.item.ItemRepository;
+import mocha.game.item.ServerItemPrototypeRepository;
+import mocha.game.item.ServerItemRepository;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
@@ -48,8 +48,8 @@ public class ServerGameLogic implements GameLogic {
   private PlayerFactory playerFactory;
   private Repository<Movement, Integer> movementRepository;
   private MovementFactory movementFactory;
-  private ItemPrototypeRepository itemPrototypeRepository;
-  private ItemRepository itemRepository;
+  private ServerItemPrototypeRepository serverItemPrototypeRepository;
+  private ServerItemRepository serverItemRepository;
   private EntitiesInChunkService entitiesInChunkService;
   private ChunkService chunkService;
   private IdFactory<Entity> entityIdFactory;
@@ -63,7 +63,7 @@ public class ServerGameLogic implements GameLogic {
       PlayerFactory playerFactory,
       Repository<Movement, Integer> movementRepository,
       MovementFactory movementFactory,
-      ItemPrototypeRepository itemPrototypeRepository, ItemRepository itemRepository,
+      ServerItemPrototypeRepository serverItemPrototypeRepository, ServerItemRepository serverItemRepository,
       EntitiesInChunkService entitiesInChunkService,
       ChunkService chunkService,
       IdFactory<Entity> entityIdFactory,
@@ -73,8 +73,8 @@ public class ServerGameLogic implements GameLogic {
     this.playerFactory = playerFactory;
     this.movementRepository = movementRepository;
     this.movementFactory = movementFactory;
-    this.itemPrototypeRepository = itemPrototypeRepository;
-    this.itemRepository = itemRepository;
+    this.serverItemPrototypeRepository = serverItemPrototypeRepository;
+    this.serverItemRepository = serverItemRepository;
     this.entitiesInChunkService = entitiesInChunkService;
     this.chunkService = chunkService;
     this.entityIdFactory = entityIdFactory;
@@ -95,8 +95,8 @@ public class ServerGameLogic implements GameLogic {
     mochaConnectionsByPlayerId.put(playerId, playerConnection);
     playerService.addPlayer(player);
 
-    itemPrototypeRepository.findAll().forEach(playerConnection::sendItemPrototypeUpdate);
-    itemRepository.findAll().forEach(playerConnection::sendItemUpdate);
+    serverItemPrototypeRepository.findAll().forEach(playerConnection::sendItemPrototypeUpdate);
+    serverItemRepository.findAll().forEach(playerConnection::sendItemUpdate);
 
 
     Chunk playerChunk = getPlayerChunk(player);

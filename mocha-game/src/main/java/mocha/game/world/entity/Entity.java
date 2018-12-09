@@ -2,6 +2,7 @@ package mocha.game.world.entity;
 
 import mocha.game.world.Location;
 import mocha.game.world.entity.movement.collision.Collider;
+import mocha.game.world.item.Item;
 import mocha.shared.Identified;
 
 public class Entity implements Collider, Identified<Integer> {
@@ -12,6 +13,8 @@ public class Entity implements Collider, Identified<Integer> {
   private int typeId;
   private boolean isBlocking = true;
   private boolean isRemoved = false;
+  private Item leftHand;
+  private Item rightHand;
 
   public Entity() {
   }
@@ -96,5 +99,29 @@ public class Entity implements Collider, Identified<Integer> {
 
   public void setRemoved(boolean removed) {
     isRemoved = removed;
+  }
+
+  public Item getLeftHand() {
+    return leftHand;
+  }
+
+  public void setLeftHand(Item leftHand) {
+    this.leftHand = leftHand;
+  }
+
+  public Item getRightHand() {
+    return rightHand;
+  }
+
+  public void setRightHand(Item rightHand) {
+    this.rightHand = rightHand;
+  }
+
+  public void pickup(Entity entity) {
+    entity.pickedUpBy(this);
+  }
+
+  protected void pickedUpBy(Entity entity) {
+
   }
 }

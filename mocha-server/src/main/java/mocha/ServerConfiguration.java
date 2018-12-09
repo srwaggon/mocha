@@ -9,10 +9,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import mocha.game.RuleService;
 import mocha.game.GameLoop;
 import mocha.game.Player;
 import mocha.game.PlayerService;
+import mocha.game.RuleService;
 import mocha.game.event.MochaEventBus;
 import mocha.game.rule.GameRule;
 import mocha.game.world.chunk.Chunk;
@@ -20,13 +20,18 @@ import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityFactory;
 import mocha.game.world.entity.EntityService;
-import mocha.game.world.entity.ServerEntityToEntityRepositoryAdapter;
+import mocha.game.world.entity.ServerEntityToEntityAdapterRepository;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
+import mocha.game.world.item.Item;
+import mocha.game.world.item.ItemPrototype;
+import mocha.game.world.item.ItemPrototypeService;
+import mocha.game.world.item.ItemService;
 import mocha.game.world.tile.TileReader;
 import mocha.game.world.tile.TileSetFactory;
 import mocha.game.world.tile.TileStringBuilder;
@@ -71,6 +76,31 @@ public class ServerConfiguration {
         waterEvaporatesRule,
         pickUpItemsRule
     );
+  }
+
+  @Bean
+  public Repository<ItemPrototype, Integer> itemPrototypeRepository() {
+    return new InMemoryRepository<>();
+  }
+
+  @Bean
+  public ItemPrototypeService itemPrototypeService(Repository<ItemPrototype, Integer> itemPrototypeRepository) {
+    return new ItemPrototypeService(itemPrototypeRepository);
+  }
+
+  @Bean
+  public Repository<Item, Integer> itemRepository() {
+    return new InMemoryRepository<>();
+  }
+
+  @Bean
+  public ItemService itemService(Repository<Item, Integer> itemRepository, ItemPrototypeService itemPrototypeService) {
+    return new ItemService(itemRepository, itemPrototypeService);
+  }
+
+  @Bean
+  public EntityFactory entityFactory(ItemService itemService) {
+    return new EntityFactory(itemService);
   }
 
   @Bean
@@ -168,7 +198,7 @@ public class ServerConfiguration {
   }
 
   @Bean
-  public Repository<Entity, Integer> entityRepository(ServerEntityToEntityRepositoryAdapter entityRepository) {
+  public Repository<Entity, Integer> entityRepository(ServerEntityToEntityAdapterRepository entityRepository) {
     return new CachingRepository<>(entityRepository);
   }
 

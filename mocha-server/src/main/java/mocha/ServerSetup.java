@@ -3,20 +3,18 @@ package mocha;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.Random;
-
 import javax.inject.Inject;
 
-import mocha.game.PlayerService;
-import mocha.game.item.ItemPrototypeRepository;
-import mocha.game.item.ItemRepository;
-import mocha.game.item.ServerItem;
 import mocha.game.item.ServerItemPrototype;
+import mocha.game.item.ServerItemPrototypeRepository;
+import mocha.game.item.ServerItemRepository;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
+import mocha.game.world.item.Item;
 import mocha.game.world.item.ItemEntity;
+import mocha.game.world.item.ItemService;
 import mocha.game.world.item.ItemType;
 import mocha.shared.IdFactory;
 
@@ -24,26 +22,27 @@ import mocha.shared.IdFactory;
 public class ServerSetup implements CommandLineRunner {
 
   private ChunkService chunkService;
-  private ItemRepository itemRepository;
-  private ItemPrototypeRepository itemPrototypeRepository;
+  private ServerItemRepository serverItemRepository;
+  private ServerItemPrototypeRepository serverItemPrototypeRepository;
   private IdFactory<Entity> entityIdFactory;
   private EntityService entityService;
-  private PlayerService playerService;
+  private ItemService itemService;
 
   @Inject
   public ServerSetup(
       ChunkService chunkService,
-      ItemRepository itemRepository,
-      ItemPrototypeRepository itemPrototypeRepository,
+      ServerItemRepository serverItemRepository,
+      ServerItemPrototypeRepository serverItemPrototypeRepository,
       IdFactory<Entity> entityIdFactory,
-      EntityService entityService, PlayerService playerService
+      EntityService entityService,
+      ItemService itemService
   ) {
     this.chunkService = chunkService;
-    this.itemRepository = itemRepository;
-    this.itemPrototypeRepository = itemPrototypeRepository;
+    this.serverItemRepository = serverItemRepository;
+    this.serverItemPrototypeRepository = serverItemPrototypeRepository;
     this.entityIdFactory = entityIdFactory;
     this.entityService = entityService;
-    this.playerService = playerService;
+    this.itemService = itemService;
   }
 
   @Override
@@ -54,25 +53,13 @@ public class ServerSetup implements CommandLineRunner {
 
   private void createItems() {
     ServerItemPrototype itemPrototype = new ServerItemPrototype(1, "Pickaxe", 100, ItemType.TOOL, "cool");
-    ServerItemPrototype pickaxe = itemPrototypeRepository.save(itemPrototype);
-    ServerItem serverPickaxe = new ServerItem(1, itemPrototype, 0, 0, 0);
-    itemRepository.save(serverPickaxe);
+    ServerItemPrototype pickaxe = serverItemPrototypeRepository.save(itemPrototype);
+    Item serverPickaxe = new Item(1, pickaxe, 0, 0, 0);
+    itemService.addItem(serverPickaxe);
 
     Location itemLocation = new Location(128, 128);
     ItemEntity pickaxeEntity = new ItemEntity(entityIdFactory.newId(), itemLocation, serverPickaxe);
     entityService.addEntity(pickaxeEntity);
-  }
-
-  private void addEntity() {
-    entityService.addEntity(newRandomEntity());
-  }
-
-  private Entity newRandomEntity() {
-    return new Entity(null, new Location(random(), random()));
-  }
-
-  private int random() {
-    return new Random().nextInt(16) * 32;
   }
 
   private void createChunks() {

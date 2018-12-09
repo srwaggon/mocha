@@ -3,11 +3,23 @@ package mocha.client.input;
 public enum GameKey {
 
   UNBOUND,
+
+  MENU,
+
   LEFT,
   RIGHT,
   UP,
   DOWN,
-  PICKUP
+
+  BACK,
+  ACTION1,
+  ACTION2,
+  ACTION3,
+
+  USE_LEFT_HAND,
+  USE_RIGHT_HAND,
+  CYCLE_LEFT_HAND,
+  CYCLE_RIGHT_HAND,
   ;
 
   private boolean isDown;

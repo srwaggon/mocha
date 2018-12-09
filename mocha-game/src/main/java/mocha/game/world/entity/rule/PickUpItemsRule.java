@@ -66,7 +66,7 @@ public class PickUpItemsRule implements GameRule {
               .filter(PickUpItemsRule::isItem)
               .filter(colliders::contains)
               .findFirst()
-              .ifPresent(entityService::removeEntity);
+              .ifPresent(pickingUpEntity::pickup);
         });
   }
 

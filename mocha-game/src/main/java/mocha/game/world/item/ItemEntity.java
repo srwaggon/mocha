@@ -36,4 +36,10 @@ public class ItemEntity extends Entity {
   public boolean isTransient() {
     return true;
   }
+
+  @Override
+  protected void pickedUpBy(Entity entity) {
+    entity.setRightHand(item);
+    this.setRemoved(true);
+  }
 }

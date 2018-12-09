@@ -76,7 +76,7 @@ public class GameKeyHandler {
   }
 
   private void handleIfPickup(GameKeyEvent gameKeyEvent) {
-    if (!gameKeyEvent.getGameKey().equals(GameKey.PICKUP)) {
+    if (!gameKeyEvent.getGameKey().equals(GameKey.ACTION2)) {
       return;
     }
     findPlayerEntity().ifPresent(entity ->

@@ -32,7 +32,7 @@ public class InputHandlerTest {
 
     testObject.getKeyPressedHandler().handle(keyEvent);
 
-    verify(eventBus).keyDown(GameKey.PICKUP);
+    verify(eventBus).keyDown(GameKey.ACTION1);
   }
 
   private KeyEvent newKeyEvent(KeyCode keyCode) {
