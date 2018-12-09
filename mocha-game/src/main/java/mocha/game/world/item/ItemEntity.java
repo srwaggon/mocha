@@ -40,6 +40,5 @@ public class ItemEntity extends Entity {
   @Override
   protected void pickedUpBy(Entity entity) {
     entity.setRightHand(item);
-    this.setRemoved(true);
   }
 }

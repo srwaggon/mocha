@@ -12,7 +12,6 @@ public class Entity implements Collider, Identified<Integer> {
   private EntityType entityType = EntityType.MOB;
   private int typeId;
   private boolean isBlocking = true;
-  private boolean isRemoved = false;
   private Item leftHand;
   private Item rightHand;
 
@@ -91,14 +90,6 @@ public class Entity implements Collider, Identified<Integer> {
 
   protected void setTypeId(int typeId) {
     this.typeId = typeId;
-  }
-
-  public boolean isRemoved() {
-    return isRemoved;
-  }
-
-  public void setRemoved(boolean removed) {
-    isRemoved = removed;
   }
 
   public Item getLeftHand() {
