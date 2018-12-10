@@ -5,25 +5,23 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.item.ServerItemPrototype;
-import mocha.game.item.ServerItemPrototypeRepository;
-import mocha.game.item.ServerItemRepository;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.item.Item;
 import mocha.game.world.item.ItemEntity;
+import mocha.game.world.item.ItemPrototype;
 import mocha.game.world.item.ItemService;
 import mocha.game.world.item.ItemType;
 import mocha.shared.IdFactory;
+import mocha.shared.Repository;
 
 @Component
 public class ServerSetup implements CommandLineRunner {
 
   private ChunkService chunkService;
-  private ServerItemRepository serverItemRepository;
-  private ServerItemPrototypeRepository serverItemPrototypeRepository;
+  private Repository<ItemPrototype, Integer> itemPrototypeRepository;
   private IdFactory<Entity> entityIdFactory;
   private EntityService entityService;
   private ItemService itemService;
@@ -31,15 +29,13 @@ public class ServerSetup implements CommandLineRunner {
   @Inject
   public ServerSetup(
       ChunkService chunkService,
-      ServerItemRepository serverItemRepository,
-      ServerItemPrototypeRepository serverItemPrototypeRepository,
+      Repository<ItemPrototype, Integer> itemPrototypeRepository,
       IdFactory<Entity> entityIdFactory,
       EntityService entityService,
       ItemService itemService
   ) {
     this.chunkService = chunkService;
-    this.serverItemRepository = serverItemRepository;
-    this.serverItemPrototypeRepository = serverItemPrototypeRepository;
+    this.itemPrototypeRepository = itemPrototypeRepository;
     this.entityIdFactory = entityIdFactory;
     this.entityService = entityService;
     this.itemService = itemService;
@@ -52,8 +48,8 @@ public class ServerSetup implements CommandLineRunner {
   }
 
   private void createItems() {
-    ServerItemPrototype itemPrototype = new ServerItemPrototype(1, "Pickaxe", 100, ItemType.TOOL, "cool");
-    ServerItemPrototype pickaxe = serverItemPrototypeRepository.save(itemPrototype);
+    ItemPrototype itemPrototype = new ItemPrototype(1, "Pickaxe", 100, ItemType.TOOL, "cool");
+    ItemPrototype pickaxe = itemPrototypeRepository.save(itemPrototype);
     Item serverPickaxe = new Item(1, pickaxe, 0, 0, 0);
     itemService.addItem(serverPickaxe);
 
