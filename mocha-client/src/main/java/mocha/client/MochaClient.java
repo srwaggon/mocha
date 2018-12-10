@@ -1,4 +1,4 @@
-package mocha;
+package mocha.client;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -6,13 +6,11 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import mocha.client.ClientPacketHandler;
-import mocha.client.NetworkClient;
 import mocha.client.event.ClientEventBus;
 import mocha.client.gfx.RenderLoop;
-import mocha.game.RuleService;
 import mocha.game.GameLogic;
 import mocha.game.GameLoop;
+import mocha.game.RuleService;
 import mocha.shared.task.TaskService;
 
 @Component

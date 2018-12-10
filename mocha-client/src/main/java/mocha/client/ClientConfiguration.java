@@ -1,4 +1,4 @@
-package mocha;
+package mocha.client;
 
 import com.google.common.collect.Lists;
 
