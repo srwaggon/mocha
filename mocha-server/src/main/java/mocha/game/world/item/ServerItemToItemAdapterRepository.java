@@ -1,4 +1,4 @@
-package mocha.game.item;
+package mocha.game.world.item;
 
 import com.google.common.collect.Lists;
 
@@ -7,8 +7,6 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
-import mocha.game.world.item.Item;
-import mocha.game.world.item.ItemPrototype;
 import mocha.shared.Repository;
 
 @org.springframework.stereotype.Repository
