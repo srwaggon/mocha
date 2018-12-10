@@ -5,7 +5,7 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 
 import mocha.game.world.Direction;
-import mocha.game.world.entity.movement.collision.Collision;
+import mocha.game.world.collision.Collision;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 
 public class BaseMovement extends SimpleMovement {

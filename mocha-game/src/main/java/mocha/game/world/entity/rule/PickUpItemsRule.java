@@ -11,12 +11,12 @@ import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
+import mocha.game.world.collision.Collider;
 import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.EntityType;
 import mocha.game.world.entity.movement.Movement;
-import mocha.game.world.entity.movement.collision.Collider;
 import mocha.game.world.item.command.PickUpItemCommand;
 import mocha.shared.Repository;
 

@@ -4,9 +4,9 @@ import java.util.Set;
 
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
+import mocha.game.world.collision.Collider;
+import mocha.game.world.collision.Collision;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.movement.collision.Collider;
-import mocha.game.world.entity.movement.collision.Collision;
 import mocha.shared.Repository;
 
 public class SlidingMovement extends BaseMovement {

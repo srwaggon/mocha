@@ -2,7 +2,7 @@ package mocha.game.world.entity.movement;
 
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
-import mocha.game.world.entity.movement.collision.Collision;
+import mocha.game.world.collision.Collision;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 
 public class SimpleMovement implements Movement {

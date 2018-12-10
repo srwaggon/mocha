@@ -1,4 +1,4 @@
-package mocha.game.world.entity.movement.collision;
+package mocha.game.world.collision;
 
 import java.util.Collections;
 import java.util.Set;

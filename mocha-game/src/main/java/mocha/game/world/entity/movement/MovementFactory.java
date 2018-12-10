@@ -1,7 +1,7 @@
 package mocha.game.world.entity.movement;
 
+import mocha.game.world.collision.CollisionFactory;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.movement.collision.CollisionFactory;
 import mocha.shared.Repository;
 
 public class MovementFactory {

@@ -3,7 +3,7 @@ package mocha.game.world.tile;
 
 import java.util.Arrays;
 
-import mocha.game.world.entity.movement.collision.Collider;
+import mocha.game.world.collision.Collider;
 
 public enum TileType implements Collider {
 

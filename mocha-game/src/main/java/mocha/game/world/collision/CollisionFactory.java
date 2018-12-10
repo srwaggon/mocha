@@ -1,4 +1,4 @@
-package mocha.game.world.entity.movement.collision;
+package mocha.game.world.collision;
 
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.EntitiesInChunkService;

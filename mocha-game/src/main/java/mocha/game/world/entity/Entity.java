@@ -1,7 +1,7 @@
 package mocha.game.world.entity;
 
 import mocha.game.world.Location;
-import mocha.game.world.entity.movement.collision.Collider;
+import mocha.game.world.collision.Collider;
 import mocha.game.world.item.Item;
 import mocha.shared.Identified;
 
