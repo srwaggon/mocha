@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-import mocha.game.world.tile.TileType;
+import mocha.game.world.chunk.tile.TileType;
 
 @Converter
 public class TileTypeArrayConverter implements AttributeConverter<TileType[], String> {

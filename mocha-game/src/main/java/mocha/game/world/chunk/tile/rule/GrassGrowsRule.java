@@ -1,4 +1,4 @@
-package mocha.game.world.tile.rule;
+package mocha.game.world.chunk.tile.rule;
 
 import java.util.function.Predicate;
 
@@ -7,17 +7,16 @@ import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
-import mocha.game.world.tile.TileType;
+import mocha.game.world.chunk.tile.TileType;
 import mocha.shared.Repository;
 
-public class WaterEvaporatesRule implements GameRule {
+public class GrassGrowsRule implements GameRule {
 
   private MochaEventBus mochaEventBus;
   private Repository<Chunk, Integer> chunkRepository;
   private ChunkService chunkService;
 
-
-  public WaterEvaporatesRule(
+  public GrassGrowsRule(
       MochaEventBus mochaEventBus, Repository<Chunk, Integer> chunkRepository,
       ChunkService chunkService
   ) {
@@ -29,18 +28,18 @@ public class WaterEvaporatesRule implements GameRule {
   @Override
   public void apply() {
     chunkRepository.findAll().forEach(chunk -> {
-      if (tryEvaporateWater(chunk)) {
+      if (tryGrowGrass(chunk)) {
         chunkRepository.save(chunk);
       }
     });
   }
 
-  private boolean tryEvaporateWater(Chunk chunk) {
+  private boolean tryGrowGrass(Chunk chunk) {
     boolean updated = false;
     for (int y = 0; y < Chunk.SIZE; y++) {
       for (int x = 0; x < Chunk.SIZE; x++) {
-        if (shouldEvaporateWater(chunk, x, y)) {
-          chunk.setTile(x, y, TileType.DIRT);
+        if (shouldGrassGrow(chunk, x, y)) {
+          chunk.setTile(x, y, TileType.GRASS);
           mochaEventBus.postTileUpdatedEvent(chunk, x, y);
           updated = true;
         }
@@ -49,19 +48,19 @@ public class WaterEvaporatesRule implements GameRule {
     return updated;
   }
 
-  private boolean shouldEvaporateWater(Chunk chunk, int x, int y) {
+  private boolean shouldGrassGrow(Chunk chunk, int x, int y) {
     return Math.random() < .0001
-        && chunk.getTile(x, y) == TileType.WATER
-        && isLoneWater(chunk, x, y);
+        && chunk.getTile(x, y) == TileType.DIRT
+        && hasGrassNeighbor(chunk, x, y);
   }
 
-  private boolean isLoneWater(Chunk chunk, int x, int y) {
+  private boolean hasGrassNeighbor(Chunk chunk, int x, int y) {
     Location chunkLocation = chunk.getLocation();
     Location tileLocation = chunkLocation.addNew(x * TileType.SIZE, y * TileType.SIZE);
-    return chunkService.getTileNeighborsInExistingChunks(tileLocation).values().stream().noneMatch(isWater());
+    return chunkService.getTileNeighborsInExistingChunks(tileLocation).values().stream().anyMatch(isGrass());
   }
 
-  private Predicate<TileType> isWater() {
-    return tileType -> tileType.equals(TileType.WATER);
+  private Predicate<TileType> isGrass() {
+    return tileType -> tileType.equals(TileType.GRASS);
   }
 }

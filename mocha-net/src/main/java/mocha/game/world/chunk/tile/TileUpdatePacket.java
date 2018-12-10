@@ -1,4 +1,4 @@
-package mocha.game.world.tile;
+package mocha.game.world.chunk.tile;
 
 import mocha.game.world.chunk.Chunk;
 import mocha.net.packet.AbstractPacket;

@@ -1,4 +1,4 @@
-package mocha.game.world.tile;
+package mocha.game.world.chunk.tile;
 
 
 import java.util.Arrays;

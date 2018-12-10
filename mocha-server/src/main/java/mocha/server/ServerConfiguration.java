@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.inject.Inject;
 
-import mocha.game.world.tile.TileStringBuilder;
+import mocha.game.world.chunk.tile.TileStringBuilder;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.server.event.ServerEventBus;

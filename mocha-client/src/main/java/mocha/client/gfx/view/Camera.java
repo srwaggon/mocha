@@ -8,7 +8,7 @@ import javafx.geometry.Rectangle2D;
 import mocha.game.player.PlayerService;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.tile.TileType;
+import mocha.game.world.chunk.tile.TileType;
 
 @Component
 public class Camera {

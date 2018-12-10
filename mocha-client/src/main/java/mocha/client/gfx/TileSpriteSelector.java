@@ -9,15 +9,15 @@ import javax.inject.Inject;
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.ChunkService;
-import mocha.game.world.tile.TileType;
+import mocha.game.world.chunk.tile.TileType;
 
 import static mocha.game.world.Direction.EAST;
 import static mocha.game.world.Direction.NORTH;
 import static mocha.game.world.Direction.SOUTH;
 import static mocha.game.world.Direction.WEST;
-import static mocha.game.world.tile.TileType.GRASS;
-import static mocha.game.world.tile.TileType.STONE;
-import static mocha.game.world.tile.TileType.WATER;
+import static mocha.game.world.chunk.tile.TileType.GRASS;
+import static mocha.game.world.chunk.tile.TileType.STONE;
+import static mocha.game.world.chunk.tile.TileType.WATER;
 
 @Component
 class TileSpriteSelector {

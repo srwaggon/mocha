@@ -1,4 +1,4 @@
-package mocha.game.world.tile.item;
+package mocha.game.world.chunk.tile.item;
 
 public class Stone extends TileItem {
   @Override

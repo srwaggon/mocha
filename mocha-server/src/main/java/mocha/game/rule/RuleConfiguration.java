@@ -11,14 +11,14 @@ import javax.inject.Inject;
 
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
+import mocha.game.world.chunk.tile.rule.GrassGrowsRule;
+import mocha.game.world.chunk.tile.rule.WaterEvaporatesRule;
 import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
-import mocha.game.world.tile.rule.GrassGrowsRule;
-import mocha.game.world.tile.rule.WaterEvaporatesRule;
 import mocha.server.event.ServerEventBus;
 import mocha.shared.Repository;
 

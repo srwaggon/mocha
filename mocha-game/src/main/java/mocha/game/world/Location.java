@@ -3,7 +3,7 @@ package mocha.game.world;
 import java.util.Objects;
 
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.tile.TileType;
+import mocha.game.world.chunk.tile.TileType;
 
 public class Location {
 

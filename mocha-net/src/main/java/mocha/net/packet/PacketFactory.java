@@ -6,6 +6,9 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkUpdatePacket;
 import mocha.game.world.chunk.RequestChunkByIdPacket;
 import mocha.game.world.chunk.RequestChunkByLocationPacket;
+import mocha.game.world.chunk.tile.TileStringBuilder;
+import mocha.game.world.chunk.tile.TileType;
+import mocha.game.world.chunk.tile.TileUpdatePacket;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityRemovedPacket;
 import mocha.game.world.entity.EntityUpdatePacket;
@@ -19,9 +22,6 @@ import mocha.game.world.item.ItemPrototype;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
 import mocha.game.world.item.PickUpItemPacket;
-import mocha.game.world.tile.TileStringBuilder;
-import mocha.game.world.tile.TileType;
-import mocha.game.world.tile.TileUpdatePacket;
 
 public class PacketFactory {
 

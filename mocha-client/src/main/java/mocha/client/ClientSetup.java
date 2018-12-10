@@ -10,11 +10,11 @@ import mocha.game.LocalPlayer;
 import mocha.game.player.PlayerService;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.tile.TileSetFactory;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
-import mocha.game.world.tile.TileSetFactory;
 import mocha.shared.Repository;
 
 @Component

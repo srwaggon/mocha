@@ -1,4 +1,4 @@
-package mocha.game.world.tile.event;
+package mocha.game.world.chunk.tile.event;
 
 import mocha.game.world.chunk.Chunk;
 

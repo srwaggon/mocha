@@ -1,9 +1,9 @@
-package mocha.game.world.tile.item;
+package mocha.game.world.chunk.tile.item;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class StoneTest {
 

@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import mocha.game.world.Location;
-import mocha.game.world.tile.TileType;
+import mocha.game.world.chunk.tile.TileType;
 
 @Entity
 public class ServerChunk extends Chunk {

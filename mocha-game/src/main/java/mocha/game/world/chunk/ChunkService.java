@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
-import mocha.game.world.tile.TileType;
+import mocha.game.world.chunk.tile.TileType;
 import mocha.shared.Repository;
 
 import static mocha.game.world.Direction.EAST;

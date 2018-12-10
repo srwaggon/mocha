@@ -1,7 +1,7 @@
 package mocha.game.world.chunk;
 
 import mocha.game.world.Location;
-import mocha.game.world.tile.TileSetFactory;
+import mocha.game.world.chunk.tile.TileSetFactory;
 
 public class ChunkFactory {
 

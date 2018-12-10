@@ -5,8 +5,8 @@ import com.google.common.collect.Sets;
 import java.util.Set;
 
 import mocha.game.world.Location;
+import mocha.game.world.chunk.tile.TileType;
 import mocha.game.world.entity.Entity;
-import mocha.game.world.tile.TileType;
 import mocha.shared.Identified;
 
 public class Chunk implements Identified<Integer> {

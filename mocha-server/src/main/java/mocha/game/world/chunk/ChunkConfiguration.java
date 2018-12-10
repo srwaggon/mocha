@@ -3,7 +3,7 @@ package mocha.game.world.chunk;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import mocha.game.world.tile.TileSetFactory;
+import mocha.game.world.chunk.tile.TileSetFactory;
 import mocha.shared.CachingRepository;
 import mocha.shared.Repository;
 
