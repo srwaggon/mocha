@@ -1,4 +1,4 @@
-package mocha;
+package mocha.server;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

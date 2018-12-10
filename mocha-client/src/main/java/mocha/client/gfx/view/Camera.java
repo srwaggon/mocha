@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 
 import javafx.geometry.Rectangle2D;
-import mocha.game.PlayerService;
+import mocha.game.player.PlayerService;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.tile.TileType;

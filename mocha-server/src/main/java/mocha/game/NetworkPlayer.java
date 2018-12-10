@@ -5,6 +5,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import mocha.game.player.Player;
 import mocha.game.world.entity.Entity;
 import mocha.net.packet.PacketListener;
 import mocha.server.ServerPacketHandler;

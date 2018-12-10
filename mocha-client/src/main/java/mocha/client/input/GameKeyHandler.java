@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import mocha.client.event.ClientEventBus;
 import mocha.client.input.event.GameKeyEvent;
 import mocha.game.GameLogic;
-import mocha.game.Player;
+import mocha.game.player.Player;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;

@@ -15,14 +15,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
-import mocha.game.RuleService;
 import mocha.game.GameLogic;
 import mocha.game.GameLoop;
 import mocha.game.LocalClientGameLogic;
 import mocha.game.NetworkClientGameLogic;
-import mocha.game.Player;
-import mocha.game.PlayerService;
+import mocha.game.RuleService;
 import mocha.game.event.MochaEventBus;
+import mocha.game.player.Player;
+import mocha.game.player.PlayerService;
 import mocha.game.rule.GameRule;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkFactory;

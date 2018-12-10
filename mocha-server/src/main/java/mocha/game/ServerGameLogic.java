@@ -12,8 +12,10 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import mocha.game.event.PlayerAddedEvent;
-import mocha.game.event.PlayerRemovedEvent;
+import mocha.game.player.Player;
+import mocha.game.player.PlayerService;
+import mocha.game.player.event.PlayerAddedEvent;
+import mocha.game.player.event.PlayerRemovedEvent;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;

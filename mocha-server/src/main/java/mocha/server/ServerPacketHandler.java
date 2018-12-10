@@ -7,7 +7,7 @@ import com.google.common.eventbus.Subscribe;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import mocha.game.Player;
+import mocha.game.player.Player;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;

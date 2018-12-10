@@ -2,7 +2,9 @@ package mocha.game.event;
 
 import com.google.common.eventbus.EventBus;
 
-import mocha.game.Player;
+import mocha.game.player.Player;
+import mocha.game.player.event.PlayerAddedEvent;
+import mocha.game.player.event.PlayerRemovedEvent;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.event.ChunkUpdatedEvent;
 import mocha.game.world.entity.Entity;

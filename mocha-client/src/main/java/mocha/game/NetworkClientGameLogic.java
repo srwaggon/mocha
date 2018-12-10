@@ -5,8 +5,8 @@ import com.google.common.eventbus.Subscribe;
 import org.springframework.stereotype.Component;
 
 import mocha.client.event.ClientEventBus;
-import mocha.game.event.PlayerAddedEvent;
-import mocha.game.event.PlayerRemovedEvent;
+import mocha.game.player.event.PlayerAddedEvent;
+import mocha.game.player.event.PlayerRemovedEvent;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;

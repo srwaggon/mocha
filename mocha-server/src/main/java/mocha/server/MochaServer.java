@@ -1,4 +1,4 @@
-package mocha;
+package mocha.server;
 
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import mocha.game.GameLoop;
 import mocha.game.RuleService;
 import mocha.game.ServerGameLogic;
-import mocha.server.Server;
 import mocha.server.event.ServerEventBus;
 import mocha.shared.task.TaskService;
 

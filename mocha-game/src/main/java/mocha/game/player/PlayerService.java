@@ -1,4 +1,4 @@
-package mocha.game;
+package mocha.game.player;
 
 import mocha.game.event.MochaEventBus;
 import mocha.game.world.entity.Entity;
@@ -26,7 +26,7 @@ public class PlayerService {
     return playerRepository.findAll().get(0).getEntity();
   }
 
-  void removePlayer(int playerId) {
+  public void removePlayer(int playerId) {
     playerRepository.findById(playerId)
         .ifPresent(this::removePlayer);
   }
