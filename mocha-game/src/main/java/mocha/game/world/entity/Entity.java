@@ -15,6 +15,7 @@ public class Entity implements Collider, Identified<Integer> {
   private Item leftHand;
   private Item rightHand;
   private String spriteId = "/mocha/gfx/sprites/slime/slime0.png::0";
+  private double scale = 1.0;
 
   public Entity() {
   }
@@ -61,7 +62,11 @@ public class Entity implements Collider, Identified<Integer> {
   }
 
   public double getScale() {
-    return 2.0;
+    return scale;
+  }
+
+  public void setScale(double scale) {
+    this.scale = scale;
   }
 
   public EntityType getEntityType() {

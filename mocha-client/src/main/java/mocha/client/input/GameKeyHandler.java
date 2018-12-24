@@ -70,10 +70,15 @@ public class GameKeyHandler {
   private void handleIfNextSprite(GameKeyEvent gameKeyEvent) {
     if (gameKeyEvent.getGameKey().equals(GameKey.MENU) && gameKeyEvent.isDown()) {
       findPlayerEntity().ifPresent(this::cycleEntitySprite);
+      findPlayerEntity().ifPresent(this::increaseScale);
       ItemPrototype pickaxePrototype = itemPrototypeService.findById(1);
       pickaxePrototype.setSpriteId(getNextSpriteId(pickaxePrototype.getSpriteId()));
       eventBus.postSendPacketEvent(new ItemPrototypeUpdatePacket(pickaxePrototype));
     }
+  }
+
+  private void increaseScale(Entity entity) {
+    entity.setScale(entity.getScale() + .1);
   }
 
   private void cycleEntitySprite(Entity entity) {

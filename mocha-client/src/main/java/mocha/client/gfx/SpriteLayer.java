@@ -73,7 +73,7 @@ public class SpriteLayer {
     Sprite sprite = getFrame(now, entity);
     double spriteX = getScale() * (entity.getLocation().getX() - camera.getBounds().getMinX());
     double spriteY = getScale() * (entity.getLocation().getY() - camera.getBounds().getMinY());
-    sprite.render(graphics, spriteX, spriteY);
+    sprite.render(graphics, spriteX, spriteY, entity.getScale());
   }
 
   private double getScale() {
