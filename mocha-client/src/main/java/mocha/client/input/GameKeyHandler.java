@@ -18,6 +18,9 @@ import mocha.game.player.Player;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
+import mocha.game.world.item.ItemPrototype;
+import mocha.game.world.item.ItemPrototypeService;
+import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.net.packet.PacketFactory;
 import mocha.shared.Repository;
 
@@ -30,6 +33,7 @@ public class GameKeyHandler {
   private PacketFactory packetFactory;
   private GameLogic gameLogic;
   private SpriteService spriteService;
+  private ItemPrototypeService itemPrototypeService;
 
   @Inject
   public GameKeyHandler(
@@ -38,7 +42,8 @@ public class GameKeyHandler {
       ClientEventBus eventBus,
       PacketFactory packetFactory,
       GameLogic gameLogic,
-      SpriteService spriteService
+      SpriteService spriteService,
+      ItemPrototypeService itemPrototypeService
   ) {
     this.playerRepository = playerRepository;
     this.entityRepository = entityRepository;
@@ -46,6 +51,7 @@ public class GameKeyHandler {
     this.packetFactory = packetFactory;
     this.gameLogic = gameLogic;
     this.spriteService = spriteService;
+    this.itemPrototypeService = itemPrototypeService;
   }
 
   @PostConstruct
@@ -63,13 +69,23 @@ public class GameKeyHandler {
 
   private void handleIfNextSprite(GameKeyEvent gameKeyEvent) {
     if (gameKeyEvent.getGameKey().equals(GameKey.MENU) && gameKeyEvent.isDown()) {
-      findPlayerEntity().ifPresent(entity -> {
-        Sprite currentSprite = spriteService.findById(entity.getSpriteId());
-        Sprite nextSprite = spriteService.getNext(currentSprite);
-        String nextSpriteId = nextSprite.getId();
-        entity.setSpriteId(nextSpriteId);
-      });
+//      findPlayerEntity().ifPresent(this::cycleEntitySprite);
+      ItemPrototype pickaxePrototype = itemPrototypeService.findById(1);
+      pickaxePrototype.setSpriteId(getNextSpriteId(pickaxePrototype.getSpriteId()));
+      eventBus.postSendPacketEvent(new ItemPrototypeUpdatePacket(pickaxePrototype));
     }
+  }
+
+  private void cycleEntitySprite(Entity entity) {
+    String currentSpriteId = entity.getSpriteId();
+    String nextSpriteId = getNextSpriteId(currentSpriteId);
+    entity.setSpriteId(nextSpriteId);
+  }
+
+  private String getNextSpriteId(String currentSpriteId) {
+    Sprite currentSprite = spriteService.findById(currentSpriteId);
+    Sprite nextSprite = spriteService.getNext(currentSprite);
+    return nextSprite.getId();
   }
 
   private void handleIfStartMove(GameKeyEvent gameKeyEvent) {

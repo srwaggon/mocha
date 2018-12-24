@@ -1,45 +1,34 @@
 package mocha.game;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.player.Player;
-import mocha.game.world.chunk.ChunkService;
-import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketListener;
 import mocha.server.ServerPacketHandler;
+import mocha.server.ServerPacketHandlerFactory;
 import mocha.server.event.ServerEventBus;
-import mocha.shared.Repository;
 
 @Component
 class PlayerFactory {
 
   private ServerEventBus serverEventBus;
-  private Repository<Player, Integer> playerRepository;
-  private Repository<Entity, Integer> entityRepository;
-  private ChunkService chunkService;
-  private EntitiesInChunkService entitiesInChunkService;
+  private ServerPacketHandlerFactory serverPacketHandlerFactory;
 
   @Inject
   public PlayerFactory(
       ServerEventBus serverEventBus,
-      Repository<Player, Integer> playerRepository,
-      Repository<Entity, Integer> entityRepository,
-      ChunkService chunkService,
-      EntitiesInChunkService entitiesInChunkService
+      @Lazy ServerPacketHandlerFactory serverPacketHandlerFactory
   ) {
     this.serverEventBus = serverEventBus;
-    this.playerRepository = playerRepository;
-    this.entityRepository = entityRepository;
-    this.chunkService = chunkService;
-    this.entitiesInChunkService = entitiesInChunkService;
+    this.serverPacketHandlerFactory = serverPacketHandlerFactory;
   }
 
   NetworkPlayer newNetworkPlayer(MochaConnection mochaConnection, int playerId, Entity entity) {
-    ServerPacketHandler serverPacketHandler = newServerPacketHandler(mochaConnection, playerId, chunkService);
+    ServerPacketHandler serverPacketHandler = serverPacketHandlerFactory.newServerPacketHandler(mochaConnection, playerId);
     PacketListener packetListener = newPacketListener(mochaConnection, playerId, serverPacketHandler);
     serverEventBus.postTaskEvent(packetListener);
     serverEventBus.postTaskEvent(serverPacketHandler);
@@ -50,21 +39,6 @@ class PlayerFactory {
         .packetListener(packetListener)
         .serverPacketHandler(serverPacketHandler)
         .build();
-  }
-
-  private ServerPacketHandler newServerPacketHandler(
-      MochaConnection mochaConnection,
-      int playerId,
-      ChunkService chunkService) {
-    return new ServerPacketHandler(
-        mochaConnection,
-        serverEventBus,
-        playerId,
-        entityRepository,
-        playerRepository,
-        chunkService,
-        entitiesInChunkService
-    );
   }
 
   private PacketListener newPacketListener(

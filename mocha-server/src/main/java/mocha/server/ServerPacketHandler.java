@@ -7,6 +7,7 @@ import com.google.common.eventbus.Subscribe;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import mocha.game.GameLogic;
 import mocha.game.player.Player;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
@@ -20,7 +21,9 @@ import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
+import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.PickUpItemPacket;
+import mocha.game.world.item.command.UpdateItemPrototypeCommand;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
@@ -37,6 +40,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   private Repository<Player, Integer> playerRepository;
   private ChunkService chunkService;
   private EntitiesInChunkService entitiesInChunkService;
+  private GameLogic gameLogic;
 
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
 
@@ -46,7 +50,10 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
       int playerId,
       Repository<Entity, Integer> entityRepository,
       Repository<Player, Integer> playerRepository,
-      ChunkService chunkService, EntitiesInChunkService entitiesInChunkService) {
+      ChunkService chunkService,
+      EntitiesInChunkService entitiesInChunkService,
+      GameLogic gameLogic
+  ) {
     this.mochaConnection = mochaConnection;
     this.serverEventBus = serverEventBus;
     this.playerId = playerId;
@@ -54,6 +61,7 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
     this.playerRepository = playerRepository;
     this.chunkService = chunkService;
     this.entitiesInChunkService = entitiesInChunkService;
+    this.gameLogic = gameLogic;
     packetEventBus = new EventBus();
     packetEventBus.register(this);
   }
@@ -137,5 +145,16 @@ public class ServerPacketHandler extends SimplePacketHandler implements SleepyRu
   @Subscribe
   private void handle(PickUpItemPacket pickUpItemPacket) {
     entityRepository.findById(pickUpItemPacket.getEntityId()).ifPresent(entity -> serverEventBus.postPickUpItemCommand(entity));
+  }
+
+  @Subscribe
+  public void handle(ItemPrototypeUpdatePacket itemPrototypeUpdatePacket) {
+    gameLogic.handle(new UpdateItemPrototypeCommand(
+        itemPrototypeUpdatePacket.getId(),
+        itemPrototypeUpdatePacket.getName(),
+        itemPrototypeUpdatePacket.getSpriteId(),
+        itemPrototypeUpdatePacket.getItemType(),
+        itemPrototypeUpdatePacket.getDescription()
+    ));
   }
 }

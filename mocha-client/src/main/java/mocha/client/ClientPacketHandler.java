@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
+import mocha.game.GameLogic;
 import mocha.game.LocalPlayer;
 import mocha.game.LoginSuccessPacket;
 import mocha.game.PlayerIdentityPacket;
@@ -35,6 +36,7 @@ import mocha.game.world.item.ItemEntity;
 import mocha.game.world.item.ItemPrototype;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
+import mocha.game.world.item.command.UpdateItemPrototypeCommand;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;
 import mocha.shared.Repository;
@@ -55,6 +57,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   private TileSetFactory tileSetFactory;
   private EntityService entityService;
   private PlayerService playerService;
+  private GameLogic gameLogic;
 
   @Inject
   public ClientPacketHandler(
@@ -65,7 +68,8 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
       Repository<ItemPrototype, Integer> itemPrototypeRepository,
       Repository<Item, Integer> itemRepository, TileSetFactory tileSetFactory,
       EntityService entityService,
-      PlayerService playerService
+      PlayerService playerService,
+      GameLogic gameLogic
   ) {
     this.clientEventBus = clientEventBus;
     this.playerRepository = playerRepository;
@@ -76,6 +80,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
     this.tileSetFactory = tileSetFactory;
     this.entityService = entityService;
     this.playerService = playerService;
+    this.gameLogic = gameLogic;
   }
 
   @Override
@@ -168,7 +173,13 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
 
   @Subscribe
   public void handle(ItemPrototypeUpdatePacket itemPrototypeUpdatePacket) {
-    itemPrototypeRepository.save(itemPrototypeUpdatePacket.getItemPrototype());
+    gameLogic.handle(new UpdateItemPrototypeCommand(
+        itemPrototypeUpdatePacket.getId(),
+        itemPrototypeUpdatePacket.getName(),
+        itemPrototypeUpdatePacket.getSpriteId(),
+        itemPrototypeUpdatePacket.getItemType(),
+        itemPrototypeUpdatePacket.getDescription()
+    ));
   }
 
   @Subscribe

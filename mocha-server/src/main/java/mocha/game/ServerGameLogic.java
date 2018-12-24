@@ -32,6 +32,8 @@ import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
 import mocha.game.world.item.Item;
 import mocha.game.world.item.ItemPrototype;
+import mocha.game.world.item.ItemPrototypeService;
+import mocha.game.world.item.command.UpdateItemPrototypeCommand;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.net.packet.MochaConnection;
@@ -57,6 +59,7 @@ public class ServerGameLogic implements GameLogic {
   private PlayerService playerService;
   private Repository<Item, Integer> itemRepository;
   private Repository<ItemPrototype, Integer> itemPrototypeRepository;
+  private ItemPrototypeService itemPrototypeService;
 
   @Inject
   public ServerGameLogic(
@@ -71,8 +74,8 @@ public class ServerGameLogic implements GameLogic {
       EntityService entityService,
       PlayerService playerService,
       Repository<Item, Integer> itemRepository,
-      Repository<ItemPrototype, Integer> itemPrototypeRepository
-  ) {
+      Repository<ItemPrototype, Integer> itemPrototypeRepository,
+      ItemPrototypeService itemPrototypeService) {
     this.eventBus = eventBus;
     this.playerIdFactory = playerIdFactory;
     this.playerFactory = playerFactory;
@@ -85,6 +88,7 @@ public class ServerGameLogic implements GameLogic {
     this.playerService = playerService;
     this.itemRepository = itemRepository;
     this.itemPrototypeRepository = itemPrototypeRepository;
+    this.itemPrototypeService = itemPrototypeService;
   }
 
   @Subscribe
@@ -189,4 +193,11 @@ public class ServerGameLogic implements GameLogic {
           eventBus.postMoveEvent(movement);
         });
   }
+
+  @Override
+  public void handle(UpdateItemPrototypeCommand updateItemPrototypeCommand) {
+    ItemPrototype update = itemPrototypeService.updateItemPrototype(updateItemPrototypeCommand);
+    getConnections().forEach(mochaConnection -> mochaConnection.sendItemPrototypeUpdate(update));
+  }
+
 }

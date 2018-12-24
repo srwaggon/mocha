@@ -2,6 +2,7 @@ package mocha.game;
 
 import com.google.common.eventbus.Subscribe;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import mocha.client.event.ClientEventBus;
@@ -14,6 +15,8 @@ import mocha.game.world.entity.event.EntityUpdatedEvent;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
+import mocha.game.world.item.ItemPrototypeService;
+import mocha.game.world.item.command.UpdateItemPrototypeCommand;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketFactory;
@@ -37,17 +40,19 @@ public class NetworkClientGameLogic implements GameLogic {
   private MochaConnection mochaConnection;
   private PacketFactory packetFactory;
   private EntityService entityService;
+  private ItemPrototypeService itemPrototypeService;
 
   public NetworkClientGameLogic(
       ClientEventBus eventBus,
       PacketSenderFactory packetSenderFactory,
       TaskService taskService,
-      PacketHandler packetHandler,
+      @Lazy PacketHandler packetHandler,
       Repository<Entity, Integer> entityRepository,
       MovementFactory movementFactory,
       Repository<Movement, Integer> movementRepository,
       PacketFactory packetFactory,
-      EntityService entityService) {
+      EntityService entityService,
+      ItemPrototypeService itemPrototypeService) {
     this.eventBus = eventBus;
     this.packetSenderFactory = packetSenderFactory;
     this.taskService = taskService;
@@ -57,6 +62,7 @@ public class NetworkClientGameLogic implements GameLogic {
     this.movementRepository = movementRepository;
     this.packetFactory = packetFactory;
     this.entityService = entityService;
+    this.itemPrototypeService = itemPrototypeService;
   }
 
   @Subscribe
@@ -114,6 +120,11 @@ public class NetworkClientGameLogic implements GameLogic {
   @Override
   public void handle(EntityMoveCommand entityMoveCommand) {
     eventBus.postSendPacketEvent(packetFactory.newMovePacket(entityMoveCommand));
+  }
+
+  @Override
+  public void handle(UpdateItemPrototypeCommand updateItemPrototypeCommand) {
+    itemPrototypeService.updateItemPrototype(updateItemPrototypeCommand);
   }
 
   @Subscribe
