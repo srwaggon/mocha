@@ -1,12 +1,12 @@
 package mocha.net.packet;
 
-import mocha.net.packet.message.GlobalMessagePacket;
 import mocha.game.world.chunk.ChunkUpdatePacket;
 import mocha.game.world.chunk.RequestChunkByLocationPacket;
 import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
+import mocha.net.packet.message.GlobalMessagePacket;
 
 public class SimplePacketHandler implements PacketHandler {
   @Override

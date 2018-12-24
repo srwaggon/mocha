@@ -7,7 +7,7 @@ public abstract class AbstractPacket implements Packet {
   private String data;
 
   public AbstractPacket() {
-     data = "" + getType().name();
+    data = "" + getType().name();
   }
 
   public AbstractPacket(String data) {

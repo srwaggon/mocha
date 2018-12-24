@@ -6,5 +6,6 @@ public enum ItemType {
   CURRENCY,
   KEY,
   TOOL,
-  WEAPON,;
+  WEAPON,
+  ;
 }
