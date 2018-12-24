@@ -25,12 +25,16 @@ public class SpriteSheetService {
 
   @PostConstruct
   public void init() {
-    spriteSheetsByPath = findAll().stream()
+    spriteSheetsByPath = findAll(getGraphicsDirectory()).stream()
         .collect(toMap(SpriteSheet::getImagePath, Function.identity()));
   }
 
-  private List<SpriteSheet> findAll() {
-    return findAll(new File(getClass().getResource("/mocha/gfx").getFile()));
+  private String getGraphicsDirectoryPath() {
+    return getGraphicsDirectory().getPath();
+  }
+
+  private File getGraphicsDirectory() {
+    return getFileForPath("/mocha/gfx");
   }
 
   private List<SpriteSheet> findAll(File file) {
@@ -40,11 +44,7 @@ public class SpriteSheetService {
           .flatMap(Collection::stream)
           .collect(toList());
     }
-    return Lists.newArrayList(getSpriteSheetForPath(file.getAbsolutePath()));
-  }
-
-  private SpriteSheet getSpriteSheetForPath(String path) {
-    return new CachingSpriteSheet("file:" + "/" + path, 16);
+    return Lists.newArrayList(getSpriteSheetForPath(file.getPath()));
   }
 
   SpriteSheet findById(String path) {
@@ -52,14 +52,21 @@ public class SpriteSheetService {
     if (maybeSpriteSheet.isPresent()) {
       return maybeSpriteSheet.get();
     }
-    SpriteSheet spriteSheet = getSpriteSheetForPath(getClass().getResource(path).getFile());
-    spriteSheetsByPath.put(path, spriteSheet);
+    SpriteSheet spriteSheet = getSpriteSheetForPath(getFileForPath(path).getPath());
     return spriteSheet;
+  }
+
+  private File getFileForPath(String path) {
+    return new File(getClass().getResource(path).getFile());
+  }
+
+  private SpriteSheet getSpriteSheetForPath(String path) {
+    return new CachingSpriteSheet("file:" + "/" + path, 16);
   }
 
   SpriteSheet findNext(String path) {
     ArrayList<String> spriteSheetPaths = Lists.newArrayList(spriteSheetsByPath.keySet());
-//    spriteSheetPaths.sort(String::compareTo);
+    spriteSheetPaths.sort(String::compareTo);
     int nextSpriteSheetIndex = (spriteSheetPaths.indexOf(path) + 1) % spriteSheetPaths.size();
     String nextSpriteSheetPath = spriteSheetPaths.get(nextSpriteSheetIndex);
     return spriteSheetsByPath.get(nextSpriteSheetPath);

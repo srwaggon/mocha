@@ -19,7 +19,7 @@ public class ItemEntity extends Entity {
   }
 
   @Override
-  public int getSpriteId() {
+  public String getSpriteId() {
     return item.getSpriteId();
   }
 

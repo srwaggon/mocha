@@ -14,7 +14,7 @@ public class Entity implements Collider, Identified<Integer> {
   private boolean isBlocking = true;
   private Item leftHand;
   private Item rightHand;
-  private int spriteId = 128;
+  private String spriteId = "/mocha/gfx/sprites/slime/slime0.png::0";
 
   public Entity() {
   }
@@ -52,11 +52,11 @@ public class Entity implements Collider, Identified<Integer> {
     return location;
   }
 
-  public int getSpriteId() {
+  public String getSpriteId() {
     return spriteId;
   }
 
-  public void setSpriteId(int spriteId) {
+  public void setSpriteId(String spriteId) {
     this.spriteId = spriteId;
   }
 

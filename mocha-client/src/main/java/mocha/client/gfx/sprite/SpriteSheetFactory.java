@@ -5,10 +5,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpriteSheetFactory {
 
-  public SpriteSheet newSpriteSheet() {
-    return new CachingSpriteSheet("mocha/gfx/sprites.png", 16);
-  }
-
   public SpriteSheet newDirtTiles() {
     return new CachingSpriteSheet("mocha/gfx/tiles/dirt.png", 16);
   }

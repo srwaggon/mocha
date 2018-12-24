@@ -10,6 +10,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
+import mocha.client.gfx.sprite.Sprite;
+import mocha.client.gfx.sprite.SpriteService;
 import mocha.client.input.event.GameKeyEvent;
 import mocha.game.GameLogic;
 import mocha.game.player.Player;
@@ -27,6 +29,7 @@ public class GameKeyHandler {
   private ClientEventBus eventBus;
   private PacketFactory packetFactory;
   private GameLogic gameLogic;
+  private SpriteService spriteService;
 
   @Inject
   public GameKeyHandler(
@@ -34,13 +37,15 @@ public class GameKeyHandler {
       Repository<Entity, Integer> entityRepository,
       ClientEventBus eventBus,
       PacketFactory packetFactory,
-      GameLogic gameLogic
+      GameLogic gameLogic,
+      SpriteService spriteService
   ) {
     this.playerRepository = playerRepository;
     this.entityRepository = entityRepository;
     this.eventBus = eventBus;
     this.packetFactory = packetFactory;
     this.gameLogic = gameLogic;
+    this.spriteService = spriteService;
   }
 
   @PostConstruct
@@ -58,7 +63,12 @@ public class GameKeyHandler {
 
   private void handleIfNextSprite(GameKeyEvent gameKeyEvent) {
     if (gameKeyEvent.getGameKey().equals(GameKey.MENU) && gameKeyEvent.isDown()) {
-      findPlayerEntity().ifPresent(entity -> entity.setSpriteId(entity.getSpriteId() + 1));
+      findPlayerEntity().ifPresent(entity -> {
+        Sprite currentSprite = spriteService.findById(entity.getSpriteId());
+        Sprite nextSprite = spriteService.getNext(currentSprite);
+        String nextSpriteId = nextSprite.getId();
+        entity.setSpriteId(nextSpriteId);
+      });
     }
   }
 

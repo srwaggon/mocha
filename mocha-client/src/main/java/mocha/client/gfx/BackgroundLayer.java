@@ -17,7 +17,6 @@ import mocha.game.world.chunk.tile.TileType;
 @Component
 public class BackgroundLayer {
 
-  private final SpriteSheet spriteSheet;
   private final SpriteSheet dirtTiles;
   private ChunkService chunkService;
   private final SpriteSheet grassTiles;
@@ -35,7 +34,6 @@ public class BackgroundLayer {
   ) {
     this.tileSpriteSelector = tileSpriteSelector;
     this.chunkService = chunkService;
-    this.spriteSheet = spriteSheetFactory.newSpriteSheet();
     this.dirtTiles = spriteSheetFactory.newDirtTiles();
     this.grassTiles = spriteSheetFactory.newGrassTiles();
     this.waterTiles = spriteSheetFactory.newWaterTiles();
@@ -79,16 +77,15 @@ public class BackgroundLayer {
 
   private SpriteSheet selectSpriteSheet(TileType tileType) {
     switch (tileType) {
-      case DIRT:
-        return dirtTiles;
       case GRASS:
         return grassTiles;
       case WATER:
         return waterTiles;
       case STONE:
         return stoneTiles;
+      case DIRT:
       default:
-        return spriteSheet;
+        return dirtTiles;
     }
   }
 

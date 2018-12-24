@@ -63,7 +63,7 @@ public class Item implements Identified<Integer> {
     this.data2 = data2;
   }
 
-  public int getSpriteId() {
+  public String getSpriteId() {
     return itemPrototype.getSpriteId();
   }
 }

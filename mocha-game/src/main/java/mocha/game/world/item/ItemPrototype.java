@@ -6,14 +6,14 @@ public class ItemPrototype implements Identified<Integer> {
 
   private Integer id;
   private String name;
-  private int spriteId;
+  private String spriteId;
   private ItemType itemType;
   private String description;
 
   public ItemPrototype() {
   }
 
-  public ItemPrototype(Integer id, String name, int spriteId, ItemType itemType, String description) {
+  public ItemPrototype(Integer id, String name, String spriteId, ItemType itemType, String description) {
     this.id = id;
     this.name = name;
     this.spriteId = spriteId;
@@ -39,11 +39,11 @@ public class ItemPrototype implements Identified<Integer> {
     this.name = name;
   }
 
-  public int getSpriteId() {
+  public String getSpriteId() {
     return spriteId;
   }
 
-  public void setSpriteId(int spriteId) {
+  public void setSpriteId(String spriteId) {
     this.spriteId = spriteId;
   }
 

@@ -6,10 +6,12 @@ import javafx.scene.image.Image;
 public class Sprite {
 
   private final String imagePath;
+  private int spriteIndex;
   private final Image image;
 
-  Sprite(String imagePath, Image image) {
+  Sprite(String imagePath, int spriteIndex, Image image) {
     this.imagePath = imagePath;
+    this.spriteIndex = spriteIndex;
     this.image = image;
   }
 
@@ -17,7 +19,7 @@ public class Sprite {
     this.render(graphicsContext, spriteX, spriteY, 1.0);
   }
 
-  private void render(GraphicsContext graphics, double spriteX, double spriteY, double scale) {
+  public void render(GraphicsContext graphics, double spriteX, double spriteY, double scale) {
     graphics.drawImage(image, spriteX, spriteY, image.getWidth() * scale, image.getHeight() * scale);
   }
 
@@ -25,8 +27,16 @@ public class Sprite {
     return imagePath;
   }
 
+  public int getSpriteIndex() {
+    return spriteIndex;
+  }
+
   public Image getImage() {
     return image;
+  }
+
+  public String getId() {
+    return imagePath + "::" + spriteIndex;
   }
 
 }

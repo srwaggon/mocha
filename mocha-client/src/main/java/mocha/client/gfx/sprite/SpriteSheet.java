@@ -17,7 +17,7 @@ public class SpriteSheet {
 
   public Sprite getSprite(int spriteIndex, double scale) {
     Image image = getImage(spriteIndex, scale);
-    return new Sprite(imagePath, image);
+    return new Sprite(imagePath, spriteIndex, image);
   }
 
   private Image getImage(int spriteIndex, double scale) {
@@ -64,5 +64,13 @@ public class SpriteSheet {
 
   private boolean isOutOfRange(double value, double lower, double upper) {
     return value < lower || upper <= value;
+  }
+
+  public String getImagePath() {
+    return imagePath;
+  }
+
+  public int getSpriteCount() {
+    return (int) (sourceImage.getWidth() / spriteSize * sourceImage.getHeight() / spriteSize);
   }
 }

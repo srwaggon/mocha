@@ -13,6 +13,6 @@ public class ItemPrototypeService {
   }
 
   public ItemPrototype findById(int id) {
-    return itemPrototypeRepository.findById(id).orElse(new ItemPrototype(0, "Default", 0, ItemType.CURRENCY, "Default Item"));
+    return itemPrototypeRepository.findById(id).orElse(new ItemPrototype(0, "Default", "/mocha/gfx/tiles/dirt.png::0", ItemType.CURRENCY, "Default Item"));
   }
 }

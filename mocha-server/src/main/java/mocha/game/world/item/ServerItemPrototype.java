@@ -10,7 +10,7 @@ public class ServerItemPrototype extends ItemPrototype {
   public ServerItemPrototype() {
   }
 
-  public ServerItemPrototype(Integer id, String name, int spriteId, ItemType itemType, String description) {
+  public ServerItemPrototype(Integer id, String name, String spriteId, ItemType itemType, String description) {
     super(id, name, spriteId, itemType, description);
   }
 
@@ -27,7 +27,7 @@ public class ServerItemPrototype extends ItemPrototype {
 
   @Column
   @Override
-  public int getSpriteId() {
+  public String getSpriteId() {
     return super.getSpriteId();
   }
 

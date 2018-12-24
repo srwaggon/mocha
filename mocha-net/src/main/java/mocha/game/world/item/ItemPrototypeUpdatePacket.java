@@ -29,8 +29,8 @@ public class ItemPrototypeUpdatePacket extends AbstractPacket {
     return getData(2);
   }
 
-  public int getSpriteId() {
-    return getDataAsInt(3);
+  public String getSpriteId() {
+    return getData(3);
   }
 
   public ItemType getItemType() {
