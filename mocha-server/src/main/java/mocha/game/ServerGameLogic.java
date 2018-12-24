@@ -170,13 +170,13 @@ public class ServerGameLogic implements GameLogic {
   @Subscribe
   public void handle(EntityMovementEvent entityMovementEvent) {
     Movement movement = entityMovementEvent.getMovement();
-    EntityMoveCommand entityMove = EntityMoveCommand.builder()
-        .entityId(movement.getId())
-        .location(movement.getLocation())
-        .direction(movement.getDirection())
-        .xOffset(movement.getXOffset())
-        .yOffset(movement.getYOffset())
-        .build();
+    EntityMoveCommand entityMove = new EntityMoveCommand(
+        movement.getId(),
+        movement.getLocation(),
+        movement.getDirection(),
+        movement.getXOffset(),
+        movement.getYOffset()
+    );
     getConnections().forEach(mochaConnection -> mochaConnection.sendMoveCommand(entityMove));
   }
 

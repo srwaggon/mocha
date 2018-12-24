@@ -137,13 +137,13 @@ public class GameKeyHandler {
   }
 
   private EntityMoveCommand buildEntityMoveCommand(Entity entity, Direction direction, boolean isStart) {
-    return EntityMoveCommand.builder()
-        .entityId(entity.getId())
-        .location(entity.getLocation())
-        .direction(direction)
-        .xOffset(isStart ? direction.getXMultiplier() : 0)
-        .yOffset(isStart ? direction.getYMultiplier() : 0)
-        .build();
+    return new EntityMoveCommand(
+        entity.getId(),
+        entity.getLocation(),
+        direction,
+        isStart ? direction.getXMultiplier() : 0,
+        isStart ? direction.getYMultiplier() : 0
+    );
   }
 
   private Optional<Direction> getDirection(GameKeyEvent gameKeyEvent) {
