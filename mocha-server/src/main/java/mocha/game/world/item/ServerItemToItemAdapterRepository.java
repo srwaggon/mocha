@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
+import mocha.game.world.item.itemprototype.ItemPrototype;
 import mocha.shared.Repository;
 
 @org.springframework.stereotype.Repository

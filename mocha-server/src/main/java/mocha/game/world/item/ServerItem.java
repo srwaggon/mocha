@@ -7,13 +7,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import mocha.game.world.item.itemprototype.ItemPrototype;
+
 @Entity
 public class ServerItem extends Item {
 
   public ServerItem() {
   }
 
-  public ServerItem(int id, ServerItemPrototype serverItemPrototype, int data0, int data1, int data2) {
+  ServerItem(int id, ServerItemPrototype serverItemPrototype, int data0, int data1, int data2) {
     super(id, serverItemPrototype, data0, data1, data2);
   }
 

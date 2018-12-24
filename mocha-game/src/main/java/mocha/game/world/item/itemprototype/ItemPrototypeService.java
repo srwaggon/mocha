@@ -1,6 +1,5 @@
-package mocha.game.world.item;
+package mocha.game.world.item.itemprototype;
 
-import mocha.game.world.item.command.UpdateItemPrototypeCommand;
 import mocha.shared.Repository;
 
 public class ItemPrototypeService {

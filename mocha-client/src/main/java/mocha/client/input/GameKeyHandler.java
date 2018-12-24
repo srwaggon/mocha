@@ -18,9 +18,9 @@ import mocha.game.player.Player;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
-import mocha.game.world.item.ItemPrototype;
-import mocha.game.world.item.ItemPrototypeService;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
+import mocha.game.world.item.itemprototype.ItemPrototype;
+import mocha.game.world.item.itemprototype.ItemPrototypeService;
 import mocha.net.packet.PacketFactory;
 import mocha.shared.Repository;
 

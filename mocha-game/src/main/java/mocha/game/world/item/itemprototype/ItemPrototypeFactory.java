@@ -1,8 +1,8 @@
-package mocha.game.world.item;
+package mocha.game.world.item.itemprototype;
 
 import org.jetbrains.annotations.NotNull;
 
-import mocha.game.world.item.command.UpdateItemPrototypeCommand;
+import mocha.game.world.item.ItemType;
 
 public class ItemPrototypeFactory {
 
@@ -23,7 +23,7 @@ public class ItemPrototypeFactory {
   }
 
   @NotNull
-  ItemPrototype newItemPrototype(
+  private ItemPrototype newItemPrototype(
       int id,
       String name,
       String spriteId,

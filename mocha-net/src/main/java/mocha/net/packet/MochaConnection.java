@@ -7,7 +7,7 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.item.Item;
-import mocha.game.world.item.ItemPrototype;
+import mocha.game.world.item.itemprototype.ItemPrototype;
 
 public class MochaConnection extends PacketConnection {
 

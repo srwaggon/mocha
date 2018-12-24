@@ -3,6 +3,9 @@ package mocha.game.world.item;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import mocha.game.world.item.itemprototype.ItemPrototype;
+import mocha.game.world.item.itemprototype.ItemPrototypeFactory;
+import mocha.game.world.item.itemprototype.ItemPrototypeService;
 import mocha.shared.InMemoryRepository;
 import mocha.shared.Repository;
 

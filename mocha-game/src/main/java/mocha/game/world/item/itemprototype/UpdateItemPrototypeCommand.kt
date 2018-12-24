@@ -1,4 +1,4 @@
-package mocha.game.world.item.command
+package mocha.game.world.item.itemprototype
 
 import mocha.game.world.item.ItemType
 

@@ -7,10 +7,10 @@ import javax.inject.Inject;
 import mocha.game.event.MochaEventBus;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
-import mocha.game.world.item.ItemPrototypeService;
 import mocha.game.world.item.ItemService;
-import mocha.game.world.item.command.UpdateItemCommand;
-import mocha.game.world.item.command.UpdateItemPrototypeCommand;
+import mocha.game.world.item.UpdateItemCommand;
+import mocha.game.world.item.itemprototype.ItemPrototypeService;
+import mocha.game.world.item.itemprototype.UpdateItemPrototypeCommand;
 import mocha.shared.Repository;
 
 @Component

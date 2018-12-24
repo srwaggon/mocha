@@ -23,7 +23,7 @@ import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.PickUpItemPacket;
-import mocha.game.world.item.command.UpdateItemPrototypeCommand;
+import mocha.game.world.item.itemprototype.UpdateItemPrototypeCommand;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.Packet;
 import mocha.net.packet.SimplePacketHandler;

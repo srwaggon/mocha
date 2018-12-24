@@ -1,8 +1,8 @@
 package mocha.game;
 
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
-import mocha.game.world.item.command.UpdateItemCommand;
-import mocha.game.world.item.command.UpdateItemPrototypeCommand;
+import mocha.game.world.item.UpdateItemCommand;
+import mocha.game.world.item.itemprototype.UpdateItemPrototypeCommand;
 
 public interface GameLogic {
 

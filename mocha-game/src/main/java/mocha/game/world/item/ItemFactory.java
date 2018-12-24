@@ -2,7 +2,7 @@ package mocha.game.world.item;
 
 import org.jetbrains.annotations.NotNull;
 
-import mocha.game.world.item.command.UpdateItemCommand;
+import mocha.game.world.item.itemprototype.ItemPrototypeService;
 
 class ItemFactory {
 

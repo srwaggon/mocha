@@ -1,5 +1,6 @@
 package mocha.game.world.item;
 
+import mocha.game.world.item.itemprototype.ItemPrototype;
 import mocha.net.packet.AbstractPacket;
 import mocha.net.packet.PacketType;
 

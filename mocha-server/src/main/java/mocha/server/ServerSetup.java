@@ -9,11 +9,11 @@ import mocha.game.world.Location;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
+import mocha.game.world.entity.ItemEntity;
 import mocha.game.world.item.Item;
-import mocha.game.world.item.ItemEntity;
-import mocha.game.world.item.ItemPrototype;
 import mocha.game.world.item.ItemService;
 import mocha.game.world.item.ItemType;
+import mocha.game.world.item.itemprototype.ItemPrototype;
 import mocha.shared.IdFactory;
 import mocha.shared.Repository;
 

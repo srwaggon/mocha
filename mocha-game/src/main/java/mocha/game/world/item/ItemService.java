@@ -1,6 +1,5 @@
 package mocha.game.world.item;
 
-import mocha.game.world.item.command.UpdateItemCommand;
 import mocha.shared.Repository;
 
 public class ItemService {

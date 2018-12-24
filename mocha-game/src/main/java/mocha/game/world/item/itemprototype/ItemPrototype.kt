@@ -1,5 +1,6 @@
-package mocha.game.world.item
+package mocha.game.world.item.itemprototype
 
+import mocha.game.world.item.ItemType
 import mocha.shared.Identified
 
 open class ItemPrototype : Identified<Int> {

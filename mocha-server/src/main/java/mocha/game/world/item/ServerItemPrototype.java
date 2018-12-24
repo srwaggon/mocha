@@ -4,13 +4,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import mocha.game.world.item.itemprototype.ItemPrototype;
+
 @Entity
 public class ServerItemPrototype extends ItemPrototype {
 
   public ServerItemPrototype() {
   }
 
-  public ServerItemPrototype(Integer id, String name, String spriteId, ItemType itemType, String description) {
+  ServerItemPrototype(Integer id, String name, String spriteId, ItemType itemType, String description) {
     super(id, name, spriteId, itemType, description);
   }
 

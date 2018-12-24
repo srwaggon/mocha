@@ -1,4 +1,4 @@
-package mocha.game.world.item.command
+package mocha.game.world.entity.command
 
 import mocha.game.command.Command
 import mocha.game.world.entity.Entity

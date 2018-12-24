@@ -18,10 +18,10 @@ import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.item.Item;
-import mocha.game.world.item.ItemPrototype;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
 import mocha.game.world.item.PickUpItemPacket;
+import mocha.game.world.item.itemprototype.ItemPrototype;
 
 public class PacketFactory {
 

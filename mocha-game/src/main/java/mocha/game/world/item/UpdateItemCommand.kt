@@ -1,6 +1,6 @@
-package mocha.game.world.item.command
+package mocha.game.world.item
 
-import mocha.game.world.item.ItemPrototype
+import mocha.game.world.item.itemprototype.ItemPrototype
 
 data class UpdateItemCommand(
     val id: Int,
