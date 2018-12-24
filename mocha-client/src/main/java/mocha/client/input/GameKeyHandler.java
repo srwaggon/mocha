@@ -53,6 +53,13 @@ public class GameKeyHandler {
     handleIfStartMove(gameKeyEvent);
     handleIfStopMove(gameKeyEvent);
     handleIfPickup(gameKeyEvent);
+    handleIfNextSprite(gameKeyEvent);
+  }
+
+  private void handleIfNextSprite(GameKeyEvent gameKeyEvent) {
+    if (gameKeyEvent.getGameKey().equals(GameKey.MENU) && gameKeyEvent.isDown()) {
+      findPlayerEntity().ifPresent(entity -> entity.setSpriteId(entity.getSpriteId() + 1));
+    }
   }
 
   private void handleIfStartMove(GameKeyEvent gameKeyEvent) {

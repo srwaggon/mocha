@@ -5,23 +5,30 @@ import javafx.scene.image.WritableImage;
 
 public class SpriteSheet {
 
+  private final String imagePath;
   private Image sourceImage;
   private int spriteSize;
 
-  SpriteSheet(Image sourceImage, int spriteSize) {
-    this.sourceImage = sourceImage;
+  SpriteSheet(String imagePath, int spriteSize) {
+    this.imagePath = imagePath;
     this.spriteSize = spriteSize;
+    this.sourceImage = new Image(imagePath);
   }
 
-  public Image getSprite(int spriteIndex, double scale) {
+  public Sprite getSprite(int spriteIndex, double scale) {
+    Image image = getImage(spriteIndex, scale);
+    return new Sprite(imagePath, image);
+  }
+
+  private Image getImage(int spriteIndex, double scale) {
     int spriteWidth = (int) (this.spriteSize * scale);
     int spriteHeight = (int) (spriteSize * scale);
     WritableImage spriteImage = new WritableImage(spriteWidth, spriteHeight);
-    drawSprite(spriteIndex, 0, 0, scale, spriteImage);
+    drawSprite(spriteIndex, scale, spriteImage);
     return spriteImage;
   }
 
-  private void drawSprite(int spriteIndex, int canvasX, int canvasY, double scale, WritableImage destinationImage) {
+  private void drawSprite(int spriteIndex, double scale, WritableImage destinationImage) {
     int spritesPerRow = (int) (sourceImage.getWidth() / spriteSize);
     int spriteX = spriteSize * (spriteIndex % spritesPerRow);
     int spriteRow = spriteIndex / spritesPerRow;
@@ -29,7 +36,7 @@ public class SpriteSheet {
 
     for (int x = 0; x < spriteSize * scale; x++) {
       for (int y = 0; y < spriteSize * scale; y++) {
-        if (isOutsideRectangle(canvasX + x, canvasY + y, destinationImage.getWidth(), destinationImage.getHeight())) {
+        if (isOutsideRectangle(x, y, destinationImage.getWidth(), destinationImage.getHeight())) {
           continue;
         }
 
@@ -41,7 +48,7 @@ public class SpriteSheet {
 
         int argb = sourceImage.getPixelReader().getArgb(spriteSheetX, spriteSheetY);
         if (!isPixelTransparent(argb)) {
-          destinationImage.getPixelWriter().setArgb(canvasX + x, canvasY + y, argb);
+          destinationImage.getPixelWriter().setArgb(x, y, argb);
         }
       }
     }

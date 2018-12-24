@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
+import mocha.client.gfx.sprite.Sprite;
 import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.client.gfx.sprite.SpriteSheetFactory;
 import mocha.client.gfx.view.Camera;
@@ -62,15 +62,15 @@ public class BackgroundLayer {
         int tileX = origin.getX() + x * TileType.SIZE;
         int tileY = origin.getY() + y * TileType.SIZE;
         Location tileLocation = new Location(tileX, tileY);
-        Image sprite = getSprite(tileLocation);
+        Sprite sprite = getSprite(tileLocation);
         double spriteX = tileX - camera.getBounds().getMinX();
         double spriteY = tileY - camera.getBounds().getMinY();
-        graphics.drawImage(sprite, spriteX, spriteY);
+        sprite.render(graphics, spriteX, spriteY);
       }
     }
   }
 
-  private Image getSprite(Location tileLocation) {
+  private Sprite getSprite(Location tileLocation) {
     TileType tileType = chunkService.getTileAt(tileLocation);
     SpriteSheet spriteSheet = selectSpriteSheet(tileType);
     int spriteIndex = tileSpriteSelector.selectSprite(tileLocation);

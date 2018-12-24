@@ -14,6 +14,7 @@ public class Entity implements Collider, Identified<Integer> {
   private boolean isBlocking = true;
   private Item leftHand;
   private Item rightHand;
+  private int spriteId = 128;
 
   public Entity() {
   }
@@ -52,7 +53,11 @@ public class Entity implements Collider, Identified<Integer> {
   }
 
   public int getSpriteId() {
-    return 128;
+    return spriteId;
+  }
+
+  public void setSpriteId(int spriteId) {
+    this.spriteId = spriteId;
   }
 
   public double getScale() {

@@ -8,7 +8,7 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
+import mocha.client.gfx.sprite.Sprite;
 import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.client.gfx.sprite.SpriteSheetFactory;
 import mocha.client.gfx.view.Camera;
@@ -58,13 +58,13 @@ public class SpriteLayer {
   }
 
   private void renderEntity(long now, GraphicsContext graphics, Entity entity) {
-    Image sprite = getFrame(now, entity);
+    Sprite sprite = getFrame(now, entity);
     double spriteX = entity.getLocation().getX() - camera.getBounds().getMinX();
     double spriteY = entity.getLocation().getY() - camera.getBounds().getMinY();
-    graphics.drawImage(sprite, spriteX, spriteY);
+    sprite.render(graphics, spriteX, spriteY);
   }
 
-  private Image getFrame(long now, Entity entity) {
+  private Sprite getFrame(long now, Entity entity) {
     int spriteId = getSpriteId(now, entity);
     return spriteSheet.getSprite(spriteId, entity.getScale());
   }
