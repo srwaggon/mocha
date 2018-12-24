@@ -14,7 +14,12 @@ public class ItemConfiguration {
   }
 
   @Bean
-  public ItemPrototypeService itemPrototypeService(Repository<ItemPrototype, Integer> itemPrototypeRepository) {
-    return new ItemPrototypeService(itemPrototypeRepository);
+  public ItemPrototypeFactory itemPrototypeFactory() {
+    return new ItemPrototypeFactory();
+  }
+
+  @Bean
+  public ItemPrototypeService itemPrototypeService(Repository<ItemPrototype, Integer> itemPrototypeRepository, ItemPrototypeFactory itemPrototypeFactory) {
+    return new ItemPrototypeService(itemPrototypeRepository, itemPrototypeFactory);
   }
 }

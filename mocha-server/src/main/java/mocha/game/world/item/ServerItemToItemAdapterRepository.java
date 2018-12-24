@@ -29,8 +29,23 @@ public class ServerItemToItemAdapterRepository implements Repository<Item, Integ
   @Override
   public Item save(Item element) {
     ItemPrototype itemPrototype = element.getItemPrototype();
-    ServerItemPrototype serverItemPrototype = new ServerItemPrototype(itemPrototype.getId(), itemPrototype.getName(), itemPrototype.getSpriteId(), itemPrototype.getItemType(), itemPrototype.getDescription());
-    return serverItemRepository.save(new ServerItem(element.getId(), serverItemPrototype, element.getData0(), element.getData1(), element.getData2()));
+
+    ServerItemPrototype serverItemPrototype = new ServerItemPrototype(
+        itemPrototype.getId(),
+        itemPrototype.getName(),
+        itemPrototype.getSpriteId(),
+        itemPrototype.getItemType(),
+        itemPrototype.getDescription()
+    );
+
+    ServerItem serverItem = new ServerItem(
+        element.getId(),
+        serverItemPrototype,
+        element.getData0(),
+        element.getData1(),
+        element.getData2()
+    );
+    return serverItemRepository.save(serverItem);
   }
 
   @Override

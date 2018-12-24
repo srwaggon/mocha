@@ -6,25 +6,29 @@ import mocha.shared.Repository;
 public class ItemPrototypeService {
 
   private Repository<ItemPrototype, Integer> itemPrototypeRepository;
+  private ItemPrototypeFactory itemPrototypeFactory;
 
   public ItemPrototypeService(
-      Repository<ItemPrototype, Integer> itemPrototypeRepository
+      Repository<ItemPrototype, Integer> itemPrototypeRepository,
+      ItemPrototypeFactory itemPrototypeFactory
   ) {
     this.itemPrototypeRepository = itemPrototypeRepository;
+    this.itemPrototypeFactory = itemPrototypeFactory;
   }
 
   public ItemPrototype findById(int id) {
     return itemPrototypeRepository.findById(id)
-        .orElse(new ItemPrototype(0, "Default", "/mocha/gfx/tiles/dirt.png::0", ItemType.CURRENCY, "Default Item"));
+        .orElse(itemPrototypeFactory.newDefaultItemPrototype());
   }
 
   public ItemPrototype updateItemPrototype(UpdateItemPrototypeCommand updateItemPrototypeCommand) {
-    return itemPrototypeRepository.save(new ItemPrototype(
-        updateItemPrototypeCommand.getId(),
-        updateItemPrototypeCommand.getName(),
-        updateItemPrototypeCommand.getSpriteId(),
-        updateItemPrototypeCommand.getItemType(),
-        updateItemPrototypeCommand.getDescription()
-    ));
+    ItemPrototype itemPrototype = itemPrototypeRepository.findById(updateItemPrototypeCommand.getId())
+        .orElse(itemPrototypeFactory.newItemPrototype(updateItemPrototypeCommand));
+    itemPrototype.setSpriteId(updateItemPrototypeCommand.getSpriteId());
+    itemPrototype.setDescription(updateItemPrototypeCommand.getDescription());
+    itemPrototype.setItemType(updateItemPrototypeCommand.getItemType());
+    itemPrototype.setName(updateItemPrototypeCommand.getName());
+    return itemPrototypeRepository.save(itemPrototype);
   }
+
 }

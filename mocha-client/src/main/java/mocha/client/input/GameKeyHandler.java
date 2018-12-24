@@ -69,7 +69,7 @@ public class GameKeyHandler {
 
   private void handleIfNextSprite(GameKeyEvent gameKeyEvent) {
     if (gameKeyEvent.getGameKey().equals(GameKey.MENU) && gameKeyEvent.isDown()) {
-//      findPlayerEntity().ifPresent(this::cycleEntitySprite);
+      findPlayerEntity().ifPresent(this::cycleEntitySprite);
       ItemPrototype pickaxePrototype = itemPrototypeService.findById(1);
       pickaxePrototype.setSpriteId(getNextSpriteId(pickaxePrototype.getSpriteId()));
       eventBus.postSendPacketEvent(new ItemPrototypeUpdatePacket(pickaxePrototype));
