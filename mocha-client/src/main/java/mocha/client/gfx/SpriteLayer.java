@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import mocha.client.gfx.sprite.Sprite;
 import mocha.client.gfx.sprite.SpriteService;
@@ -43,14 +44,20 @@ public class SpriteLayer {
   }
 
   public void render(long now, GraphicsContext graphics) {
-    renderEntitiesInChunkAt(now, graphics, camera.topLeft());
-    renderEntitiesInChunkAt(now, graphics, camera.topRight());
-    renderEntitiesInChunkAt(now, graphics, camera.bottomLeft());
-    renderEntitiesInChunkAt(now, graphics, camera.bottomRight());
+    Rectangle2D bounds = camera.getBounds();
+    for (double y = bounds.getMinY(); y < bounds.getMaxY(); y += Chunk.getHeight() - 1) {
+      for (double x = bounds.getMinX(); x < bounds.getMaxX(); x += Chunk.getWidth() - 1) {
+        renderEntitiesInChunkAt(now, graphics, new Location(x, y));
+      }
+    }
   }
 
   private void renderEntitiesInChunkAt(long now, GraphicsContext graphics, Location location) {
     Chunk chunk = chunkService.getOrCreateChunkAt(location);
+    renderEntitiesInChunk(now, graphics, chunk);
+  }
+
+  private void renderEntitiesInChunk(long now, GraphicsContext graphics, Chunk chunk) {
     entitiesInChunkService.getEntitiesInChunk(chunk).stream()
         .sorted(Comparator.comparingInt(entity -> entity.getLocation().getY()))
         .forEach(entity -> renderEntity(now, graphics, entity));

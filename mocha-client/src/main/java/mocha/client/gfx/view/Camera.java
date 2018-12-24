@@ -7,8 +7,6 @@ import javax.inject.Inject;
 import javafx.geometry.Rectangle2D;
 import mocha.game.player.PlayerService;
 import mocha.game.world.Location;
-import mocha.game.world.chunk.Chunk;
-import mocha.game.world.chunk.tile.TileType;
 
 @Component
 public class Camera {
@@ -38,23 +36,11 @@ public class Camera {
   }
 
   private int getWidth() {
-    return getDimension();
+    return 1024;
   }
 
   private int getHeight() {
-    return getDimension();
-  }
-
-  private int getDimension() {
-    return Chunk.SIZE * TileType.SIZE;
-  }
-
-  int getXOffset() {
-    return getPlayerLocation().getX() - getWidth() / 2;
-  }
-
-  int getYOffset() {
-    return getPlayerLocation().getY() - getHeight() / 2;
+    return 768;
   }
 
   public Location bottomRight() {

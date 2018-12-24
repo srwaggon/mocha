@@ -17,8 +17,8 @@ public class GameView extends Canvas {
 
   @Inject
   public GameView(BackgroundLayer backgroundLayer, SpriteLayer spriteLayer) {
-    this.setHeight(512);
-    this.setWidth(512);
+    this.setWidth(1024);
+    this.setHeight(768);
     this.backgroundLayer = backgroundLayer;
     this.spriteLayer = spriteLayer;
   }
