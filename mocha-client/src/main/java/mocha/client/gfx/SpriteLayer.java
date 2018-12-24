@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
+import mocha.client.gfx.sprite.ScaleProvider;
 import mocha.client.gfx.sprite.Sprite;
 import mocha.client.gfx.sprite.SpriteService;
 import mocha.client.gfx.view.Camera;
@@ -28,19 +29,22 @@ public class SpriteLayer {
   private Camera camera;
   private EntitiesInChunkService entitiesInChunkService;
   private SpriteService spriteService;
+  private ScaleProvider scaleProvider;
 
   @Inject
   public SpriteLayer(
       Repository<Movement, Integer> movementRepository,
       ChunkService chunkService, Camera camera,
       EntitiesInChunkService entitiesInChunkService,
-      SpriteService spriteService
+      SpriteService spriteService,
+      ScaleProvider scaleProvider
   ) {
     this.movementRepository = movementRepository;
     this.chunkService = chunkService;
     this.camera = camera;
     this.entitiesInChunkService = entitiesInChunkService;
     this.spriteService = spriteService;
+    this.scaleProvider = scaleProvider;
   }
 
   public void render(long now, GraphicsContext graphics) {
@@ -67,9 +71,13 @@ public class SpriteLayer {
 
   private void renderEntity(long now, GraphicsContext graphics, Entity entity) {
     Sprite sprite = getFrame(now, entity);
-    double spriteX = entity.getLocation().getX() - camera.getBounds().getMinX();
-    double spriteY = entity.getLocation().getY() - camera.getBounds().getMinY();
+    double spriteX = getScale() * (entity.getLocation().getX() - camera.getBounds().getMinX());
+    double spriteY = getScale() * (entity.getLocation().getY() - camera.getBounds().getMinY());
     sprite.render(graphics, spriteX, spriteY);
+  }
+
+  private double getScale() {
+    return scaleProvider.getScale();
   }
 
   private Sprite getFrame(long now, Entity entity) {

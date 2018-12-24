@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
+import mocha.client.gfx.sprite.ScaleProvider;
 import mocha.client.gfx.sprite.Sprite;
 import mocha.client.gfx.sprite.SpriteSheet;
 import mocha.client.gfx.sprite.SpriteSheetFactory;
@@ -25,13 +26,15 @@ public class BackgroundLayer {
   private final SpriteSheet stoneTiles;
   private TileSpriteSelector tileSpriteSelector;
   private Camera camera;
+  private ScaleProvider scaleProvider;
 
   @Inject
   public BackgroundLayer(
       SpriteSheetFactory spriteSheetFactory,
       TileSpriteSelector tileSpriteSelector,
       ChunkService chunkService,
-      Camera camera
+      Camera camera,
+      ScaleProvider scaleProvider
   ) {
     this.tileSpriteSelector = tileSpriteSelector;
     this.chunkService = chunkService;
@@ -40,6 +43,7 @@ public class BackgroundLayer {
     this.waterTiles = spriteSheetFactory.newWaterTiles();
     this.stoneTiles = spriteSheetFactory.newStoneTiles();
     this.camera = camera;
+    this.scaleProvider = scaleProvider;
   }
 
   public void render(long now, GraphicsContext graphics) {
@@ -66,8 +70,9 @@ public class BackgroundLayer {
         int tileY = origin.getY() + y * TileType.SIZE;
         Location tileLocation = new Location(tileX, tileY);
         Sprite sprite = getSprite(tileLocation);
-        double spriteX = tileX - camera.getBounds().getMinX();
-        double spriteY = tileY - camera.getBounds().getMinY();
+
+        double spriteX = getScale() * (tileX - camera.getBounds().getMinX());
+        double spriteY = getScale() * (tileY - camera.getBounds().getMinY());
         sprite.render(graphics, spriteX, spriteY);
       }
     }
@@ -77,7 +82,7 @@ public class BackgroundLayer {
     TileType tileType = chunkService.getTileAt(tileLocation);
     SpriteSheet spriteSheet = selectSpriteSheet(tileType);
     int spriteIndex = tileSpriteSelector.selectSprite(tileLocation);
-    return spriteSheet.getSprite(spriteIndex, getScale());
+    return spriteSheet.getSprite(spriteIndex, getScale() * 2.0);
   }
 
   private SpriteSheet selectSpriteSheet(TileType tileType) {
@@ -95,7 +100,7 @@ public class BackgroundLayer {
   }
 
   private double getScale() {
-    return 2.0;
+    return scaleProvider.getScale();
   }
 
 }

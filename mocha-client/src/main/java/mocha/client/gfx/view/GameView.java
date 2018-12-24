@@ -16,11 +16,13 @@ public class GameView extends Canvas {
   private SpriteLayer spriteLayer;
 
   @Inject
-  public GameView(BackgroundLayer backgroundLayer, SpriteLayer spriteLayer) {
+  public GameView(BackgroundLayer backgroundLayer, SpriteLayer spriteLayer, Camera camera) {
     this.setWidth(1024);
     this.setHeight(768);
     this.backgroundLayer = backgroundLayer;
     this.spriteLayer = spriteLayer;
+    camera.widthProperty().bind(this.widthProperty());
+    camera.heightProperty().bind(this.heightProperty());
   }
 
   public void render(long now) {

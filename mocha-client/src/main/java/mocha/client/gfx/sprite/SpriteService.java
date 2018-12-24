@@ -9,12 +9,15 @@ public class SpriteService {
 
   @Inject
   private SpriteSheetService spriteSheetService;
+  @Inject
+  private ScaleProvider scaleProvider;
+
 
   public Sprite findById(String spriteId) {
     String[] split = spriteId.split("::");
     String spriteSheetPath = split[0];
     int spriteIndex = Integer.parseInt(split[1]);
-    return spriteSheetService.findById(spriteSheetPath).getSprite(spriteIndex, 2.0);
+    return spriteSheetService.findById(spriteSheetPath).getSprite(spriteIndex, getScale() * 2.0);
   }
 
   public Sprite getNext(String spriteId) {
@@ -30,7 +33,11 @@ public class SpriteService {
 
   private Sprite getNext(SpriteSheet spriteSheet, int spriteIndex) {
     return spriteIndex < spriteSheet.getSpriteCount()
-        ? spriteSheet.getSprite(spriteIndex, 2.0)
+        ? spriteSheet.getSprite(spriteIndex, getScale() * 2.0)
         : getNext(spriteSheetService.findNext(spriteSheet.getImagePath()), 0);
+  }
+
+  private double getScale() {
+    return scaleProvider.getScale();
   }
 }
