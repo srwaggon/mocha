@@ -16,6 +16,8 @@ import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.item.ItemPrototypeService;
+import mocha.game.world.item.ItemService;
+import mocha.game.world.item.command.UpdateItemCommand;
 import mocha.game.world.item.command.UpdateItemPrototypeCommand;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.packet.MochaConnection;
@@ -41,6 +43,7 @@ public class NetworkClientGameLogic implements GameLogic {
   private PacketFactory packetFactory;
   private EntityService entityService;
   private ItemPrototypeService itemPrototypeService;
+  private ItemService itemService;
 
   public NetworkClientGameLogic(
       ClientEventBus eventBus,
@@ -52,7 +55,8 @@ public class NetworkClientGameLogic implements GameLogic {
       Repository<Movement, Integer> movementRepository,
       PacketFactory packetFactory,
       EntityService entityService,
-      ItemPrototypeService itemPrototypeService) {
+      ItemPrototypeService itemPrototypeService,
+      ItemService itemService) {
     this.eventBus = eventBus;
     this.packetSenderFactory = packetSenderFactory;
     this.taskService = taskService;
@@ -63,6 +67,7 @@ public class NetworkClientGameLogic implements GameLogic {
     this.packetFactory = packetFactory;
     this.entityService = entityService;
     this.itemPrototypeService = itemPrototypeService;
+    this.itemService = itemService;
   }
 
   @Subscribe
@@ -112,7 +117,7 @@ public class NetworkClientGameLogic implements GameLogic {
 
   private void createEntityIfAbsent(Entity entity) {
     if (!entityRepository.findById(entity.getId()).isPresent()) {
-      Entity resultEntity = entityService.addEntity(entity);
+      Entity resultEntity = entityService.save(entity);
       movementRepository.save(movementFactory.newSlidingMovement(resultEntity));
     }
   }
@@ -125,6 +130,11 @@ public class NetworkClientGameLogic implements GameLogic {
   @Override
   public void handle(UpdateItemPrototypeCommand updateItemPrototypeCommand) {
     itemPrototypeService.updateItemPrototype(updateItemPrototypeCommand);
+  }
+
+  @Override
+  public void handle(UpdateItemCommand updateItemCommand) {
+    itemService.updateItem(updateItemCommand);
   }
 
   @Subscribe

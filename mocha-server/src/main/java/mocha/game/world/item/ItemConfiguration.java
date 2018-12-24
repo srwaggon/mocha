@@ -30,7 +30,12 @@ public class ItemConfiguration {
   }
 
   @Bean
-  public ItemService itemService(Repository<Item, Integer> itemRepository, ItemPrototypeService itemPrototypeService) {
-    return new ItemService(itemRepository, itemPrototypeService);
+  public ItemFactory itemFactory(ItemPrototypeService itemPrototypeService) {
+    return new ItemFactory(itemPrototypeService);
+  }
+
+  @Bean
+  public ItemService itemService(Repository<Item, Integer> itemRepository, ItemFactory itemFactory) {
+    return new ItemService(itemRepository, itemFactory);
   }
 }

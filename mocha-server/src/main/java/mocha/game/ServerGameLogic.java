@@ -33,6 +33,8 @@ import mocha.game.world.entity.movement.event.EntityMovementEvent;
 import mocha.game.world.item.Item;
 import mocha.game.world.item.ItemPrototype;
 import mocha.game.world.item.ItemPrototypeService;
+import mocha.game.world.item.ItemService;
+import mocha.game.world.item.command.UpdateItemCommand;
 import mocha.game.world.item.command.UpdateItemPrototypeCommand;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
@@ -59,6 +61,7 @@ public class ServerGameLogic implements GameLogic {
   private PlayerService playerService;
   private Repository<Item, Integer> itemRepository;
   private Repository<ItemPrototype, Integer> itemPrototypeRepository;
+  private ItemService itemService;
   private ItemPrototypeService itemPrototypeService;
 
   @Inject
@@ -75,7 +78,7 @@ public class ServerGameLogic implements GameLogic {
       PlayerService playerService,
       Repository<Item, Integer> itemRepository,
       Repository<ItemPrototype, Integer> itemPrototypeRepository,
-      ItemPrototypeService itemPrototypeService) {
+      ItemService itemService, ItemPrototypeService itemPrototypeService) {
     this.eventBus = eventBus;
     this.playerIdFactory = playerIdFactory;
     this.playerFactory = playerFactory;
@@ -88,6 +91,7 @@ public class ServerGameLogic implements GameLogic {
     this.playerService = playerService;
     this.itemRepository = itemRepository;
     this.itemPrototypeRepository = itemPrototypeRepository;
+    this.itemService = itemService;
     this.itemPrototypeService = itemPrototypeService;
   }
 
@@ -98,7 +102,7 @@ public class ServerGameLogic implements GameLogic {
     MochaConnection playerConnection = connectedEvent.getMochaConnection();
 
     int playerId = playerIdFactory.newId();
-    Entity playerEntity = entityService.addEntity(new Entity(entityIdFactory.newId()));
+    Entity playerEntity = entityService.save(new Entity(entityIdFactory.newId()));
     movementRepository.save(movementFactory.newSlidingMovement(playerEntity));
     NetworkPlayer player = playerFactory.newNetworkPlayer(playerConnection, playerId, playerEntity);
     mochaConnectionsByPlayerId.put(playerId, playerConnection);
@@ -198,6 +202,12 @@ public class ServerGameLogic implements GameLogic {
   public void handle(UpdateItemPrototypeCommand updateItemPrototypeCommand) {
     ItemPrototype update = itemPrototypeService.updateItemPrototype(updateItemPrototypeCommand);
     getConnections().forEach(mochaConnection -> mochaConnection.sendItemPrototypeUpdate(update));
+  }
+
+  @Override
+  public void handle(UpdateItemCommand updateItemCommand) {
+    Item update = itemService.updateItem(updateItemCommand);
+    getConnections().forEach(mochaConnection -> mochaConnection.sendItemUpdate(update));
   }
 
 }

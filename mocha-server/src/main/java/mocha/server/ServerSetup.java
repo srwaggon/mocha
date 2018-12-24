@@ -51,11 +51,11 @@ public class ServerSetup implements CommandLineRunner {
     ItemPrototype itemPrototype = new ItemPrototype(1, "Pickaxe", "/mocha/gfx/items/pickaxe0.png::0", ItemType.TOOL, "cool");
     ItemPrototype pickaxe = itemPrototypeRepository.save(itemPrototype);
     Item serverPickaxe = new Item(1, pickaxe, 0, 0, 0);
-    itemService.addItem(serverPickaxe);
+    itemService.save(serverPickaxe);
 
     Location itemLocation = new Location(128, 128);
     ItemEntity pickaxeEntity = new ItemEntity(entityIdFactory.newId(), itemLocation, serverPickaxe);
-    entityService.addEntity(pickaxeEntity);
+    entityService.save(pickaxeEntity);
   }
 
   private void createChunks() {

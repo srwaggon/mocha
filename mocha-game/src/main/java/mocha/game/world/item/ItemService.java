@@ -1,29 +1,38 @@
 package mocha.game.world.item;
 
+import mocha.game.world.item.command.UpdateItemCommand;
 import mocha.shared.Repository;
 
 public class ItemService {
 
   private Repository<Item, Integer> itemRepository;
-  private ItemPrototypeService itemPrototypeService;
+  private ItemFactory itemFactory;
 
-  public ItemService(
+  ItemService(
       Repository<Item, Integer> itemRepository,
-      ItemPrototypeService itemPrototypeService
+      ItemFactory itemFactory
   ) {
     this.itemRepository = itemRepository;
-    this.itemPrototypeService = itemPrototypeService;
+    this.itemFactory = itemFactory;
   }
 
-  public void addItem(Item item) {
+  public void save(Item item) {
     itemRepository.save(item);
   }
 
   public Item findById(int id) {
-    return itemRepository.findById(id).orElse(defaultItem(id));
+    return itemRepository.findById(id)
+        .orElse(itemFactory.newDefaultItem(id));
   }
 
-  private Item defaultItem(int id) {
-    return new Item(id, itemPrototypeService.findById(0), 0, 0, 0);
+  public Item updateItem(UpdateItemCommand updateItemCommand) {
+    Item item = itemRepository.findById(updateItemCommand.getId())
+        .orElse(itemFactory.newItemFromUpdate(updateItemCommand));
+    item.setItemPrototype(updateItemCommand.getItemPrototype());
+    item.setData0(updateItemCommand.getData0());
+    item.setData1(updateItemCommand.getData1());
+    item.setData2(updateItemCommand.getData2());
+    return itemRepository.save(item);
   }
+
 }

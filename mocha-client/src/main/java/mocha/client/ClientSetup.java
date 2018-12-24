@@ -50,7 +50,7 @@ public class ClientSetup implements CommandLineRunner {
       LocalPlayer player = new LocalPlayer(playerEntity);
 
       playerService.addPlayer(player);
-      Entity entity = entityService.addEntity(playerEntity);
+      Entity entity = entityService.save(playerEntity);
 
       movementRepository.save(movementFactory.newSlidingMovement(entity));
     }

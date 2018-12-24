@@ -9,11 +9,6 @@ import mocha.shared.Repository;
 public class ItemConfiguration {
 
   @Bean
-  public ItemService itemService(Repository<Item, Integer> itemRepository, ItemPrototypeService itemPrototypeService) {
-    return new ItemService(itemRepository, itemPrototypeService);
-  }
-
-  @Bean
   public ItemPrototypeFactory itemPrototypeFactory() {
     return new ItemPrototypeFactory();
   }
@@ -21,5 +16,15 @@ public class ItemConfiguration {
   @Bean
   public ItemPrototypeService itemPrototypeService(Repository<ItemPrototype, Integer> itemPrototypeRepository, ItemPrototypeFactory itemPrototypeFactory) {
     return new ItemPrototypeService(itemPrototypeRepository, itemPrototypeFactory);
+  }
+
+  @Bean
+  public ItemFactory itemFactory(ItemPrototypeService itemPrototypeService) {
+    return new ItemFactory(itemPrototypeService);
+  }
+
+  @Bean
+  public ItemService itemService(Repository<Item, Integer> itemRepository, ItemFactory itemFactory) {
+    return new ItemService(itemRepository, itemFactory);
   }
 }

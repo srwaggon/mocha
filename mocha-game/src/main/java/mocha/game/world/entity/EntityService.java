@@ -28,7 +28,7 @@ public class EntityService {
     this.movementRepository = movementRepository;
   }
 
-  public Entity addEntity(Entity entity) {
+  public Entity save(Entity entity) {
     Entity result = entityRepository.save(entity);
     addEntityToChunk(result);
     eventBus.postEntityAddedEvent(result);
