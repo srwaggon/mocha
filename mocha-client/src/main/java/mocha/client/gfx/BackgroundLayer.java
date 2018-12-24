@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import mocha.client.gfx.sprite.Sprite;
 import mocha.client.gfx.sprite.SpriteSheet;
@@ -42,10 +43,14 @@ public class BackgroundLayer {
   }
 
   public void render(long now, GraphicsContext graphics) {
-    drawChunk(graphics, camera.topLeft());
-    drawChunk(graphics, camera.topRight());
-    drawChunk(graphics, camera.bottomLeft());
-    drawChunk(graphics, camera.bottomRight());
+    Rectangle2D bounds = camera.getBounds();
+    int chunkHeight = Chunk.getHeight();
+    int chunkWidth = Chunk.getWidth();
+    for (double y = bounds.getMinY(); y < bounds.getMaxY() + chunkHeight; y += chunkHeight) {
+      for (double x = bounds.getMinX(); x < bounds.getMaxX() + chunkWidth; x += chunkWidth) {
+        drawChunk(graphics, new Location(x, y));
+      }
+    }
   }
 
 

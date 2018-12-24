@@ -11,7 +11,6 @@ import mocha.game.world.Location;
 @Component
 public class Camera {
 
-  private Location location = new Location(0, 0);
   private PlayerService playerService;
 
   @Inject
@@ -36,31 +35,11 @@ public class Camera {
   }
 
   private int getWidth() {
-    return 1024;
+    return 512;
   }
 
   private int getHeight() {
-    return 768;
-  }
-
-  public Location bottomRight() {
-    Rectangle2D bounds = getBounds();
-    return new Location(bounds.getMaxX(), bounds.getMaxY());
-  }
-
-  public Location bottomLeft() {
-    Rectangle2D bounds = getBounds();
-    return new Location(bounds.getMinX(), bounds.getMaxY());
-  }
-
-  public Location topRight() {
-    Rectangle2D bounds = getBounds();
-    return new Location(bounds.getMaxX(), bounds.getMinY());
-  }
-
-  public Location topLeft() {
-    Rectangle2D bounds = getBounds();
-    return new Location(bounds.getMinX(), bounds.getMinY());
+    return 384;
   }
 
 }

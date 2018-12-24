@@ -45,8 +45,10 @@ public class SpriteLayer {
 
   public void render(long now, GraphicsContext graphics) {
     Rectangle2D bounds = camera.getBounds();
-    for (double y = bounds.getMinY(); y < bounds.getMaxY(); y += Chunk.getHeight() - 1) {
-      for (double x = bounds.getMinX(); x < bounds.getMaxX(); x += Chunk.getWidth() - 1) {
+    int chunkHeight = Chunk.getHeight();
+    int chunkWidth = Chunk.getWidth();
+    for (double y = bounds.getMinY(); y < bounds.getMaxY() + chunkHeight; y += chunkHeight) {
+      for (double x = bounds.getMinX(); x < bounds.getMaxX() + chunkWidth; x += chunkWidth) {
         renderEntitiesInChunkAt(now, graphics, new Location(x, y));
       }
     }
