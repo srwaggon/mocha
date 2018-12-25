@@ -19,6 +19,24 @@ public class EntityPrototype implements Identified<Integer> {
   }
 
   public EntityPrototype(
+      EntityType entityType,
+      int typeId,
+      boolean isBlocking,
+      Item leftHand,
+      Item rightHand,
+      String spriteId,
+      double scale
+  ) {
+    this.entityType = entityType;
+    this.typeId = typeId;
+    this.isBlocking = isBlocking;
+    this.leftHand = leftHand;
+    this.rightHand = rightHand;
+    this.spriteId = spriteId;
+    this.scale = scale;
+  }
+
+  public EntityPrototype(
       Integer id,
       EntityType entityType,
       int typeId,

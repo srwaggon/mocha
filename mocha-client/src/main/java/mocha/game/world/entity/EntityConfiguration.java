@@ -32,18 +32,23 @@ public class EntityConfiguration {
   }
 
   @Bean
-  public EntityPrototypeService entityPrototypeService(Repository<EntityPrototype, Integer> entityPrototypeRepository) {
-    return new EntityPrototypeService(entityPrototypeRepository);
+  public IdFactory<EntityPrototype> entityPrototypeIdFactory(Repository<EntityPrototype, Integer> entityPrototypeRepository) {
+    return new IdFactory<>(entityPrototypeRepository);
   }
 
   @Bean
-  public IdFactory<Entity> entityIdFactory(Repository<Entity, Integer> repository) {
-    return new IdFactory<>(repository);
+  public EntityPrototypeService entityPrototypeService(EntityPrototypeFactory entityPrototypeFactory, Repository<EntityPrototype, Integer> entityPrototypeRepository, IdFactory<EntityPrototype> entityPrototypeIdFactory) {
+    return new EntityPrototypeService(entityPrototypeFactory, entityPrototypeRepository, entityPrototypeIdFactory);
   }
 
   @Bean
   public Repository<Entity, Integer> entityRepository() {
     return new InMemoryRepository<>();
+  }
+
+  @Bean
+  public IdFactory<Entity> entityIdFactory(Repository<Entity, Integer> repository) {
+    return new IdFactory<>(repository);
   }
 
   @Bean

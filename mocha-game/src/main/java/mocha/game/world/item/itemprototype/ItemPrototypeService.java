@@ -27,6 +27,10 @@ public class ItemPrototypeService {
     itemPrototype.setDescription(updateItemPrototypeCommand.getDescription());
     itemPrototype.setItemType(updateItemPrototypeCommand.getItemType());
     itemPrototype.setName(updateItemPrototypeCommand.getName());
+    return save(itemPrototype);
+  }
+
+  public ItemPrototype save(ItemPrototype itemPrototype) {
     return itemPrototypeRepository.save(itemPrototype);
   }
 

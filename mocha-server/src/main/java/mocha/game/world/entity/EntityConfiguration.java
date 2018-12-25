@@ -29,8 +29,13 @@ public class EntityConfiguration {
   }
 
   @Bean
-  public EntityPrototypeService entityPrototypeService(Repository<EntityPrototype, Integer> entityPrototypeRepository) {
-    return new EntityPrototypeService(entityPrototypeRepository);
+  public IdFactory<EntityPrototype> entityPrototypeIdFactory(Repository<EntityPrototype, Integer> entityPrototypeRepository) {
+    return new IdFactory<>(entityPrototypeRepository);
+  }
+
+  @Bean
+  public EntityPrototypeService entityPrototypeService(EntityPrototypeFactory entityPrototypeFactory, Repository<EntityPrototype, Integer> entityPrototypeRepository, IdFactory<EntityPrototype> entityPrototypeIdFactory) {
+    return new EntityPrototypeService(entityPrototypeFactory, entityPrototypeRepository, entityPrototypeIdFactory);
   }
 
   @Bean
@@ -39,13 +44,13 @@ public class EntityConfiguration {
   }
 
   @Bean
-  public IdFactory<Entity> entityIdFactory(Repository<Entity, Integer> entityRepository) {
-    return new IdFactory<>(entityRepository);
+  public Repository<Entity, Integer> entityRepository(ServerEntityToEntityAdapterRepository entityRepository) {
+    return new CachingRepository<>(entityRepository);
   }
 
   @Bean
-  public Repository<Entity, Integer> entityRepository(ServerEntityToEntityAdapterRepository entityRepository) {
-    return new CachingRepository<>(entityRepository);
+  public IdFactory<Entity> entityIdFactory(Repository<Entity, Integer> entityRepository) {
+    return new IdFactory<>(entityRepository);
   }
 
   @Bean

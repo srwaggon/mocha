@@ -15,10 +15,6 @@ public class ItemService {
     this.itemFactory = itemFactory;
   }
 
-  public void save(Item item) {
-    itemRepository.save(item);
-  }
-
   public Item findById(int id) {
     return itemRepository.findById(id)
         .orElse(itemFactory.newDefaultItem(id));
@@ -31,6 +27,10 @@ public class ItemService {
     item.setData0(updateItemCommand.getData0());
     item.setData1(updateItemCommand.getData1());
     item.setData2(updateItemCommand.getData2());
+    return save(item);
+  }
+
+  public Item save(Item item) {
     return itemRepository.save(item);
   }
 

@@ -10,6 +10,12 @@ Mocha is currently a tile based game template, with simple hitbox collision.
 ## Stories / Epics
 These represent units of work **to be done.**
 
+### Items
+- [ ] Chain item prototypes together
+
+### Entities
+- [ ] Chain entity prototypes together
+
 ### Inventory
 - [x] Pickaxe sprite.
 - [x] Pickaxes exist in the world.
