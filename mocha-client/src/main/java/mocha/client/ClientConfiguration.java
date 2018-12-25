@@ -82,16 +82,6 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public IdFactory<Entity> entityIdFactory(Repository<Entity, Integer> repository) {
-    return new IdFactory<>(repository);
-  }
-
-  @Bean
-  public Repository<Entity, Integer> entityRepository() {
-    return new InMemoryRepository<>();
-  }
-
-  @Bean
   public Repository<Player, Integer> playerRepository() {
     return new InMemoryRepository<>();
   }
@@ -109,11 +99,6 @@ public class ClientConfiguration {
   @Bean
   public IdFactory<Player> playerIdFactory(Repository<Player, Integer> playerRepository) {
     return new IdFactory<>(playerRepository);
-  }
-
-  @Bean
-  public EntityService entityService(Repository<Entity, Integer> entityRepository, EntitiesInChunkService entitiesInChunkService, ChunkService chunkService, Repository<Movement, Integer> movementRepository) {
-    return new EntityService(clientEventBus, entityRepository, entitiesInChunkService, chunkService, movementRepository);
   }
 
   @Bean

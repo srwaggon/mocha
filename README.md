@@ -15,13 +15,12 @@ These represent units of work **to be done.**
 - [x] Pickaxes exist in the world.
 - [x] Items disappear from the world when picked up.
 - [x] A network player can send a command to pickup an item.
-- [ ] Swords exist in the world.
+- [x] Swords exist in the world.
 - [ ] Swords / Pickaxes can be dropped by the player and appear in the world when dropped.
 - [ ] A player can open their inventory and view its contents.
 
 ### World
 - [ ] Tiles can hold things?
-- [ ] Tiles have inventory instead of items.
 - [ ] Bushes exist in the world.
 - [ ] Bushes disappear when struck by a sword.
 - [ ] Stones disappear when struck by a pickaxe.
@@ -33,7 +32,7 @@ These represent units of work **to be done.**
 
 ### Graphics
 - [x] Tile graphics connect across chunks.
-- [ ] Graphics are layered (background, mask, foreground, sprites, particles, UI)
+- [x] Graphics are layered (background, mask, foreground, sprites, particles, UI)
 - [x] Spike: Can I handle click events directly on graphical components?: Yes.
 - [x] Spike: Can I draw directly on the canvas instead of using a writable image? Yes, but it's more performant to use many canvases.
 
