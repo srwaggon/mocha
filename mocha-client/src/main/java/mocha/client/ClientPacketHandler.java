@@ -13,9 +13,9 @@ import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
 import mocha.game.GameLogic;
-import mocha.game.LocalPlayer;
 import mocha.game.LoginSuccessPacket;
 import mocha.game.PlayerIdentityPacket;
+import mocha.game.player.LocalPlayer;
 import mocha.game.player.Player;
 import mocha.game.player.PlayerService;
 import mocha.game.world.Location;

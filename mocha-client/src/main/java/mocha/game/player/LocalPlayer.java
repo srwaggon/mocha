@@ -1,6 +1,5 @@
-package mocha.game;
+package mocha.game.player;
 
-import mocha.game.player.Player;
 import mocha.game.world.entity.Entity;
 
 public class LocalPlayer implements Player {

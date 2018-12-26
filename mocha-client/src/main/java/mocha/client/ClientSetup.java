@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.LocalPlayer;
+import mocha.game.player.LocalPlayer;
 import mocha.game.player.PlayerService;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
