@@ -66,6 +66,7 @@ public class ServerSetup implements CommandLineRunner {
   private void createEntities() {
     EntityPrototype slime = new EntityPrototype(
         1,
+        1,
         EntityType.MOB,
         1,
         true,

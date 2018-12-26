@@ -5,6 +5,7 @@ import mocha.game.world.entity.EntityType;
 public class EntityPrototypeFactory {
   public EntityPrototype newDefaultEntityPrototype() {
     return new EntityPrototype(
+        0,
         EntityType.MOB,
         0,
         true,

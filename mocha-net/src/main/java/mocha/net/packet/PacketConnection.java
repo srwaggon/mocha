@@ -7,11 +7,15 @@ import mocha.net.exception.DisconnectedException;
 
 public class PacketConnection extends Connection {
 
-  public PacketConnection(Socket socket) {
+  PacketConnection(Socket socket) {
     super(socket);
   }
 
-  public void sendPacket(Packet packet) {
+  void sendPacket(Packet packet) {
+    send(packet);
+  }
+
+  void send(Packet packet) {
     send(packet.construct());
   }
 
@@ -19,7 +23,7 @@ public class PacketConnection extends Connection {
     return hasLine();
   }
 
-  public Packet readPacket() throws DisconnectedException {
+  Packet readPacket() throws DisconnectedException {
     return PacketType.resolve(new UnknownPacket(readLine()));
   }
 }

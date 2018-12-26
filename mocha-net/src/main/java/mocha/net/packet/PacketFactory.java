@@ -17,6 +17,8 @@ import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
+import mocha.game.world.entity.prototype.EntityPrototype;
+import mocha.game.world.entity.prototype.EntityPrototypeUpdatePacket;
 import mocha.game.world.item.Item;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
@@ -36,6 +38,7 @@ public class PacketFactory {
   }
 
   public ChunkUpdatePacket newChunkPacket(Chunk chunk) {
+    // todo: Just pass a chunk?
     int chunkId = chunk.getId();
     Location location = chunk.getLocation();
     int x = location.getX();
@@ -91,5 +94,9 @@ public class PacketFactory {
 
   public PickUpItemPacket newPickUpItemPacket(Entity entity) {
     return new PickUpItemPacket(entity.getId());
+  }
+
+  public EntityPrototypeUpdatePacket newEntityPrototypeUpdatePacket(EntityPrototype entityPrototype) {
+    return new EntityPrototypeUpdatePacket(entityPrototype);
   }
 }

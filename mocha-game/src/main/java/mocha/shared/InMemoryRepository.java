@@ -13,7 +13,7 @@ public class InMemoryRepository<T extends Identified<Integer>> implements Reposi
   private Map<Integer, T> members = Maps.newConcurrentMap();
 
   public InMemoryRepository() {
-    this.idFactory = new IdFactory<T>(this);
+    this.idFactory = new IdFactory<>(this);
   }
 
   @Override

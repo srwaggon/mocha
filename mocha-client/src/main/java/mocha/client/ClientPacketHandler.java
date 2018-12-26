@@ -32,6 +32,8 @@ import mocha.game.world.entity.EntityUpdatePacket;
 import mocha.game.world.entity.ItemEntity;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
+import mocha.game.world.entity.prototype.EntityPrototypeUpdatePacket;
+import mocha.game.world.entity.prototype.UpdateEntityPrototypeCommand;
 import mocha.game.world.item.Item;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
@@ -136,6 +138,11 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
           chunk.setTile(tileUpdatePacket.getTileX(), tileUpdatePacket.getTileY(), tileUpdatePacket.getTileType());
           chunkRepository.save(chunk);
         });
+  }
+
+  @Subscribe
+  public void handle(EntityPrototypeUpdatePacket entityPrototypeUpdatePacket) {
+    gameLogic.handle(new UpdateEntityPrototypeCommand(entityPrototypeUpdatePacket.getEntityPrototype()));
   }
 
   @Subscribe

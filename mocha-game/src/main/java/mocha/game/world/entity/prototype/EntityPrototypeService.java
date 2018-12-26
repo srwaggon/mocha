@@ -1,5 +1,6 @@
 package mocha.game.world.entity.prototype;
 
+import java.util.List;
 import java.util.Optional;
 
 import mocha.shared.IdFactory;
@@ -21,6 +22,15 @@ public class EntityPrototypeService {
     this.entityPrototypeIdFactory = entityPrototypeIdFactory;
   }
 
+  public List<EntityPrototype> findAll() {
+    return entityPrototypeRepository.findAll();
+  }
+
+  private EntityPrototype findById(Integer id) {
+    return entityPrototypeRepository.findById(id)
+        .orElse(entityPrototypeFactory.newDefaultEntityPrototype());
+  }
+
   public EntityPrototype save(EntityPrototype entityPrototype) {
     ensureId(entityPrototype);
     return entityPrototypeRepository.save(entityPrototype);
@@ -30,10 +40,5 @@ public class EntityPrototypeService {
     Integer entityPrototypeId = Optional.ofNullable(entityPrototype.getId())
         .orElse(entityPrototypeIdFactory.newId());
     entityPrototype.setId(entityPrototypeId);
-  }
-
-  private EntityPrototype findById(Integer id) {
-    return entityPrototypeRepository.findById(id)
-        .orElse(entityPrototypeFactory.newDefaultEntityPrototype());
   }
 }

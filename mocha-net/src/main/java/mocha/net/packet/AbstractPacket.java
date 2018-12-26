@@ -26,6 +26,14 @@ public abstract class AbstractPacket implements Packet {
     addToData("" + i);
   }
 
+  protected void addToData(double d) {
+    addToData("" + d);
+  }
+
+  protected void addToData(boolean b) {
+    addToData("" + b);
+  }
+
   public String construct() {
     return String.join(PacketType.SEPARATOR, getSplitData());
   }
@@ -54,6 +62,14 @@ public abstract class AbstractPacket implements Packet {
 
   protected int getDataAsInt(int index) {
     return Integer.parseInt(getData(index));
+  }
+
+  protected boolean getDataAsBoolean(int index) {
+    return Boolean.parseBoolean(getData(index));
+  }
+
+  protected double getDataAsDouble(int index) {
+    return Double.parseDouble(getData(index));
   }
 
   @Override

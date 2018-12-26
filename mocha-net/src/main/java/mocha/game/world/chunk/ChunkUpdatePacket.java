@@ -8,6 +8,8 @@ public class ChunkUpdatePacket extends AbstractPacket {
   public ChunkUpdatePacket() {
   }
 
+  // todo: new constructor that takes a chunk
+
   public ChunkUpdatePacket(int chunkId, int x, int y, String tileData) {
     addToData(chunkId);
     addToData(x);

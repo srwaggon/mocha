@@ -15,6 +15,8 @@ import mocha.game.world.entity.event.EntityUpdatedEvent;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
+import mocha.game.world.entity.prototype.EntityPrototypeService;
+import mocha.game.world.entity.prototype.UpdateEntityPrototypeCommand;
 import mocha.game.world.item.ItemService;
 import mocha.game.world.item.UpdateItemCommand;
 import mocha.game.world.item.itemprototype.ItemPrototypeService;
@@ -41,6 +43,7 @@ public class NetworkClientGameLogic implements GameLogic {
   private Repository<Movement, Integer> movementRepository;
   private MochaConnection mochaConnection;
   private PacketFactory packetFactory;
+  private EntityPrototypeService entityPrototypeService;
   private EntityService entityService;
   private ItemPrototypeService itemPrototypeService;
   private ItemService itemService;
@@ -54,6 +57,7 @@ public class NetworkClientGameLogic implements GameLogic {
       MovementFactory movementFactory,
       Repository<Movement, Integer> movementRepository,
       PacketFactory packetFactory,
+      EntityPrototypeService entityPrototypeService,
       EntityService entityService,
       ItemPrototypeService itemPrototypeService,
       ItemService itemService) {
@@ -65,6 +69,7 @@ public class NetworkClientGameLogic implements GameLogic {
     this.movementFactory = movementFactory;
     this.movementRepository = movementRepository;
     this.packetFactory = packetFactory;
+    this.entityPrototypeService = entityPrototypeService;
     this.entityService = entityService;
     this.itemPrototypeService = itemPrototypeService;
     this.itemService = itemService;
@@ -135,6 +140,11 @@ public class NetworkClientGameLogic implements GameLogic {
   @Override
   public void handle(UpdateItemCommand updateItemCommand) {
     itemService.updateItem(updateItemCommand);
+  }
+
+  @Override
+  public void handle(UpdateEntityPrototypeCommand updateEntityPrototypeCommand) {
+    entityPrototypeService.save(updateEntityPrototypeCommand.getEntityPrototype());
   }
 
   @Subscribe

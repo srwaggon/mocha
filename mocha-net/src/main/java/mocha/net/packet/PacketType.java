@@ -12,6 +12,7 @@ import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
 import mocha.game.world.entity.RequestEntitiesInChunkPacket;
 import mocha.game.world.entity.RequestEntityByIdPacket;
 import mocha.game.world.entity.movement.MovePacket;
+import mocha.game.world.entity.prototype.EntityPrototypeUpdatePacket;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
 import mocha.game.world.item.PickUpItemPacket;
@@ -33,6 +34,7 @@ public enum PacketType {
   REQUEST_ENTITIES_BY_PLAYER_ID(RequestEntitiesByPlayerIdPacket.class),
   REQUEST_ENTITIES_IN_CHUNK(RequestEntitiesInChunkPacket.class),
 
+  ENTITY_PROTOTYPE_UPDATE(EntityPrototypeUpdatePacket.class),
   ENTITY_UPDATE(EntityUpdatePacket.class),
   ENTITY_REMOVED(EntityRemovedPacket.class),
   MOVE(MovePacket.class),

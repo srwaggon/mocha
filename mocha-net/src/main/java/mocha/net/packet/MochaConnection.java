@@ -6,6 +6,7 @@ import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
+import mocha.game.world.entity.prototype.EntityPrototype;
 import mocha.game.world.item.Item;
 import mocha.game.world.item.itemprototype.ItemPrototype;
 
@@ -13,7 +14,10 @@ public class MochaConnection extends PacketConnection {
 
   private PacketFactory packetFactory;
 
-  public MochaConnection(Socket socket, PacketFactory packetFactory) {
+  public MochaConnection(
+      Socket socket,
+      PacketFactory packetFactory
+  ) {
     super(socket);
     this.packetFactory = packetFactory;
   }
@@ -44,6 +48,10 @@ public class MochaConnection extends PacketConnection {
 
   public void sendTileUpdate(Chunk chunk, int x, int y) {
     sendPacket(packetFactory.newTileUpdatePacket(chunk, x, y));
+  }
+
+  public void sendEntityPrototypeUpdate(EntityPrototype entityPrototype) {
+    sendPacket(packetFactory.newEntityPrototypeUpdatePacket(entityPrototype));
   }
 
   public void sendEntityUpdate(Entity entity) {

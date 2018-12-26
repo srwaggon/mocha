@@ -7,6 +7,7 @@ import mocha.shared.Identified;
 public class EntityPrototype implements Identified<Integer> {
 
   private Integer id;
+  private Integer baseEntityPrototypeId;
   private EntityType entityType = EntityType.MOB;
   private int typeId;
   private boolean isBlocking = true;
@@ -19,6 +20,7 @@ public class EntityPrototype implements Identified<Integer> {
   }
 
   public EntityPrototype(
+      Integer baseEntityPrototypeId,
       EntityType entityType,
       int typeId,
       boolean isBlocking,
@@ -27,6 +29,7 @@ public class EntityPrototype implements Identified<Integer> {
       String spriteId,
       double scale
   ) {
+    this.baseEntityPrototypeId = baseEntityPrototypeId;
     this.entityType = entityType;
     this.typeId = typeId;
     this.isBlocking = isBlocking;
@@ -38,6 +41,7 @@ public class EntityPrototype implements Identified<Integer> {
 
   public EntityPrototype(
       Integer id,
+      Integer baseEntityPrototypeId,
       EntityType entityType,
       int typeId,
       boolean isBlocking,
@@ -47,6 +51,7 @@ public class EntityPrototype implements Identified<Integer> {
       double scale
   ) {
     this.id = id;
+    this.baseEntityPrototypeId = baseEntityPrototypeId;
     this.entityType = entityType;
     this.typeId = typeId;
     this.isBlocking = isBlocking;
@@ -64,5 +69,69 @@ public class EntityPrototype implements Identified<Integer> {
   @Override
   public void setId(Integer id) {
     this.id = id;
+  }
+
+  public Integer getBaseEntityPrototypeId() {
+    return baseEntityPrototypeId;
+  }
+
+  public void setBaseEntityPrototypeId(Integer baseEntityPrototypeId) {
+    this.baseEntityPrototypeId = baseEntityPrototypeId;
+  }
+
+  public EntityType getEntityType() {
+    return entityType;
+  }
+
+  public void setEntityType(EntityType entityType) {
+    this.entityType = entityType;
+  }
+
+  public int getTypeId() {
+    return typeId;
+  }
+
+  public void setTypeId(int typeId) {
+    this.typeId = typeId;
+  }
+
+  public boolean isBlocking() {
+    return isBlocking;
+  }
+
+  public void setBlocking(boolean blocking) {
+    isBlocking = blocking;
+  }
+
+  public Item getLeftHand() {
+    return leftHand;
+  }
+
+  public void setLeftHand(Item leftHand) {
+    this.leftHand = leftHand;
+  }
+
+  public Item getRightHand() {
+    return rightHand;
+  }
+
+  public void setRightHand(Item rightHand) {
+    this.rightHand = rightHand;
+  }
+
+  public String getSpriteId() {
+    return spriteId;
+  }
+
+  public void setSpriteId(String spriteId) {
+    this.spriteId = spriteId;
+  }
+
+  public double getScale() {
+    return scale;
+  }
+
+  public void setScale(double scale) {
+    this.scale = scale;
   }
 }

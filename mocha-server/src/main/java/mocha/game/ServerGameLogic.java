@@ -30,6 +30,8 @@ import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
+import mocha.game.world.entity.prototype.EntityPrototypeService;
+import mocha.game.world.entity.prototype.UpdateEntityPrototypeCommand;
 import mocha.game.world.item.Item;
 import mocha.game.world.item.ItemService;
 import mocha.game.world.item.UpdateItemCommand;
@@ -63,6 +65,7 @@ public class ServerGameLogic implements GameLogic {
   private Repository<ItemPrototype, Integer> itemPrototypeRepository;
   private ItemService itemService;
   private ItemPrototypeService itemPrototypeService;
+  private EntityPrototypeService entityPrototypeService;
 
   @Inject
   public ServerGameLogic(
@@ -78,7 +81,10 @@ public class ServerGameLogic implements GameLogic {
       PlayerService playerService,
       Repository<Item, Integer> itemRepository,
       Repository<ItemPrototype, Integer> itemPrototypeRepository,
-      ItemService itemService, ItemPrototypeService itemPrototypeService) {
+      ItemService itemService,
+      ItemPrototypeService itemPrototypeService,
+      EntityPrototypeService entityPrototypeService
+  ) {
     this.eventBus = eventBus;
     this.playerIdFactory = playerIdFactory;
     this.playerFactory = playerFactory;
@@ -93,32 +99,56 @@ public class ServerGameLogic implements GameLogic {
     this.itemPrototypeRepository = itemPrototypeRepository;
     this.itemService = itemService;
     this.itemPrototypeService = itemPrototypeService;
+    this.entityPrototypeService = entityPrototypeService;
   }
 
   @Subscribe
   public void handle(ConnectedEvent connectedEvent) {
     log.info(connectedEvent.toString());
-
     MochaConnection playerConnection = connectedEvent.getMochaConnection();
-
     int playerId = playerIdFactory.newId();
+    NetworkPlayer player = addPlayer(playerConnection, playerId);
+    sendEntityPrototypes(playerConnection);
+    sendItemPrototypes(playerConnection);
+    sendItems(playerConnection);
+    sendChunk(playerConnection, player);
+    sendLoginSuccess(playerConnection, playerId);
+  }
+
+  private NetworkPlayer addPlayer(MochaConnection playerConnection, int playerId) {
     Entity playerEntity = entityService.save(new Entity(entityIdFactory.newId()));
     movementRepository.save(movementFactory.newSlidingMovement(playerEntity));
+
     NetworkPlayer player = playerFactory.newNetworkPlayer(playerConnection, playerId, playerEntity);
     mochaConnectionsByPlayerId.put(playerId, playerConnection);
     playerService.addPlayer(player);
+    return player;
+  }
 
-    itemPrototypeRepository.findAll()
-        .forEach(playerConnection::sendItemPrototypeUpdate);
-    itemRepository.findAll()
-        .forEach(playerConnection::sendItemUpdate);
+  private void sendEntityPrototypes(MochaConnection playerConnection) {
+    entityPrototypeService.findAll().forEach(playerConnection::sendEntityPrototypeUpdate);
+  }
 
+  private void sendItemPrototypes(MochaConnection playerConnection) {
+    itemPrototypeRepository.findAll().forEach(playerConnection::sendItemPrototypeUpdate);
+  }
 
+  private void sendItems(MochaConnection playerConnection) {
+    itemRepository.findAll().forEach(playerConnection::sendItemUpdate);
+  }
+
+  private void sendChunk(MochaConnection playerConnection, NetworkPlayer player) {
     Chunk playerChunk = getPlayerChunk(player);
     playerConnection.sendChunkUpdate(playerChunk);
-    entitiesInChunkService.getEntitiesInChunk(playerChunk)
-        .forEach(playerConnection::sendEntityUpdate);
+    sendEntitiesInChunk(playerConnection, playerChunk);
+  }
 
+  private void sendEntitiesInChunk(MochaConnection playerConnection, Chunk chunk) {
+    entitiesInChunkService.getEntitiesInChunk(chunk)
+        .forEach(playerConnection::sendEntityUpdate);
+  }
+
+  private void sendLoginSuccess(MochaConnection playerConnection, int playerId) {
     playerConnection.sendLoginSuccessful(playerId);
   }
 
@@ -208,6 +238,11 @@ public class ServerGameLogic implements GameLogic {
   public void handle(UpdateItemCommand updateItemCommand) {
     Item update = itemService.updateItem(updateItemCommand);
     getConnections().forEach(mochaConnection -> mochaConnection.sendItemUpdate(update));
+  }
+
+  @Override
+  public void handle(UpdateEntityPrototypeCommand updateEntityPrototypeCommand) {
+    entityPrototypeService.save(updateEntityPrototypeCommand.getEntityPrototype());
   }
 
 }
