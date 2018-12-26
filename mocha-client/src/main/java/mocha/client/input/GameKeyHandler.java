@@ -19,9 +19,9 @@ import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
+import mocha.game.world.item.PickUpItemPacket;
 import mocha.game.world.item.itemprototype.ItemPrototype;
 import mocha.game.world.item.itemprototype.ItemPrototypeService;
-import mocha.net.packet.PacketFactory;
 import mocha.shared.Repository;
 
 @Component
@@ -30,7 +30,6 @@ public class GameKeyHandler {
   private Repository<Player, Integer> playerRepository;
   private Repository<Entity, Integer> entityRepository;
   private ClientEventBus eventBus;
-  private PacketFactory packetFactory;
   private GameLogic gameLogic;
   private SpriteService spriteService;
   private ItemPrototypeService itemPrototypeService;
@@ -40,7 +39,6 @@ public class GameKeyHandler {
       Repository<Player, Integer> playerRepository,
       Repository<Entity, Integer> entityRepository,
       ClientEventBus eventBus,
-      PacketFactory packetFactory,
       GameLogic gameLogic,
       SpriteService spriteService,
       ItemPrototypeService itemPrototypeService
@@ -48,7 +46,6 @@ public class GameKeyHandler {
     this.playerRepository = playerRepository;
     this.entityRepository = entityRepository;
     this.eventBus = eventBus;
-    this.packetFactory = packetFactory;
     this.gameLogic = gameLogic;
     this.spriteService = spriteService;
     this.itemPrototypeService = itemPrototypeService;
@@ -117,8 +114,7 @@ public class GameKeyHandler {
     if (!gameKeyEvent.getGameKey().equals(GameKey.ACTION2)) {
       return;
     }
-    findPlayerEntity().ifPresent(entity ->
-        eventBus.postSendPacketEvent(packetFactory.newPickUpItemPacket(entity)));
+    findPlayerEntity().ifPresent(entity -> eventBus.postSendPacketEvent(new PickUpItemPacket(entity.getId())));
   }
 
   private Optional<Entity> findPlayerEntity() {

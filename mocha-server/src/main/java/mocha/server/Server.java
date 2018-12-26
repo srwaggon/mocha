@@ -13,7 +13,6 @@ import javax.inject.Inject;
 
 import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.MochaConnection;
-import mocha.net.packet.PacketFactory;
 import mocha.shared.task.SleepyRunnable;
 
 @Component
@@ -25,9 +24,6 @@ public class Server implements SleepyRunnable {
 
   @Inject
   private NetworkedMochaEventBus eventBus;
-
-  @Inject
-  private PacketFactory packetFactory;
 
   @Inject
   Server(@Value("${mocha.server.port}") int port) throws IOException {
@@ -54,7 +50,7 @@ public class Server implements SleepyRunnable {
 
   private void acceptConnection(Socket socket) {
     log.info("Receiving connection from " + socket.getInetAddress().toString());
-    eventBus.postConnectedEvent(new MochaConnection(socket, packetFactory));
+    eventBus.postConnectedEvent(new MochaConnection(socket));
   }
 
 }

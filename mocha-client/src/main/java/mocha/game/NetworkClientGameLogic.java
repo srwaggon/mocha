@@ -12,6 +12,7 @@ import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.event.EntityUpdatedEvent;
+import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
@@ -23,7 +24,6 @@ import mocha.game.world.item.itemprototype.ItemPrototypeService;
 import mocha.game.world.item.itemprototype.UpdateItemPrototypeCommand;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.packet.MochaConnection;
-import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketHandler;
 import mocha.net.packet.PacketListener;
 import mocha.net.packet.PacketSender;
@@ -42,7 +42,6 @@ public class NetworkClientGameLogic implements GameLogic {
   private MovementFactory movementFactory;
   private Repository<Movement, Integer> movementRepository;
   private MochaConnection mochaConnection;
-  private PacketFactory packetFactory;
   private EntityPrototypeService entityPrototypeService;
   private EntityService entityService;
   private ItemPrototypeService itemPrototypeService;
@@ -56,7 +55,6 @@ public class NetworkClientGameLogic implements GameLogic {
       Repository<Entity, Integer> entityRepository,
       MovementFactory movementFactory,
       Repository<Movement, Integer> movementRepository,
-      PacketFactory packetFactory,
       EntityPrototypeService entityPrototypeService,
       EntityService entityService,
       ItemPrototypeService itemPrototypeService,
@@ -68,7 +66,6 @@ public class NetworkClientGameLogic implements GameLogic {
     this.entityRepository = entityRepository;
     this.movementFactory = movementFactory;
     this.movementRepository = movementRepository;
-    this.packetFactory = packetFactory;
     this.entityPrototypeService = entityPrototypeService;
     this.entityService = entityService;
     this.itemPrototypeService = itemPrototypeService;
@@ -129,7 +126,8 @@ public class NetworkClientGameLogic implements GameLogic {
 
   @Override
   public void handle(EntityMoveCommand entityMoveCommand) {
-    eventBus.postSendPacketEvent(packetFactory.newMovePacket(entityMoveCommand));
+    // todo Send the packet through the connection?
+    eventBus.postSendPacketEvent(new MovePacket(entityMoveCommand));
   }
 
   @Override

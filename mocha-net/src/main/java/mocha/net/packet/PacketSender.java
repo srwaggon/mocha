@@ -8,12 +8,12 @@ public class PacketSender {
 
   private PacketConnection packetConnection;
 
-  public PacketSender(PacketConnection packetConnection) {
+  PacketSender(PacketConnection packetConnection) {
     this.packetConnection = packetConnection;
   }
 
   @Subscribe
   public void handle(SendPacketEvent sendPacketEvent) {
-    this.packetConnection.sendPacket(sendPacketEvent.getPacket());
+    this.packetConnection.send(sendPacketEvent.getPacket());
   }
 }

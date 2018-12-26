@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.inject.Inject;
 
-import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.server.event.ServerEventBus;
 import mocha.shared.task.TaskService;
@@ -15,11 +14,6 @@ public class ServerConfiguration {
 
   @Inject
   private ServerEventBus serverEventBus;
-
-  @Bean
-  public PacketFactory getPacketFactory() {
-    return new PacketFactory();
-  }
 
   @Bean
   public PacketSenderFactory packetSenderFactory() {

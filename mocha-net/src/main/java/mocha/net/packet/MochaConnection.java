@@ -2,76 +2,85 @@ package mocha.net.packet;
 
 import java.net.Socket;
 
+import mocha.game.LoginSuccessPacket;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
+import mocha.game.world.chunk.ChunkUpdatePacket;
+import mocha.game.world.chunk.RequestChunkByIdPacket;
+import mocha.game.world.chunk.RequestChunkByLocationPacket;
+import mocha.game.world.chunk.tile.TileUpdatePacket;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityRemovedPacket;
+import mocha.game.world.entity.EntityUpdatePacket;
+import mocha.game.world.entity.RequestEntitiesByPlayerIdPacket;
+import mocha.game.world.entity.RequestEntitiesInChunkPacket;
+import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.prototype.EntityPrototype;
+import mocha.game.world.entity.prototype.EntityPrototypeUpdatePacket;
 import mocha.game.world.item.Item;
+import mocha.game.world.item.ItemPrototypeUpdatePacket;
+import mocha.game.world.item.ItemUpdatePacket;
 import mocha.game.world.item.itemprototype.ItemPrototype;
 
 public class MochaConnection extends PacketConnection {
 
-  private PacketFactory packetFactory;
-
   public MochaConnection(
-      Socket socket,
-      PacketFactory packetFactory
+      Socket socket
   ) {
     super(socket);
-    this.packetFactory = packetFactory;
   }
 
   public void sendLoginSuccessful(int playerId) {
-    sendPacket(packetFactory.newLoginSuccessPacket(playerId));
+    send(new LoginSuccessPacket(playerId));
   }
 
   public void requestChunkById(int chunkId) {
-    sendPacket(packetFactory.newRequestChunkById(chunkId));
+    send(new RequestChunkByIdPacket(chunkId));
   }
 
   public void requestChunkAt(Location location) {
-    sendPacket(packetFactory.newRequestChunkByLocationPacket(location));
+    send(new RequestChunkByLocationPacket(location));
   }
 
   public void requestEntitiesInChunk(Location location) {
-    sendPacket(packetFactory.newRequestEntitiesInChunkPacket(location));
+    send(new RequestEntitiesInChunkPacket(location));
   }
 
   public void requestEntitiesByPlayerId(int playerId, int... entityIds) {
-    sendPacket(packetFactory.newRequestEntitiesByPlayerIdPacket(playerId, entityIds));
+    send(new RequestEntitiesByPlayerIdPacket(playerId, entityIds));
   }
 
   public void sendChunkUpdate(Chunk chunk) {
-    sendPacket(packetFactory.newChunkPacket(chunk));
+    send(new ChunkUpdatePacket(chunk));
   }
 
   public void sendTileUpdate(Chunk chunk, int x, int y) {
-    sendPacket(packetFactory.newTileUpdatePacket(chunk, x, y));
+    send(new TileUpdatePacket(chunk, x, y));
   }
 
   public void sendEntityPrototypeUpdate(EntityPrototype entityPrototype) {
-    sendPacket(packetFactory.newEntityPrototypeUpdatePacket(entityPrototype));
+    send(new EntityPrototypeUpdatePacket(entityPrototype));
   }
 
   public void sendEntityUpdate(Entity entity) {
-    sendPacket(packetFactory.newEntityPacket(entity));
+    send(new EntityUpdatePacket(entity));
   }
 
   public void sendEntityRemoved(Entity entity) {
-    sendPacket(packetFactory.newEntityRemovedPacket(entity));
+    send(new EntityRemovedPacket(entity.getId()));
   }
 
   public void sendMoveCommand(EntityMoveCommand entityMoveCommand) {
-    sendPacket(packetFactory.newMovePacket(entityMoveCommand));
+    send(new MovePacket(entityMoveCommand));
   }
 
   public void sendItemPrototypeUpdate(ItemPrototype itemPrototype) {
-    sendPacket(packetFactory.newItemPrototypeUpdatePacket(itemPrototype));
+    send(new ItemPrototypeUpdatePacket(itemPrototype));
   }
 
   public void sendItemUpdate(Item item) {
-    sendPacket(packetFactory.newItemUpdatePacket(item));
+    send(new ItemUpdatePacket(item));
   }
 
 }

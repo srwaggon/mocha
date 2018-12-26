@@ -12,16 +12,12 @@ import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
 import mocha.net.packet.MochaConnection;
-import mocha.net.packet.PacketFactory;
 
 @Component
 public class NetworkClient implements Runnable {
 
   @Inject
   private ClientEventBus eventBus;
-
-  @Inject
-  private PacketFactory packetFactory;
 
   @Value("${mocha.server.port}")
   private int port;
@@ -35,7 +31,7 @@ public class NetworkClient implements Runnable {
   }
 
   private MochaConnection getMochaConnection() {
-    return new MochaConnection(getSocket(), packetFactory);
+    return new MochaConnection(getSocket());
   }
 
   private Socket getSocket() {
