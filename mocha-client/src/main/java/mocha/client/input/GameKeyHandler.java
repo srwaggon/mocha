@@ -13,7 +13,7 @@ import mocha.client.event.ClientEventBus;
 import mocha.client.gfx.sprite.Sprite;
 import mocha.client.gfx.sprite.SpriteService;
 import mocha.client.input.event.GameKeyEvent;
-import mocha.game.GameLogic;
+import mocha.game.ClientGameLogic;
 import mocha.game.player.Player;
 import mocha.game.world.Direction;
 import mocha.game.world.entity.Entity;
@@ -30,7 +30,7 @@ public class GameKeyHandler {
   private Repository<Player, Integer> playerRepository;
   private Repository<Entity, Integer> entityRepository;
   private ClientEventBus eventBus;
-  private GameLogic gameLogic;
+  private ClientGameLogic gameLogic;
   private SpriteService spriteService;
   private ItemPrototypeService itemPrototypeService;
 
@@ -39,7 +39,7 @@ public class GameKeyHandler {
       Repository<Player, Integer> playerRepository,
       Repository<Entity, Integer> entityRepository,
       ClientEventBus eventBus,
-      GameLogic gameLogic,
+      ClientGameLogic gameLogic,
       SpriteService spriteService,
       ItemPrototypeService itemPrototypeService
   ) {
@@ -97,7 +97,7 @@ public class GameKeyHandler {
     getDirection(gameKeyEvent)
         .ifPresent(direction ->
             findPlayerEntity().ifPresent(entity ->
-                gameLogic.handle(buildEntityStartMoveCommand(entity, direction))));
+                gameLogic.movePlayerEntity(buildEntityStartMoveCommand(entity, direction))));
   }
 
   private void handleIfStopMove(GameKeyEvent gameKeyEvent) {
@@ -107,7 +107,7 @@ public class GameKeyHandler {
     getDirection(gameKeyEvent)
         .ifPresent(direction ->
             findPlayerEntity().ifPresent(entity ->
-                gameLogic.handle(buildEntityStopMoveCommand(entity, direction))));
+                gameLogic.movePlayerEntity(buildEntityStopMoveCommand(entity, direction))));
   }
 
   private void handleIfPickup(GameKeyEvent gameKeyEvent) {

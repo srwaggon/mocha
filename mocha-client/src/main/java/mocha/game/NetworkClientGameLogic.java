@@ -17,11 +17,8 @@ import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.prototype.EntityPrototypeService;
-import mocha.game.world.entity.prototype.UpdateEntityPrototypeCommand;
 import mocha.game.world.item.ItemService;
-import mocha.game.world.item.UpdateItemCommand;
 import mocha.game.world.item.itemprototype.ItemPrototypeService;
-import mocha.game.world.item.itemprototype.UpdateItemPrototypeCommand;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketHandler;
@@ -32,20 +29,15 @@ import mocha.shared.Repository;
 import mocha.shared.task.TaskService;
 
 @Component
-public class NetworkClientGameLogic implements GameLogic {
+public class NetworkClientGameLogic extends ClientGameLogic implements GameLogic {
 
-  private ClientEventBus eventBus;
   private PacketSenderFactory packetSenderFactory;
   private TaskService taskService;
   private PacketHandler packetHandler;
   private Repository<Entity, Integer> entityRepository;
   private MovementFactory movementFactory;
-  private Repository<Movement, Integer> movementRepository;
   private MochaConnection mochaConnection;
-  private EntityPrototypeService entityPrototypeService;
   private EntityService entityService;
-  private ItemPrototypeService itemPrototypeService;
-  private ItemService itemService;
 
   public NetworkClientGameLogic(
       ClientEventBus eventBus,
@@ -58,18 +50,15 @@ public class NetworkClientGameLogic implements GameLogic {
       EntityPrototypeService entityPrototypeService,
       EntityService entityService,
       ItemPrototypeService itemPrototypeService,
-      ItemService itemService) {
-    this.eventBus = eventBus;
+      ItemService itemService
+  ) {
+    super(eventBus, movementRepository, itemPrototypeService, itemService, entityPrototypeService);
     this.packetSenderFactory = packetSenderFactory;
     this.taskService = taskService;
     this.packetHandler = packetHandler;
     this.entityRepository = entityRepository;
     this.movementFactory = movementFactory;
-    this.movementRepository = movementRepository;
-    this.entityPrototypeService = entityPrototypeService;
     this.entityService = entityService;
-    this.itemPrototypeService = itemPrototypeService;
-    this.itemService = itemService;
   }
 
   @Subscribe
@@ -124,29 +113,8 @@ public class NetworkClientGameLogic implements GameLogic {
     }
   }
 
-  @Override
-  public void handle(EntityMoveCommand entityMoveCommand) {
-    // todo Send the packet through the connection?
-    eventBus.postSendPacketEvent(new MovePacket(entityMoveCommand));
-  }
-
-  @Override
-  public void handle(UpdateItemPrototypeCommand updateItemPrototypeCommand) {
-    itemPrototypeService.updateItemPrototype(updateItemPrototypeCommand);
-  }
-
-  @Override
-  public void handle(UpdateItemCommand updateItemCommand) {
-    itemService.updateItem(updateItemCommand);
-  }
-
-  @Override
-  public void handle(UpdateEntityPrototypeCommand updateEntityPrototypeCommand) {
-    entityPrototypeService.save(updateEntityPrototypeCommand.getEntityPrototype());
-  }
-
   @Subscribe
-  public void entityMoveCommandSubscription(EntityMoveCommand entityMoveCommand) {
+  public void handle(EntityMoveCommand entityMoveCommand) {
     entityRepository
         .findById(entityMoveCommand.getEntityId())
         .ifPresent(entity -> {
@@ -158,6 +126,10 @@ public class NetworkClientGameLogic implements GameLogic {
                 eventBus.postMoveEvent(movement);
               });
         });
+  }
+
+  public void movePlayerEntity(EntityMoveCommand entityMoveCommand) {
+    eventBus.postSendPacketEvent(new MovePacket(entityMoveCommand));
   }
 
 }
