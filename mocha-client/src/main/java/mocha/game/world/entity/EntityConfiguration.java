@@ -65,4 +65,9 @@ public class EntityConfiguration {
         chunkService,
         movementRepository);
   }
+
+  @Bean
+  public EntitiesInChunkService entitiesInChunkService(Repository<Entity, Integer> entityRepository) {
+    return new EntitiesInChunkService(entityRepository);
+  }
 }

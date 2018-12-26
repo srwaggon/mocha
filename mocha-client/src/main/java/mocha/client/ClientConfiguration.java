@@ -20,15 +20,8 @@ import mocha.game.GameLoop;
 import mocha.game.LocalClientGameLogic;
 import mocha.game.NetworkClientGameLogic;
 import mocha.game.RuleService;
-import mocha.game.event.MochaEventBus;
-import mocha.game.player.Player;
-import mocha.game.player.PlayerService;
 import mocha.game.rule.GameRule;
-import mocha.game.world.chunk.Chunk;
-import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.chunk.ChunkService;
-import mocha.game.world.chunk.tile.TileReader;
-import mocha.game.world.chunk.tile.TileSetFactory;
 import mocha.game.world.collision.CollisionFactory;
 import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
@@ -37,10 +30,7 @@ import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.rule.MovementRule;
 import mocha.game.world.entity.rule.PickUpItemsRule;
-import mocha.game.world.item.Item;
-import mocha.game.world.item.itemprototype.ItemPrototype;
 import mocha.net.packet.PacketSenderFactory;
-import mocha.shared.IdFactory;
 import mocha.shared.InMemoryRepository;
 import mocha.shared.Repository;
 import mocha.shared.task.TaskService;
@@ -75,32 +65,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public Repository<Player, Integer> playerRepository() {
-    return new InMemoryRepository<>();
-  }
-
-  @Bean
-  public Repository<Chunk, Integer> chunkRepository() {
-    return new InMemoryRepository<>();
-  }
-
-  @Bean
   public Repository<Movement, Integer> movementRepository() {
     return new InMemoryRepository<>();
-  }
-
-  @Bean
-  public IdFactory<Player> playerIdFactory(Repository<Player, Integer> playerRepository) {
-    return new IdFactory<>(playerRepository);
-  }
-
-  @Bean
-  public PlayerService playerService(
-      MochaEventBus eventBus,
-      Repository<Player, Integer> playerRepository,
-      EntityService entityService
-  ) {
-    return new PlayerService(eventBus, playerRepository, entityService);
   }
 
   @Bean
@@ -143,38 +109,9 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public TileReader tileReader() {
-    return new TileReader();
-  }
-
-  @Bean
-  public TileSetFactory tileSetFactory(TileReader tileReader) {
-    return new TileSetFactory(tileReader);
-  }
-
-  @Bean
-  public ChunkFactory chunkFactory(TileSetFactory tileSetFactory) {
-    return new ChunkFactory(tileSetFactory);
-  }
-
-  @Bean
   @Scope("prototype")
   Logger logger(InjectionPoint injectionPoint) {
     return LoggerFactory.getLogger(injectionPoint.getMethodParameter().getContainingClass());
   }
 
-  @Bean
-  public EntitiesInChunkService entitiesInChunkService(Repository<Entity, Integer> entityRepository) {
-    return new EntitiesInChunkService(entityRepository);
-  }
-
-  @Bean
-  public Repository<ItemPrototype, Integer> itemPrototypeRepository() {
-    return new InMemoryRepository<>();
-  }
-
-  @Bean
-  public Repository<Item, Integer> itemRepository() {
-    return new InMemoryRepository<>();
-  }
 }
