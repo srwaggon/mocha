@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.inject.Inject;
 
-import mocha.game.world.chunk.tile.TileStringBuilder;
 import mocha.net.packet.PacketFactory;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.server.event.ServerEventBus;
@@ -18,8 +17,8 @@ public class ServerConfiguration {
   private ServerEventBus serverEventBus;
 
   @Bean
-  public PacketFactory getPacketFactory(TileStringBuilder tileStringBuilder) {
-    return new PacketFactory(tileStringBuilder);
+  public PacketFactory getPacketFactory() {
+    return new PacketFactory();
   }
 
   @Bean

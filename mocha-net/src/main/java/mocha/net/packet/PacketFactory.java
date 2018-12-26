@@ -6,8 +6,6 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkUpdatePacket;
 import mocha.game.world.chunk.RequestChunkByIdPacket;
 import mocha.game.world.chunk.RequestChunkByLocationPacket;
-import mocha.game.world.chunk.tile.TileStringBuilder;
-import mocha.game.world.chunk.tile.TileType;
 import mocha.game.world.chunk.tile.TileUpdatePacket;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityRemovedPacket;
@@ -27,25 +25,12 @@ import mocha.game.world.item.itemprototype.ItemPrototype;
 
 public class PacketFactory {
 
-  private TileStringBuilder tileStringBuilder;
-
-  public PacketFactory(TileStringBuilder tileStringBuilder) {
-    this.tileStringBuilder = tileStringBuilder;
-  }
-
   public LoginSuccessPacket newLoginSuccessPacket(int playerId) {
     return new LoginSuccessPacket(playerId);
   }
 
   public ChunkUpdatePacket newChunkPacket(Chunk chunk) {
-    // todo: Just pass a chunk?
-    int chunkId = chunk.getId();
-    Location location = chunk.getLocation();
-    int x = location.getX();
-    int y = location.getY();
-    TileType[] tiles = chunk.getTiles();
-    String tileString = tileStringBuilder.build(tiles);
-    return new ChunkUpdatePacket(chunkId, x, y, tileString);
+    return new ChunkUpdatePacket(chunk);
   }
 
   public RequestChunkByIdPacket newRequestChunkById(int chunkId) {

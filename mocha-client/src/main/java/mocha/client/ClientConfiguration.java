@@ -29,7 +29,6 @@ import mocha.game.world.chunk.ChunkFactory;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.chunk.tile.TileReader;
 import mocha.game.world.chunk.tile.TileSetFactory;
-import mocha.game.world.chunk.tile.TileStringBuilder;
 import mocha.game.world.collision.CollisionFactory;
 import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
@@ -64,8 +63,8 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public PacketFactory packetFactory(TileStringBuilder tileStringBuilder) {
-    return new PacketFactory(tileStringBuilder);
+  public PacketFactory packetFactory() {
+    return new PacketFactory();
   }
 
   @Bean
@@ -152,11 +151,6 @@ public class ClientConfiguration {
   @Bean
   public TileReader tileReader() {
     return new TileReader();
-  }
-
-  @Bean
-  public TileStringBuilder tileStringBuilder() {
-    return new TileStringBuilder();
   }
 
   @Bean

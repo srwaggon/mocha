@@ -12,11 +12,6 @@ public class TileConfiguration {
   }
 
   @Bean
-  public TileStringBuilder tileStringBuilder() {
-    return new TileStringBuilder();
-  }
-
-  @Bean
   public TileSetFactory tileSetFactory(TileReader tileReader) {
     return new TileSetFactory(tileReader);
   }
