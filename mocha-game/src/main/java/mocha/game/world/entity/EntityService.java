@@ -1,5 +1,7 @@
 package mocha.game.world.entity;
 
+import java.util.Optional;
+
 import mocha.game.event.MochaEventBus;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
@@ -56,5 +58,9 @@ public class EntityService {
     Location entityLocation = entity.getLocation();
     Chunk chunk = chunkService.getOrCreateChunkAt(entityLocation);
     entitiesInChunkService.remove(chunk, entity);
+  }
+
+  public Optional<Entity> findById(Integer playerEntityId) {
+    return entityRepository.findById(playerEntityId);
   }
 }

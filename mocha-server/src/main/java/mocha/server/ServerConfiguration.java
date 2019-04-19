@@ -9,7 +9,7 @@ import mocha.net.packet.PacketSenderFactory;
 import mocha.server.event.ServerEventBus;
 import mocha.shared.task.TaskService;
 
-@Configuration()
+@Configuration
 public class ServerConfiguration {
 
   @Inject

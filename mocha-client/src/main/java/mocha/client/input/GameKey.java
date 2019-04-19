@@ -1,5 +1,15 @@
 package mocha.client.input;
 
+import java.util.Optional;
+
+import mocha.client.input.event.GameKeyEvent;
+import mocha.game.world.Direction;
+
+import static mocha.game.world.Direction.EAST;
+import static mocha.game.world.Direction.NORTH;
+import static mocha.game.world.Direction.SOUTH;
+import static mocha.game.world.Direction.WEST;
+
 public enum GameKey {
 
   UNBOUND,
@@ -26,6 +36,21 @@ public enum GameKey {
   private boolean pressed;
   private int clicks;
   private boolean isClicked;
+
+  static Optional<Direction> getDirection(GameKeyEvent gameKeyEvent) {
+    switch (gameKeyEvent.getGameKey()) {
+      case UP:
+        return Optional.of(NORTH);
+      case RIGHT:
+        return Optional.of(EAST);
+      case DOWN:
+        return Optional.of(SOUTH);
+      case LEFT:
+        return Optional.of(WEST);
+      default:
+        return Optional.empty();
+    }
+  }
 
   public boolean isDown() {
     return isDown;

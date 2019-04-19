@@ -1,5 +1,7 @@
 package mocha.game.player;
 
+import java.util.Optional;
+
 import mocha.game.event.MochaEventBus;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
@@ -23,7 +25,11 @@ public class PlayerService {
   }
 
   public Entity getEntityForPlayer() {
-    return playerRepository.findAll().get(0).getEntity();
+    return getPlayer().getEntity();
+  }
+
+  public Player getPlayer() {
+    return playerRepository.findAll().get(0);
   }
 
   public void removePlayer(int playerId) {
@@ -41,5 +47,14 @@ public class PlayerService {
   public void addPlayer(Player player) {
     playerRepository.save(player);
     eventBus.postPlayerAddedEvent(player);
+  }
+
+  public Integer getPlayerEntityId() {
+    return getEntityForPlayer().getId();
+  }
+
+  public Optional<Entity> findPlayerEntity() {
+    Integer playerEntityId = getPlayerEntityId();
+    return entityService.findById(playerEntityId);
   }
 }
