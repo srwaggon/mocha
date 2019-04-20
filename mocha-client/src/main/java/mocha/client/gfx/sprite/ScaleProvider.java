@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 public class ScaleProvider {
 
   public double getScale() {
-    return 2.0;
+    return 1.0;
   }
 }

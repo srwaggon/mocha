@@ -60,4 +60,9 @@ public class ServerEntityToEntityAdapterRepository implements Repository<Entity,
     serverEntityRepository.findById(entity.getId())
         .ifPresent(serverEntityRepository::delete);
   }
+
+  @Override
+  public void deleteAll() {
+    serverEntityRepository.deleteAll();
+  }
 }

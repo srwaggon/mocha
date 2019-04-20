@@ -38,4 +38,9 @@ public class InMemoryRepository<T extends Identified<Integer>> implements Reposi
   public void delete(T element) {
     members.remove(element.getId());
   }
+
+  @Override
+  public void deleteAll() {
+    members.clear();
+  }
 }

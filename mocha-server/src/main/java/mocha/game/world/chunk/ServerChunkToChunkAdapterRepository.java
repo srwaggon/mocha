@@ -28,6 +28,7 @@ public class ServerChunkToChunkAdapterRepository implements Repository<Chunk, In
   @Override
   public Optional<Chunk> findById(Integer chunkId) {
     Optional<ServerChunk> byId = serverChunkJpaRepository.findById(chunkId);
+    //noinspection OptionalIsPresent
     return byId.isPresent() ? Optional.of(byId.get()) : Optional.empty();
   }
 
@@ -35,5 +36,10 @@ public class ServerChunkToChunkAdapterRepository implements Repository<Chunk, In
   public void delete(Chunk element) {
     serverChunkJpaRepository.findById(element.getId())
         .ifPresent(serverChunkJpaRepository::delete);
+  }
+
+  @Override
+  public void deleteAll() {
+    serverChunkJpaRepository.deleteAll();
   }
 }

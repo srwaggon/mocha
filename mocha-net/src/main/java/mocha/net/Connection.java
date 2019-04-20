@@ -31,6 +31,7 @@ public class Connection {
     return isConnected;
   }
 
+  @SuppressWarnings("WeakerAccess")
   public boolean hasLine() {
     return in.hasNextLine();
   }

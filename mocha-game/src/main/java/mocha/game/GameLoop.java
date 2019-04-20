@@ -10,12 +10,12 @@ import javafx.animation.AnimationTimer;
 public class GameLoop extends AnimationTimer {
   private static final double NANOSECONDS_PER_SECOND = 1000000000.0;
   private static final int TICKS_PER_SECOND = 60;
-  private long previousTime;
+  long previousTime;
   private double unprocessed = 0.0;
 
   private Set<Tickable> tickables = Sets.newHashSet();
 
-  private double getTimestepInNanoseconds() {
+  static double getTimestepInNanoseconds() {
     return NANOSECONDS_PER_SECOND / TICKS_PER_SECOND;
   }
 
@@ -25,13 +25,11 @@ public class GameLoop extends AnimationTimer {
 
   @Override
   public void handle(long now) {
-    if (previousTime == 0) {
-      previousTime = now;
-      return;
+    if (previousTime > 0) {
+      accumulateUnprocessedTicks(now);
+      processTicks(now);
     }
-    accumulateUnprocessedTicks(now);
     previousTime = now;
-    processTicks(now);
   }
 
   private void accumulateUnprocessedTicks(long now) {

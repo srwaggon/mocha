@@ -13,7 +13,8 @@ public class MochaScene extends Scene {
 
   @Inject
   public MochaScene(MochaRoot root, InputHandler inputHandler) {
-    super(root, 1024, 768);
+//    super(root, 1024, 768);
+    super(root, 512, 384);
 
     addEventHandler(KeyEvent.KEY_PRESSED, inputHandler.getKeyPressedHandler());
     addEventHandler(KeyEvent.KEY_RELEASED, inputHandler.getKeyReleasedHandler());

@@ -12,4 +12,6 @@ public interface Repository<T extends Identified<ID>, ID> {
   Optional<T> findById(ID id);
 
   void delete(T element);
+
+  void deleteAll();
 }

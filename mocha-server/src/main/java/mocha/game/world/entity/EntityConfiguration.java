@@ -60,7 +60,8 @@ public class EntityConfiguration {
 
   @Bean
   public EntityService entityService(
-      MochaEventBus eventBus, Repository<Entity, Integer> entityRepository,
+      MochaEventBus eventBus,
+      Repository<Entity, Integer> entityRepository,
       EntitiesInChunkService entitiesInChunkService,
       ChunkService chunkService,
       Repository<Movement, Integer> movementRepository

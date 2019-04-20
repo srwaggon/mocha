@@ -49,4 +49,10 @@ public class CachingRepository<T extends Identified<ID>, ID> implements Reposito
     repository.delete(element);
     members.remove(element.getId());
   }
+
+  @Override
+  public void deleteAll() {
+    members.clear();
+    repository.deleteAll();
+  }
 }

@@ -35,6 +35,7 @@ public class ServerItemPrototypeToItemPrototypeAdapterRepository implements Repo
   @Override
   public Optional<ItemPrototype> findById(Integer id) {
     Optional<ServerItemPrototype> byId = serverItemPrototypeRepository.findById(id);
+    //noinspection OptionalIsPresent
     return byId.isPresent() ? Optional.of(byId.get()) : Optional.empty();
   }
 
@@ -42,5 +43,10 @@ public class ServerItemPrototypeToItemPrototypeAdapterRepository implements Repo
   public void delete(ItemPrototype element) {
     serverItemPrototypeRepository.findById(element.getId())
         .ifPresent(serverItemPrototypeRepository::delete);
+  }
+
+  @Override
+  public void deleteAll() {
+    serverItemPrototypeRepository.deleteAll();
   }
 }

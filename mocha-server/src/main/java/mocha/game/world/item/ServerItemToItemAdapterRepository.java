@@ -31,6 +31,7 @@ public class ServerItemToItemAdapterRepository implements Repository<Item, Integ
   public Item save(Item element) {
     ItemPrototype itemPrototype = element.getItemPrototype();
 
+    //noinspection ConstantConditions
     ServerItemPrototype serverItemPrototype = new ServerItemPrototype(
         itemPrototype.getId(),
         itemPrototype.getName(),
@@ -39,6 +40,7 @@ public class ServerItemToItemAdapterRepository implements Repository<Item, Integ
         itemPrototype.getDescription()
     );
 
+    //noinspection ConstantConditions
     ServerItem serverItem = new ServerItem(
         element.getId(),
         serverItemPrototype,
@@ -52,6 +54,7 @@ public class ServerItemToItemAdapterRepository implements Repository<Item, Integ
   @Override
   public Optional<Item> findById(Integer id) {
     Optional<ServerItem> byId = serverItemRepository.findById(id);
+    //noinspection OptionalIsPresent
     return byId.isPresent() ? Optional.of(byId.get()) : Optional.empty();
   }
 
@@ -59,5 +62,10 @@ public class ServerItemToItemAdapterRepository implements Repository<Item, Integ
   public void delete(Item element) {
     serverItemRepository.findById(element.getId())
         .ifPresent(serverItemRepository::delete);
+  }
+
+  @Override
+  public void deleteAll() {
+    serverItemRepository.deleteAll();
   }
 }
