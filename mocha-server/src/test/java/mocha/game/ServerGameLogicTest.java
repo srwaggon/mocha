@@ -1,5 +1,6 @@
 package mocha.game;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
+import mocha.game.player.PlayerService;
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
@@ -37,12 +39,20 @@ public class ServerGameLogicTest {
   @Inject
   private TestGameLoop gameLoop;
 
+  @Inject
+  private PlayerService playerService;
+
   @Mock
   private MochaConnection mochaConnection;
 
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
+  }
+
+  @After
+  public void tearDown() {
+    playerService.deleteAll();
   }
 
   @Test
@@ -100,9 +110,8 @@ public class ServerGameLogicTest {
   public void entityMovesWhenToldToMove() {
     connectToGameServer();
     Entity entity = getEntityUpdate();
-    serverGameLogic.handle(buildEntityStartMoveCommand(entity, Direction.EAST));
-    gameLoop.step(40);
-    serverGameLogic.handle(buildEntityStopMoveCommand(entity, Direction.EAST));
+    moveEntity(entity, Direction.EAST);
+    moveEntity(entity, Direction.SOUTH);
     Location locationOnDisconnect = entity.getLocation();
     assertThat(locationOnDisconnect).isNotEqualTo(new Location(0, 0));
   }
@@ -111,13 +120,18 @@ public class ServerGameLogicTest {
   public void entityLocationIsPersistedFromPreviousSession_whenReconnecting() {
     int playerId = connectToGameServer();
     Entity entity = getEntityUpdate();
-    serverGameLogic.handle(buildEntityStartMoveCommand(entity, Direction.EAST));
-    gameLoop.step(40);
-    serverGameLogic.handle(buildEntityStopMoveCommand(entity, Direction.EAST));
+    moveEntity(entity, Direction.EAST);
+    moveEntity(entity, Direction.SOUTH);
     Location locationOnDisconnect = entity.getLocation();
     reconnectToGameServer(playerId);
     Location locationOnReconnect = getEntityUpdate().getLocation();
     assertThat(locationOnReconnect.getX()).isEqualTo(locationOnDisconnect.getX());
     assertThat(locationOnReconnect.getY()).isEqualTo(locationOnDisconnect.getY());
+  }
+
+  private void moveEntity(Entity entity, Direction direction) {
+    serverGameLogic.handle(buildEntityStartMoveCommand(entity, direction));
+    gameLoop.step(40);
+    serverGameLogic.handle(buildEntityStopMoveCommand(entity, direction));
   }
 }

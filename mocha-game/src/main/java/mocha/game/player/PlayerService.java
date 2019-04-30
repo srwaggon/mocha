@@ -57,4 +57,9 @@ public class PlayerService {
     Integer playerEntityId = getPlayerEntityId();
     return entityService.findById(playerEntityId);
   }
+
+  public void deleteAll() {
+    playerRepository.findAll()
+        .forEach(this::removePlayer);
+  }
 }
