@@ -1,6 +1,5 @@
 package mocha.net.packet;
 
-import mocha.game.LoginSuccessPacket;
 import mocha.game.PlayerIdentityPacket;
 import mocha.game.world.chunk.ChunkUpdatePacket;
 import mocha.game.world.chunk.RequestChunkByIdPacket;
@@ -16,6 +15,7 @@ import mocha.game.world.entity.prototype.EntityPrototypeUpdatePacket;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
 import mocha.game.world.item.PickUpItemPacket;
+import mocha.net.LoginSuccessPacket;
 import mocha.net.packet.message.GlobalMessagePacket;
 
 public enum PacketType {

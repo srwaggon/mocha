@@ -81,4 +81,11 @@ public class ChunkService {
     return getOrCreateChunkAt(location).getTileAt(location);
   }
 
+  public Optional<Chunk> findById(int chunkId) {
+    return chunkRepository.findById(chunkId);
+  }
+
+  public void save(Chunk chunk) {
+    chunkRepository.save(chunk);
+  }
 }

@@ -2,7 +2,6 @@ package mocha.net.packet;
 
 import java.net.Socket;
 
-import mocha.game.LoginSuccessPacket;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkUpdatePacket;
@@ -22,6 +21,7 @@ import mocha.game.world.item.Item;
 import mocha.game.world.item.ItemPrototypeUpdatePacket;
 import mocha.game.world.item.ItemUpdatePacket;
 import mocha.game.world.item.itemprototype.ItemPrototype;
+import mocha.net.LoginSuccessPacket;
 
 public class MochaConnection extends PacketConnection {
 
