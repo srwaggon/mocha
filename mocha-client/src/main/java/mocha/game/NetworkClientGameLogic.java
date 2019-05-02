@@ -21,8 +21,8 @@ import mocha.game.world.item.ItemService;
 import mocha.game.world.item.itemprototype.ItemPrototypeService;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.packet.MochaConnection;
-import mocha.net.packet.PacketHandler;
 import mocha.net.packet.PacketListener;
+import mocha.net.packet.PacketResolver;
 import mocha.net.packet.PacketSender;
 import mocha.net.packet.PacketSenderFactory;
 import mocha.shared.Repository;
@@ -33,7 +33,7 @@ public class NetworkClientGameLogic extends ClientGameLogic implements GameLogic
 
   private PacketSenderFactory packetSenderFactory;
   private TaskService taskService;
-  private PacketHandler packetHandler;
+  private PacketResolver packetHandler;
   private Repository<Entity, Integer> entityRepository;
   private MovementFactory movementFactory;
   private MochaConnection mochaConnection;
@@ -43,7 +43,7 @@ public class NetworkClientGameLogic extends ClientGameLogic implements GameLogic
       ClientEventBus eventBus,
       PacketSenderFactory packetSenderFactory,
       TaskService taskService,
-      @Lazy PacketHandler packetHandler,
+      @Lazy PacketResolver packetHandler,
       Repository<Entity, Integer> entityRepository,
       MovementFactory movementFactory,
       Repository<Movement, Integer> movementRepository,

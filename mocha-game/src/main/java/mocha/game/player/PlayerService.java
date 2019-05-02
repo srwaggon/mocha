@@ -62,4 +62,8 @@ public class PlayerService {
     playerRepository.findAll()
         .forEach(this::removePlayer);
   }
+
+  public Optional<Player> findById(int playerId) {
+    return playerRepository.findById(playerId);
+  }
 }

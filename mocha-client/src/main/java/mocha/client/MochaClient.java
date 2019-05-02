@@ -31,7 +31,7 @@ public class MochaClient {
   @Inject
   private GameLogic gameLogic;
   @Inject
-  private ClientPacketHandler clientPacketHandler;
+  private ClientPacketResolver clientPacketHandler;
 
   @Value("${mocha.client.online}")
   private boolean isOnline;

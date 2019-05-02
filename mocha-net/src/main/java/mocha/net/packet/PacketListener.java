@@ -9,9 +9,14 @@ public class PacketListener implements SleepyRunnable {
   private final MochaConnection connection;
   private final NetworkedMochaEventBus eventBus;
   private final int senderId;
-  private PacketHandler packetHandler;
+  private PacketResolver packetHandler;
 
-  public PacketListener(NetworkedMochaEventBus eventBus, MochaConnection connection, int senderId, PacketHandler packetHandler) {
+  public PacketListener(
+      NetworkedMochaEventBus eventBus,
+      MochaConnection connection,
+      int senderId,
+      PacketResolver packetHandler
+  ) {
     this.connection = connection;
     this.eventBus = eventBus;
     this.senderId = senderId;
@@ -29,7 +34,7 @@ public class PacketListener implements SleepyRunnable {
 
   private void readPackets() throws DisconnectedException {
     while (connection.isConnected()) {
-      packetHandler.handle(senderId, connection.readPacket());
+      packetHandler.resolve(senderId, connection.readPacket());
       nap();
     }
   }

@@ -8,7 +8,7 @@ import javax.persistence.Transient;
 import mocha.game.player.Player;
 import mocha.game.world.entity.Entity;
 import mocha.net.packet.PacketListener;
-import mocha.server.ServerPacketHandler;
+import mocha.server.ServerPacketResolver;
 
 @javax.persistence.Entity
 public class NetworkPlayer implements Player {
@@ -21,9 +21,14 @@ public class NetworkPlayer implements Player {
   @Transient
   private PacketListener packetListener;
   @Transient
-  private ServerPacketHandler serverPacketHandler;
+  private ServerPacketResolver serverPacketHandler;
 
-  private NetworkPlayer(int id, Entity entity, PacketListener packetListener, ServerPacketHandler serverPacketHandler) {
+  private NetworkPlayer(
+      int id,
+      Entity entity,
+      PacketListener packetListener,
+      ServerPacketResolver serverPacketHandler
+  ) {
     this.id = id;
     this.entity = entity;
     this.packetListener = packetListener;
@@ -63,7 +68,7 @@ public class NetworkPlayer implements Player {
     private int id;
     private Entity entity;
     private PacketListener packetListener;
-    private ServerPacketHandler serverPacketHandler;
+    private ServerPacketResolver serverPacketHandler;
 
     NetworkPlayerBuilder id(int id) {
       this.id = id;
@@ -80,7 +85,7 @@ public class NetworkPlayer implements Player {
       return this;
     }
 
-    NetworkPlayerBuilder serverPacketHandler(ServerPacketHandler serverPacketHandler) {
+    NetworkPlayerBuilder serverPacketHandler(ServerPacketResolver serverPacketHandler) {
       this.serverPacketHandler = serverPacketHandler;
       return this;
     }

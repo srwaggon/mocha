@@ -5,53 +5,53 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 
 import mocha.game.GameLogic;
-import mocha.game.player.Player;
+import mocha.game.player.PlayerService;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.EntitiesInChunkService;
-import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityService;
 import mocha.net.packet.MochaConnection;
 import mocha.server.event.ServerEventBus;
-import mocha.shared.Repository;
 
 @Component
 public class ServerPacketHandlerFactory {
 
   private GameLogic gameLogic;
   private ServerEventBus serverEventBus;
-  private Repository<Player, Integer> playerRepository;
-  private Repository<Entity, Integer> entityRepository;
   private ChunkService chunkService;
   private EntitiesInChunkService entitiesInChunkService;
+  private EntityService entityService;
+  private PlayerService playerService;
 
   @Inject
   public ServerPacketHandlerFactory(
       GameLogic gameLogic,
       ServerEventBus serverEventBus,
-      Repository<Player, Integer> playerRepository,
-      Repository<Entity, Integer> entityRepository,
       ChunkService chunkService,
-      EntitiesInChunkService entitiesInChunkService) {
+      EntitiesInChunkService entitiesInChunkService,
+      EntityService entityService,
+      PlayerService playerService
+  ) {
     this.gameLogic = gameLogic;
     this.serverEventBus = serverEventBus;
-    this.playerRepository = playerRepository;
-    this.entityRepository = entityRepository;
     this.chunkService = chunkService;
     this.entitiesInChunkService = entitiesInChunkService;
+    this.entityService = entityService;
+    this.playerService = playerService;
   }
 
-  public ServerPacketHandler newServerPacketHandler(
+  public ServerPacketResolver newServerPacketHandler(
       MochaConnection mochaConnection,
       int playerId
   ) {
-    return new ServerPacketHandler(
+    return new ServerPacketResolver(
         mochaConnection,
         serverEventBus,
         playerId,
-        entityRepository,
-        playerRepository,
         chunkService,
         entitiesInChunkService,
-        gameLogic
+        gameLogic,
+        entityService,
+        playerService
     );
   }
 }

@@ -40,12 +40,12 @@ import mocha.game.world.item.ItemUpdatePacket;
 import mocha.game.world.item.itemprototype.ItemPrototype;
 import mocha.game.world.item.itemprototype.UpdateItemPrototypeCommand;
 import mocha.net.packet.Packet;
-import mocha.net.packet.SimplePacketHandler;
+import mocha.net.packet.PacketResolver;
 import mocha.shared.Repository;
 import mocha.shared.task.SleepyRunnable;
 
 @Component
-public class ClientPacketHandler extends SimplePacketHandler implements SleepyRunnable {
+public class ClientPacketResolver implements PacketResolver, SleepyRunnable {
 
   private EventBus packetEventBus = new EventBus();
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
@@ -62,7 +62,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   private GameLogic gameLogic;
 
   @Inject
-  public ClientPacketHandler(
+  public ClientPacketResolver(
       ClientEventBus clientEventBus,
       Repository<Player, Integer> playerRepository,
       Repository<Entity, Integer> entityRepository,
@@ -99,7 +99,7 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   }
 
   @Override
-  public void handle(int senderId, Packet packet) {
+  public void resolve(int senderId, Packet packet) {
     packets.offer(packet);
   }
 
@@ -122,7 +122,6 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   }
 
   @Subscribe
-  @Override
   public void handle(ChunkUpdatePacket chunkUpdatePacket) {
     int chunkId = chunkUpdatePacket.getChunkId();
     Location location = new Location(chunkUpdatePacket.getX(), chunkUpdatePacket.getY());
@@ -146,7 +145,6 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   }
 
   @Subscribe
-  @Override
   public void handle(EntityUpdatePacket entityUpdatePacket) {
     clientEventBus.postEntityUpdatedEvent(createEntity(entityUpdatePacket));
   }
@@ -168,7 +166,6 @@ public class ClientPacketHandler extends SimplePacketHandler implements SleepyRu
   }
 
   @Subscribe
-  @Override
   public void handle(MovePacket movePacket) {
     clientEventBus.post(movePacket.getMoveCommand());
   }
