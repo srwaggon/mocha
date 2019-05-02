@@ -47,7 +47,7 @@ public class ClientPacketResolver implements PacketResolver, SleepyRunnable {
   }
 
   @Override
-  public void resolve(int senderId, Packet packet) {
+  public void resolve(Packet packet) {
     packets.offer(packet);
   }
 

@@ -28,7 +28,7 @@ class PlayerFactory {
   }
 
   NetworkPlayer newNetworkPlayer(MochaConnection mochaConnection, int playerId, Entity entity) {
-    ServerPacketResolver serverPacketHandler = serverPacketHandlerFactory.newServerPacketHandler(mochaConnection, playerId);
+    ServerPacketResolver serverPacketHandler = serverPacketHandlerFactory.newServerPacketHandler(mochaConnection, entity);
     PacketListener packetListener = newPacketListener(mochaConnection, playerId, serverPacketHandler);
     serverEventBus.postTaskEvent(packetListener);
     serverEventBus.postTaskEvent(serverPacketHandler);

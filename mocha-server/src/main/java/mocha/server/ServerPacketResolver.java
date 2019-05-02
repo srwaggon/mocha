@@ -13,6 +13,7 @@ import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.chunk.RequestChunkByIdPacketHandler;
 import mocha.game.world.chunk.RequestChunkByLocationPacketHandler;
 import mocha.game.world.entity.EntitiesInChunkService;
+import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacketHandler;
 import mocha.game.world.entity.RequestEntitiesInChunkPacketHandler;
@@ -29,7 +30,6 @@ import mocha.shared.task.SleepyRunnable;
 
 public class ServerPacketResolver implements PacketResolver, SleepyRunnable {
 
-  private int playerId;
   private MochaConnection mochaConnection;
   private EventBus packetEventBus;
 
@@ -40,15 +40,14 @@ public class ServerPacketResolver implements PacketResolver, SleepyRunnable {
   ServerPacketResolver(
       MochaConnection mochaConnection,
       ServerEventBus serverEventBus,
-      int playerId,
       ChunkService chunkService,
       EntitiesInChunkService entitiesInChunkService,
       GameLogic gameLogic,
       EntityService entityService,
-      PlayerService playerService
+      PlayerService playerService,
+      Entity entity
   ) {
     this.mochaConnection = mochaConnection;
-    this.playerId = playerId;
     packetEventBus = new EventBus();
 
     packetHandlers.add(new RequestEntitiesByPlayerIdPacketHandler(mochaConnection, entityService, playerService));
@@ -56,7 +55,7 @@ public class ServerPacketResolver implements PacketResolver, SleepyRunnable {
     packetHandlers.add(new RequestChunkByLocationPacketHandler(mochaConnection, chunkService));
     packetHandlers.add(new RequestEntityByIdPacketHandler(mochaConnection, entityService));
     packetHandlers.add(new RequestEntitiesInChunkPacketHandler(mochaConnection, chunkService, entitiesInChunkService));
-    packetHandlers.add(new MovePacketHandler(playerId, serverEventBus, playerService));
+    packetHandlers.add(new MovePacketHandler(serverEventBus, entity));
     packetHandlers.add(new PickUpItemPacketHandler(entityService, serverEventBus));
     packetHandlers.add(new ItemPrototypeUpdatePacketHandler(gameLogic));
   }
@@ -80,10 +79,8 @@ public class ServerPacketResolver implements PacketResolver, SleepyRunnable {
     }
   }
 
-  public void resolve(int senderId, Packet packet) {
-    if (senderId == playerId) {
-      packets.offer(packet);
-    }
+  public void resolve(Packet packet) {
+    packets.offer(packet);
   }
 
 }

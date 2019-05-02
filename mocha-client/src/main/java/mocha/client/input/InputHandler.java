@@ -29,10 +29,10 @@ public class InputHandler {
 
   @PostConstruct
   void init() {
-    keyMap.put(KeyCode.UP, GameKey.UP);
-    keyMap.put(KeyCode.RIGHT, GameKey.RIGHT);
-    keyMap.put(KeyCode.DOWN, GameKey.DOWN);
-    keyMap.put(KeyCode.LEFT, GameKey.LEFT);
+    keyMap.put(KeyCode.W, GameKey.UP);
+    keyMap.put(KeyCode.A, GameKey.LEFT);
+    keyMap.put(KeyCode.S, GameKey.DOWN);
+    keyMap.put(KeyCode.D, GameKey.RIGHT);
     keyMap.put(KeyCode.ESCAPE, GameKey.BACK);
     keyMap.put(KeyCode.SPACE, GameKey.ACTION1);
     keyMap.put(KeyCode.F, GameKey.ACTION2);

@@ -8,6 +8,7 @@ import mocha.game.GameLogic;
 import mocha.game.player.PlayerService;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.EntitiesInChunkService;
+import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.net.packet.MochaConnection;
 import mocha.server.event.ServerEventBus;
@@ -41,17 +42,17 @@ public class ServerPacketHandlerFactory {
 
   public ServerPacketResolver newServerPacketHandler(
       MochaConnection mochaConnection,
-      int playerId
+      Entity entity
   ) {
     return new ServerPacketResolver(
         mochaConnection,
         serverEventBus,
-        playerId,
         chunkService,
         entitiesInChunkService,
         gameLogic,
         entityService,
-        playerService
+        playerService,
+        entity
     );
   }
 }

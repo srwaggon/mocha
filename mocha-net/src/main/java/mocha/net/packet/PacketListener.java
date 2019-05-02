@@ -34,7 +34,7 @@ public class PacketListener implements SleepyRunnable {
 
   private void readPackets() throws DisconnectedException {
     while (connection.isConnected()) {
-      packetHandler.resolve(senderId, connection.readPacket());
+      packetHandler.resolve(connection.readPacket());
       nap();
     }
   }
