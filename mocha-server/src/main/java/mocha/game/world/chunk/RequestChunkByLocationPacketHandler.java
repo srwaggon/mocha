@@ -6,7 +6,7 @@ import mocha.game.world.Location;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketHandler;
 
-public class RequestChunkByLocationPacketHandler implements PacketHandler {
+public class RequestChunkByLocationPacketHandler implements PacketHandler<RequestChunkByLocationPacket> {
 
   private MochaConnection mochaConnection;
   private ChunkService chunkService;

@@ -2,13 +2,16 @@ package mocha.game;
 
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
+import mocha.client.event.ClientEventBus;
+import mocha.game.event.MochaEventHandler;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.prototype.EntityPrototypeService;
 import mocha.game.world.item.ItemService;
 import mocha.game.world.item.itemprototype.ItemPrototypeService;
-import mocha.net.event.NetworkedMochaEventBus;
 import mocha.shared.Repository;
 
 @Component
@@ -16,13 +19,15 @@ public class LocalClientGameLogic extends ClientGameLogic {
 
   @Inject
   public LocalClientGameLogic(
-      NetworkedMochaEventBus mochaEventBus,
+      ClientEventBus mochaEventBus,
       Repository<Movement, Integer> movementRepository,
       ItemPrototypeService itemPrototypeService,
       ItemService itemService,
-      EntityPrototypeService entityPrototypeService
+      EntityPrototypeService entityPrototypeService,
+      List<MochaEventHandler> eventHandlers,
+      List<CommandHandler> commandHandlers
   ) {
-    super(mochaEventBus, movementRepository, itemPrototypeService, itemService, entityPrototypeService);
+    super(mochaEventBus, movementRepository, itemPrototypeService, itemService, entityPrototypeService, eventHandlers, commandHandlers);
   }
 
 }

@@ -10,7 +10,7 @@ import mocha.game.world.chunk.ChunkService;
 import mocha.net.packet.PacketHandler;
 
 @Component
-public class TileUpdatePacketHandler implements PacketHandler {
+public class TileUpdatePacketHandler implements PacketHandler<TileUpdatePacket> {
 
   private ChunkService chunkService;
 

@@ -17,6 +17,8 @@ import mocha.game.player.PlayerService;
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
+import mocha.net.ConnectedEventHandler;
+import mocha.net.LoginRequestPacketHandlerFactory;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.net.packet.MochaConnection;
@@ -37,13 +39,20 @@ public class ServerGameLogicTest {
   private ServerGameLogic serverGameLogic;
 
   @Inject
+  private ConnectedEventHandler connectedEventHandler;
+
+  @Inject
   private TestGameLoop gameLoop;
 
   @Inject
   private PlayerService playerService;
 
+  @Inject
+  private LoginRequestPacketHandlerFactory loginRequestHandlerFactory;
+
   @Mock
   private MochaConnection mochaConnection;
+
 
   @Before
   public void setUp() {
@@ -68,7 +77,8 @@ public class ServerGameLogicTest {
 
   private Integer connectToGameServer(MochaConnection mochaConnection) {
     ArgumentCaptor<Integer> playerIdCaptor = ArgumentCaptor.forClass(Integer.class);
-    serverGameLogic.handle(new ConnectedEvent(mochaConnection));
+    connectedEventHandler.handle(new ConnectedEvent(mochaConnection));
+    loginRequestHandlerFactory.newLoginRequestPacketHandler(mochaConnection).handle(new LoginRequestPacket("link"));
     verify(mochaConnection, atLeastOnce()).sendLoginSuccessful(playerIdCaptor.capture());
     return playerIdCaptor.getValue();
   }

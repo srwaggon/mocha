@@ -20,26 +20,32 @@ import mocha.shared.Repository;
 @Component
 public class ClientSetup implements CommandLineRunner {
 
-  @Inject
   private TileSetFactory tileSetFactory;
-
-  @Inject
   private Repository<Chunk, Integer> chunkRepository;
-
-  @Inject
   private MovementFactory movementFactory;
-
-  @Inject
   private Repository<Movement, Integer> movementRepository;
-
-  @Inject
   private EntityService entityService;
+  private PlayerService playerService;
+  private boolean isOnline;
 
   @Inject
-  private PlayerService playerService;
-
-  @Value("${mocha.client.online}")
-  private boolean isOnline;
+  public ClientSetup(
+      TileSetFactory tileSetFactory,
+      Repository<Chunk, Integer> chunkRepository,
+      MovementFactory movementFactory,
+      Repository<Movement, Integer> movementRepository,
+      EntityService entityService,
+      PlayerService playerService,
+      @Value("${mocha.client.online}") boolean isOnline
+  ) {
+    this.tileSetFactory = tileSetFactory;
+    this.chunkRepository = chunkRepository;
+    this.movementFactory = movementFactory;
+    this.movementRepository = movementRepository;
+    this.entityService = entityService;
+    this.playerService = playerService;
+    this.isOnline = isOnline;
+  }
 
   @Override
   public void run(String... args) {
@@ -47,10 +53,11 @@ public class ClientSetup implements CommandLineRunner {
       Location location = new Location(0, 0);
       chunkRepository.save(new Chunk(1, location, tileSetFactory.createRandomTiles()));
       Entity playerEntity = new Entity(1, location);
-      LocalPlayer player = new LocalPlayer(playerEntity);
+      LocalPlayer player = new LocalPlayer(0);
 
       playerService.addPlayer(player);
       Entity entity = entityService.save(playerEntity);
+      playerService.addEntityToPlayer(entity, player);
 
       movementRepository.save(movementFactory.newSlidingMovement(entity));
     }

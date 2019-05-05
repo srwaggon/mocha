@@ -2,21 +2,21 @@ package mocha.game.world.item;
 
 import com.google.common.eventbus.Subscribe;
 
-import mocha.game.GameLogic;
 import mocha.game.world.item.itemprototype.UpdateItemPrototypeCommand;
 import mocha.net.packet.PacketHandler;
+import mocha.server.event.ServerEventBus;
 
-public class ItemPrototypeUpdatePacketHandler implements PacketHandler {
+public class ItemPrototypeUpdatePacketHandler implements PacketHandler<ItemPrototypeUpdatePacket> {
 
-  private GameLogic gameLogic;
+  private ServerEventBus serverEventBus;
 
-  public ItemPrototypeUpdatePacketHandler(GameLogic gameLogic) {
-    this.gameLogic = gameLogic;
+  public ItemPrototypeUpdatePacketHandler(ServerEventBus serverEventBus) {
+    this.serverEventBus = serverEventBus;
   }
 
   @Subscribe
   public void handle(ItemPrototypeUpdatePacket itemPrototypeUpdatePacket) {
-    gameLogic.handle(new UpdateItemPrototypeCommand(
+    serverEventBus.post(new UpdateItemPrototypeCommand(
         itemPrototypeUpdatePacket.getId(),
         itemPrototypeUpdatePacket.getName(),
         itemPrototypeUpdatePacket.getSpriteId(),

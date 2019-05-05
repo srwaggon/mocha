@@ -6,7 +6,7 @@ import mocha.game.world.entity.EntityService;
 import mocha.net.packet.PacketHandler;
 import mocha.server.event.ServerEventBus;
 
-public class PickUpItemPacketHandler implements PacketHandler {
+public class PickUpItemPacketHandler implements PacketHandler<PickUpItemPacket> {
 
   private EntityService entityService;
   private ServerEventBus serverEventBus;
@@ -17,7 +17,7 @@ public class PickUpItemPacketHandler implements PacketHandler {
   }
 
   @Subscribe
-  private void handle(PickUpItemPacket pickUpItemPacket) {
+  public void handle(PickUpItemPacket pickUpItemPacket) {
     entityService.findById(pickUpItemPacket.getEntityId()).ifPresent(entity -> serverEventBus.postPickUpItemCommand(entity));
   }
 }

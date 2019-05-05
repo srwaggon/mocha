@@ -1,8 +1,9 @@
 package mocha.net.event;
 
+import mocha.game.event.MochaEvent;
 import mocha.net.packet.MochaConnection;
 
-public class ConnectedEvent {
+public class ConnectedEvent implements MochaEvent {
   private final MochaConnection mochaConnection;
 
   public ConnectedEvent(MochaConnection mochaConnection) {

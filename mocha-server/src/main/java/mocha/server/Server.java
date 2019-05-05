@@ -11,8 +11,8 @@ import java.net.Socket;
 
 import javax.inject.Inject;
 
-import mocha.net.event.NetworkedMochaEventBus;
 import mocha.net.packet.MochaConnection;
+import mocha.server.event.ServerEventBus;
 import mocha.shared.task.SleepyRunnable;
 
 @Component
@@ -21,12 +21,14 @@ public class Server implements SleepyRunnable {
   private Logger log = LoggerFactory.getLogger(Server.class);
 
   private ServerSocket server;
+  private ServerEventBus eventBus;
 
   @Inject
-  private NetworkedMochaEventBus eventBus;
-
-  @Inject
-  Server(@Value("${mocha.server.port}") int port) throws IOException {
+  Server(
+      @Value("${mocha.server.port}") int port,
+      ServerEventBus eventBus
+  ) throws IOException {
+    this.eventBus = eventBus;
     log.info("Staring server on port {}", port);
     server = new ServerSocket(port);
   }
@@ -37,6 +39,7 @@ public class Server implements SleepyRunnable {
   }
 
   private void awaitConnections() {
+    //noinspection InfiniteLoopStatement
     while (true) {
       try {
         log.info("Awaiting connections...");

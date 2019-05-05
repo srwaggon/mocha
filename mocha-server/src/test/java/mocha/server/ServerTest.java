@@ -8,6 +8,7 @@ import java.net.Socket;
 
 import mocha.net.Connection;
 import mocha.net.exception.DisconnectedException;
+import mocha.server.event.ServerEventBus;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,7 +19,7 @@ public class ServerTest {
   private static int port = 8026;
 
   private void startServer(int port) throws IOException {
-    testObject = new Server(port);
+    testObject = new Server(port, new ServerEventBus());
     testObject.run();
   }
 

@@ -3,17 +3,14 @@ package mocha.server;
 import com.google.common.collect.Queues;
 import com.google.common.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import mocha.game.GameLogic;
 import mocha.game.player.PlayerService;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.chunk.RequestChunkByIdPacketHandler;
 import mocha.game.world.chunk.RequestChunkByLocationPacketHandler;
 import mocha.game.world.entity.EntitiesInChunkService;
-import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacketHandler;
 import mocha.game.world.entity.RequestEntitiesInChunkPacketHandler;
@@ -31,33 +28,32 @@ import mocha.shared.task.SleepyRunnable;
 public class ServerPacketResolver implements PacketResolver, SleepyRunnable {
 
   private MochaConnection mochaConnection;
-  private EventBus packetEventBus;
+  private EventBus packetEventBus = new EventBus();
 
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
 
-  private List<PacketHandler> packetHandlers = new ArrayList<>();
+  private List<PacketHandler> packetHandlers;
 
   ServerPacketResolver(
       MochaConnection mochaConnection,
       ServerEventBus serverEventBus,
       ChunkService chunkService,
       EntitiesInChunkService entitiesInChunkService,
-      GameLogic gameLogic,
       EntityService entityService,
       PlayerService playerService,
-      Entity entity
+      int playerId,
+      List<PacketHandler> packetHandlers
   ) {
     this.mochaConnection = mochaConnection;
-    packetEventBus = new EventBus();
-
-    packetHandlers.add(new RequestEntitiesByPlayerIdPacketHandler(mochaConnection, entityService, playerService));
-    packetHandlers.add(new RequestChunkByIdPacketHandler(mochaConnection, chunkService));
-    packetHandlers.add(new RequestChunkByLocationPacketHandler(mochaConnection, chunkService));
-    packetHandlers.add(new RequestEntityByIdPacketHandler(mochaConnection, entityService));
-    packetHandlers.add(new RequestEntitiesInChunkPacketHandler(mochaConnection, chunkService, entitiesInChunkService));
-    packetHandlers.add(new MovePacketHandler(serverEventBus, entity));
-    packetHandlers.add(new PickUpItemPacketHandler(entityService, serverEventBus));
-    packetHandlers.add(new ItemPrototypeUpdatePacketHandler(gameLogic));
+    this.packetHandlers = packetHandlers;
+    this.packetHandlers.add(new RequestEntitiesByPlayerIdPacketHandler(mochaConnection, entityService, playerService));
+    this.packetHandlers.add(new RequestChunkByIdPacketHandler(mochaConnection, chunkService));
+    this.packetHandlers.add(new RequestChunkByLocationPacketHandler(mochaConnection, chunkService));
+    this.packetHandlers.add(new RequestEntityByIdPacketHandler(mochaConnection, entityService));
+    this.packetHandlers.add(new RequestEntitiesInChunkPacketHandler(mochaConnection, chunkService, entitiesInChunkService));
+    this.packetHandlers.add(new MovePacketHandler(serverEventBus, playerId, playerService));
+    this.packetHandlers.add(new PickUpItemPacketHandler(entityService, serverEventBus));
+    this.packetHandlers.add(new ItemPrototypeUpdatePacketHandler(serverEventBus));
   }
 
   private void setup() {
@@ -73,7 +69,8 @@ public class ServerPacketResolver implements PacketResolver, SleepyRunnable {
     setup();
     while (mochaConnection.isConnected()) {
       if (!packets.isEmpty()) {
-        packetEventBus.post(packets.poll());
+        Packet packet = packets.poll();
+        packetEventBus.post(packet);
         nap();
       }
     }

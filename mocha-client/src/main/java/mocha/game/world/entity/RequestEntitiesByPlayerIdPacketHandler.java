@@ -10,7 +10,7 @@ import mocha.game.player.PlayerService;
 import mocha.net.packet.PacketHandler;
 
 @Component
-public class RequestEntitiesByPlayerIdPacketHandler implements PacketHandler {
+public class RequestEntitiesByPlayerIdPacketHandler implements PacketHandler<RequestEntitiesByPlayerIdPacket> {
 
   private PlayerService playerService;
   private EntityService entityService;
@@ -26,6 +26,6 @@ public class RequestEntitiesByPlayerIdPacketHandler implements PacketHandler {
     playerService.findById(requestEntitiesByPlayerIdPacket.getPlayerId())
         .ifPresent(player -> requestEntitiesByPlayerIdPacket.getEntityIds()
             .forEach(entityId -> entityService.findById(entityId)
-                .ifPresent(player::setEntity)));
+                .ifPresent(entity -> playerService.addEntityToPlayer(entity, player))));
   }
 }

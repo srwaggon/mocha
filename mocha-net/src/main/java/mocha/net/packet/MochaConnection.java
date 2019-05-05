@@ -2,6 +2,7 @@ package mocha.net.packet;
 
 import java.net.Socket;
 
+import mocha.game.LoginRequestPacket;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkUpdatePacket;
@@ -29,6 +30,10 @@ public class MochaConnection extends PacketConnection {
       Socket socket
   ) {
     super(socket);
+  }
+
+  public void sendLoginRequest(String accountName) {
+    send(new LoginRequestPacket(accountName));
   }
 
   public void sendLoginSuccessful(int playerId) {

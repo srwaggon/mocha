@@ -7,7 +7,7 @@ import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketHandler;
 
 
-public class RequestEntitiesByPlayerIdPacketHandler implements PacketHandler {
+public class RequestEntitiesByPlayerIdPacketHandler implements PacketHandler<RequestEntitiesByPlayerIdPacket> {
 
   private MochaConnection mochaConnection;
   private EntityService entityService;
@@ -26,7 +26,7 @@ public class RequestEntitiesByPlayerIdPacketHandler implements PacketHandler {
   public void handle(RequestEntitiesByPlayerIdPacket requestEntitiesByPlayerIdPacket) {
     int playerId = requestEntitiesByPlayerIdPacket.getPlayerId();
     playerService.findById(playerId).ifPresent(player -> {
-      int entityId = player.getEntity().getId();
+      int entityId = playerService.getEntityForPlayer(player).getId();
       entityService.findById(entityId).ifPresent(mochaConnection::sendEntityUpdate);
       mochaConnection.requestEntitiesByPlayerId(playerId, entityId);
     });

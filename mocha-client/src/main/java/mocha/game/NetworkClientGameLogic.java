@@ -5,7 +5,12 @@ import com.google.common.eventbus.Subscribe;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import mocha.client.event.ClientEventBus;
+import mocha.game.event.MochaEventHandler;
 import mocha.game.player.event.PlayerAddedEvent;
 import mocha.game.player.event.PlayerRemovedEvent;
 import mocha.game.world.Location;
@@ -39,6 +44,7 @@ public class NetworkClientGameLogic extends ClientGameLogic implements GameLogic
   private MochaConnection mochaConnection;
   private EntityService entityService;
 
+  @Inject
   public NetworkClientGameLogic(
       ClientEventBus eventBus,
       PacketSenderFactory packetSenderFactory,
@@ -50,9 +56,11 @@ public class NetworkClientGameLogic extends ClientGameLogic implements GameLogic
       EntityPrototypeService entityPrototypeService,
       EntityService entityService,
       ItemPrototypeService itemPrototypeService,
-      ItemService itemService
+      ItemService itemService,
+      List<MochaEventHandler> eventHandlers,
+      List<CommandHandler> commandHandlers
   ) {
-    super(eventBus, movementRepository, itemPrototypeService, itemService, entityPrototypeService);
+    super(eventBus, movementRepository, itemPrototypeService, itemService, entityPrototypeService, eventHandlers, commandHandlers);
     this.packetSenderFactory = packetSenderFactory;
     this.taskService = taskService;
     this.packetHandler = packetHandler;
@@ -69,11 +77,16 @@ public class NetworkClientGameLogic extends ClientGameLogic implements GameLogic
     eventBus.register(packetSender);
     eventBus.register(packetListener);
     taskService.submit(packetListener);
+    sendLoginRequest();
 
     requestChunkData(-1, -1);
     requestChunkData(-1, 0);
     requestChunkData(0, -1);
     requestChunkData(0, 0);
+  }
+
+  private void sendLoginRequest() {
+    mochaConnection.sendLoginRequest("link");
   }
 
   private void requestChunkData(int x, int y) {

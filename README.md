@@ -50,6 +50,8 @@ These represent units of work **to be done.**
 - [ ] A sound is played when an entity is struck by a sword.
 
 ### Networking
+- [ ] Network Player and local player aren't different
+- [x] Issue: The client gets mad when it can't find a server: massive blood trail
 - [x] There is a game client.
 - [x] The game server responds to chunk requests with the requested chunk's data.
 - [x] The game client renders a chunk requested from the server.

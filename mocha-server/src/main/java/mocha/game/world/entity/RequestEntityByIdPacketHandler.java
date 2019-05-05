@@ -8,7 +8,7 @@ import mocha.game.world.Location;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketHandler;
 
-public class RequestEntityByIdPacketHandler implements PacketHandler {
+public class RequestEntityByIdPacketHandler implements PacketHandler<RequestEntityByIdPacket> {
 
   private MochaConnection mochaConnection;
   private EntityService entityService;

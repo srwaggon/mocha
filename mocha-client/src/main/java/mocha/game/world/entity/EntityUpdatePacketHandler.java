@@ -13,7 +13,7 @@ import mocha.game.world.item.ItemService;
 import mocha.net.packet.PacketHandler;
 
 @Component
-public class EntityUpdatePacketHandler implements PacketHandler {
+public class EntityUpdatePacketHandler implements PacketHandler<EntityUpdatePacket> {
 
   private MochaEventBus clientEventBus;
   private ItemService itemService;

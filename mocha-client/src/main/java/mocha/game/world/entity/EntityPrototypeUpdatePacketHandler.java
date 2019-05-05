@@ -12,7 +12,7 @@ import mocha.game.world.entity.prototype.UpdateEntityPrototypeCommand;
 import mocha.net.packet.PacketHandler;
 
 @Component
-public class EntityPrototypeUpdatePacketHandler implements PacketHandler {
+public class EntityPrototypeUpdatePacketHandler implements PacketHandler<EntityPrototypeUpdatePacket> {
 
   private GameLogic gameLogic;
 

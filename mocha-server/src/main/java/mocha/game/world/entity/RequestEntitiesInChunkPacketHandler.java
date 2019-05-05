@@ -8,7 +8,7 @@ import mocha.game.world.chunk.ChunkService;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketHandler;
 
-public class RequestEntitiesInChunkPacketHandler implements PacketHandler {
+public class RequestEntitiesInChunkPacketHandler implements PacketHandler<RequestEntitiesInChunkPacket> {
 
   private MochaConnection mochaConnection;
   private ChunkService chunkService;

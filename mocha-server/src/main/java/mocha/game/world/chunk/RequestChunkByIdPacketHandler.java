@@ -5,7 +5,7 @@ import com.google.common.eventbus.Subscribe;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketHandler;
 
-public class RequestChunkByIdPacketHandler implements PacketHandler {
+public class RequestChunkByIdPacketHandler implements PacketHandler<RequestChunkByIdPacket> {
   private MochaConnection mochaConnection;
   private ChunkService chunkService;
 

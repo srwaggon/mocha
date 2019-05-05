@@ -1,5 +1,7 @@
 package mocha.game.world.item;
 
+import java.util.List;
+
 import mocha.shared.Repository;
 
 public class ItemService {
@@ -34,4 +36,7 @@ public class ItemService {
     return itemRepository.save(item);
   }
 
+  public List<Item> findAll() {
+    return itemRepository.findAll();
+  }
 }

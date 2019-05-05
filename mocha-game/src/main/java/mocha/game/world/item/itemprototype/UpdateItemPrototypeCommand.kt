@@ -1,5 +1,6 @@
 package mocha.game.world.item.itemprototype
 
+import mocha.game.command.Command
 import mocha.game.world.item.ItemType
 
 data class UpdateItemPrototypeCommand(
@@ -8,4 +9,4 @@ data class UpdateItemPrototypeCommand(
     val spriteId: String,
     val itemType: ItemType,
     val description: String
-)
+) : Command

@@ -27,7 +27,7 @@ class PickupHandler implements GameKeyHandler {
   @Override
   public void handle(GameKeyEvent gameKeyEvent) {
     if (gameKeyEvent.getGameKey().equals(GameKey.ACTION2)) {
-      playerService.findPlayerEntity()
+      playerService.findClientPlayerEntity()
           .ifPresent(entity ->
               eventBus.postSendPacketEvent(new PickUpItemPacket(entity.getId())));
     }

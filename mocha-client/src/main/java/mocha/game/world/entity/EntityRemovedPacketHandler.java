@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import mocha.net.packet.PacketHandler;
 
 @Component
-public class EntityRemovedPacketHandler implements PacketHandler {
+public class EntityRemovedPacketHandler implements PacketHandler<EntityRemovedPacket> {
 
   private EntityService entityService;
 

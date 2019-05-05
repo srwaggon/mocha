@@ -1,6 +1,5 @@
 package mocha.game;
 
-import com.google.common.collect.Maps;
 import com.google.common.eventbus.Subscribe;
 
 import org.slf4j.Logger;
@@ -8,26 +7,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
-import mocha.game.player.Player;
+import mocha.game.event.MochaEventHandler;
 import mocha.game.player.PlayerService;
 import mocha.game.player.event.PlayerAddedEvent;
 import mocha.game.player.event.PlayerRemovedEvent;
-import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.chunk.event.ChunkUpdatedEvent;
 import mocha.game.world.chunk.tile.event.TileUpdatedEvent;
-import mocha.game.world.entity.EntitiesInChunkService;
-import mocha.game.world.entity.Entity;
-import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.event.EntityAddedEvent;
 import mocha.game.world.entity.event.EntityRemovedEvent;
 import mocha.game.world.entity.movement.Movement;
-import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
 import mocha.game.world.entity.prototype.EntityPrototypeService;
@@ -35,127 +29,42 @@ import mocha.game.world.entity.prototype.UpdateEntityPrototypeCommand;
 import mocha.game.world.item.Item;
 import mocha.game.world.item.ItemService;
 import mocha.game.world.item.UpdateItemCommand;
-import mocha.game.world.item.itemprototype.ItemPrototype;
-import mocha.game.world.item.itemprototype.ItemPrototypeService;
-import mocha.game.world.item.itemprototype.UpdateItemPrototypeCommand;
-import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.net.packet.MochaConnection;
 import mocha.server.event.ServerEventBus;
-import mocha.shared.IdFactory;
 import mocha.shared.Repository;
 
 @Component
 public class ServerGameLogic implements GameLogic {
 
   private Logger log = LoggerFactory.getLogger(ServerGameLogic.class);
-  private Map<Integer, MochaConnection> mochaConnectionsByPlayerId = Maps.newConcurrentMap();
+  private Map<Integer, MochaConnection> mochaConnectionsByPlayerId;
 
   private ServerEventBus eventBus;
-  private IdFactory<Player> playerIdFactory;
-  private PlayerFactory playerFactory;
   private Repository<Movement, Integer> movementRepository;
-  private MovementFactory movementFactory;
-  private EntitiesInChunkService entitiesInChunkService;
-  private ChunkService chunkService;
-  private IdFactory<Entity> entityIdFactory;
-  private EntityService entityService;
   private PlayerService playerService;
-  private Repository<Item, Integer> itemRepository;
-  private Repository<ItemPrototype, Integer> itemPrototypeRepository;
   private ItemService itemService;
-  private ItemPrototypeService itemPrototypeService;
   private EntityPrototypeService entityPrototypeService;
 
   @Inject
   public ServerGameLogic(
       ServerEventBus eventBus,
-      IdFactory<Player> playerIdFactory,
-      PlayerFactory playerFactory,
       Repository<Movement, Integer> movementRepository,
-      MovementFactory movementFactory,
-      EntitiesInChunkService entitiesInChunkService,
-      ChunkService chunkService,
-      IdFactory<Entity> entityIdFactory,
-      EntityService entityService,
       PlayerService playerService,
-      Repository<Item, Integer> itemRepository,
-      Repository<ItemPrototype, Integer> itemPrototypeRepository,
       ItemService itemService,
-      ItemPrototypeService itemPrototypeService,
-      EntityPrototypeService entityPrototypeService
+      EntityPrototypeService entityPrototypeService,
+      List<MochaEventHandler> mochaEventHandlers,
+      List<CommandHandler> commandHandlers,
+      Map<Integer, MochaConnection> mochaConnectionsByPlayerId
   ) {
     this.eventBus = eventBus;
-    this.playerIdFactory = playerIdFactory;
-    this.playerFactory = playerFactory;
     this.movementRepository = movementRepository;
-    this.movementFactory = movementFactory;
-    this.entitiesInChunkService = entitiesInChunkService;
-    this.chunkService = chunkService;
-    this.entityIdFactory = entityIdFactory;
-    this.entityService = entityService;
     this.playerService = playerService;
-    this.itemRepository = itemRepository;
-    this.itemPrototypeRepository = itemPrototypeRepository;
     this.itemService = itemService;
-    this.itemPrototypeService = itemPrototypeService;
     this.entityPrototypeService = entityPrototypeService;
-  }
-
-  @Subscribe
-  public void handle(ConnectedEvent connectedEvent) {
-    log.info(connectedEvent.toString());
-    MochaConnection playerConnection = connectedEvent.getMochaConnection();
-    int playerId = playerIdFactory.newId();
-    NetworkPlayer player = addPlayer(playerConnection, playerId);
-    sendEntityPrototypes(playerConnection);
-    sendItemPrototypes(playerConnection);
-    sendItems(playerConnection);
-    sendChunk(playerConnection, player);
-    sendLoginSuccess(playerConnection, playerId);
-  }
-
-  private NetworkPlayer addPlayer(MochaConnection playerConnection, int playerId) {
-    Entity playerEntity = entityService.save(new Entity(entityIdFactory.newId()));
-    movementRepository.save(movementFactory.newSlidingMovement(playerEntity));
-
-    NetworkPlayer player = playerFactory.newNetworkPlayer(playerConnection, playerId, playerEntity);
-    mochaConnectionsByPlayerId.put(playerId, playerConnection);
-    playerService.addPlayer(player);
-    return player;
-  }
-
-  private void sendEntityPrototypes(MochaConnection playerConnection) {
-    entityPrototypeService.findAll().forEach(playerConnection::sendEntityPrototypeUpdate);
-  }
-
-  private void sendItemPrototypes(MochaConnection playerConnection) {
-    itemPrototypeRepository.findAll().forEach(playerConnection::sendItemPrototypeUpdate);
-  }
-
-  private void sendItems(MochaConnection playerConnection) {
-    itemRepository.findAll().forEach(playerConnection::sendItemUpdate);
-  }
-
-  private void sendChunk(MochaConnection playerConnection, NetworkPlayer player) {
-    Chunk playerChunk = getPlayerChunk(player);
-    playerConnection.sendChunkUpdate(playerChunk);
-    sendEntitiesInChunk(playerConnection, playerChunk);
-  }
-
-  private void sendEntitiesInChunk(MochaConnection playerConnection, Chunk chunk) {
-    entitiesInChunkService.getEntitiesInChunk(chunk)
-        .forEach(playerConnection::sendEntityUpdate);
-  }
-
-  private void sendLoginSuccess(MochaConnection playerConnection, int playerId) {
-    playerConnection.sendLoginSuccessful(playerId);
-  }
-
-  private Chunk getPlayerChunk(Player player) {
-    Entity playerEntity = player.getEntity();
-    Location playerEntityLocation = playerEntity.getLocation();
-    return chunkService.getOrCreateChunkAt(playerEntityLocation);
+    this.mochaConnectionsByPlayerId = mochaConnectionsByPlayerId;
+    mochaEventHandlers.forEach(eventBus::register);
+    commandHandlers.forEach(eventBus::register);
   }
 
   @Subscribe
@@ -226,12 +135,6 @@ public class ServerGameLogic implements GameLogic {
           movement.handle(entityMoveCommand);
           eventBus.postMoveEvent(movement);
         });
-  }
-
-  @Override
-  public void handle(UpdateItemPrototypeCommand updateItemPrototypeCommand) {
-    ItemPrototype update = itemPrototypeService.updateItemPrototype(updateItemPrototypeCommand);
-    getConnections().forEach(mochaConnection -> mochaConnection.sendItemPrototypeUpdate(update));
   }
 
   @Override

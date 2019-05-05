@@ -37,8 +37,8 @@ class NextSpriteHandler implements GameKeyHandler {
   @Override
   public void handle(GameKeyEvent gameKeyEvent) {
     if (gameKeyEvent.getGameKey().equals(GameKey.MENU) && gameKeyEvent.isDown()) {
-      playerService.findPlayerEntity().ifPresent(this::cycleEntitySprite);
-      playerService.findPlayerEntity().ifPresent(this::increaseScale);
+      playerService.findClientPlayerEntity().ifPresent(this::cycleEntitySprite);
+      playerService.findClientPlayerEntity().ifPresent(this::increaseScale);
       ItemPrototype pickaxePrototype = itemPrototypeService.findById(1);
       pickaxePrototype.setSpriteId(this.getNextSpriteId(pickaxePrototype.getSpriteId()));
       eventBus.postSendPacketEvent(new ItemPrototypeUpdatePacket(pickaxePrototype));

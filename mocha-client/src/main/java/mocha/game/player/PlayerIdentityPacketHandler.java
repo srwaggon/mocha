@@ -10,7 +10,7 @@ import mocha.game.PlayerIdentityPacket;
 import mocha.net.packet.PacketHandler;
 
 @Component
-public class PlayerIdentityPacketHandler implements PacketHandler {
+public class PlayerIdentityPacketHandler implements PacketHandler<PlayerIdentityPacket> {
 
   @Inject
   public PlayerIdentityPacketHandler() {

@@ -10,6 +10,7 @@ import javafx.geometry.Rectangle2D;
 import mocha.client.gfx.sprite.ScaleProvider;
 import mocha.game.player.PlayerService;
 import mocha.game.world.Location;
+import mocha.game.world.entity.Entity;
 
 @Component
 public class Camera {
@@ -61,7 +62,9 @@ public class Camera {
   }
 
   private Location getPlayerLocation() {
-    return playerService.getEntityForPlayer().getLocation();
+    return playerService.findClientPlayerEntity()
+        .map(Entity::getLocation)
+        .orElse(new Location(0, 0));
   }
 
   private double getWidth() {

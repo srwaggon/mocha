@@ -11,7 +11,7 @@ import mocha.game.world.item.itemprototype.ItemPrototypeService;
 import mocha.net.packet.PacketHandler;
 
 @Component
-public class ItemUpdatePacketHandler implements PacketHandler {
+public class ItemUpdatePacketHandler implements PacketHandler<ItemUpdatePacket> {
 
   private ItemPrototypeService itemPrototypeService;
   private ItemService itemService;

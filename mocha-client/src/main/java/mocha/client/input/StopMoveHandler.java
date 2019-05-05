@@ -26,7 +26,7 @@ class StopMoveHandler implements GameKeyHandler {
     if (!gameKeyEvent.isDown()) {
       GameKey.getDirection(gameKeyEvent)
           .ifPresent(direction ->
-              playerService.findPlayerEntity().ifPresent(entity ->
+              playerService.findClientPlayerEntity().ifPresent(entity ->
                   gameLogic.movePlayerEntity(EntityMoveCommandFactory.buildEntityStopMoveCommand(entity, direction))));
     }
   }

@@ -12,7 +12,7 @@ import mocha.game.world.chunk.tile.TileType;
 import mocha.net.packet.PacketHandler;
 
 @Component
-public class ChunkUpdatePacketHandler implements PacketHandler {
+public class ChunkUpdatePacketHandler implements PacketHandler<ChunkUpdatePacket> {
 
   private TileSetFactory tileSetFactory;
   private ChunkService chunkService;

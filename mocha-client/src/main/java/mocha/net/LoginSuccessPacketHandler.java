@@ -11,7 +11,7 @@ import mocha.game.player.PlayerService;
 import mocha.net.packet.PacketHandler;
 
 @Component
-public class LoginSuccessPacketHandler implements PacketHandler {
+public class LoginSuccessPacketHandler implements PacketHandler<LoginSuccessPacket> {
 
   private PlayerService playerService;
 
@@ -22,6 +22,8 @@ public class LoginSuccessPacketHandler implements PacketHandler {
 
   @Subscribe
   public void handle(LoginSuccessPacket loginSuccessPacket) {
-    playerService.addPlayer(new LocalPlayer(loginSuccessPacket.getPlayerId()));
+    int playerId = loginSuccessPacket.getPlayerId();
+    playerService.addPlayer(new LocalPlayer(playerId));
+    playerService.setClientPlayerId(playerId);
   }
 }

@@ -10,7 +10,7 @@ import mocha.client.event.ClientEventBus;
 import mocha.net.packet.PacketHandler;
 
 @Component
-public class MovePacketHandler implements PacketHandler {
+public class MovePacketHandler implements PacketHandler<MovePacket> {
 
   private ClientEventBus clientEventBus;
 
