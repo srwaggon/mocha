@@ -21,7 +21,6 @@ import mocha.game.world.entity.movement.MovePacket;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.MovementFactory;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
-import mocha.game.world.entity.prototype.EntityPrototypeService;
 import mocha.game.world.item.ItemService;
 import mocha.game.world.item.itemprototype.ItemPrototypeService;
 import mocha.net.event.ConnectedEvent;
@@ -53,14 +52,13 @@ public class NetworkClientGameLogic extends ClientGameLogic implements GameLogic
       Repository<Entity, Integer> entityRepository,
       MovementFactory movementFactory,
       Repository<Movement, Integer> movementRepository,
-      EntityPrototypeService entityPrototypeService,
       EntityService entityService,
       ItemPrototypeService itemPrototypeService,
       ItemService itemService,
       List<MochaEventHandler> eventHandlers,
       List<CommandHandler> commandHandlers
   ) {
-    super(eventBus, movementRepository, itemPrototypeService, itemService, entityPrototypeService, eventHandlers, commandHandlers);
+    super(eventBus, movementRepository, itemPrototypeService, itemService, eventHandlers, commandHandlers);
     this.packetSenderFactory = packetSenderFactory;
     this.taskService = taskService;
     this.packetHandler = packetHandler;

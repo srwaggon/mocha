@@ -1,8 +1,9 @@
 package mocha.game.world.chunk.event;
 
+import mocha.game.event.MochaEvent;
 import mocha.game.world.chunk.Chunk;
 
-public class ChunkUpdatedEvent {
+public class ChunkUpdatedEvent implements MochaEvent {
   private final Chunk chunk;
 
   public ChunkUpdatedEvent(Chunk chunk) {

@@ -1,4 +1,4 @@
-package mocha.game;
+package mocha.game.world.item;
 
 import com.google.common.eventbus.Subscribe;
 
@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import mocha.game.CommandHandler;
 import mocha.game.world.item.itemprototype.ItemPrototype;
 import mocha.game.world.item.itemprototype.ItemPrototypeService;
 import mocha.game.world.item.itemprototype.UpdateItemPrototypeCommand;
@@ -24,7 +25,6 @@ public class UpdateItemPrototypeCommandHandler implements CommandHandler<UpdateI
     this.connectionsByPlayerId = connectionsByPlayerId;
   }
 
-  @Override
   @Subscribe
   public void handle(UpdateItemPrototypeCommand updateItemPrototypeCommand) {
     ItemPrototype update = itemPrototypeService.updateItemPrototype(updateItemPrototypeCommand);

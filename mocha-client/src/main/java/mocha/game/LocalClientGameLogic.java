@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import mocha.client.event.ClientEventBus;
 import mocha.game.event.MochaEventHandler;
 import mocha.game.world.entity.movement.Movement;
-import mocha.game.world.entity.prototype.EntityPrototypeService;
 import mocha.game.world.item.ItemService;
 import mocha.game.world.item.itemprototype.ItemPrototypeService;
 import mocha.shared.Repository;
@@ -23,11 +22,10 @@ public class LocalClientGameLogic extends ClientGameLogic {
       Repository<Movement, Integer> movementRepository,
       ItemPrototypeService itemPrototypeService,
       ItemService itemService,
-      EntityPrototypeService entityPrototypeService,
       List<MochaEventHandler> eventHandlers,
       List<CommandHandler> commandHandlers
   ) {
-    super(mochaEventBus, movementRepository, itemPrototypeService, itemService, entityPrototypeService, eventHandlers, commandHandlers);
+    super(mochaEventBus, movementRepository, itemPrototypeService, itemService, eventHandlers, commandHandlers);
   }
 
 }

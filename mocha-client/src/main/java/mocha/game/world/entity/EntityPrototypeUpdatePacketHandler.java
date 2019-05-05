@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-import mocha.game.GameLogic;
+import mocha.client.event.ClientEventBus;
 import mocha.game.world.entity.prototype.EntityPrototypeUpdatePacket;
 import mocha.game.world.entity.prototype.UpdateEntityPrototypeCommand;
 import mocha.net.packet.PacketHandler;
@@ -14,15 +14,15 @@ import mocha.net.packet.PacketHandler;
 @Component
 public class EntityPrototypeUpdatePacketHandler implements PacketHandler<EntityPrototypeUpdatePacket> {
 
-  private GameLogic gameLogic;
+  private ClientEventBus clientEventBus;
 
   @Inject
-  public EntityPrototypeUpdatePacketHandler(GameLogic gameLogic) {
-    this.gameLogic = gameLogic;
+  public EntityPrototypeUpdatePacketHandler(ClientEventBus clientEventBus) {
+    this.clientEventBus = clientEventBus;
   }
 
   @Subscribe
   public void handle(EntityPrototypeUpdatePacket entityPrototypeUpdatePacket) {
-    gameLogic.handle(new UpdateEntityPrototypeCommand(entityPrototypeUpdatePacket.getEntityPrototype()));
+    clientEventBus.post(new UpdateEntityPrototypeCommand(entityPrototypeUpdatePacket.getEntityPrototype()));
   }
 }

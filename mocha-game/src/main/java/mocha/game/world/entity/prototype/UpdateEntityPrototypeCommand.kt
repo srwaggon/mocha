@@ -1,3 +1,5 @@
 package mocha.game.world.entity.prototype
 
-data class UpdateEntityPrototypeCommand(val entityPrototype: EntityPrototype)
+import mocha.game.command.Command
+
+data class UpdateEntityPrototypeCommand(val entityPrototype: EntityPrototype) : Command
