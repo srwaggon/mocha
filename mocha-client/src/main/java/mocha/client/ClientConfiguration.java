@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InjectionPoint;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -15,11 +16,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import mocha.client.event.ClientEventBus;
-import mocha.game.GameLogic;
+import mocha.client.gfx.RenderLoop;
+import mocha.game.CommandHandler;
 import mocha.game.GameLoop;
-import mocha.game.LocalClientGameLogic;
-import mocha.game.NetworkClientGameLogic;
 import mocha.game.RuleService;
+import mocha.game.event.MochaEventHandler;
 import mocha.game.rule.GameRule;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.collision.CollisionFactory;
@@ -45,10 +46,29 @@ public class ClientConfiguration {
   private ClientEventBus clientEventBus;
 
   @Bean
-  public GameLogic gameLogic(NetworkClientGameLogic networkClientGameLogic, LocalClientGameLogic localClientGameLogic) {
-    GameLogic gameLogic = isOnline ? networkClientGameLogic : localClientGameLogic;
-    clientEventBus.register(gameLogic);
-    return gameLogic;
+  public CommandLineRunner connectEventHandlers(
+      ClientEventBus eventBus,
+      List<MochaEventHandler> eventHandlers
+  ) {
+    return args -> eventHandlers.forEach(eventBus::register);
+  }
+
+  @Bean
+  public CommandLineRunner startUp(TaskService taskService, GameLoop gameLoop, RuleService ruleService, NetworkClient networkClient, RenderLoop renderLoop, ClientPacketResolver clientPacketHandler, @Value("${mocha.client.online}") boolean isOnline) {
+    return args -> {
+      if (isOnline) {
+        taskService.submit(clientPacketHandler);
+        networkClient.connectToServer();
+      }
+      taskService.submit(gameLoop::start);
+      gameLoop.submit(ruleService);
+      renderLoop.start();
+    };
+  }
+
+  @Bean
+  public CommandLineRunner connectCommandHandlers(ClientEventBus eventBus, List<CommandHandler> commandHandlers) {
+    return args -> commandHandlers.forEach(eventBus::register);
   }
 
   @Bean
@@ -57,10 +77,7 @@ public class ClientConfiguration {
   }
 
   @Bean
-  public MovementFactory movementFactory(
-      CollisionFactory collisionFactory,
-      Repository<Entity, Integer> entityRepository
-  ) {
+  public MovementFactory movementFactory(CollisionFactory collisionFactory, Repository<Entity, Integer> entityRepository) {
     return new MovementFactory(collisionFactory, entityRepository);
   }
 

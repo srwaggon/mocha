@@ -17,14 +17,15 @@ import mocha.game.player.PlayerService;
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.movement.EntityMoveCommandHandler;
 import mocha.net.ConnectedEventHandler;
+import mocha.net.DisconnectedEventHandler;
 import mocha.net.LoginRequestPacketHandlerFactory;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.net.packet.MochaConnection;
 
-import static mocha.game.world.entity.movement.command.EntityMoveCommandFactory.buildEntityStartMoveCommand;
-import static mocha.game.world.entity.movement.command.EntityMoveCommandFactory.buildEntityStopMoveCommand;
+import static mocha.game.world.entity.movement.command.EntityMoveCommandFactory.buildEntityMoveCommand;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -34,9 +35,6 @@ import static org.mockito.Mockito.verify;
 @RunWith(SpringRunner.class)
 @Transactional
 public class ServerGameLogicTest {
-
-  @Inject
-  private ServerGameLogic serverGameLogic;
 
   @Inject
   private ConnectedEventHandler connectedEventHandler;
@@ -49,6 +47,12 @@ public class ServerGameLogicTest {
 
   @Inject
   private LoginRequestPacketHandlerFactory loginRequestHandlerFactory;
+
+  @Inject
+  private DisconnectedEventHandler disconnectedEventHandler;
+
+  @Inject
+  private EntityMoveCommandHandler entityMoveCommandHandler;
 
   @Mock
   private MochaConnection mochaConnection;
@@ -89,7 +93,7 @@ public class ServerGameLogicTest {
   }
 
   private void disconnectFromGameServer(Integer playerIdOnDisconnect) {
-    serverGameLogic.handle(new DisconnectedEvent(playerIdOnDisconnect, mochaConnection));
+    disconnectedEventHandler.handle(new DisconnectedEvent(playerIdOnDisconnect, mochaConnection));
   }
 
   @Test
@@ -140,8 +144,8 @@ public class ServerGameLogicTest {
   }
 
   private void moveEntity(Entity entity, Direction direction) {
-    serverGameLogic.handle(buildEntityStartMoveCommand(entity, direction));
+    entityMoveCommandHandler.handle(buildEntityMoveCommand(entity, direction, true));
     gameLoop.step(40);
-    serverGameLogic.handle(buildEntityStopMoveCommand(entity, direction));
+    entityMoveCommandHandler.handle(buildEntityMoveCommand(entity, direction, false));
   }
 }

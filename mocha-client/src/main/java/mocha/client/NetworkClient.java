@@ -8,26 +8,28 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import javax.inject.Inject;
-
 import mocha.client.event.ClientEventBus;
 import mocha.net.packet.MochaConnection;
 
 @Component
-public class NetworkClient implements Runnable {
+public class NetworkClient {
 
-  @Inject
-  private ClientEventBus eventBus;
-
-  @Value("${mocha.server.port}")
+  private ClientEventBus clientEventBus;
   private int port;
-
-  @Value("${mocha.server.host}")
   private String host;
 
-  @Override
-  public void run() {
-    eventBus.postConnectedEvent(getMochaConnection());
+  public NetworkClient(
+      ClientEventBus clientEventBus,
+      @Value("${mocha.server.host}") String host,
+      @Value("${mocha.server.port}") int port
+  ) {
+    this.clientEventBus = clientEventBus;
+    this.port = port;
+    this.host = host;
+  }
+
+  void connectToServer() {
+    clientEventBus.postConnectedEvent(getMochaConnection());
   }
 
   private MochaConnection getMochaConnection() {
@@ -49,5 +51,4 @@ public class NetworkClient implements Runnable {
       throw new RuntimeException(exception);
     }
   }
-
 }

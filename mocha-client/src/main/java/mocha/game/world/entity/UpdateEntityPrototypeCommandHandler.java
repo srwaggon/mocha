@@ -1,4 +1,4 @@
-package mocha.game;
+package mocha.game.world.entity;
 
 import com.google.common.eventbus.Subscribe;
 
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
+import mocha.game.CommandHandler;
 import mocha.game.world.entity.prototype.EntityPrototypeService;
 import mocha.game.world.entity.prototype.UpdateEntityPrototypeCommand;
 
