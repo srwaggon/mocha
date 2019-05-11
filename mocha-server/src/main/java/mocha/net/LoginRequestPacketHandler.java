@@ -87,7 +87,7 @@ public class LoginRequestPacketHandler implements PacketHandler<LoginRequestPack
 
     findPlayerIdByConnection(mochaConnection).ifPresent(playerId ->
         playerService.findById(playerId).ifPresent(player -> {
-          Entity playerEntity = playerService.getEntityForPlayerId(playerId).orElse(newPlayerEntity());
+          Entity playerEntity = getPlayerEntity(playerId);
           playerService.addEntityToPlayer(playerEntity, player);
           sendEntityPrototypes(mochaConnection);
           sendItemPrototypes(mochaConnection);
@@ -95,6 +95,11 @@ public class LoginRequestPacketHandler implements PacketHandler<LoginRequestPack
           sendChunk(mochaConnection, playerEntity);
           sendLoginSuccess(mochaConnection, playerId);
         }));
+  }
+
+  @NotNull
+  private Entity getPlayerEntity(Integer playerId) {
+    return playerService.getEntityForPlayerId(playerId).orElseGet(this::newPlayerEntity);
   }
 
   @NotNull
