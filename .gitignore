@@ -28,3 +28,4 @@ data/
 
 # gradle caches
 *.lock
+!gradle-wrapper.jar
