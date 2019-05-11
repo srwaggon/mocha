@@ -16,7 +16,7 @@ public class PlayerService {
   private MochaEventBus eventBus;
   private Repository<Player, Integer> playerRepository;
   private EntityService entityService;
-  private Map<Integer, Entity> entitiesByPlayerId = Maps.newConcurrentMap();
+  private Map<Integer, Integer> entityIdsByPlayerId = Maps.newConcurrentMap();
   private int clientPlayerId;
 
   public PlayerService(
@@ -35,7 +35,7 @@ public class PlayerService {
   }
 
   private void removePlayer(Player player) {
-    Optional.ofNullable(entitiesByPlayerId.get(player.getId()))
+    Optional.ofNullable(getEntityForPlayer(player))
         .ifPresent(entityService::removeEntity);
     playerRepository.delete(player);
     eventBus.postPlayerRemovedEvent(player);
@@ -47,11 +47,19 @@ public class PlayerService {
   }
 
   public Entity getEntityForPlayer(Player player) {
-    return entitiesByPlayerId.get(player.getId());
+    Integer playerId = player.getId();
+    return getEntityForPlayerId(playerId);
+  }
+
+  private Entity getEntityForPlayerId(Integer playerId) {
+    return Optional.ofNullable(entityIdsByPlayerId.get(playerId))
+        .map(integer -> entityService.findById(integer)
+            .orElse(null))
+        .orElse(null);
   }
 
   public void addEntityToPlayer(Entity entity, Player player) {
-    entitiesByPlayerId.put(player.getId(), entity);
+    entityIdsByPlayerId.put(player.getId(), entity.getId());
   }
 
   public void setClientPlayerId(int clientPlayerId) {
@@ -59,7 +67,7 @@ public class PlayerService {
   }
 
   public Optional<Entity> findClientPlayerEntity() {
-    return Optional.ofNullable(entitiesByPlayerId.get(clientPlayerId))
+    return Optional.ofNullable(getEntityForPlayerId(clientPlayerId))
         .flatMap(entity -> entityService.findById(entity.getId()));
   }
 

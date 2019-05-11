@@ -2,6 +2,7 @@ package mocha.net;
 
 import com.google.common.eventbus.Subscribe;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,17 +87,21 @@ public class LoginRequestPacketHandler implements PacketHandler<LoginRequestPack
 
     findPlayerIdByConnection(mochaConnection).ifPresent(playerId ->
         playerService.findById(playerId).ifPresent(player -> {
-          Entity playerEntity = entityService.save(new Entity(entityIdFactory.newId()));
-          movementRepository.save(movementFactory.newSlidingMovement(playerEntity));
-
+          Entity playerEntity = playerService.findClientPlayerEntity().orElse(newPlayerEntity());
           playerService.addEntityToPlayer(playerEntity, player);
-
           sendEntityPrototypes(mochaConnection);
           sendItemPrototypes(mochaConnection);
           sendItems(mochaConnection);
           sendChunk(mochaConnection, playerEntity);
           sendLoginSuccess(mochaConnection, playerId);
         }));
+  }
+
+  @NotNull
+  private Entity newPlayerEntity() {
+    Entity playerEntity = entityService.save(new Entity(entityIdFactory.newId()));
+    movementRepository.save(movementFactory.newSlidingMovement(playerEntity));
+    return playerEntity;
   }
 
 

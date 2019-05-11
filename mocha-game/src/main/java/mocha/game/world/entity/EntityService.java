@@ -1,5 +1,6 @@
 package mocha.game.world.entity;
 
+import java.util.List;
 import java.util.Optional;
 
 import mocha.game.event.MochaEventBus;
@@ -48,7 +49,9 @@ public class EntityService {
   }
 
   public void removeEntity(Entity entity) {
-    entityRepository.delete(entity);
+    if (entity.isTransient()) {
+      entityRepository.delete(entity);
+    }
     removeEntityFromChunk(entity);
     movementRepository.findById(entity.getId()).ifPresent(movementRepository::delete);
     eventBus.postEntityRemovedEvent(entity);
@@ -62,5 +65,9 @@ public class EntityService {
 
   public Optional<Entity> findById(Integer playerEntityId) {
     return entityRepository.findById(playerEntityId);
+  }
+
+  public List<Entity> findAll() {
+    return entityRepository.findAll();
   }
 }

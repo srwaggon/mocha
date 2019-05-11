@@ -1,15 +1,16 @@
 package mocha.game.world.entity;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import mocha.game.world.chunk.Chunk;
 import mocha.shared.Repository;
+
+import static com.google.common.collect.Sets.newHashSet;
+import static java.util.stream.Collectors.toSet;
 
 public class EntitiesInChunkService {
 
@@ -26,7 +27,7 @@ public class EntitiesInChunkService {
         .map(entityRepository::findById)
         .filter(Optional::isPresent)
         .map(Optional::get)
-        .collect(Collectors.toSet());
+        .collect(toSet());
   }
 
   public void put(Chunk chunk, Entity entity) {
@@ -34,15 +35,18 @@ public class EntitiesInChunkService {
   }
 
   public void remove(Chunk chunk, Entity entity) {
-    getChunkSet(chunk.getId()).remove(entity.getId());
+    Optional.ofNullable(entityIdsByChunk.get(chunk.getId()))
+        .orElse(newHashSet())
+        .remove(entity.getId());
   }
 
   private Set<Integer> getChunkSet(int chunkId) {
     Optional<Set<Integer>> chunkSet = Optional.ofNullable(entityIdsByChunk.get(chunkId));
-    if (chunkSet.isPresent()) {
-      return chunkSet.get();
+    if (!chunkSet.isPresent()) {
+      Set<Integer> newSet = newHashSet();
+      entityIdsByChunk.put(chunkId, newSet);
+      return newSet;
     }
-    entityIdsByChunk.put(chunkId, Sets.newHashSet());
-    return getChunkSet(chunkId);
+    return chunkSet.get();
   }
 }
