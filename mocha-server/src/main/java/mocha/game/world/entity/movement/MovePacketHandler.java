@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import mocha.game.player.Player;
 import mocha.game.player.PlayerService;
-import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.packet.PacketHandler;
 import mocha.server.event.ServerEventBus;
@@ -27,10 +26,10 @@ public class MovePacketHandler implements PacketHandler<MovePacket> {
   public void handle(MovePacket movePacket) {
     EntityMoveCommand moveCommand = movePacket.getMoveCommand();
     Optional<Player> maybePlayer = playerService.findById(playerId);
-    maybePlayer.ifPresent(player -> {
-      Entity entity = playerService.getEntityForPlayer(player);
-      moveCommand.setEntityId(entity.getId());
-      serverEventBus.post(moveCommand);
-    });
+    maybePlayer.ifPresent(player ->
+        playerService.getEntityForPlayer(player).ifPresent(entity -> {
+          moveCommand.setEntityId(entity.getId());
+          serverEventBus.post(moveCommand);
+        }));
   }
 }

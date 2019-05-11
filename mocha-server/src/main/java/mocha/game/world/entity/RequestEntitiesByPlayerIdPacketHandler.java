@@ -25,10 +25,11 @@ public class RequestEntitiesByPlayerIdPacketHandler implements PacketHandler<Req
   @Subscribe
   public void handle(RequestEntitiesByPlayerIdPacket requestEntitiesByPlayerIdPacket) {
     int playerId = requestEntitiesByPlayerIdPacket.getPlayerId();
-    playerService.findById(playerId).ifPresent(player -> {
-      int entityId = playerService.getEntityForPlayer(player).getId();
-      entityService.findById(entityId).ifPresent(mochaConnection::sendEntityUpdate);
-      mochaConnection.requestEntitiesByPlayerId(playerId, entityId);
-    });
+    playerService.findById(playerId).ifPresent(player ->
+        playerService.getEntityForPlayer(player).ifPresent(entity -> {
+          int entityId = entity.getId();
+          entityService.findById(entityId).ifPresent(mochaConnection::sendEntityUpdate);
+          mochaConnection.requestEntitiesByPlayerId(playerId, entityId);
+        }));
   }
 }

@@ -35,8 +35,7 @@ public class PlayerService {
   }
 
   private void removePlayer(Player player) {
-    Optional.ofNullable(getEntityForPlayer(player))
-        .ifPresent(entityService::removeEntity);
+    getEntityForPlayer(player).ifPresent(entityService::removeEntity);
     playerRepository.delete(player);
     eventBus.postPlayerRemovedEvent(player);
   }
@@ -46,16 +45,13 @@ public class PlayerService {
     eventBus.postPlayerAddedEvent(player);
   }
 
-  public Entity getEntityForPlayer(Player player) {
-    Integer playerId = player.getId();
-    return getEntityForPlayerId(playerId);
+  public Optional<Entity> getEntityForPlayer(Player player) {
+    return getEntityForPlayerId(player.getId());
   }
 
-  private Entity getEntityForPlayerId(Integer playerId) {
+  public Optional<Entity> getEntityForPlayerId(Integer playerId) {
     return Optional.ofNullable(entityIdsByPlayerId.get(playerId))
-        .map(integer -> entityService.findById(integer)
-            .orElse(null))
-        .orElse(null);
+        .flatMap(entityId -> entityService.findById(entityId));
   }
 
   public void addEntityToPlayer(Entity entity, Player player) {
@@ -67,8 +63,7 @@ public class PlayerService {
   }
 
   public Optional<Entity> findClientPlayerEntity() {
-    return Optional.ofNullable(getEntityForPlayerId(clientPlayerId))
-        .flatMap(entity -> entityService.findById(entity.getId()));
+    return getEntityForPlayerId(clientPlayerId);
   }
 
   public void deleteAll() {
