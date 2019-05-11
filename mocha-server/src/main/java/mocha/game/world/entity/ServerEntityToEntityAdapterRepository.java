@@ -2,11 +2,12 @@ package mocha.game.world.entity;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
 import mocha.shared.Repository;
+
+import static java.util.stream.Collectors.toList;
 
 
 @org.springframework.stereotype.Repository
@@ -28,7 +29,7 @@ public class ServerEntityToEntityAdapterRepository implements Repository<Entity,
   public List<Entity> findAll() {
     return serverEntityRepository.findAll().stream()
         .map(this::getEntityOfRightType)
-        .collect(Collectors.toList());
+        .collect(toList());
   }
 
   @Override

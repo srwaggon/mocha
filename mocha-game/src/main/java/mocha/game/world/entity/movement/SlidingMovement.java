@@ -70,7 +70,14 @@ public class SlidingMovement extends BaseMovement {
       return;
     }
 
-    getLocation().set(next);
+    updateEntityLocation(next);
+  }
+
+  private void updateEntityLocation(Location next) {
+    entityRepository.findById(this.getId()).ifPresent(entity -> {
+      entity.getLocation().set(next);
+      entityRepository.save(entity);
+    });
   }
 
   private void informColliders(Set<Collider> colliders) {

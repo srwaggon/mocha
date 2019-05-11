@@ -10,7 +10,6 @@ import mocha.game.world.entity.prototype.EntityPrototype;
 import mocha.game.world.entity.prototype.EntityPrototypeFactory;
 import mocha.game.world.entity.prototype.EntityPrototypeService;
 import mocha.game.world.item.ItemService;
-import mocha.shared.CachingRepository;
 import mocha.shared.IdFactory;
 import mocha.shared.InMemoryRepository;
 import mocha.shared.Repository;
@@ -43,10 +42,10 @@ public class EntityConfiguration {
     return new EntityFactory(itemService);
   }
 
-  @Bean
-  public Repository<Entity, Integer> entityRepository(ServerEntityToEntityAdapterRepository entityRepository) {
-    return new CachingRepository<>(entityRepository);
-  }
+//  @Bean
+//  public Repository<Entity, Integer> entityRepository(ServerEntityToEntityAdapterRepository entityRepository) {
+//    return new CachingRepository<>(entityRepository);
+//  }
 
   @Bean
   public IdFactory<Entity> entityIdFactory(Repository<Entity, Integer> entityRepository) {
