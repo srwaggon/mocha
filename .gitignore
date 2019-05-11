@@ -19,11 +19,12 @@ hs_err_pid*
 *.ipr
 *.iws
 
-# Gradle
-.gradle/
-
 # Project specific
 data/
 
 # h2
-*.mv.db
+
+*.db
+
+# gradle caches
+*.lock
