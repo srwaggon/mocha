@@ -16,3 +16,5 @@ jobs:
       - run: ./gradlew dependencies
       - run: ./gradlew test
       - run: ./gradlew build
+      - store_test_results:
+          path: ["mocha-client/build/reports/tests/test/"]
