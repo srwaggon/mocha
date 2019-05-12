@@ -51,9 +51,9 @@ public class EntityService {
   public void removeEntity(Entity entity) {
     if (entity.isTransient()) {
       entityRepository.delete(entity);
+      movementRepository.findById(entity.getId()).ifPresent(movementRepository::delete);
     }
     removeEntityFromChunk(entity);
-    movementRepository.findById(entity.getId()).ifPresent(movementRepository::delete);
     eventBus.postEntityRemovedEvent(entity);
   }
 

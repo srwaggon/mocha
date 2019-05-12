@@ -18,12 +18,14 @@ import mocha.game.world.Direction;
 import mocha.game.world.Location;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.EntityMoveCommandHandler;
+import mocha.game.world.entity.movement.Movement;
 import mocha.net.ConnectedEventHandler;
 import mocha.net.DisconnectedEventHandler;
 import mocha.net.LoginRequestPacketHandlerFactory;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.net.packet.MochaConnection;
+import mocha.shared.Repository;
 
 import static mocha.game.world.entity.movement.command.EntityMoveCommandFactory.buildEntityMoveCommand;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,7 +36,7 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Transactional
-public class ServerGameLogicTest {
+public class LoginIntegrationTest {
 
   @Inject
   private ConnectedEventHandler connectedEventHandler;
@@ -54,9 +56,14 @@ public class ServerGameLogicTest {
   @Inject
   private EntityMoveCommandHandler entityMoveCommandHandler;
 
+  @Inject
+  private Repository<Movement, Integer> movementRepository;
+
+  @Inject
+  private Repository<Entity, Integer> entityRepository;
+
   @Mock
   private MochaConnection mochaConnection;
-
 
   @Before
   public void setUp() {
@@ -65,6 +72,8 @@ public class ServerGameLogicTest {
 
   @After
   public void tearDown() {
+    entityRepository.deleteAll();
+    movementRepository.deleteAll();
     playerService.deleteAll();
   }
 
@@ -142,10 +151,25 @@ public class ServerGameLogicTest {
     assertThat(locationOnReconnect.getX()).isEqualTo(locationOnDisconnect.getX());
     assertThat(locationOnReconnect.getY()).isEqualTo(locationOnDisconnect.getY());
   }
-
   private void moveEntity(Entity entity, Direction direction) {
     entityMoveCommandHandler.handle(buildEntityMoveCommand(entity, direction, true));
     gameLoop.step(40);
     entityMoveCommandHandler.handle(buildEntityMoveCommand(entity, direction, false));
+  }
+
+  @Test
+  public void entityLocationIsPersistedFromPreviousSession_whenReconnecting_again() {
+    int playerId = connectToGameServer();
+    Entity entity = getEntityUpdate();
+    moveEntity(entity, Direction.EAST);
+    moveEntity(entity, Direction.SOUTH);
+    reconnectToGameServer(playerId);
+    moveEntity(entity, Direction.NORTH);
+    moveEntity(entity, Direction.WEST);
+    Location locationOnDisconnect = entity.getLocation();
+    reconnectToGameServer(playerId);
+    Location locationOnReconnect = getEntityUpdate().getLocation();
+    assertThat(locationOnReconnect.getX()).isEqualTo(locationOnDisconnect.getX());
+    assertThat(locationOnReconnect.getY()).isEqualTo(locationOnDisconnect.getY());
   }
 }
