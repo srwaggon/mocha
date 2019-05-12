@@ -151,6 +151,7 @@ public class LoginIntegrationTest {
     assertThat(locationOnReconnect.getX()).isEqualTo(locationOnDisconnect.getX());
     assertThat(locationOnReconnect.getY()).isEqualTo(locationOnDisconnect.getY());
   }
+
   private void moveEntity(Entity entity, Direction direction) {
     entityMoveCommandHandler.handle(buildEntityMoveCommand(entity, direction, true));
     gameLoop.step(40);

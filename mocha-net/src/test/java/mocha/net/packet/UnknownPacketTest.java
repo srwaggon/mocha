@@ -3,8 +3,6 @@ package mocha.net.packet;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 import mocha.net.packet.message.GlobalMessagePacket;
 
 import static junit.framework.TestCase.assertEquals;

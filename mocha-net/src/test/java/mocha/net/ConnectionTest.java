@@ -55,7 +55,7 @@ public class ConnectionTest {
   }
 
   @Test
-  public void hasLine_ReturnsFalse_WhenNoLineReady(){
+  public void hasLine_ReturnsFalse_WhenNoLineReady() {
     assertFalse(testObject.hasLine());
   }
 
@@ -112,7 +112,7 @@ public class ConnectionTest {
     when(inputStream.read()).thenThrow(new NoSuchElementException());
     try {
       testObject.readLine();
-    } catch(DisconnectedException ignored) {
+    } catch (DisconnectedException ignored) {
 
     }
 

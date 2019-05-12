@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 public class StoneTest {
 
   private Stone testObject;
+
   @Before
   public void setUp() {
     testObject = new Stone();
