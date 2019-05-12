@@ -5,124 +5,38 @@ import mocha.game.world.collision.Collider;
 import mocha.game.world.item.Item;
 import mocha.shared.Identified;
 
-public class Entity implements Collider, Identified<Integer> {
-
-  private Integer id;
-  private Location location = new Location();
-  private EntityType entityType = EntityType.MOB;
-  private int typeId;
-  private boolean isBlocking = true;
-  private Item leftHand;
-  private Item rightHand;
-  private String spriteId = "/mocha/gfx/sprites/slime/slime0.png::0";
-  private double scale = 1.0;
-
-  public Entity() {
-  }
-
-  public Entity(Integer id) {
-    this.id = id;
-  }
-
-  public Entity(Integer id, Location location) {
-    this.id = id;
-    this.location = location;
-  }
-
-  public String toString() {
-    return "{" +
-        "\"id\":" + id + ", " +
-        "\"location\": " + location +
-        "}";
-  }
-
-  public Integer getId() {
-    return id;
-  }
+public interface Entity extends Collider, Identified<Integer> {
+  Integer getId();
 
   @Override
-  public void setId(Integer id) {
-    this.id = id;
-  }
+  void setId(Integer id);
 
-  public void setId(int id) {
-    this.id = id;
-  }
+  Location getLocation();
 
-  public Location getLocation() {
-    return location;
-  }
+  String getSpriteId();
 
-  public String getSpriteId() {
-    return spriteId;
-  }
+  void setSpriteId(String spriteId);
 
-  public void setSpriteId(String spriteId) {
-    this.spriteId = spriteId;
-  }
+  double getScale();
 
-  public double getScale() {
-    return scale;
-  }
-
-  public void setScale(double scale) {
-    this.scale = scale;
-  }
-
-  public EntityType getEntityType() {
-    return entityType;
-  }
+  EntityType getEntityType();
 
   @Override
-  public boolean isBlocking() {
-    return isBlocking;
-  }
-
-  public void setBlocking(boolean isBlocking) {
-    this.isBlocking = isBlocking;
-  }
+  boolean isBlocking();
 
   @Override
-  public void collide(Collider collider) {
-  }
+  void collide(Collider collider);
 
-  public int getTypeId() {
-    return typeId;
-  }
+  int getTypeId();
 
-  public boolean isTransient() {
-    return false;
-  }
+  boolean isTransient();
 
-  protected void setEntityType(EntityType entityType) {
-    this.entityType = entityType;
-  }
+  void setRightHand(Item item);
 
-  protected void setTypeId(int typeId) {
-    this.typeId = typeId;
-  }
+  void pickup(Entity entity);
 
-  public Item getLeftHand() {
-    return leftHand;
-  }
+  void pickedUpBy(Entity entity);
 
-  public void setLeftHand(Item leftHand) {
-    this.leftHand = leftHand;
-  }
+  void setScale(double scale);
 
-  public Item getRightHand() {
-    return rightHand;
-  }
-
-  public void setRightHand(Item rightHand) {
-    this.rightHand = rightHand;
-  }
-
-  public void pickup(Entity entity) {
-    entity.pickedUpBy(this);
-  }
-
-  protected void pickedUpBy(Entity entity) {
-
-  }
 }

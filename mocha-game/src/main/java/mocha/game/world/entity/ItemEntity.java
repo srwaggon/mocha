@@ -3,7 +3,7 @@ package mocha.game.world.entity;
 import mocha.game.world.Location;
 import mocha.game.world.item.Item;
 
-public class ItemEntity extends Entity {
+public class ItemEntity extends BaseEntity {
 
   private Item item;
 
@@ -37,7 +37,7 @@ public class ItemEntity extends Entity {
   }
 
   @Override
-  protected void pickedUpBy(Entity entity) {
+  public void pickedUpBy(Entity entity) {
     entity.setRightHand(item);
   }
 }

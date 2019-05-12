@@ -41,7 +41,7 @@ public class EntityUpdatePacketHandler implements PacketHandler<EntityUpdatePack
         return new ItemEntity(entityId, location, item);
       case MOB:
       default:
-        return new Entity(entityId, location);
+        return new BaseEntity(entityId, location);
     }
   }
 }

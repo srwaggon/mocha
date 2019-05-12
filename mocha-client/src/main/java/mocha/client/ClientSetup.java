@@ -11,6 +11,7 @@ import mocha.game.player.PlayerService;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.tile.TileSetFactory;
+import mocha.game.world.entity.BaseEntity;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.movement.Movement;
@@ -52,7 +53,7 @@ public class ClientSetup implements CommandLineRunner {
     if (!isOnline) {
       Location location = new Location(0, 0);
       chunkRepository.save(new Chunk(1, location, tileSetFactory.createRandomTiles()));
-      Entity playerEntity = new Entity(1, location);
+      Entity playerEntity = new BaseEntity(1, location);
       LocalPlayer player = new LocalPlayer(0);
 
       playerService.addPlayer(player);

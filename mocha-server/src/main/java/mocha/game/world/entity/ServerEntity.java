@@ -7,12 +7,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
 @javax.persistence.Entity
-public class ServerEntity extends Entity {
+public class ServerEntity extends BaseEntity {
 
   public ServerEntity() {
   }
 
-  ServerEntity(Entity entity) {
+  ServerEntity(BaseEntity entity) {
     this.setId(entity.getId());
     getLocation().set(entity.getLocation());
     this.setBlocking(entity.isBlocking());

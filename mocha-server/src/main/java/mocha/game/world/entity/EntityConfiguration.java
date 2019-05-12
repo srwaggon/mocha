@@ -42,11 +42,6 @@ public class EntityConfiguration {
     return new EntityFactory(itemService);
   }
 
-//  @Bean
-//  public Repository<Entity, Integer> entityRepository(ServerEntityToEntityAdapterRepository entityRepository) {
-//    return new CachingRepository<>(entityRepository);
-//  }
-
   @Bean
   public IdFactory<Entity> entityIdFactory(Repository<Entity, Integer> entityRepository) {
     return new IdFactory<>(entityRepository);

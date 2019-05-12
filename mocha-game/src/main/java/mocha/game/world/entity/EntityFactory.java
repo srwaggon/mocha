@@ -17,7 +17,7 @@ public class EntityFactory {
   }
 
   public Entity newRandomlyPlacedEntity(Integer id) {
-    return new Entity(id, new Location(random(), random()));
+    return new BaseEntity(id, new Location(random(), random()));
   }
 
   private int random() {

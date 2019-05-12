@@ -28,7 +28,7 @@ public class RequestEntityByIdPacketHandler implements PacketHandler<RequestEnti
     if (optionalEntity.isPresent()) {
       mochaConnection.sendEntityUpdate(optionalEntity.get());
     } else {
-      mochaConnection.sendEntityRemoved(new Entity(entityId, new Location()));
+      mochaConnection.sendEntityRemoved(new BaseEntity(entityId, new Location()));
     }
   }
 }

@@ -14,6 +14,7 @@ import mocha.game.player.PlayerService;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
+import mocha.game.world.entity.BaseEntity;
 import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
@@ -104,7 +105,7 @@ public class LoginRequestPacketHandler implements PacketHandler<LoginRequestPack
 
   @NotNull
   private Entity newPlayerEntity() {
-    Entity playerEntity = entityService.save(new Entity(entityIdFactory.newId()));
+    Entity playerEntity = entityService.save(new BaseEntity(entityIdFactory.newId()));
     movementRepository.save(movementFactory.newSlidingMovement(playerEntity));
     return playerEntity;
   }
