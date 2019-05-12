@@ -53,3 +53,8 @@ dependencies {
     testImplementation("org.mockito:mockito-all:1.9.5")
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
+
+test {
+    reports.junitXml.destination = file("$buildDir/../../build/test-results/mocha-client/xml")
+    reports.html.destination = file("$buildDir/../../build/test-results/mocha-client/html")
+}

@@ -53,3 +53,7 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
+test {
+    reports.junitXml.destination = file("$buildDir/../../build/test-results/mocha-server/xml")
+    reports.html.destination = file("$buildDir/../../build/test-results/mocha-server/html")
+}
