@@ -1,5 +1,7 @@
 # Mocha Readme
 Mocha is currently a tile based game template, with simple hitbox collision.
+
+[![CircleCI](https://circleci.com/gh/srwaggon/mocha.svg?style=svg)](https://circleci.com/gh/srwaggon/mocha)
  
 
 ## Backlog
