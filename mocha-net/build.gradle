@@ -2,6 +2,9 @@ group 'swagnificent.party'
 version '1.0-SNAPSHOT'
 
 buildscript {
+    ext {
+        lombokVersion = '1.18.4'
+    }
     repositories {
         mavenCentral()
     }
@@ -24,6 +27,11 @@ dependencies {
     compile("commons-io:commons-io:2.4")
 
     compile project(":mocha-game")
+
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 
     testCompile 'junit:junit:4.12'
     testCompile('org.assertj:assertj-core:3.3.0')

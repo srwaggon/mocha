@@ -4,6 +4,7 @@ version '1.0-SNAPSHOT'
 buildscript {
     ext {
         springBootVersion = '2.1.0.RELEASE'
+        lombokVersion = '1.18.4'
     }
     repositories {
         mavenCentral()
@@ -44,7 +45,10 @@ dependencies {
     implementation("commons-io:commons-io:2.4")
     implementation("org.springframework.boot:spring-boot-starter")
 
-    compileOnly 'org.projectlombok:lombok:1.18.4'
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    testCompileOnly("org.projectlombok:lombok:${lombokVersion}")
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+    testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
 
     compile project(":mocha-game")
     compile project(":mocha-net")
