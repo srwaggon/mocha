@@ -29,3 +29,8 @@ dependencies {
     testCompile('org.assertj:assertj-core:3.3.0')
     testCompile("org.mockito:mockito-all:1.9.5")
 }
+
+test {
+    reports.junitXml.destination = file("$buildDir/../../build/test-results/mocha-net/xml")
+    reports.html.destination = file("$buildDir/../../build/test-results/mocha-net/html")
+}

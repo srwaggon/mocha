@@ -39,3 +39,7 @@ compileTestKotlin {
     }
 }
 
+test {
+    reports.junitXml.destination = file("$buildDir/../../build/test-results/mocha-game/xml")
+    reports.html.destination = file("$buildDir/../../build/test-results/mocha-game/html")
+}
