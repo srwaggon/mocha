@@ -10,7 +10,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import mocha.game.NetworkPlayer;
+import mocha.game.player.ServerPlayer;
 import mocha.game.event.MochaEventHandler;
 import mocha.game.player.Player;
 import mocha.game.player.PlayerService;
@@ -57,7 +57,7 @@ public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> 
     ServerPacketResolver serverPacketHandler = serverPacketHandlerFactory.newServerPacketHandler(playerConnection, playerId);
     PacketListener packetListener = new PacketListener(serverEventBus, playerConnection, playerId, serverPacketHandler);
 
-    playerService.addPlayer(new NetworkPlayer(playerId));
+    playerService.addPlayer(new ServerPlayer(playerId));
     mochaConnectionsByPlayerId.put(playerId, playerConnection);
 
     serverEventBus.postTaskEvent(packetListener);

@@ -13,7 +13,7 @@ import mocha.shared.Repository;
 public class PlayerConfiguration {
 
   @Bean
-  public Repository<Player, Integer> playerRegistry() {
+  public Repository<Player, Integer> playerRepository() {
     return new InMemoryRepository<>();
   }
 

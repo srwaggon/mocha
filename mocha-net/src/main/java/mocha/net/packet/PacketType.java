@@ -1,5 +1,6 @@
 package mocha.net.packet;
 
+import mocha.account.CreateAccountRequestPacket;
 import mocha.game.LoginRequestPacket;
 import mocha.game.PlayerIdentityPacket;
 import mocha.game.world.chunk.ChunkUpdatePacket;
@@ -21,6 +22,7 @@ import mocha.net.packet.message.GlobalMessagePacket;
 
 public enum PacketType {
 
+  CREATE_ACCOUNT_REQUEST(CreateAccountRequestPacket.class),
   LOGIN_REQUEST(LoginRequestPacket.class),
   LOGIN_SUCCESS(LoginSuccessPacket.class),
   PLAYER_IDENTITY(PlayerIdentityPacket.class),

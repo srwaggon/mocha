@@ -25,6 +25,10 @@ public class EntityUpdatePacket extends AbstractEntityPacket {
     return new Location(getX(), getY());
   }
 
+  private int getId() {
+    return getDataAsInt(1);
+  }
+
   private int getX() {
     return getDataAsInt(2);
   }

@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import mocha.client.ClientPacketResolver;
 import mocha.client.event.ClientEventBus;
 import mocha.game.event.MochaEventHandler;
-import mocha.game.world.Location;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketListener;
@@ -51,21 +50,20 @@ public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> 
     eventBus.register(packetSender);
     eventBus.register(packetListener);
     taskService.submit(packetListener);
-    sendLoginRequest();
 
-    requestChunkData(-1, -1);
-    requestChunkData(-1, 0);
-    requestChunkData(0, -1);
-    requestChunkData(0, 0);
+    sendCreateAccountRequest();
+    sendLoginRequest();
+  }
+
+  private void sendCreateAccountRequest() {
+    getMochaConnection().sendCreateAccountRequest("link", "link@hyrule.com");
   }
 
   private void sendLoginRequest() {
-    mochaConnectionProvider.get().sendLoginRequest("link");
+    getMochaConnection().sendLoginRequest("link");
   }
 
-  private void requestChunkData(int x, int y) {
-    Location location = new Location(x, y);
-    mochaConnectionProvider.get().requestChunkAt(location);
-    mochaConnectionProvider.get().requestEntitiesInChunk(location);
+  private MochaConnection getMochaConnection() {
+    return mochaConnectionProvider.get();
   }
 }

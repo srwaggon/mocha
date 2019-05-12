@@ -2,6 +2,7 @@ package mocha.net.packet;
 
 import java.net.Socket;
 
+import mocha.account.CreateAccountRequestPacket;
 import mocha.game.LoginRequestPacket;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
@@ -88,4 +89,7 @@ public class MochaConnection extends PacketConnection {
     send(new ItemUpdatePacket(item));
   }
 
+  public void sendCreateAccountRequest(String accountName, String emailAddress) {
+    send(new CreateAccountRequestPacket(accountName, emailAddress));
+  }
 }
