@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
+import mocha.account.AccountNameTakenException;
+import mocha.account.AccountService;
 import mocha.game.player.PlayerService;
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
@@ -24,6 +26,7 @@ import mocha.net.DisconnectedEventHandler;
 import mocha.net.LoginRequestPacketHandlerFactory;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
+import mocha.net.exception.DisconnectedException;
 import mocha.net.packet.MochaConnection;
 import mocha.shared.Repository;
 
@@ -32,11 +35,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Transactional
 public class LoginIntegrationTest {
+
+  private static final String ACCOUNT_NAME = "link";
 
   @Inject
   private ConnectedEventHandler connectedEventHandler;
@@ -62,12 +68,17 @@ public class LoginIntegrationTest {
   @Inject
   private Repository<Entity, Integer> entityRepository;
 
+  @Inject
+  private AccountService accountService;
+
   @Mock
   private MochaConnection mochaConnection;
 
   @Before
-  public void setUp() {
+  public void setUp() throws AccountNameTakenException {
     MockitoAnnotations.initMocks(this);
+
+    accountService.createAccount(ACCOUNT_NAME, "link@hyrule.com");
   }
 
   @After
@@ -78,25 +89,26 @@ public class LoginIntegrationTest {
   }
 
   @Test
-  public void playerIdIsPersistedFromPreviousSession_whenReconnecting() {
+  public void playerIdIsPersistedFromPreviousSession_whenReconnecting() throws DisconnectedException {
     Integer playerIdOnConnect = connectToGameServer();
     Integer playerIdOnReconnect = reconnectToGameServer(playerIdOnConnect);
     assertThat(playerIdOnReconnect).isEqualTo(playerIdOnConnect);
   }
 
-  private Integer connectToGameServer() {
+  private Integer connectToGameServer() throws DisconnectedException {
     return connectToGameServer(mochaConnection);
   }
 
-  private Integer connectToGameServer(MochaConnection mochaConnection) {
+  private Integer connectToGameServer(MochaConnection mochaConnection) throws DisconnectedException {
+    when(mochaConnection.readPacket()).thenReturn(new LoginRequestPacket(ACCOUNT_NAME));
     ArgumentCaptor<Integer> playerIdCaptor = ArgumentCaptor.forClass(Integer.class);
     connectedEventHandler.handle(new ConnectedEvent(mochaConnection));
-    loginRequestHandlerFactory.newLoginRequestPacketHandler(mochaConnection).handle(new LoginRequestPacket("link"));
+    loginRequestHandlerFactory.newLoginRequestPacketHandler(mochaConnection).handle(new LoginRequestPacket(ACCOUNT_NAME));
     verify(mochaConnection, atLeastOnce()).sendLoginSuccessful(playerIdCaptor.capture());
     return playerIdCaptor.getValue();
   }
 
-  private Integer reconnectToGameServer(Integer playerIdOnDisconnect) {
+  private Integer reconnectToGameServer(Integer playerIdOnDisconnect) throws DisconnectedException {
     disconnectFromGameServer(playerIdOnDisconnect);
     return connectToGameServer();
   }
@@ -106,7 +118,7 @@ public class LoginIntegrationTest {
   }
 
   @Test
-  public void newPlayersGetNewPlayerIds() {
+  public void newPlayersGetNewPlayerIds() throws DisconnectedException {
     Integer player1Id = connectToGameServer(mochaConnection);
     MochaConnection player2Connection = mock(MochaConnection.class);
     Integer player2Id = connectToGameServer(player2Connection);
@@ -114,7 +126,7 @@ public class LoginIntegrationTest {
   }
 
   @Test
-  public void entityIdIsPersistedFromPreviousSession_whenReconnecting() {
+  public void entityIdIsPersistedFromPreviousSession_whenReconnecting() throws DisconnectedException {
     Integer playerId = connectToGameServer();
     Integer entityIdOnConnect = getEntityUpdate().getId();
     disconnectFromGameServer(playerId);
@@ -130,7 +142,7 @@ public class LoginIntegrationTest {
   }
 
   @Test
-  public void entityMovesWhenToldToMove() {
+  public void entityMovesWhenToldToMove() throws DisconnectedException {
     connectToGameServer();
     Entity entity = getEntityUpdate();
     moveEntity(entity, Direction.EAST);
@@ -140,7 +152,7 @@ public class LoginIntegrationTest {
   }
 
   @Test
-  public void entityLocationIsPersistedFromPreviousSession_whenReconnecting() {
+  public void entityLocationIsPersistedFromPreviousSession_whenReconnecting() throws DisconnectedException {
     int playerId = connectToGameServer();
     Entity entity = getEntityUpdate();
     moveEntity(entity, Direction.EAST);
@@ -159,7 +171,7 @@ public class LoginIntegrationTest {
   }
 
   @Test
-  public void entityLocationIsPersistedFromPreviousSession_whenReconnecting_again() {
+  public void entityLocationIsPersistedFromPreviousSession_whenReconnecting_again() throws DisconnectedException {
     int playerId = connectToGameServer();
     Entity entity = getEntityUpdate();
     moveEntity(entity, Direction.EAST);

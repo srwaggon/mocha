@@ -1,7 +1,5 @@
 package mocha.server;
 
-import com.google.common.collect.Lists;
-
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -26,6 +24,7 @@ public class ServerPacketHandlerFactory {
   private EntityService entityService;
   private PlayerService playerService;
   private LoginRequestPacketHandlerFactory loginRequestPacketHandlerFactory;
+  private List<PacketHandler> packetHandlers;
 
   @Inject
   public ServerPacketHandlerFactory(
@@ -34,7 +33,8 @@ public class ServerPacketHandlerFactory {
       EntitiesInChunkService entitiesInChunkService,
       EntityService entityService,
       PlayerService playerService,
-      LoginRequestPacketHandlerFactory loginRequestPacketHandlerFactory
+      LoginRequestPacketHandlerFactory loginRequestPacketHandlerFactory,
+      List<PacketHandler> packetHandlers
   ) {
     this.serverEventBus = serverEventBus;
     this.chunkService = chunkService;
@@ -42,16 +42,14 @@ public class ServerPacketHandlerFactory {
     this.entityService = entityService;
     this.playerService = playerService;
     this.loginRequestPacketHandlerFactory = loginRequestPacketHandlerFactory;
+    this.packetHandlers = packetHandlers;
   }
 
   public ServerPacketResolver newServerPacketHandler(
       MochaConnection mochaConnection,
       int playerId
   ) {
-    List<PacketHandler> packetHandlers = Lists.newArrayList(
-        loginRequestPacketHandlerFactory.newLoginRequestPacketHandler(mochaConnection)
-    );
-
+    packetHandlers.add(loginRequestPacketHandlerFactory.newLoginRequestPacketHandler(mochaConnection));
     return new ServerPacketResolver(
         mochaConnection,
         serverEventBus,

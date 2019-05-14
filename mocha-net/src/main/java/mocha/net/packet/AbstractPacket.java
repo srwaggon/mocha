@@ -4,10 +4,10 @@ import java.util.Arrays;
 
 public abstract class AbstractPacket implements Packet {
 
-  private String data;
+  private String data = "";
 
   public AbstractPacket() {
-    data = "" + getType().name();
+    addToData(getType().name());
   }
 
   public AbstractPacket(String data) {
@@ -43,7 +43,8 @@ public abstract class AbstractPacket implements Packet {
     this.data = data;
   }
 
-  protected String[] getSplitData() {
+  @Override
+  public String[] getSplitData() {
     return data.split(PacketType.SEPARATOR);
   }
 
@@ -52,23 +53,28 @@ public abstract class AbstractPacket implements Packet {
     return data;
   }
 
+  @Override
   public String getData(int index) {
     return getSplitData()[index];
   }
 
-  protected char getDataAsChar(int index) {
+  @Override
+  public char getDataAsChar(int index) {
     return getData(index).charAt(0);
   }
 
-  protected int getDataAsInt(int index) {
+  @Override
+  public int getDataAsInt(int index) {
     return Integer.parseInt(getData(index));
   }
 
-  protected boolean getDataAsBoolean(int index) {
+  @Override
+  public boolean getDataAsBoolean(int index) {
     return Boolean.parseBoolean(getData(index));
   }
 
-  protected double getDataAsDouble(int index) {
+  @Override
+  public double getDataAsDouble(int index) {
     return Double.parseDouble(getData(index));
   }
 

@@ -7,20 +7,29 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
-import mocha.game.player.ServerPlayer;
+import mocha.account.CreateAccountRequestPacket;
+import mocha.game.LoginRequestPacket;
 import mocha.game.event.MochaEventHandler;
 import mocha.game.player.Player;
 import mocha.game.player.PlayerService;
+import mocha.game.player.ServerPlayer;
 import mocha.net.event.ConnectedEvent;
+import mocha.net.exception.DisconnectedException;
 import mocha.net.packet.MochaConnection;
+import mocha.net.packet.Packet;
 import mocha.net.packet.PacketListener;
+import mocha.net.packet.PacketType;
 import mocha.server.ServerPacketHandlerFactory;
 import mocha.server.ServerPacketResolver;
 import mocha.server.event.ServerEventBus;
 import mocha.shared.IdFactory;
+
+import static mocha.net.packet.PacketType.CREATE_ACCOUNT_REQUEST;
+import static mocha.net.packet.PacketType.LOGIN_REQUEST;
 
 @Component
 public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> {
@@ -52,16 +61,47 @@ public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> 
   public void handle(ConnectedEvent connectedEvent) {
     log.info(connectedEvent.toString());
     MochaConnection playerConnection = connectedEvent.getMochaConnection();
-    int playerId = playerIdFactory.newId();
 
-    ServerPacketResolver serverPacketHandler = serverPacketHandlerFactory.newServerPacketHandler(playerConnection, playerId);
-    PacketListener packetListener = new PacketListener(serverEventBus, playerConnection, playerId, serverPacketHandler);
+    try {
+      Packet packet = playerConnection.readPacket();
+      Optional<Packet> inflatedPacketMaybe = getInflatedPacket(packet);
 
-    playerService.addPlayer(new ServerPlayer(playerId));
-    mochaConnectionsByPlayerId.put(playerId, playerConnection);
+      if (inflatedPacketMaybe.isPresent()) {
 
-    serverEventBus.postTaskEvent(packetListener);
-    serverEventBus.postTaskEvent(serverPacketHandler);
+        int playerId = playerIdFactory.newId();
+        playerService.addPlayer(new ServerPlayer(playerId));
+        mochaConnectionsByPlayerId.put(playerId, playerConnection);
+
+        ServerPacketResolver serverPacketHandler = serverPacketHandlerFactory.newServerPacketHandler(playerConnection, playerId);
+        serverEventBus.postTaskEvent(serverPacketHandler);
+
+        serverPacketHandler.resolve(inflatedPacketMaybe.get());
+
+        PacketListener packetListener = new PacketListener(serverEventBus, playerConnection, playerId, serverPacketHandler);
+        serverEventBus.postTaskEvent(packetListener);
+      } else {
+        playerConnection.disconnect();
+      }
+    } catch (DisconnectedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private Optional<Packet> getInflatedPacket(Packet packet) {
+    PacketType type = packet.getType();
+    String data = packet.getData();
+
+    if (CREATE_ACCOUNT_REQUEST.equals(type)) {
+      CreateAccountRequestPacket createAccountRequestPacket = new CreateAccountRequestPacket();
+      createAccountRequestPacket.build(data);
+      return Optional.of(createAccountRequestPacket);
+    } else if (LOGIN_REQUEST.equals(type)) {
+      LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+      loginRequestPacket.build(data);
+      return Optional.of(loginRequestPacket);
+    } else {
+      return Optional.empty();
+    }
   }
 
 }

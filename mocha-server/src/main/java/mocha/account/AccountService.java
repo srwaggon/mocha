@@ -32,7 +32,7 @@ public class AccountService {
     return accountJpaRepository.findByName(name);
   }
 
-  public Optional<Player> getPlayerId(Account account) {
+  public Optional<Player> getPlayer(Account account) {
     return Optional.ofNullable(account.getPlayer());
   }
 

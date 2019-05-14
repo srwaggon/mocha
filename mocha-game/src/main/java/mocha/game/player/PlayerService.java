@@ -40,9 +40,10 @@ public class PlayerService {
     eventBus.postPlayerRemovedEvent(player);
   }
 
-  public void addPlayer(Player player) {
-    playerRepository.save(player);
-    eventBus.postPlayerAddedEvent(player);
+  public Player addPlayer(Player player) {
+    Player savedPlayer = playerRepository.save(player);
+    eventBus.postPlayerAddedEvent(savedPlayer);
+    return savedPlayer;
   }
 
   public Optional<Entity> getEntityForPlayer(Player player) {

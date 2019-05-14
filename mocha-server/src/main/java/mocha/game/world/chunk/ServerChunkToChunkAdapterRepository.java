@@ -1,13 +1,13 @@
 package mocha.game.world.chunk;
 
-import com.google.common.collect.Lists;
-
 import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
 
 import mocha.shared.Repository;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 @org.springframework.stereotype.Repository
 public class ServerChunkToChunkAdapterRepository implements Repository<Chunk, Integer> {
@@ -17,12 +17,13 @@ public class ServerChunkToChunkAdapterRepository implements Repository<Chunk, In
 
   @Override
   public List<Chunk> findAll() {
-    return Lists.newArrayList(serverChunkJpaRepository.findAll());
+    return newArrayList(serverChunkJpaRepository.findAll());
   }
 
   @Override
   public Chunk save(Chunk chunk) {
-    return serverChunkJpaRepository.save(new ServerChunk(chunk.getId(), chunk.getLocation(), chunk.getTiles()));
+    ServerChunk serverChunk = new ServerChunk(chunk.getId(), chunk.getLocation(), chunk.getTiles());
+    return serverChunkJpaRepository.save(serverChunk);
   }
 
   @Override
@@ -33,8 +34,8 @@ public class ServerChunkToChunkAdapterRepository implements Repository<Chunk, In
   }
 
   @Override
-  public void delete(Chunk element) {
-    serverChunkJpaRepository.findById(element.getId())
+  public void delete(Chunk chunk) {
+    serverChunkJpaRepository.findById(chunk.getId())
         .ifPresent(serverChunkJpaRepository::delete);
   }
 

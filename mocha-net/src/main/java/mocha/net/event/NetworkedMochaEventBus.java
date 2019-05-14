@@ -42,4 +42,5 @@ public class NetworkedMochaEventBus extends MochaEventBus {
   public void postSendPacketToAllNearEvent(Packet packet, Location location, int distance) {
     this.post(new SendPacketToAllNearEvent(packet, location, distance));
   }
+
 }

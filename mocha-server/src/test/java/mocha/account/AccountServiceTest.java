@@ -100,20 +100,20 @@ public class AccountServiceTest {
   }
 
   @Test
-  public void getPlayerId_ReturnsEmpty_WhenThereIsNoPlayerAssociatedWithTheAccount() {
+  public void getPlayer_ReturnsEmpty_WhenThereIsNoPlayerAssociatedWithTheAccount() {
     Account account = newAccount(name);
-    Optional<Player> playerIdMaybe = accountService.getPlayerId(account);
+    Optional<Player> playerIdMaybe = accountService.getPlayer(account);
 
     assertThat(playerIdMaybe).isEqualTo(Optional.empty());
   }
 
   @Test
-  public void getPlayerId_ReturnsThePlayerIdAssociated_IfItExists() {
+  public void getPlayer_ReturnsThePlayerIdAssociated_IfItExists() {
     Account account = accountJpaRepository.save(newAccount(name));
     ServerPlayer player = serverPlayerJpaRepository.save(new ServerPlayer(25));
     accountService.addPlayer(account, player);
 
-    Optional<Player> playerIdMaybe = accountService.getPlayerId(account);
+    Optional<Player> playerIdMaybe = accountService.getPlayer(account);
 
     assertThat(playerIdMaybe.isPresent()).isTrue();
     Player actualPlayer = playerIdMaybe.get();

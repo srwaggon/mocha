@@ -6,16 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import mocha.game.event.MochaEventBus;
 import mocha.game.world.entity.EntityService;
 import mocha.shared.IdFactory;
-import mocha.shared.InMemoryRepository;
 import mocha.shared.Repository;
 
 @Configuration
 public class PlayerConfiguration {
-
-  @Bean
-  public Repository<Player, Integer> playerRepository() {
-    return new InMemoryRepository<>();
-  }
 
   @Bean
   public IdFactory<Player> playerIdFactory(Repository<Player, Integer> playerRepository) {

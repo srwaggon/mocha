@@ -16,4 +16,8 @@ public class LoginRequestPacket extends AbstractPacket {
   public PacketType getType() {
     return PacketType.LOGIN_REQUEST;
   }
+
+  public String getAccountName() {
+    return getData(1);
+  }
 }
