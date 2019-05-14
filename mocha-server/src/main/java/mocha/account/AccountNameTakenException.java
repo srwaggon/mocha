@@ -2,7 +2,7 @@ package mocha.account;
 
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 public class AccountNameTakenException extends Exception {
 
   public AccountNameTakenException(String name) {
