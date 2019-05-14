@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import mocha.game.player.Player;
 import mocha.game.player.ServerPlayer;
+import mocha.game.player.ServerPlayerJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -29,6 +30,9 @@ public class AccountServiceTest {
 
   @Inject
   private AccountJpaRepository accountJpaRepository;
+
+  @Inject
+  private ServerPlayerJpaRepository serverPlayerJpaRepository;
   private String name = "link";
   private String emailAddress = "link@hyrule.com";
 
@@ -103,8 +107,16 @@ public class AccountServiceTest {
     assertThat(playerIdMaybe).isEqualTo(Optional.empty());
   }
 
-//  @Test
-//  public void getPlayerId_ReturnsThePlayerIdAssociated_IfItExists() {
-//
-//  }
+  @Test
+  public void getPlayerId_ReturnsThePlayerIdAssociated_IfItExists() {
+    Account account = accountJpaRepository.save(newAccount(name));
+    ServerPlayer player = serverPlayerJpaRepository.save(new ServerPlayer(25));
+    accountService.addPlayer(account, player);
+
+    Optional<Player> playerIdMaybe = accountService.getPlayerId(account);
+
+    assertThat(playerIdMaybe.isPresent()).isTrue();
+    Player actualPlayer = playerIdMaybe.get();
+    assertThat(actualPlayer.getId()).isEqualTo(player.getId());
+  }
 }

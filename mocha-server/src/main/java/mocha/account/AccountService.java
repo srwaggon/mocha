@@ -38,6 +38,5 @@ public class AccountService {
 
   public void addPlayer(Account account, ServerPlayer player) {
     account.setPlayer(player);
-    accountJpaRepository.save(account);
   }
 }
