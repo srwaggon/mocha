@@ -27,9 +27,7 @@ import mocha.net.LoginSuccessPacket;
 
 public class MochaConnection extends PacketConnection {
 
-  public MochaConnection(
-      Socket socket
-  ) {
+  public MochaConnection(Socket socket) {
     super(socket);
   }
 

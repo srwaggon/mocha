@@ -8,18 +8,15 @@ public class PacketListener implements SleepyRunnable {
 
   private final MochaConnection connection;
   private final NetworkedMochaEventBus eventBus;
-  private final int senderId;
   private PacketResolver packetHandler;
 
   public PacketListener(
       NetworkedMochaEventBus eventBus,
       MochaConnection connection,
-      int senderId,
       PacketResolver packetHandler
   ) {
     this.connection = connection;
     this.eventBus = eventBus;
-    this.senderId = senderId;
     this.packetHandler = packetHandler;
   }
 
@@ -28,7 +25,7 @@ public class PacketListener implements SleepyRunnable {
     try {
       readPackets();
     } catch (DisconnectedException disconnectedException) {
-      eventBus.postDisconnectedEvent(senderId, connection);
+      eventBus.postDisconnectedEvent(0, connection);
     }
   }
 

@@ -46,7 +46,7 @@ public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> 
     MochaConnection mochaConnection = connectedEvent.getMochaConnection();
     mochaConnectionProvider.set(mochaConnection);
     PacketSender packetSender = packetSenderFactory.newPacketSender(mochaConnection);
-    PacketListener packetListener = new PacketListener(eventBus, mochaConnection, -1, packetResolver);
+    PacketListener packetListener = new PacketListener(eventBus, mochaConnection, packetResolver);
     eventBus.register(packetSender);
     eventBus.register(packetListener);
     taskService.submit(packetListener);

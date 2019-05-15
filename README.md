@@ -6,11 +6,16 @@ Mocha is currently a tile based game template, with simple hitbox collision.
 
 ## Backlog
 ## Bugs
+- [ ] The player gets a new player ID every time they connect
 - [ ] The player's sprite is not centered on the screen. It is in the SE quadrant of the center.
 - [ ] The player's sprite is not centered on its entity's hitbox. The right and bottom sides overhang by any difference in size.
 
 ## Stories / Epics
 These represent units of work **to be done.**
+
+### Accounts
+- [ ] Gracefully inform registering player when the account name is already taken
+- [ ] Enable client-side specification between registering / logging-in
 
 ### Items
 - [ ] Chain item prototypes together
@@ -52,7 +57,6 @@ These represent units of work **to be done.**
 - [ ] A sound is played when an entity is struck by a sword.
 
 ### Networking
-- [ ] Network Player and local player aren't different
 - [x] Issue: The client gets mad when it can't find a server: massive blood trail
 - [x] There is a game client.
 - [x] The game server responds to chunk requests with the requested chunk's data.

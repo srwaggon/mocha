@@ -6,12 +6,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import mocha.account.AccountConnection;
+import mocha.account.AccountService;
 import mocha.game.player.PlayerService;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.EntityService;
-import mocha.net.LoginRequestPacketHandlerFactory;
-import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketHandler;
 import mocha.server.event.ServerEventBus;
 
@@ -23,8 +23,8 @@ public class ServerPacketHandlerFactory {
   private EntitiesInChunkService entitiesInChunkService;
   private EntityService entityService;
   private PlayerService playerService;
-  private LoginRequestPacketHandlerFactory loginRequestPacketHandlerFactory;
   private List<PacketHandler> packetHandlers;
+  private AccountService accountService;
 
   @Inject
   public ServerPacketHandlerFactory(
@@ -33,32 +33,29 @@ public class ServerPacketHandlerFactory {
       EntitiesInChunkService entitiesInChunkService,
       EntityService entityService,
       PlayerService playerService,
-      LoginRequestPacketHandlerFactory loginRequestPacketHandlerFactory,
-      List<PacketHandler> packetHandlers
-  ) {
+      List<PacketHandler> packetHandlers,
+      AccountService accountService) {
     this.serverEventBus = serverEventBus;
     this.chunkService = chunkService;
     this.entitiesInChunkService = entitiesInChunkService;
     this.entityService = entityService;
     this.playerService = playerService;
-    this.loginRequestPacketHandlerFactory = loginRequestPacketHandlerFactory;
     this.packetHandlers = packetHandlers;
+    this.accountService = accountService;
   }
 
   public ServerPacketResolver newServerPacketHandler(
-      MochaConnection mochaConnection,
-      int playerId
+      AccountConnection accountConnection
   ) {
-    packetHandlers.add(loginRequestPacketHandlerFactory.newLoginRequestPacketHandler(mochaConnection));
     return new ServerPacketResolver(
-        mochaConnection,
         serverEventBus,
         chunkService,
         entitiesInChunkService,
         entityService,
         playerService,
-        playerId,
-        packetHandlers
+        packetHandlers,
+        accountService,
+        accountConnection
     );
   }
 }

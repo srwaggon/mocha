@@ -4,6 +4,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +25,7 @@ import mocha.shared.Identified;
 @EqualsAndHashCode
 @Data
 @Entity
-public class Account implements Identified<String> {
+public class Account implements Identified<UUID> {
 
   @Id
   @GeneratedValue(generator = "UUID")
@@ -31,7 +33,7 @@ public class Account implements Identified<String> {
       name = "UUID",
       strategy = "org.hibernate.id.UUIDGenerator"
   )
-  private String id;
+  private UUID id;
 
   @Column(nullable = false)
   private String name;
@@ -49,13 +51,4 @@ public class Account implements Identified<String> {
     this.emailAddress = emailAddress;
   }
 
-  @Override
-  public String getId() {
-    return id;
-  }
-
-  @Override
-  public void setId(String id) {
-    this.id = id;
-  }
 }

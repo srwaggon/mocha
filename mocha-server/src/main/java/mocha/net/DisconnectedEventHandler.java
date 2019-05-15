@@ -25,7 +25,7 @@ public class DisconnectedEventHandler implements MochaEventHandler<DisconnectedE
 
   @Subscribe
   public void handle(DisconnectedEvent disconnectedEvent) {
-    log.info(disconnectedEvent.toString());
-    playerService.removePlayer(disconnectedEvent.getSenderId());
+//    log.info(disconnectedEvent.toString());
+//    playerService.removePlayer(disconnectedEvent.getSenderId());
   }
 }

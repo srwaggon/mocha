@@ -23,7 +23,6 @@ import mocha.game.world.entity.movement.EntityMoveCommandHandler;
 import mocha.game.world.entity.movement.Movement;
 import mocha.net.ConnectedEventHandler;
 import mocha.net.DisconnectedEventHandler;
-import mocha.net.LoginRequestPacketHandlerFactory;
 import mocha.net.event.ConnectedEvent;
 import mocha.net.event.DisconnectedEvent;
 import mocha.net.exception.DisconnectedException;
@@ -52,9 +51,6 @@ public class LoginIntegrationTest {
 
   @Inject
   private PlayerService playerService;
-
-  @Inject
-  private LoginRequestPacketHandlerFactory loginRequestHandlerFactory;
 
   @Inject
   private DisconnectedEventHandler disconnectedEventHandler;
@@ -96,14 +92,13 @@ public class LoginIntegrationTest {
   }
 
   private Integer connectToGameServer() throws DisconnectedException {
-    return connectToGameServer(mochaConnection);
+    return connectToGameServer(mochaConnection, ACCOUNT_NAME);
   }
 
-  private Integer connectToGameServer(MochaConnection mochaConnection) throws DisconnectedException {
-    when(mochaConnection.readPacket()).thenReturn(new LoginRequestPacket(ACCOUNT_NAME));
+  private Integer connectToGameServer(MochaConnection mochaConnection, String accountName) throws DisconnectedException {
+    when(mochaConnection.readPacket()).thenReturn(new LoginRequestPacket(accountName));
     ArgumentCaptor<Integer> playerIdCaptor = ArgumentCaptor.forClass(Integer.class);
     connectedEventHandler.handle(new ConnectedEvent(mochaConnection));
-    loginRequestHandlerFactory.newLoginRequestPacketHandler(mochaConnection).handle(new LoginRequestPacket(ACCOUNT_NAME));
     verify(mochaConnection, atLeastOnce()).sendLoginSuccessful(playerIdCaptor.capture());
     return playerIdCaptor.getValue();
   }
@@ -118,10 +113,12 @@ public class LoginIntegrationTest {
   }
 
   @Test
-  public void newPlayersGetNewPlayerIds() throws DisconnectedException {
-    Integer player1Id = connectToGameServer(mochaConnection);
+  public void newPlayersGetNewPlayerIds() throws DisconnectedException, AccountNameTakenException {
+    Integer player1Id = connectToGameServer(mochaConnection, ACCOUNT_NAME);
     MochaConnection player2Connection = mock(MochaConnection.class);
-    Integer player2Id = connectToGameServer(player2Connection);
+    String accountName2 = "lonk";
+    accountService.createAccount(accountName2, accountName2 + "@hyrule.com");
+    Integer player2Id = connectToGameServer(player2Connection, accountName2);
     assertThat(player2Id).isNotEqualTo(player1Id);
   }
 

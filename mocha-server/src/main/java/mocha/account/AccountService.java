@@ -6,8 +6,10 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
+import mocha.game.LoginRequestPacket;
 import mocha.game.player.Player;
 import mocha.game.player.ServerPlayer;
+import mocha.net.packet.MochaConnection;
 
 @Service
 public class AccountService {
@@ -38,5 +40,14 @@ public class AccountService {
 
   public void addPlayer(Account account, ServerPlayer player) {
     account.setPlayer(player);
+  }
+
+  public Optional<AccountConnection> login(MochaConnection mochaConnection, LoginRequestPacket loginRequestPacket) {
+    Optional<Account> accountMaybe = findAccountByName(loginRequestPacket.getAccountName());
+    if (!accountMaybe.isPresent()) {
+      mochaConnection.disconnect();
+      return Optional.empty();
+    }
+    return Optional.of(new AccountConnection(mochaConnection, accountMaybe.get()));
   }
 }

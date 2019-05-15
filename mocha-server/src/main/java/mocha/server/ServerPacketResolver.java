@@ -6,6 +6,8 @@ import com.google.common.eventbus.EventBus;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import mocha.account.AccountConnection;
+import mocha.account.AccountService;
 import mocha.game.player.PlayerService;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.chunk.RequestChunkByIdPacketHandler;
@@ -27,7 +29,7 @@ import mocha.shared.task.SleepyRunnable;
 
 public class ServerPacketResolver implements PacketResolver, SleepyRunnable {
 
-  private MochaConnection mochaConnection;
+  private final MochaConnection mochaConnection;
   private EventBus packetEventBus = new EventBus();
 
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
@@ -35,23 +37,23 @@ public class ServerPacketResolver implements PacketResolver, SleepyRunnable {
   private List<PacketHandler> packetHandlers;
 
   ServerPacketResolver(
-      MochaConnection mochaConnection,
       ServerEventBus serverEventBus,
       ChunkService chunkService,
       EntitiesInChunkService entitiesInChunkService,
       EntityService entityService,
       PlayerService playerService,
-      int playerId,
-      List<PacketHandler> packetHandlers
+      List<PacketHandler> packetHandlers,
+      AccountService accountService,
+      AccountConnection accountConnection
   ) {
-    this.mochaConnection = mochaConnection;
+    this.mochaConnection = accountConnection.getMochaConnection();
     this.packetHandlers = packetHandlers;
     this.packetHandlers.add(new RequestEntitiesByPlayerIdPacketHandler(mochaConnection, entityService, playerService));
     this.packetHandlers.add(new RequestChunkByIdPacketHandler(mochaConnection, chunkService));
     this.packetHandlers.add(new RequestChunkByLocationPacketHandler(mochaConnection, chunkService));
     this.packetHandlers.add(new RequestEntityByIdPacketHandler(mochaConnection, entityService));
     this.packetHandlers.add(new RequestEntitiesInChunkPacketHandler(mochaConnection, chunkService, entitiesInChunkService));
-    this.packetHandlers.add(new MovePacketHandler(serverEventBus, playerId, playerService));
+    this.packetHandlers.add(new MovePacketHandler(serverEventBus, playerService, accountService, accountConnection.getAccount()));
     this.packetHandlers.add(new PickUpItemPacketHandler(entityService, serverEventBus));
     this.packetHandlers.add(new ItemPrototypeUpdatePacketHandler(serverEventBus));
   }
