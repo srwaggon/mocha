@@ -50,20 +50,6 @@ public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> 
     eventBus.register(packetSender);
     eventBus.register(packetListener);
     taskService.submit(packetListener);
-
-    sendCreateAccountRequest();
-    sendLoginRequest();
   }
 
-  private void sendCreateAccountRequest() {
-    getMochaConnection().sendCreateAccountRequest("link", "link@hyrule.com");
-  }
-
-  private void sendLoginRequest() {
-    getMochaConnection().sendLoginRequest("link");
-  }
-
-  private MochaConnection getMochaConnection() {
-    return mochaConnectionProvider.get();
-  }
 }

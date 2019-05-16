@@ -62,7 +62,6 @@ public class ClientConfiguration {
       }
       taskService.submit(gameLoop::start);
       gameLoop.submit(ruleService);
-      renderLoop.start();
     };
   }
 

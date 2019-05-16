@@ -11,12 +11,12 @@ import mocha.game.player.PlayerService;
 import mocha.net.packet.PacketHandler;
 
 @Component
-public class LoginSuccessPacketHandler implements PacketHandler<LoginSuccessPacket> {
+public class AddPlayerToGameOnLoginSuccessPacketHandler implements PacketHandler<LoginSuccessPacket> {
 
   private PlayerService playerService;
 
   @Inject
-  public LoginSuccessPacketHandler(PlayerService playerService) {
+  public AddPlayerToGameOnLoginSuccessPacketHandler(PlayerService playerService) {
     this.playerService = playerService;
   }
 
