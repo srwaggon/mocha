@@ -13,8 +13,6 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.chunk.tile.rule.GrassGrowsRule;
 import mocha.game.world.chunk.tile.rule.WaterEvaporatesRule;
-import mocha.game.world.entity.EntitiesInChunkService;
-import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.rule.MovementRule;
@@ -30,16 +28,15 @@ public class RuleConfiguration {
 
   @Bean
   public List<GameRule> getRules(
-      Repository<Entity, Integer> entityRepository,
       Repository<Chunk, Integer> chunkRepository,
       Repository<Movement, Integer> movementRepository,
       ChunkService chunkService,
-      EntitiesInChunkService entitiesInChunkService, EntityService entityService
+      EntityService entityService
   ) {
-    MovementRule movementRule = new MovementRule(entityRepository, movementRepository, chunkService, entitiesInChunkService);
+    MovementRule movementRule = new MovementRule(movementRepository, chunkService, entityService);
     serverEventBus.register(movementRule);
 
-    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService, entitiesInChunkService, movementRepository, entityService);
+    PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService, entityService);
     serverEventBus.register(pickUpItemsRule);
 
     GrassGrowsRule grassGrowsRule = new GrassGrowsRule(serverEventBus, chunkRepository, chunkService);

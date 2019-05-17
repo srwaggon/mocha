@@ -12,19 +12,19 @@ public class RequestEntitiesInChunkPacketHandler implements PacketHandler<Reques
 
   private MochaConnection mochaConnection;
   private ChunkService chunkService;
-  private EntitiesInChunkService entitiesInChunkService;
+  private EntityService entityService;
 
-  public RequestEntitiesInChunkPacketHandler(MochaConnection mochaConnection, ChunkService chunkService, EntitiesInChunkService entitiesInChunkService) {
+  public RequestEntitiesInChunkPacketHandler(MochaConnection mochaConnection, ChunkService chunkService, EntityService entityService) {
     this.mochaConnection = mochaConnection;
     this.chunkService = chunkService;
-    this.entitiesInChunkService = entitiesInChunkService;
+    this.entityService = entityService;
   }
 
   @Subscribe
   public void handle(RequestEntitiesInChunkPacket requestEntitiesInChunkPacket) {
     Location location = requestEntitiesInChunkPacket.getLocation();
     Chunk chunk = chunkService.getOrCreateChunkAt(location);
-    entitiesInChunkService.getEntitiesInChunk(chunk)
+    entityService.getEntitiesInChunk(chunk)
         .forEach(mochaConnection::sendEntityUpdate);
   }
 }

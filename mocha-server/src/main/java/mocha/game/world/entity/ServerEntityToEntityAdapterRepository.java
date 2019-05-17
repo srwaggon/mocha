@@ -1,10 +1,15 @@
 package mocha.game.world.entity;
 
+import org.springframework.context.annotation.Lazy;
+
 import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
 
+import mocha.game.world.collision.CollisionFactory;
+import mocha.game.world.item.Item;
+import mocha.game.world.item.ItemService;
 import mocha.shared.Repository;
 
 import static java.util.stream.Collectors.toList;
@@ -14,15 +19,18 @@ import static java.util.stream.Collectors.toList;
 public class ServerEntityToEntityAdapterRepository implements Repository<Entity, Integer> {
 
   private ServerEntityRepository serverEntityRepository;
-  private EntityFactory entityFactory;
+  private ItemService itemService;
+  private CollisionFactory collisionFactory;
 
   @Inject
   public ServerEntityToEntityAdapterRepository(
       ServerEntityRepository serverEntityRepository,
-      EntityFactory entityFactory
+      ItemService itemService,
+      @Lazy CollisionFactory collisionFactory
   ) {
     this.serverEntityRepository = serverEntityRepository;
-    this.entityFactory = entityFactory;
+    this.itemService = itemService;
+    this.collisionFactory = collisionFactory;
   }
 
   @Override
@@ -34,7 +42,8 @@ public class ServerEntityToEntityAdapterRepository implements Repository<Entity,
 
   @Override
   public Entity save(Entity entity) {
-    ServerEntity toBeSaved = entity instanceof ServerEntity ? (ServerEntity) entity : new ServerEntity((BaseEntity) entity);
+    // TODO: Remove conditional?
+    ServerEntity toBeSaved = entity instanceof ServerEntity ? (ServerEntity) entity : new ServerEntity(entity);
     serverEntityRepository.save(toBeSaved);
     return entity;
   }
@@ -53,7 +62,14 @@ public class ServerEntityToEntityAdapterRepository implements Repository<Entity,
   }
 
   private Entity getEntityOfRightType(ServerEntity serverEntity) {
-    return EntityType.ITEM.equals(serverEntity.getEntityType()) ? entityFactory.newItemEntity(serverEntity) : serverEntity;
+    if (EntityType.ITEM.equals(serverEntity.getEntityType())) {
+      Item item = itemService.findById(serverEntity.getTypeId());
+      return new ItemEntity(serverEntity.getId(), serverEntity.getLocation(), item);
+    } else {
+      // TODO: remove (hack)
+      serverEntity.setCollision(collisionFactory.newEntityHitBoxCollision(serverEntity));
+      return serverEntity;
+    }
   }
 
   @Override

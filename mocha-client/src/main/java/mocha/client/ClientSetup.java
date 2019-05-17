@@ -11,6 +11,8 @@ import mocha.game.player.PlayerService;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.tile.TileSetFactory;
+import mocha.game.world.collision.Collision;
+import mocha.game.world.collision.CollisionFactory;
 import mocha.game.world.entity.BaseEntity;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
@@ -28,6 +30,7 @@ public class ClientSetup implements CommandLineRunner {
   private EntityService entityService;
   private PlayerService playerService;
   private boolean isOnline;
+  private CollisionFactory collisionFactory;
 
   @Inject
   public ClientSetup(
@@ -37,8 +40,8 @@ public class ClientSetup implements CommandLineRunner {
       Repository<Movement, Integer> movementRepository,
       EntityService entityService,
       PlayerService playerService,
-      @Value("${mocha.client.online}") boolean isOnline
-  ) {
+      @Value("${mocha.client.online}") boolean isOnline,
+      CollisionFactory collisionFactory) {
     this.tileSetFactory = tileSetFactory;
     this.chunkRepository = chunkRepository;
     this.movementFactory = movementFactory;
@@ -46,6 +49,7 @@ public class ClientSetup implements CommandLineRunner {
     this.entityService = entityService;
     this.playerService = playerService;
     this.isOnline = isOnline;
+    this.collisionFactory = collisionFactory;
   }
 
   @Override
@@ -60,6 +64,8 @@ public class ClientSetup implements CommandLineRunner {
       Entity entity = entityService.save(playerEntity);
       playerService.addEntityToPlayer(entity, player);
 
+      Collision collision = collisionFactory.newEntityHitBoxCollision(entity);
+      entity.setCollision(collision);
       movementRepository.save(movementFactory.newSlidingMovement(entity));
     }
   }

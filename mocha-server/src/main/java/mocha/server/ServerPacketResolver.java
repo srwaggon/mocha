@@ -12,7 +12,6 @@ import mocha.game.player.PlayerService;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.chunk.RequestChunkByIdPacketHandler;
 import mocha.game.world.chunk.RequestChunkByLocationPacketHandler;
-import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.RequestEntitiesByPlayerIdPacketHandler;
 import mocha.game.world.entity.RequestEntitiesInChunkPacketHandler;
@@ -39,7 +38,6 @@ public class ServerPacketResolver implements PacketResolver, SleepyRunnable {
   ServerPacketResolver(
       ServerEventBus serverEventBus,
       ChunkService chunkService,
-      EntitiesInChunkService entitiesInChunkService,
       EntityService entityService,
       PlayerService playerService,
       List<PacketHandler> packetHandlers,
@@ -52,7 +50,7 @@ public class ServerPacketResolver implements PacketResolver, SleepyRunnable {
     this.packetHandlers.add(new RequestChunkByIdPacketHandler(mochaConnection, chunkService));
     this.packetHandlers.add(new RequestChunkByLocationPacketHandler(mochaConnection, chunkService));
     this.packetHandlers.add(new RequestEntityByIdPacketHandler(mochaConnection, entityService));
-    this.packetHandlers.add(new RequestEntitiesInChunkPacketHandler(mochaConnection, chunkService, entitiesInChunkService));
+    this.packetHandlers.add(new RequestEntitiesInChunkPacketHandler(mochaConnection, chunkService, entityService));
     this.packetHandlers.add(new MovePacketHandler(serverEventBus, playerService, accountService, accountConnection.getAccount()));
     this.packetHandlers.add(new PickUpItemPacketHandler(entityService, serverEventBus));
     this.packetHandlers.add(new ItemPrototypeUpdatePacketHandler(serverEventBus));

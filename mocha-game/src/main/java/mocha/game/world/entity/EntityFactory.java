@@ -3,29 +3,38 @@ package mocha.game.world.entity;
 import java.util.Random;
 
 import mocha.game.world.Location;
+import mocha.game.world.entity.prototype.EntityPrototype;
 import mocha.game.world.item.Item;
-import mocha.game.world.item.ItemService;
+import mocha.shared.IdFactory;
 
 public class EntityFactory {
 
-  private ItemService itemService;
+  private IdFactory<Entity> entityIdFactory;
 
   EntityFactory(
-      ItemService itemService
+      IdFactory<Entity> entityIdFactory
   ) {
-    this.itemService = itemService;
+    this.entityIdFactory = entityIdFactory;
   }
 
-  public Entity newRandomlyPlacedEntity(Integer id) {
-    return new BaseEntity(id, new Location(random(), random()));
+  public Entity newEntity(EntityPrototype entityPrototype) {
+    return new BaseEntity(newId(), entityPrototype);
+  }
+
+  private Integer newId() {
+    return entityIdFactory.newId();
+  }
+
+  public Entity newRandomlyPlacedEntity() {
+    return new BaseEntity(newId(), new Location(random(), random()));
   }
 
   private int random() {
     return new Random().nextInt(16) * 32;
   }
 
-  ItemEntity newItemEntity(Entity entity) {
-    Item item = itemService.findById(entity.getTypeId());
-    return new ItemEntity(entity.getId(), entity.getLocation(), item);
+  public ItemEntity newItemEntity(Item item) {
+    return new ItemEntity(newId(), Location.at(0, 0), item);
   }
+
 }

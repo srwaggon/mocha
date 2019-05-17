@@ -9,7 +9,6 @@ import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.prototype.EntityPrototype;
 import mocha.game.world.entity.prototype.EntityPrototypeFactory;
 import mocha.game.world.entity.prototype.EntityPrototypeService;
-import mocha.game.world.item.ItemService;
 import mocha.shared.IdFactory;
 import mocha.shared.InMemoryRepository;
 import mocha.shared.Repository;
@@ -38,8 +37,8 @@ public class EntityConfiguration {
   }
 
   @Bean
-  public EntityFactory entityFactory(ItemService itemService) {
-    return new EntityFactory(itemService);
+  public EntityFactory entityFactory(IdFactory<Entity> entityIdFactory) {
+    return new EntityFactory(entityIdFactory);
   }
 
   @Bean
@@ -48,22 +47,15 @@ public class EntityConfiguration {
   }
 
   @Bean
-  public EntitiesInChunkService entitiesInChunkService(Repository<Entity, Integer> entityRepository) {
-    return new EntitiesInChunkService(entityRepository);
-  }
-
-  @Bean
   public EntityService entityService(
       MochaEventBus eventBus,
       Repository<Entity, Integer> entityRepository,
-      EntitiesInChunkService entitiesInChunkService,
       ChunkService chunkService,
       Repository<Movement, Integer> movementRepository
   ) {
     return new EntityService(
         eventBus,
         entityRepository,
-        entitiesInChunkService,
         chunkService,
         movementRepository
     );

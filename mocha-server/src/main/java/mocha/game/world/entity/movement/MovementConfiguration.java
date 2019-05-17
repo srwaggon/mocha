@@ -3,7 +3,6 @@ package mocha.game.world.entity.movement;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import mocha.game.world.collision.CollisionFactory;
 import mocha.game.world.entity.Entity;
 import mocha.shared.InMemoryRepository;
 import mocha.shared.Repository;
@@ -12,8 +11,8 @@ import mocha.shared.Repository;
 public class MovementConfiguration {
 
   @Bean
-  public MovementFactory movementFactory(CollisionFactory collisionFactory, Repository<Entity, Integer> entityRepository) {
-    return new MovementFactory(collisionFactory, entityRepository);
+  public MovementFactory movementFactory(Repository<Entity, Integer> entityRepository) {
+    return new MovementFactory(entityRepository);
   }
 
   @Bean

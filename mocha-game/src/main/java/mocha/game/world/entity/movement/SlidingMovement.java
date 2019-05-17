@@ -1,5 +1,6 @@
 package mocha.game.world.entity.movement;
 
+import java.util.Optional;
 import java.util.Set;
 
 import mocha.game.world.Direction;
@@ -15,8 +16,8 @@ public class SlidingMovement extends BaseMovement {
 
   private Repository<Entity, Integer> entityRepository;
 
-  SlidingMovement(int id, Collision collision, Repository<Entity, Integer> entityRepository) {
-    super(id, collision);
+  SlidingMovement(int id, Repository<Entity, Integer> entityRepository) {
+    super(id);
     this.entityRepository = entityRepository;
   }
 
@@ -45,50 +46,39 @@ public class SlidingMovement extends BaseMovement {
   }
 
   @Override
-  public void tick(long now) {
+  public void move(Entity entity) {
     if (isMoving()) {
-      move();
+      int xDelta = xOffset * WALK_SPEED;
+      int yDelta = yOffset * WALK_SPEED;
+
+      move2(entity, xDelta, 0);
+      move2(entity, 0, yDelta);
     }
   }
 
-  private void move() {
-    int xDelta = xOffset * WALK_SPEED;
-    int yDelta = yOffset * WALK_SPEED;
-
-    move2(xDelta, 0);
-    move2(0, yDelta);
-  }
-
-  private void move2(int xDelta, int yDelta) {
-    Location next = getLocation().addNew(xDelta, yDelta);
+  private void move2(Entity entity, int xDelta, int yDelta) {
+    Location next = entity.getLocation().addNew(xDelta, yDelta);
+    Collision collision = entity.getCollision();
 
     Set<Collider> colliders = collision.getColliders(next);
 
-    informColliders(colliders);
+    colliders.forEach(collider -> collider.collide(entity));
 
     if (colliders.stream().anyMatch(Collider::isBlocking)) {
       return;
     }
 
-    updateEntityLocation(next);
+    entity.getLocation().set(next);
+    entityRepository.save(entity);
   }
 
-  private void updateEntityLocation(Location next) {
-    entityRepository.findById(this.getId()).ifPresent(entity -> {
-      entity.getLocation().set(next);
-      entityRepository.save(entity);
-    });
-  }
-
-  private void informColliders(Set<Collider> colliders) {
-    entityRepository.findById(this.getId())
-        .ifPresent(entity -> colliders
-            .forEach(collider -> collider.collide(entity)));
+  private Optional<Entity> getEntity() {
+    return entityRepository.findById(this.getId());
   }
 
   @Override
   public Location getLocation() {
-    return entityRepository.findById(this.getId())
+    return getEntity()
         .map(Entity::getLocation)
         .orElse(null);
   }

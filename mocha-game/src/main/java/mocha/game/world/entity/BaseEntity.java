@@ -2,10 +2,17 @@ package mocha.game.world.entity;
 
 import mocha.game.world.Location;
 import mocha.game.world.collision.Collider;
+import mocha.game.world.collision.Collision;
+import mocha.game.world.entity.movement.MovementType;
+import mocha.game.world.entity.prototype.EntityPrototype;
 import mocha.game.world.item.Item;
 
 public class BaseEntity implements Entity {
 
+  private int speed = 2;
+  private MovementType movementType = MovementType.STILL;
+  private int height = 32;
+  private int width = 32;
   private Integer id;
   private Location location = new Location();
   private EntityType entityType = EntityType.MOB;
@@ -15,12 +22,18 @@ public class BaseEntity implements Entity {
   private Item rightHand;
   private String spriteId = "/mocha/gfx/sprites/slime/slime0.png::0";
   private double scale = 1.0;
+  private Collision collision;
 
   protected BaseEntity() {
   }
 
   public BaseEntity(Integer id) {
     this.id = id;
+  }
+
+  BaseEntity(Integer id, EntityPrototype entityPrototype) {
+    this.id = id;
+    this.typeId = entityPrototype.getTypeId();
   }
 
   public BaseEntity(Integer id, Location location) {
@@ -71,6 +84,56 @@ public class BaseEntity implements Entity {
 
   public void setScale(double scale) {
     this.scale = scale;
+  }
+
+  @Override
+  public MovementType getMovementType() {
+    return movementType;
+  }
+
+  @Override
+  public void setMovementType(MovementType movementType) {
+    this.movementType = movementType;
+  }
+
+  @Override
+  public int getSpeed() {
+    return speed;
+  }
+
+  @Override
+  public void setSpeed(int speed) {
+    this.speed = speed;
+  }
+
+  @Override
+  public int getWidth() {
+    return width;
+  }
+
+  @Override
+  public void setWidth(int width) {
+    this.width = width;
+  }
+
+  @Override
+  public int getHeight() {
+    return height;
+  }
+
+  @Override
+  public void setHeight(int height) {
+    this.height = height;
+  }
+
+  @Override
+  public void setCollision(Collision collision) {
+    this.collision = collision;
+  }
+
+  @Override
+  public Collision getCollision() {
+    return this.collision;
   }
 
   @Override
@@ -131,7 +194,6 @@ public class BaseEntity implements Entity {
   }
 
   public void pickedUpBy(Entity entity) {
-
   }
 
 }

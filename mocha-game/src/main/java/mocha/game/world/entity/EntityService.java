@@ -1,7 +1,11 @@
 package mocha.game.world.entity;
 
+import com.google.common.collect.Maps;
+
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import mocha.game.event.MochaEventBus;
 import mocha.game.world.Location;
@@ -10,23 +14,24 @@ import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.entity.movement.Movement;
 import mocha.shared.Repository;
 
+import static com.google.common.collect.Sets.newHashSet;
+import static java.util.stream.Collectors.toSet;
+
 public class EntityService {
 
   private MochaEventBus eventBus;
   private Repository<Entity, Integer> entityRepository;
-  private EntitiesInChunkService entitiesInChunkService;
   private ChunkService chunkService;
   private Repository<Movement, Integer> movementRepository;
+  private Map<Integer, Set<Integer>> chunkOccupantIdsByChunkId = Maps.newConcurrentMap();
 
   public EntityService(
       MochaEventBus eventBus, Repository<Entity, Integer> entityRepository,
-      EntitiesInChunkService entitiesInChunkService,
       ChunkService chunkService,
       Repository<Movement, Integer> movementRepository
   ) {
     this.eventBus = eventBus;
     this.entityRepository = entityRepository;
-    this.entitiesInChunkService = entitiesInChunkService;
     this.chunkService = chunkService;
     this.movementRepository = movementRepository;
   }
@@ -41,11 +46,11 @@ public class EntityService {
   private void addEntityToChunk(Entity entity) {
     Location entityLocation = entity.getLocation();
     Chunk chunk = chunkService.getOrCreateChunkAt(entityLocation);
-    entitiesInChunkService.put(chunk, entity);
+    put(chunk, entity);
   }
 
   public void removeEntity(int entityId) {
-    entityRepository.findById(entityId).ifPresent(this::removeEntity);
+    findById(entityId).ifPresent(this::removeEntity);
   }
 
   public void removeEntity(Entity entity) {
@@ -60,7 +65,7 @@ public class EntityService {
   private void removeEntityFromChunk(Entity entity) {
     Location entityLocation = entity.getLocation();
     Chunk chunk = chunkService.getOrCreateChunkAt(entityLocation);
-    entitiesInChunkService.remove(chunk, entity);
+    remove(chunk, entity);
   }
 
   public Optional<Entity> findById(Integer playerEntityId) {
@@ -69,5 +74,33 @@ public class EntityService {
 
   public List<Entity> findAll() {
     return entityRepository.findAll();
+  }
+
+  public Set<Entity> getEntitiesInChunk(Chunk chunk) {
+    return getChunkOccupantIds(chunk.getId()).stream()
+        .map(this::findById)
+        .filter(Optional::isPresent)
+        .map(Optional::get)
+        .collect(toSet());
+  }
+
+  public void put(Chunk chunk, Entity entity) {
+    getChunkOccupantIds(chunk.getId()).add(entity.getId());
+  }
+
+  public void remove(Chunk chunk, Entity entity) {
+    Optional.ofNullable(chunkOccupantIdsByChunkId.get(chunk.getId()))
+        .orElse(newHashSet())
+        .remove(entity.getId());
+  }
+
+  private Set<Integer> getChunkOccupantIds(int chunkId) {
+    Optional<Set<Integer>> chunkOccupantIds = Optional.ofNullable(this.chunkOccupantIdsByChunkId.get(chunkId));
+    if (!chunkOccupantIds.isPresent()) {
+      Set<Integer> newSet = newHashSet();
+      this.chunkOccupantIdsByChunkId.put(chunkId, newSet);
+      return newSet;
+    }
+    return chunkOccupantIds.get();
   }
 }

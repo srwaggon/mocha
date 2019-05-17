@@ -16,8 +16,8 @@ import mocha.client.gfx.view.Camera;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
-import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.movement.Movement;
 import mocha.shared.Repository;
 
@@ -27,24 +27,24 @@ public class SpriteLayer {
   private Repository<Movement, Integer> movementRepository;
   private ChunkService chunkService;
   private Camera camera;
-  private EntitiesInChunkService entitiesInChunkService;
   private SpriteService spriteService;
   private ScaleProvider scaleProvider;
+  private EntityService entityService;
 
   @Inject
   public SpriteLayer(
       Repository<Movement, Integer> movementRepository,
       ChunkService chunkService, Camera camera,
-      EntitiesInChunkService entitiesInChunkService,
       SpriteService spriteService,
-      ScaleProvider scaleProvider
+      ScaleProvider scaleProvider,
+      EntityService entityService
   ) {
     this.movementRepository = movementRepository;
     this.chunkService = chunkService;
     this.camera = camera;
-    this.entitiesInChunkService = entitiesInChunkService;
     this.spriteService = spriteService;
     this.scaleProvider = scaleProvider;
+    this.entityService = entityService;
   }
 
   public void render(long now, GraphicsContext graphics) {
@@ -64,7 +64,7 @@ public class SpriteLayer {
   }
 
   private void renderEntitiesInChunk(long now, GraphicsContext graphics, Chunk chunk) {
-    entitiesInChunkService.getEntitiesInChunk(chunk).stream()
+    entityService.getEntitiesInChunk(chunk).stream()
         .sorted(Comparator.comparingInt(entity -> entity.getLocation().getY()))
         .forEach(entity -> renderEntity(now, graphics, entity));
   }

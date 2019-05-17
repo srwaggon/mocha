@@ -2,7 +2,7 @@ package mocha.game.world.entity.movement;
 
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
-import mocha.game.world.collision.Collision;
+import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 
 public class SimpleMovement implements Movement {
@@ -43,7 +43,7 @@ public class SimpleMovement implements Movement {
   }
 
   @Override
-  public void tick(long now) {
+  public void move(Entity entity) {
 
   }
 
@@ -68,16 +68,6 @@ public class SimpleMovement implements Movement {
   @Override
   public Direction getDirection() {
     return null;
-  }
-
-  @Override
-  public Collision getCollision() {
-    return null;
-  }
-
-  @Override
-  public void setCollision(Collision collision) {
-
   }
 
 }

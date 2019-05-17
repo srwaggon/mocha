@@ -54,20 +54,15 @@ public class EntityConfiguration {
   @Bean
   public EntityService entityService(
       Repository<Entity, Integer> entityRepository,
-      EntitiesInChunkService entitiesInChunkService,
       ChunkService chunkService,
       Repository<Movement, Integer> movementRepository
   ) {
     return new EntityService(
         clientEventBus,
         entityRepository,
-        entitiesInChunkService,
         chunkService,
-        movementRepository);
+        movementRepository
+    );
   }
 
-  @Bean
-  public EntitiesInChunkService entitiesInChunkService(Repository<Entity, Integer> entityRepository) {
-    return new EntitiesInChunkService(entityRepository);
-  }
 }

@@ -12,14 +12,29 @@ import mocha.game.world.entity.prototype.EntityPrototypeService;
 class EntitySetup implements GameSetup {
 
   private EntityPrototypeService entityPrototypeService;
+  private EntityFactory entityFactory;
+  private EntityService entityService;
 
   @Inject
-  EntitySetup(EntityPrototypeService entityPrototypeService) {
+  EntitySetup(
+      EntityPrototypeService entityPrototypeService,
+      EntityFactory entityFactory,
+      EntityService entityService
+  ) {
     this.entityPrototypeService = entityPrototypeService;
+    this.entityFactory = entityFactory;
+    this.entityService = entityService;
   }
 
   @Override
   public void run() {
+    EntityPrototype slimePrototype = createSlimeEntityPrototype();
+
+//    Entity slime = entityFactory.newEntity(slimePrototype);
+//    entityService.save(slime);
+  }
+
+  private EntityPrototype createSlimeEntityPrototype() {
     EntityPrototype slime = new EntityPrototype(
         1,
         1,
@@ -31,6 +46,6 @@ class EntitySetup implements GameSetup {
         "/mocha/gfx/sprites/slime0.png::0",
         1.0
     );
-    entityPrototypeService.save(slime);
+    return entityPrototypeService.save(slime);
   }
 }

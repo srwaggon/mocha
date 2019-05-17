@@ -5,21 +5,18 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 
 import mocha.game.world.Direction;
-import mocha.game.world.collision.Collision;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 
 public class BaseMovement extends SimpleMovement {
 
   private final Map<Direction, Runnable> moveMap = Maps.newConcurrentMap();
   private int id;
-  Collision collision;
   Direction direction;
   int xOffset = 0;
   int yOffset = 0;
 
-  BaseMovement(int id, Collision collision) {
+  BaseMovement(int id) {
     this.id = id;
-    this.collision = collision;
 
     moveMap.put(Direction.NORTH, this::up);
     moveMap.put(Direction.EAST, this::right);
@@ -93,14 +90,5 @@ public class BaseMovement extends SimpleMovement {
     return direction;
   }
 
-  @Override
-  public Collision getCollision() {
-    return collision;
-  }
-
-  @Override
-  public void setCollision(Collision collision) {
-    this.collision = collision;
-  }
 }
 

@@ -5,6 +5,10 @@ import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import mocha.game.world.collision.Collision;
+import mocha.game.world.entity.movement.MovementType;
 
 @javax.persistence.Entity
 public class ServerEntity extends BaseEntity {
@@ -12,7 +16,7 @@ public class ServerEntity extends BaseEntity {
   public ServerEntity() {
   }
 
-  ServerEntity(BaseEntity entity) {
+  ServerEntity(Entity entity) {
     this.setId(entity.getId());
     getLocation().set(entity.getLocation());
     this.setBlocking(entity.isBlocking());
@@ -75,5 +79,45 @@ public class ServerEntity extends BaseEntity {
   @Override
   public void setBlocking(boolean isBlocking) {
     super.setBlocking(isBlocking);
+  }
+
+  @Enumerated(EnumType.STRING)
+  @Override
+  public MovementType getMovementType() {
+    return MovementType.SLIDING;
+  }
+
+  @Override
+  public void setMovementType(MovementType movementType) {
+    super.setMovementType(movementType);
+  }
+
+  @Override
+  public int getSpeed() {
+    return super.getSpeed();
+  }
+
+  @Column
+  @Override
+  public int getWidth() {
+    return super.getWidth();
+  }
+
+  @Column
+  @Override
+  public int getHeight() {
+    return super.getHeight();
+  }
+
+
+  @Override
+  public void setCollision(Collision collision) {
+    super.setCollision(collision);
+  }
+
+  @Transient
+  @Override
+  public Collision getCollision() {
+    return super.getCollision();
   }
 }

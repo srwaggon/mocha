@@ -12,30 +12,23 @@ import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
 import mocha.game.world.collision.Collider;
-import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.EntityType;
 import mocha.game.world.entity.command.PickUpItemCommand;
-import mocha.game.world.entity.movement.Movement;
-import mocha.shared.Repository;
 
 public class PickUpItemsRule implements GameRule {
 
   private ChunkService chunkService;
-  private EntitiesInChunkService entitiesInChunkService;
-  private Repository<Movement, Integer> movementRepository;
   private EntityService entityService;
 
   private Queue<PickUpItemCommand> pickUpItemCommands = Lists.newLinkedList();
 
   public PickUpItemsRule(
       ChunkService chunkService,
-      EntitiesInChunkService entitiesInChunkService,
-      Repository<Movement, Integer> movementRepository, EntityService entityService) {
+      EntityService entityService
+  ) {
     this.chunkService = chunkService;
-    this.entitiesInChunkService = entitiesInChunkService;
-    this.movementRepository = movementRepository;
     this.entityService = entityService;
   }
 
@@ -58,16 +51,13 @@ public class PickUpItemsRule implements GameRule {
   }
 
   private void removeEntity(Entity pickingUpEntity, Chunk chunk) {
-    movementRepository.findById(pickingUpEntity.getId())
-        .ifPresent(movement -> {
-          Set<Collider> colliders = movement.getCollision().getColliders(pickingUpEntity.getLocation());
-          entitiesInChunkService.getEntitiesInChunk(chunk).stream()
-              .filter(entity -> !entity.getId().equals(pickingUpEntity.getId()))
-              .filter(PickUpItemsRule::isItem)
-              .filter(colliders::contains)
-              .findFirst()
-              .ifPresent(itemEntity -> pickupItem(pickingUpEntity, itemEntity));
-        });
+    Set<Collider> colliders = pickingUpEntity.getCollision().getColliders(pickingUpEntity.getLocation());
+    entityService.getEntitiesInChunk(chunk).stream()
+        .filter(entity -> !entity.getId().equals(pickingUpEntity.getId()))
+        .filter(PickUpItemsRule::isItem)
+        .filter(colliders::contains)
+        .findFirst()
+        .ifPresent(itemEntity -> pickupItem(pickingUpEntity, itemEntity));
   }
 
   private void pickupItem(Entity pickingUpEntity, Entity itemEntity) {

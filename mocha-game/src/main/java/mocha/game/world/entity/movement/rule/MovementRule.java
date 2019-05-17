@@ -4,27 +4,25 @@ import mocha.game.rule.GameRule;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
-import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
+import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.movement.Movement;
 import mocha.shared.Repository;
 
 public class MovementRule implements GameRule {
 
-  private Repository<Entity, Integer> entityRepository;
   private Repository<Movement, Integer> movementRepository;
   private ChunkService chunkService;
-  private EntitiesInChunkService entitiesInChunkService;
+  private EntityService entityService;
 
   public MovementRule(
-      Repository<Entity, Integer> entityRepository,
       Repository<Movement, Integer> movementRepository,
       ChunkService chunkService,
-      EntitiesInChunkService entitiesInChunkService) {
-    this.entityRepository = entityRepository;
+      EntityService entityService
+  ) {
     this.movementRepository = movementRepository;
     this.chunkService = chunkService;
-    this.entitiesInChunkService = entitiesInChunkService;
+    this.entityService = entityService;
   }
 
   @Override
@@ -35,13 +33,12 @@ public class MovementRule implements GameRule {
 
   private void processEntityMovement() {
     movementRepository.findAll()
-        .forEach((movement) -> {
+        .forEach((movement) -> entityService.findById(movement.getId()).ifPresent(entity -> {
           Location start = movement.getLocation().copy();
-          movement.tick(0L);
+          movement.move(entity);
           Location finish = movement.getLocation();
-          entityRepository.findById(movement.getId())
-              .ifPresent(entity -> updateChunkOccupants(entity, start, finish));
-        });
+          updateChunkOccupants(entity, start, finish);
+        }));
   }
 
   private void updateChunkOccupants(Entity entity, Location startLocation, Location finishLocation) {
@@ -53,7 +50,7 @@ public class MovementRule implements GameRule {
     if (startChunk.getId().equals(finishChunk.getId())) {
       return;
     }
-    entitiesInChunkService.remove(startChunk, entity);
-    entitiesInChunkService.put(finishChunk, entity);
+    entityService.remove(startChunk, entity);
+    entityService.put(finishChunk, entity);
   }
 }

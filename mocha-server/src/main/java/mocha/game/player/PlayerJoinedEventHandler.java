@@ -5,17 +5,15 @@ import com.google.common.eventbus.Subscribe;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-import java.util.Optional;
-
 import javax.inject.Inject;
 
 import mocha.game.event.MochaEventHandler;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkService;
+import mocha.game.world.collision.Collision;
+import mocha.game.world.collision.CollisionFactory;
 import mocha.game.world.entity.BaseEntity;
-import mocha.game.world.entity.EntitiesInChunkService;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityService;
 import mocha.game.world.entity.movement.Movement;
@@ -32,7 +30,6 @@ public class PlayerJoinedEventHandler implements MochaEventHandler<PlayerJoinedE
 
   private Repository<Movement, Integer> movementRepository;
   private MovementFactory movementFactory;
-  private EntitiesInChunkService entitiesInChunkService;
   private ChunkService chunkService;
   private IdFactory<Entity> entityIdFactory;
   private EntityService entityService;
@@ -40,13 +37,12 @@ public class PlayerJoinedEventHandler implements MochaEventHandler<PlayerJoinedE
   private ItemService itemService;
   private ItemPrototypeService itemPrototypeService;
   private EntityPrototypeService entityPrototypeService;
-  private Map<Integer, MochaConnection> mochaConnectionsByPlayerId;
+  private CollisionFactory collisionFactory;
 
   @Inject
-  public PlayerJoinedEventHandler(Repository<Movement, Integer> movementRepository, MovementFactory movementFactory, EntitiesInChunkService entitiesInChunkService, ChunkService chunkService, IdFactory<Entity> entityIdFactory, EntityService entityService, PlayerService playerService, ItemService itemService, ItemPrototypeService itemPrototypeService, EntityPrototypeService entityPrototypeService, Map<Integer, MochaConnection> mochaConnectionsByPlayerId) {
+  public PlayerJoinedEventHandler(Repository<Movement, Integer> movementRepository, MovementFactory movementFactory, ChunkService chunkService, IdFactory<Entity> entityIdFactory, EntityService entityService, PlayerService playerService, ItemService itemService, ItemPrototypeService itemPrototypeService, EntityPrototypeService entityPrototypeService, CollisionFactory collisionFactory) {
     this.movementRepository = movementRepository;
     this.movementFactory = movementFactory;
-    this.entitiesInChunkService = entitiesInChunkService;
     this.chunkService = chunkService;
     this.entityIdFactory = entityIdFactory;
     this.entityService = entityService;
@@ -54,7 +50,7 @@ public class PlayerJoinedEventHandler implements MochaEventHandler<PlayerJoinedE
     this.itemService = itemService;
     this.itemPrototypeService = itemPrototypeService;
     this.entityPrototypeService = entityPrototypeService;
-    this.mochaConnectionsByPlayerId = mochaConnectionsByPlayerId;
+    this.collisionFactory = collisionFactory;
   }
 
   @Override
@@ -76,13 +72,6 @@ public class PlayerJoinedEventHandler implements MochaEventHandler<PlayerJoinedE
     sendLoginSuccess(mochaConnection, playerId);
   }
 
-  private Optional<Integer> findPlayerIdByConnection(MochaConnection mochaConnection) {
-    return mochaConnectionsByPlayerId.entrySet().stream()
-        .filter(pair -> mochaConnection.equals(pair.getValue()))
-        .map(Map.Entry::getKey)
-        .findFirst();
-  }
-
   @NotNull
   private Entity getPlayerEntity(Integer playerId) {
     return playerService.getEntityForPlayerId(playerId).orElseGet(this::newPlayerEntity);
@@ -91,6 +80,8 @@ public class PlayerJoinedEventHandler implements MochaEventHandler<PlayerJoinedE
   @NotNull
   private Entity newPlayerEntity() {
     Entity playerEntity = entityService.save(new BaseEntity(entityIdFactory.newId()));
+    Collision collision = collisionFactory.newEntityHitBoxCollision(playerEntity);
+    playerEntity.setCollision(collision);
     movementRepository.save(movementFactory.newSlidingMovement(playerEntity));
     return playerEntity;
   }
@@ -114,7 +105,7 @@ public class PlayerJoinedEventHandler implements MochaEventHandler<PlayerJoinedE
   }
 
   private void sendEntitiesInChunk(MochaConnection playerConnection, Chunk chunk) {
-    entitiesInChunkService.getEntitiesInChunk(chunk)
+    entityService.getEntitiesInChunk(chunk)
         .forEach(playerConnection::sendEntityUpdate);
   }
 
