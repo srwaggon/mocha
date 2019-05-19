@@ -98,10 +98,13 @@ public class AccountServiceTest {
   @Test
   public void addPlayer_SavesThePlayerToTheAccount() throws AccountNameTakenException {
     Account account = accountService.createAccount(accountName, emailAddress);
-    ServerPlayer player = new ServerPlayer(23);
+    int playerId = 23;
+    ServerPlayer player = new ServerPlayer(playerId);
+    assertThat(serverPlayerJpaRepository.findById(playerId)).isEmpty();
 
     accountService.addPlayer(account, player);
 
+    assertThat(serverPlayerJpaRepository.findById(playerId)).isPresent();
     Optional<Account> accountMaybe = accountJpaRepository.findByName(accountName);
     assertThat(accountMaybe).isPresent();
     assertThat(accountMaybe.get().getPlayer()).isEqualTo(player);

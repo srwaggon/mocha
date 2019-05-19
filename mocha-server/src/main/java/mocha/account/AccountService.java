@@ -40,6 +40,7 @@ public class AccountService {
 
   public void addPlayer(Account account, ServerPlayer player) {
     account.setPlayer(player);
+    accountJpaRepository.save(account);
   }
 
   public Optional<AccountConnection> login(MochaConnection mochaConnection, LoginRequestPacket loginRequestPacket) {
