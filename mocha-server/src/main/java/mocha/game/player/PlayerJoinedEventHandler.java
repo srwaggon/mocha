@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
+import lombok.extern.java.Log;
 import mocha.game.event.MochaEventHandler;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
@@ -25,6 +26,7 @@ import mocha.net.packet.MochaConnection;
 import mocha.shared.IdFactory;
 import mocha.shared.Repository;
 
+@Log
 @Component
 public class PlayerJoinedEventHandler implements MochaEventHandler<PlayerJoinedEvent> {
 
@@ -56,6 +58,7 @@ public class PlayerJoinedEventHandler implements MochaEventHandler<PlayerJoinedE
   @Override
   @Subscribe
   public void handle(PlayerJoinedEvent playerJoinedEvent) {
+    log.info(playerJoinedEvent.toString());
     MochaConnection mochaConnection = playerJoinedEvent.getMochaConnection();
     Player player = playerJoinedEvent.getPlayer();
     Integer playerId = player.getId();

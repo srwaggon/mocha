@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
+import lombok.extern.java.Log;
 import mocha.game.event.MochaEventHandler;
 import mocha.game.player.Player;
 import mocha.game.player.PlayerService;
@@ -16,6 +17,7 @@ import mocha.server.ServerPacketResolver;
 import mocha.server.event.ServerEventBus;
 import mocha.shared.IdFactory;
 
+@Log
 @Component
 public class LoginSuccessEventHandler implements MochaEventHandler<LoginSuccessEvent> {
 
@@ -42,6 +44,7 @@ public class LoginSuccessEventHandler implements MochaEventHandler<LoginSuccessE
   @Subscribe
   @Override
   public void handle(LoginSuccessEvent loginSuccessEvent) {
+    log.info(loginSuccessEvent.toString());
     AccountConnection accountConnection = loginSuccessEvent.getAccountConnection();
     wireUpPacketListening(accountConnection);
     addPlayerToGame(accountConnection);

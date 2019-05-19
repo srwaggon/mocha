@@ -8,10 +8,12 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import lombok.extern.java.Log;
 import mocha.game.event.MochaEventHandler;
 import mocha.game.world.entity.event.EntityAddedEvent;
 import mocha.net.packet.MochaConnection;
 
+@Log
 @Component
 public class EntityAddedEventHandler implements MochaEventHandler<EntityAddedEvent> {
 
@@ -24,6 +26,7 @@ public class EntityAddedEventHandler implements MochaEventHandler<EntityAddedEve
 
   @Subscribe
   public void handle(EntityAddedEvent entityAddedEvent) {
+    log.info(entityAddedEvent.toString());
     mochaConnectionsByPlayerId.values().forEach(mochaConnection ->
         mochaConnection.sendEntityUpdate(entityAddedEvent.getEntity()));
   }
