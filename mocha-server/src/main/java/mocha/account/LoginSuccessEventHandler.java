@@ -4,6 +4,8 @@ import com.google.common.eventbus.Subscribe;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import lombok.extern.java.Log;
@@ -11,6 +13,7 @@ import mocha.game.event.MochaEventHandler;
 import mocha.game.player.Player;
 import mocha.game.player.PlayerService;
 import mocha.game.player.ServerPlayer;
+import mocha.net.packet.MochaConnection;
 import mocha.net.packet.PacketListener;
 import mocha.server.ServerPacketHandlerFactory;
 import mocha.server.ServerPacketResolver;
@@ -26,19 +29,22 @@ public class LoginSuccessEventHandler implements MochaEventHandler<LoginSuccessE
   private AccountService accountService;
   private PlayerService playerService;
   private IdFactory<Player> playerIdFactory;
+  private Map<Integer, MochaConnection> mochaConnectionsByPlayerId;
 
   @Inject
   public LoginSuccessEventHandler(
       ServerPacketHandlerFactory serverPacketHandlerFactory,
       ServerEventBus serverEventBus,
       AccountService accountService,
-      PlayerService playerService, IdFactory<Player> playerIdFactory
+      PlayerService playerService, IdFactory<Player> playerIdFactory,
+      Map<Integer, MochaConnection> mochaConnectionsByPlayerId
   ) {
     this.serverPacketHandlerFactory = serverPacketHandlerFactory;
     this.serverEventBus = serverEventBus;
     this.accountService = accountService;
     this.playerService = playerService;
     this.playerIdFactory = playerIdFactory;
+    this.mochaConnectionsByPlayerId = mochaConnectionsByPlayerId;
   }
 
   @Subscribe
@@ -63,6 +69,7 @@ public class LoginSuccessEventHandler implements MochaEventHandler<LoginSuccessE
       accountService.addPlayer(account, newPlayer());
     }
     Player player = account.getPlayer();
+    mochaConnectionsByPlayerId.put(player.getId(), accountConnection.getMochaConnection());
     serverEventBus.postPlayerJoinedEvent(accountConnection.getMochaConnection(), player);
   }
 

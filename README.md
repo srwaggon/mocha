@@ -5,8 +5,11 @@ Mocha is currently a tile based game template, with simple hitbox collision.
  
 
 ## Backlog
+- [ ] Remove ChunkRepository access from Grass Grows / Water Evaporates rules
+
 ## Bugs
-- [ ] The player gets a new player ID every time they connect
+- [x] TileUpdates are not firing (probably because the connection isn't getting put into the mochaConnectionsByPlayerId map currently)
+- [x] The player gets a new player ID every time they connect
 - [ ] The player's sprite is not centered on the screen. It is in the SE quadrant of the center.
 - [ ] The player's sprite is not centered on its entity's hitbox. The right and bottom sides overhang by any difference in size.
 

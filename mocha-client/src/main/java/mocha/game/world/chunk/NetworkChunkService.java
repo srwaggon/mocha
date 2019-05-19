@@ -13,11 +13,11 @@ public class NetworkChunkService extends ChunkService {
   private MochaConnection mochaConnection;
 
   public NetworkChunkService(
+      MochaEventBus mochaEventBus,
       ChunkFactory chunkFactory,
-      Repository<Chunk, Integer> chunkRepository,
-      MochaEventBus mochaEventBus
+      Repository<Chunk, Integer> chunkRepository
   ) {
-    super(chunkFactory, chunkRepository);
+    super(mochaEventBus, chunkFactory, chunkRepository);
     this.chunkRepository = chunkRepository;
     mochaEventBus.register(this);
   }

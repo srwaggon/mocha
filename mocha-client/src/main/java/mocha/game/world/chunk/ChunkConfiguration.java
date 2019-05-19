@@ -26,8 +26,8 @@ public class ChunkConfiguration {
       Repository<Chunk, Integer> chunkRepository
   ) {
     return isOnline
-        ? new NetworkChunkService(chunkFactory, chunkRepository, mochaEventBus)
-        : new ChunkService(chunkFactory, chunkRepository);
+        ? new NetworkChunkService(mochaEventBus, chunkFactory, chunkRepository)
+        : new ChunkService(mochaEventBus, chunkFactory, chunkRepository);
   }
 
   @Bean

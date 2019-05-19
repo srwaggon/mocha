@@ -25,6 +25,7 @@ public class ChunkUpdatedEventHandler implements MochaEventHandler<ChunkUpdatedE
   @Subscribe
   public void handle(ChunkUpdatedEvent chunkUpdatedEvent) {
     Chunk chunk = chunkUpdatedEvent.getChunk();
-    mochaConnectionsByPlayerId.values().forEach(mochaConnection -> mochaConnection.sendChunkUpdate(chunk));
+    mochaConnectionsByPlayerId.values()
+        .forEach(mochaConnection -> mochaConnection.sendChunkUpdate(chunk));
   }
 }

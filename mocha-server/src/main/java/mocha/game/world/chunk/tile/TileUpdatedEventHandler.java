@@ -28,7 +28,7 @@ public class TileUpdatedEventHandler implements MochaEventHandler<TileUpdatedEve
     Chunk chunk = tileUpdatedEvent.getChunk();
     int x = tileUpdatedEvent.getX();
     int y = tileUpdatedEvent.getY();
-    mochaConnectionsByPlayerId.values().forEach(mochaConnection ->
-        mochaConnection.sendTileUpdate(chunk, x, y));
+    mochaConnectionsByPlayerId.values()
+        .forEach(mochaConnection -> mochaConnection.sendTileUpdate(chunk, x, y));
   }
 }

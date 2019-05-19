@@ -2,14 +2,18 @@ package mocha.game.world.chunk;
 
 import com.google.common.collect.Maps;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
+import mocha.game.event.MochaEventBus;
 import mocha.game.world.Direction;
 import mocha.game.world.Location;
 import mocha.game.world.chunk.tile.TileType;
 import mocha.shared.Repository;
 
+import static java.util.stream.Collectors.toList;
 import static mocha.game.world.Direction.EAST;
 import static mocha.game.world.Direction.NORTH;
 import static mocha.game.world.Direction.SOUTH;
@@ -17,13 +21,16 @@ import static mocha.game.world.Direction.WEST;
 
 public class ChunkService {
 
+  private MochaEventBus mochaEventBus;
   private ChunkFactory chunkFactory;
   private Repository<Chunk, Integer> chunkRepository;
 
   public ChunkService(
+      MochaEventBus mochaEventBus,
       ChunkFactory chunkFactory,
       Repository<Chunk, Integer> chunkRepository
   ) {
+    this.mochaEventBus = mochaEventBus;
     this.chunkFactory = chunkFactory;
     this.chunkRepository = chunkRepository;
   }
@@ -87,5 +94,17 @@ public class ChunkService {
 
   public void save(Chunk chunk) {
     chunkRepository.save(chunk);
+  }
+
+  public void updateTileAtToType(Chunk chunk, int y, int x, TileType tileType) {
+    chunk.setTile(x, y, tileType);
+    chunkRepository.save(chunk);
+    mochaEventBus.postTileUpdatedEvent(chunk, x, y);
+  }
+
+  public List<TileType> areAnyNeighbors(Location tileLocation, Predicate<TileType> predicate) {
+    return getTileNeighborsInExistingChunks(tileLocation).values().stream()
+        .filter(predicate)
+        .collect(toList());
   }
 }

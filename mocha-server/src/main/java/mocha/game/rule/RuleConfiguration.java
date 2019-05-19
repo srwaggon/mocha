@@ -39,9 +39,9 @@ public class RuleConfiguration {
     PickUpItemsRule pickUpItemsRule = new PickUpItemsRule(chunkService, entityService);
     serverEventBus.register(pickUpItemsRule);
 
-    GrassGrowsRule grassGrowsRule = new GrassGrowsRule(serverEventBus, chunkRepository, chunkService);
+    GrassGrowsRule grassGrowsRule = new GrassGrowsRule(chunkRepository, chunkService);
 
-    WaterEvaporatesRule waterEvaporatesRule = new WaterEvaporatesRule(serverEventBus, chunkRepository, chunkService);
+    WaterEvaporatesRule waterEvaporatesRule = new WaterEvaporatesRule(chunkRepository, chunkService);
 
     return Lists.newArrayList(
         movementRule,
