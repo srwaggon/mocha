@@ -2,7 +2,6 @@ package mocha.net;
 
 import com.google.common.eventbus.Subscribe;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,7 +54,6 @@ public class ConnectedEventHandlerTest {
     MockitoAnnotations.initMocks(this);
   }
 
-  @NotNull
   private ConnectedEvent newConnectedEvent() {
     return new ConnectedEvent(mochaConnection);
   }

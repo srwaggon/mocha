@@ -1,6 +1,5 @@
 package mocha.account;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -64,7 +63,6 @@ public class AccountServiceTest {
     assertThat(actualAccount.getName()).isEqualTo(expectedAccount.getName());
   }
 
-  @NotNull
   private Account newAccount(String name) {
     return new Account(name, emailAddress);
   }

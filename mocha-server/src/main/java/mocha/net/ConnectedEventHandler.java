@@ -2,7 +2,6 @@ package mocha.net;
 
 import com.google.common.eventbus.Subscribe;
 
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -87,7 +86,6 @@ public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> 
         .ifPresent(serverEventBus::postLoginSuccess);
   }
 
-  @Nullable
   private Optional<Packet> getPacket(MochaConnection playerConnection) {
     try {
       return Optional.of(playerConnection.readPacket());

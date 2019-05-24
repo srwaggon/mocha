@@ -2,7 +2,6 @@ package mocha.game.player;
 
 import com.google.common.eventbus.Subscribe;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -75,12 +74,10 @@ public class PlayerJoinedEventHandler implements MochaEventHandler<PlayerJoinedE
     sendLoginSuccess(mochaConnection, playerId);
   }
 
-  @NotNull
   private Entity getPlayerEntity(Integer playerId) {
     return playerService.getEntityForPlayerId(playerId).orElseGet(this::newPlayerEntity);
   }
 
-  @NotNull
   private Entity newPlayerEntity() {
     Entity playerEntity = entityService.save(new BaseEntity(entityIdFactory.newId()));
     Collision collision = collisionFactory.newEntityHitBoxCollision(playerEntity);
