@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 
 import java.util.Optional;
 
+import lombok.extern.java.Log;
 import mocha.account.Account;
 import mocha.account.AccountService;
 import mocha.game.player.Player;
@@ -12,6 +13,7 @@ import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.net.packet.PacketHandler;
 import mocha.server.event.ServerEventBus;
 
+@Log
 public class MovePacketHandler implements PacketHandler<MovePacket> {
 
   private final ServerEventBus serverEventBus;
@@ -33,6 +35,7 @@ public class MovePacketHandler implements PacketHandler<MovePacket> {
 
   @Subscribe
   public void handle(MovePacket movePacket) {
+    log.info(movePacket.toString());
     EntityMoveCommand moveCommand = movePacket.getMoveCommand();
     Optional<Player> maybePlayer = accountService.getPlayer(account);
     maybePlayer.ifPresent(player ->

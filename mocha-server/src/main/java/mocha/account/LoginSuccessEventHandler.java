@@ -24,7 +24,7 @@ import mocha.shared.IdFactory;
 @Component
 public class LoginSuccessEventHandler implements MochaEventHandler<LoginSuccessEvent> {
 
-  private ServerPacketHandlerFactory serverPacketHandlerFactory;
+  private ServerPacketHandlerFactory serverPacketResolverFactory;
   private ServerEventBus serverEventBus;
   private AccountService accountService;
   private PlayerService playerService;
@@ -33,13 +33,13 @@ public class LoginSuccessEventHandler implements MochaEventHandler<LoginSuccessE
 
   @Inject
   public LoginSuccessEventHandler(
-      ServerPacketHandlerFactory serverPacketHandlerFactory,
+      ServerPacketHandlerFactory serverPacketResolverFactory,
       ServerEventBus serverEventBus,
       AccountService accountService,
       PlayerService playerService, IdFactory<Player> playerIdFactory,
       Map<Integer, MochaConnection> mochaConnectionsByPlayerId
   ) {
-    this.serverPacketHandlerFactory = serverPacketHandlerFactory;
+    this.serverPacketResolverFactory = serverPacketResolverFactory;
     this.serverEventBus = serverEventBus;
     this.accountService = accountService;
     this.playerService = playerService;
@@ -57,9 +57,9 @@ public class LoginSuccessEventHandler implements MochaEventHandler<LoginSuccessE
   }
 
   private void wireUpPacketListening(AccountConnection accountConnection) {
-    ServerPacketResolver serverPacketHandler = serverPacketHandlerFactory.newServerPacketHandler(accountConnection);
-    PacketListener packetListener = new PacketListener(serverEventBus, accountConnection.getMochaConnection(), serverPacketHandler);
-    serverEventBus.postTaskEvent(serverPacketHandler);
+    ServerPacketResolver serverPacketResolver = serverPacketResolverFactory.newServerPacketResolver(accountConnection);
+    PacketListener packetListener = new PacketListener(serverEventBus, accountConnection.getMochaConnection(), serverPacketResolver);
+    serverEventBus.postTaskEvent(serverPacketResolver);
     serverEventBus.postTaskEvent(packetListener);
   }
 

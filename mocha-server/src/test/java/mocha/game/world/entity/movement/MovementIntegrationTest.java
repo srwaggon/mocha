@@ -40,11 +40,12 @@ public class MovementIntegrationTest extends MochaTest {
   }
 
   @Test
-  public void onlyTheRequestedEntityMoves_WhenRequested() throws DisconnectedException {
+  public void onlyTheRequestedEntityMoves_WhenRequestingTheFirstEntityToMove() throws DisconnectedException {
     registerAccount(player1Connection, player1AccountName);
     connectPlayer1ToGameServer();
     Entity entity1 = getEntityUpdate(player1Connection);
-    int entity1StartingX = entity1.getLocation().getX();
+    Location entity1Location = entity1.getLocation();
+    int entity1StartingX = entity1Location.getX();
     ensureEntityCanMove(entity1, EAST);
     moveEntity(entity1, EAST);
 
@@ -57,11 +58,38 @@ public class MovementIntegrationTest extends MochaTest {
     ensureEntityCanMove(entity1, EAST);
     moveEntity(entity1, EAST);
 
-    assertThat(entity1.getLocation().getX()).isGreaterThan(0);
-    assertThat(entity1.getLocation().getX()).isGreaterThan(entity1StartingX);
-    assertThat(entity1.getLocation().getX()).isGreaterThan(entity2Location.getX());
-    assertThat(entity2.getLocation().getX()).isZero();
-    assertThat(entity2.getLocation().getX()).isEqualTo(entity2StartingX);
+    // entity 1 has moved east
+    assertThat(entity1Location.getX()).isGreaterThan(0);
+    assertThat(entity1Location.getX()).isGreaterThan(entity1StartingX);
+    // entity 2 has not moved east
+    assertThat(entity1Location.getX()).isGreaterThan(entity2Location.getX());
+    assertThat(entity2Location.getX()).isZero();
+    assertThat(entity2Location.getX()).isEqualTo(entity2StartingX);
   }
 
+  @Test
+  public void onlyTheRequestedEntityMoves_WhenTheSecondEntityIsAskedToMove() throws DisconnectedException {
+    registerAccount(player1Connection, player1AccountName);
+    connectPlayer1ToGameServer();
+    Entity entity1 = getEntityUpdate(player1Connection);
+    Location entity1Location = entity1.getLocation();
+    ensureEntityCanMove(entity1, EAST);
+    moveEntity(entity1, EAST);
+
+    registerAccount(player2Connection, player2AccountName);
+    connectPlayer2ToGameServer();
+    Entity entity2 = getEntityUpdate(player1Connection);
+    Location entity2Location = entity2.getLocation();
+    int entity2StartingY = entity2Location.getY();
+
+    ensureEntityCanMove(entity2, SOUTH);
+    moveEntity(entity2, SOUTH);
+
+    // entity 2 has moved south
+    assertThat(entity2Location.getY()).isGreaterThan(0);
+    assertThat(entity2Location.getY()).isGreaterThan(entity2StartingY);
+    // entity 1 has not moved south
+    assertThat(entity1Location.getY()).isZero();
+    assertThat(entity2Location.getY()).isGreaterThan(entity1Location.getY());
+  }
 }

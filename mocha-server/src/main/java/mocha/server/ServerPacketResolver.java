@@ -3,6 +3,7 @@ package mocha.server;
 import com.google.common.collect.Queues;
 import com.google.common.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -33,7 +34,7 @@ public class ServerPacketResolver implements PacketResolver, SleepyRunnable {
 
   private ConcurrentLinkedQueue<Packet> packets = Queues.newConcurrentLinkedQueue();
 
-  private List<PacketHandler> packetHandlers;
+  private List<PacketHandler> packetHandlers = new ArrayList<>();
 
   ServerPacketResolver(
       ServerEventBus serverEventBus,
@@ -45,7 +46,7 @@ public class ServerPacketResolver implements PacketResolver, SleepyRunnable {
       AccountConnection accountConnection
   ) {
     this.mochaConnection = accountConnection.getMochaConnection();
-    this.packetHandlers = packetHandlers;
+    this.packetHandlers.addAll(packetHandlers);
     this.packetHandlers.add(new RequestEntitiesByPlayerIdPacketHandler(mochaConnection, entityService, playerService));
     this.packetHandlers.add(new RequestChunkByIdPacketHandler(mochaConnection, chunkService));
     this.packetHandlers.add(new RequestChunkByLocationPacketHandler(mochaConnection, chunkService));

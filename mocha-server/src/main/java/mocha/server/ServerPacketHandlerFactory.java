@@ -31,7 +31,8 @@ public class ServerPacketHandlerFactory {
       EntityService entityService,
       PlayerService playerService,
       List<PacketHandler> packetHandlers,
-      AccountService accountService) {
+      AccountService accountService
+  ) {
     this.serverEventBus = serverEventBus;
     this.chunkService = chunkService;
     this.entityService = entityService;
@@ -40,7 +41,7 @@ public class ServerPacketHandlerFactory {
     this.accountService = accountService;
   }
 
-  public ServerPacketResolver newServerPacketHandler(
+  public ServerPacketResolver newServerPacketResolver(
       AccountConnection accountConnection
   ) {
     return new ServerPacketResolver(
