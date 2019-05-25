@@ -11,9 +11,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.inject.Inject;
 
-import mocha.account.AccountNameTakenException;
 import mocha.account.AccountService;
 import mocha.account.CreateAccountRequestPacket;
+import mocha.account.CreateAccountRequestPacketHandler;
 import mocha.game.LoginRequestPacket;
 import mocha.game.event.MochaEventHandler;
 import mocha.net.event.ConnectedEvent;
@@ -33,14 +33,17 @@ public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> 
 
   private ServerEventBus serverEventBus;
   private AccountService accountService;
+  private CreateAccountRequestPacketHandler createAccountRequestPacketHandler;
 
   @Inject
   public ConnectedEventHandler(
       ServerEventBus serverEventBus,
-      AccountService accountService
+      AccountService accountService,
+      CreateAccountRequestPacketHandler createAccountRequestPacketHandler
   ) {
     this.serverEventBus = serverEventBus;
     this.accountService = accountService;
+    this.createAccountRequestPacketHandler = createAccountRequestPacketHandler;
   }
 
   @Subscribe
@@ -71,11 +74,7 @@ public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> 
   private void handleCreateAccount(String data) {
     CreateAccountRequestPacket createAccountRequestPacket = new CreateAccountRequestPacket();
     createAccountRequestPacket.build(data);
-    try {
-      accountService.createAccount(createAccountRequestPacket.getAccountName(), createAccountRequestPacket.getEmailAddress());
-    } catch (AccountNameTakenException e) {
-      e.printStackTrace();
-    }
+    createAccountRequestPacketHandler.handle(createAccountRequestPacket);
   }
 
   private void handleLoginRequest(MochaConnection playerConnection, String data) {

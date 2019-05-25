@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import mocha.game.event.MochaEventHandler;
-import mocha.game.world.chunk.Chunk;
+import mocha.game.world.Location;
 import mocha.game.world.chunk.tile.event.TileUpdatedEvent;
 import mocha.net.packet.MochaConnection;
 
@@ -25,10 +25,11 @@ public class TileUpdatedEventHandler implements MochaEventHandler<TileUpdatedEve
 
   @Subscribe
   public void handle(TileUpdatedEvent tileUpdatedEvent) {
-    Chunk chunk = tileUpdatedEvent.getChunk();
     int x = tileUpdatedEvent.getX();
     int y = tileUpdatedEvent.getY();
+    TileType tileType = tileUpdatedEvent.getTileType();
+    Location location = new Location(x, y);
     mochaConnectionsByPlayerId.values()
-        .forEach(mochaConnection -> mochaConnection.sendTileUpdate(chunk, x, y));
+        .forEach(mochaConnection -> mochaConnection.sendTileUpdate(location, tileType));
   }
 }

@@ -73,14 +73,14 @@ public class ChunkService {
 
   public Map<Direction, TileType> getTileNeighbors(Location location) {
     Map<Direction, TileType> neighbors = Maps.newEnumMap(Direction.class);
-    putTileNeighbor(location, NORTH, neighbors);
-    putTileNeighbor(location, EAST, neighbors);
-    putTileNeighbor(location, SOUTH, neighbors);
-    putTileNeighbor(location, WEST, neighbors);
+    putTileNeighbor(neighbors, location, NORTH);
+    putTileNeighbor(neighbors, location, EAST);
+    putTileNeighbor(neighbors, location, SOUTH);
+    putTileNeighbor(neighbors, location, WEST);
     return neighbors;
   }
 
-  private void putTileNeighbor(Location location, Direction direction, Map<Direction, TileType> neighbors) {
+  private void putTileNeighbor(Map<Direction, TileType> neighbors, Location location, Direction direction) {
     neighbors.put(direction, getTileAt(location.from(direction)));
   }
 
@@ -96,10 +96,24 @@ public class ChunkService {
     chunkRepository.save(chunk);
   }
 
-  public void updateTileAtToType(Chunk chunk, int y, int x, TileType tileType) {
-    chunk.setTile(x, y, tileType);
+  public Optional<Chunk> findAt(Location location) {
+    int chunkId = ChunkIdHelper.getIdForChunkAt(location);
+    return chunkRepository.findById(chunkId);
+  }
+
+  public void updateTileTypeAt(Location location, TileType tileType) {
+    findAt(location).ifPresent(chunk -> {
+      chunk.setTileAt(location, tileType);
+      chunkRepository.save(chunk);
+      mochaEventBus.postTileUpdatedEvent(location, tileType);
+    });
+  }
+
+  public void updateTileTypeAtIndex(Chunk chunk, int x, int y, TileType tileType) {
+    chunk.setTileAtIndex(x, y, tileType);
+    Location tileLocation = chunk.getLocationOfTileAtIndex(x, y);
     chunkRepository.save(chunk);
-    mochaEventBus.postTileUpdatedEvent(chunk, x, y);
+    mochaEventBus.postTileUpdatedEvent(tileLocation, tileType);
   }
 
   public List<TileType> areAnyNeighbors(Location tileLocation, Predicate<TileType> predicate) {

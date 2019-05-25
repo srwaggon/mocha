@@ -1,6 +1,6 @@
 package mocha.game.world.chunk.tile;
 
-import mocha.game.world.chunk.Chunk;
+import mocha.game.world.Location;
 import mocha.net.packet.AbstractPacket;
 import mocha.net.packet.PacketType;
 
@@ -9,11 +9,10 @@ public class TileUpdatePacket extends AbstractPacket {
   public TileUpdatePacket() {
   }
 
-  public TileUpdatePacket(Chunk chunk, int x, int y) {
-    addToData(chunk.getId());
-    addToData(x);
-    addToData(y);
-    addToData(chunk.getTile(x, y).getSymbol());
+  public TileUpdatePacket(Location location, TileType tileType) {
+    addToData(location.getX());
+    addToData(location.getY());
+    addToData(tileType.getSymbol());
   }
 
   @Override
@@ -21,19 +20,19 @@ public class TileUpdatePacket extends AbstractPacket {
     return PacketType.TILE_UPDATE;
   }
 
-  public Integer getChunkId() {
+  private int getTileX() {
     return getDataAsInt(1);
   }
 
-  public int getTileX() {
+  private int getTileY() {
     return getDataAsInt(2);
   }
 
-  public int getTileY() {
-    return getDataAsInt(3);
+  public Location getLocation() {
+    return new Location(getTileX(), getTileY());
   }
 
   public TileType getTileType() {
-    return TileType.valueOf(getDataAsChar(4));
+    return TileType.valueOf(getDataAsChar(3));
   }
 }

@@ -37,7 +37,7 @@ public class WaterEvaporatesRule implements GameRule {
     for (int y = 0; y < Chunk.SIZE; y++) {
       for (int x = 0; x < Chunk.SIZE; x++) {
         if (shouldEvaporateWater(chunk, x, y)) {
-          chunkService.updateTileAtToType(chunk, y, x, DIRT);
+          chunkService.updateTileTypeAtIndex(chunk, x, y, DIRT);
         }
       }
     }

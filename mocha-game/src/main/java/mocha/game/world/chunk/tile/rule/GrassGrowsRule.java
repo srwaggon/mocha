@@ -35,7 +35,7 @@ public class GrassGrowsRule implements GameRule {
     for (int y = 0; y < Chunk.SIZE; y++) {
       for (int x = 0; x < Chunk.SIZE; x++) {
         if (shouldGrassGrow(chunk, x, y)) {
-          chunkService.updateTileAtToType(chunk, x, y, GRASS);
+          chunkService.updateTileTypeAtIndex(chunk, x, y, GRASS);
         }
       }
     }

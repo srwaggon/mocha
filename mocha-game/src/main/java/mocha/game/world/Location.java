@@ -3,7 +3,12 @@ package mocha.game.world;
 import java.util.Objects;
 
 import mocha.game.world.chunk.Chunk;
-import mocha.game.world.chunk.tile.TileType;
+
+import static mocha.game.world.Direction.EAST;
+import static mocha.game.world.Direction.NORTH;
+import static mocha.game.world.Direction.SOUTH;
+import static mocha.game.world.Direction.WEST;
+import static mocha.game.world.chunk.tile.TileType.SIZE;
 
 public class Location {
 
@@ -57,24 +62,6 @@ public class Location {
     return new Location(this.getX() + x, this.getY() + y);
   }
 
-  public void add(int x, int y) {
-    addX(x);
-    addY(y);
-  }
-
-  private void addX(int x) {
-    this.x = this.x + x;
-  }
-
-  private void addY(int y) {
-    this.y = this.y + y;
-  }
-
-  public void add(Location location) {
-    this.addX(location.getX());
-    this.addY(location.getY());
-  }
-
   @Override
   public String toString() {
     return String.format("{\"x\": %d, \"y\": %d}", x, y);
@@ -115,22 +102,22 @@ public class Location {
   }
 
   public Location north() {
-    return from(Direction.NORTH);
+    return from(NORTH);
   }
 
   public Location east() {
-    return from(Direction.EAST);
+    return from(EAST);
   }
 
   public Location south() {
-    return from(Direction.SOUTH);
+    return from(SOUTH);
   }
 
   public Location west() {
-    return from(Direction.WEST);
+    return from(WEST);
   }
 
   public Location from(Direction direction) {
-    return addNew(direction.getXMultiplier() * TileType.SIZE, direction.getYMultiplier() * TileType.SIZE);
+    return addNew(direction.getXMultiplier() * SIZE, direction.getYMultiplier() * SIZE);
   }
 }

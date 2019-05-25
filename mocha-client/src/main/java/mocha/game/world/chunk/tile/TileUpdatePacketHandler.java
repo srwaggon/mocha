@@ -21,10 +21,6 @@ public class TileUpdatePacketHandler implements PacketHandler<TileUpdatePacket> 
 
   @Subscribe
   public void handle(TileUpdatePacket tileUpdatePacket) {
-    chunkService.findById(tileUpdatePacket.getChunkId())
-        .ifPresent(chunk -> {
-          chunk.setTile(tileUpdatePacket.getTileX(), tileUpdatePacket.getTileY(), tileUpdatePacket.getTileType());
-          chunkService.save(chunk);
-        });
+    chunkService.updateTileTypeAt(tileUpdatePacket.getLocation(), tileUpdatePacket.getTileType());
   }
 }

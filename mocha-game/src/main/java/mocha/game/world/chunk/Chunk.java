@@ -57,8 +57,16 @@ public class Chunk implements Identified<Integer> {
     return tiles[getTileIndex(x, y)];
   }
 
-  public void setTile(int x, int y, TileType tileType) {
+  public void setTileAtIndex(int x, int y, TileType tileType) {
     tiles[getTileIndex(x, y)] = tileType;
+  }
+
+  public void setTileAt(Location location, TileType tileType) {
+    int x = getXBoundToChunk(location);
+    int y = getYBoundToChunk(location);
+    int xIndex = x / TileType.SIZE;
+    int yIndex = y / TileType.SIZE;
+    setTileAtIndex(xIndex, yIndex, tileType);
   }
 
   public void setTiles(TileType[] tiles) {
@@ -95,5 +103,9 @@ public class Chunk implements Identified<Integer> {
 
   private int getTileIndex(int x, int y) {
     return x + y * SIZE;
+  }
+
+  public Location getLocationOfTileAtIndex(int x, int y) {
+    return this.getLocation().addNew(x * TileType.SIZE, y * TileType.SIZE);
   }
 }

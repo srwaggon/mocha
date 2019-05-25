@@ -5,8 +5,10 @@ import com.google.common.eventbus.EventBus;
 import mocha.game.player.Player;
 import mocha.game.player.event.PlayerAddedEvent;
 import mocha.game.player.event.PlayerRemovedEvent;
+import mocha.game.world.Location;
 import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.event.ChunkUpdatedEvent;
+import mocha.game.world.chunk.tile.TileType;
 import mocha.game.world.chunk.tile.event.TileUpdatedEvent;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.command.PickUpItemCommand;
@@ -41,8 +43,8 @@ public class MochaEventBus extends EventBus {
     post(new ChunkUpdatedEvent(chunk));
   }
 
-  public void postTileUpdatedEvent(Chunk chunk, int x, int y) {
-    post(new TileUpdatedEvent(chunk, x, y));
+  public void postTileUpdatedEvent(Location location, TileType tileType) {
+    post(new TileUpdatedEvent(location.getX(), location.getY(), tileType));
   }
 
   public void postMoveCommand(EntityMoveCommand entityMoveCommand) {

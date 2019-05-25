@@ -9,6 +9,7 @@ import mocha.game.world.chunk.Chunk;
 import mocha.game.world.chunk.ChunkUpdatePacket;
 import mocha.game.world.chunk.RequestChunkByIdPacket;
 import mocha.game.world.chunk.RequestChunkByLocationPacket;
+import mocha.game.world.chunk.tile.TileType;
 import mocha.game.world.chunk.tile.TileUpdatePacket;
 import mocha.game.world.entity.Entity;
 import mocha.game.world.entity.EntityRemovedPacket;
@@ -59,8 +60,8 @@ public class MochaConnection extends PacketConnection {
     send(new ChunkUpdatePacket(chunk));
   }
 
-  public void sendTileUpdate(Chunk chunk, int x, int y) {
-    send(new TileUpdatePacket(chunk, x, y));
+  public void sendTileUpdate(Location location, TileType tileType) {
+    send(new TileUpdatePacket(location, tileType));
   }
 
   public void sendEntityPrototypeUpdate(EntityPrototype entityPrototype) {
