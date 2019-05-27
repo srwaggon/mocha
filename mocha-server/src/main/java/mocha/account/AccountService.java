@@ -23,14 +23,14 @@ public class AccountService {
     this.accountJpaRepository = accountJpaRepository;
   }
 
-  public Account createAccount(String name, String emailAddress) throws AccountNameTakenException {
+  public Account registerAccount(String name, String emailAddress) throws AccountNameTakenException {
     if (accountJpaRepository.findByName(name).isPresent()) {
       throw new AccountNameTakenException(name);
     }
     return accountJpaRepository.save(new Account(name, emailAddress));
   }
 
-  public Optional<Account> findAccountByName(String name) {
+  public Optional<Account> findByName(String name) {
     return accountJpaRepository.findByName(name);
   }
 
@@ -44,7 +44,7 @@ public class AccountService {
   }
 
   public Optional<AccountConnection> login(MochaConnection mochaConnection, LoginRequestPacket loginRequestPacket) {
-    Optional<Account> accountMaybe = findAccountByName(loginRequestPacket.getAccountName());
+    Optional<Account> accountMaybe = findByName(loginRequestPacket.getAccountName());
     if (!accountMaybe.isPresent()) {
       mochaConnection.disconnect();
       return Optional.empty();

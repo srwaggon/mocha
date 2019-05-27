@@ -11,13 +11,13 @@ import javax.inject.Inject;
 import mocha.net.packet.PacketHandler;
 
 @Component
-public class CreateAccountRequestPacketHandler implements PacketHandler<CreateAccountRequestPacket> {
+public class RegisterAccountRequestPacketHandler implements PacketHandler<RegisterAccountRequestPacket> {
 
-  private Logger logger = LoggerFactory.getLogger(CreateAccountRequestPacketHandler.class);
+  private Logger logger = LoggerFactory.getLogger(RegisterAccountRequestPacketHandler.class);
   private AccountService accountService;
 
   @Inject
-  public CreateAccountRequestPacketHandler(
+  public RegisterAccountRequestPacketHandler(
       AccountService accountService
   ) {
     this.accountService = accountService;
@@ -25,16 +25,16 @@ public class CreateAccountRequestPacketHandler implements PacketHandler<CreateAc
 
   @Override
   @Subscribe
-  public void handle(CreateAccountRequestPacket packet) {
+  public void handle(RegisterAccountRequestPacket packet) {
     try {
-      createAccount(packet);
+      registerAccount(packet);
     } catch (AccountNameTakenException e) {
       logger.error("Name taken: ", e);
     }
   }
 
-  private void createAccount(CreateAccountRequestPacket packet) throws AccountNameTakenException {
-    accountService.createAccount(
+  private void registerAccount(RegisterAccountRequestPacket packet) throws AccountNameTakenException {
+    accountService.registerAccount(
         packet.getAccountName(),
         packet.getEmailAddress()
     );

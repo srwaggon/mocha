@@ -59,7 +59,7 @@ public class MenuSelectionScreen extends Group {
     Button registerAccountButton = new Button("Register Account");
     registerAccountButton.setOnAction(event -> {
       String accountName = accountNameProperty.get();
-      mochaConnectionProvider.get().sendCreateAccountRequest(accountName, accountName + "@mocha.com");
+      mochaConnectionProvider.get().sendRegisterAccountRequest(accountName, accountName + "@mocha.com");
     });
     return registerAccountButton;
   }

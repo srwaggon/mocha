@@ -12,8 +12,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Inject;
 
 import mocha.account.AccountService;
-import mocha.account.CreateAccountRequestPacket;
-import mocha.account.CreateAccountRequestPacketHandler;
+import mocha.account.RegisterAccountRequestPacket;
+import mocha.account.RegisterAccountRequestPacketHandler;
 import mocha.game.LoginRequestPacket;
 import mocha.game.event.MochaEventHandler;
 import mocha.net.event.ConnectedEvent;
@@ -23,8 +23,8 @@ import mocha.net.packet.Packet;
 import mocha.net.packet.PacketType;
 import mocha.server.event.ServerEventBus;
 
-import static mocha.net.packet.PacketType.CREATE_ACCOUNT_REQUEST;
 import static mocha.net.packet.PacketType.LOGIN_REQUEST;
+import static mocha.net.packet.PacketType.REGISTER_ACCOUNT_REQUEST;
 
 @Component
 public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> {
@@ -33,17 +33,17 @@ public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> 
 
   private ServerEventBus serverEventBus;
   private AccountService accountService;
-  private CreateAccountRequestPacketHandler createAccountRequestPacketHandler;
+  private RegisterAccountRequestPacketHandler registerAccountRequestPacketHandler;
 
   @Inject
   public ConnectedEventHandler(
       ServerEventBus serverEventBus,
       AccountService accountService,
-      CreateAccountRequestPacketHandler createAccountRequestPacketHandler
+      RegisterAccountRequestPacketHandler registerAccountRequestPacketHandler
   ) {
     this.serverEventBus = serverEventBus;
     this.accountService = accountService;
-    this.createAccountRequestPacketHandler = createAccountRequestPacketHandler;
+    this.registerAccountRequestPacketHandler = registerAccountRequestPacketHandler;
   }
 
   @Subscribe
@@ -58,8 +58,8 @@ public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> 
         PacketType type = packet.getType();
         String data = packet.getData();
 
-        if (CREATE_ACCOUNT_REQUEST.equals(type)) {
-          handleCreateAccount(data);
+        if (REGISTER_ACCOUNT_REQUEST.equals(type)) {
+          handleRegisterAccount(data);
         } else if (LOGIN_REQUEST.equals(type)) {
           handleLoginRequest(playerConnection, data);
           looping.set(false);
@@ -71,10 +71,10 @@ public class ConnectedEventHandler implements MochaEventHandler<ConnectedEvent> 
     }
   }
 
-  private void handleCreateAccount(String data) {
-    CreateAccountRequestPacket createAccountRequestPacket = new CreateAccountRequestPacket();
-    createAccountRequestPacket.build(data);
-    createAccountRequestPacketHandler.handle(createAccountRequestPacket);
+  private void handleRegisterAccount(String data) {
+    RegisterAccountRequestPacket registerAccountRequestPacket = new RegisterAccountRequestPacket();
+    registerAccountRequestPacket.build(data);
+    registerAccountRequestPacketHandler.handle(registerAccountRequestPacket);
   }
 
   private void handleLoginRequest(MochaConnection playerConnection, String data) {

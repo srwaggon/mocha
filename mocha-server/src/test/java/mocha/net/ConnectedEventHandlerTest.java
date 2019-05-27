@@ -70,7 +70,7 @@ public class ConnectedEventHandlerTest {
 
   @Test
   public void handle_LogsInTheAccount_WhenALoginRequestPacketIsFound() throws DisconnectedException, AccountNameTakenException {
-    accountService.createAccount(accountName, emailAddress);
+    accountService.registerAccount(accountName, emailAddress);
     LoginRequestPacket loginRequestPacket = new LoginRequestPacket(accountName);
     when(mochaConnection.readPacket()).thenReturn(loginRequestPacket);
 

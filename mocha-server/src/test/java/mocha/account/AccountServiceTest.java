@@ -45,17 +45,17 @@ public class AccountServiceTest {
   private String emailAddress = "link@hyrule.com";
 
   @Test
-  public void findAccountByName_ReturnsEmpty_WhenAccountDoesNotExist() {
-    Optional<Account> accountMaybe = accountService.findAccountByName("link");
+  public void findByName_ReturnsEmpty_WhenAccountDoesNotExist() {
+    Optional<Account> accountMaybe = accountService.findByName("link");
 
     assertThat(accountMaybe).isEmpty();
   }
 
   @Test
-  public void findAccountByName_ReturnsTheRequestedAccount_WhenItExists() {
+  public void findByName_ReturnsTheRequestedAccount_WhenItExists() {
     Account expectedAccount = accountJpaRepository.save(newAccount(accountName));
 
-    Optional<Account> accountMaybe = accountService.findAccountByName(accountName);
+    Optional<Account> accountMaybe = accountService.findByName(accountName);
 
     assertThat(accountMaybe).isPresent();
     Account actualAccount = accountMaybe.get();
@@ -68,34 +68,34 @@ public class AccountServiceTest {
   }
 
   @Test
-  public void createAccount_CreatesANewAccount() throws AccountNameTakenException {
+  public void registerAccount_CreatesANewAccount() throws AccountNameTakenException {
     assertThat(accountJpaRepository.count()).isEqualTo(0);
 
-    accountService.createAccount(accountName, emailAddress);
+    accountService.registerAccount(accountName, emailAddress);
 
     assertThat(accountJpaRepository.count()).isEqualTo(1);
   }
 
   @Test
-  public void createAccount_ThrowsAccountNameTakenExistsException_WhenAccountNameIsUnavailable() {
+  public void registerAccount_ThrowsAccountNameTakenExistsException_WhenAccountNameIsUnavailable() {
     AccountNameTakenException expected = new AccountNameTakenException(accountName);
     accountJpaRepository.save(newAccount(accountName));
 
-    assertThatThrownBy(() -> accountService.createAccount(accountName, emailAddress)).isEqualTo(expected);
+    assertThatThrownBy(() -> accountService.registerAccount(accountName, emailAddress)).isEqualTo(expected);
   }
 
   @Test
-  public void createAccount_ReturnsTheCreatedAccount() throws AccountNameTakenException {
+  public void registerAccount_ReturnsTheCreatedAccount() throws AccountNameTakenException {
     Account expectedAccount = newAccount(accountName);
 
-    Account account = accountService.createAccount(accountName, emailAddress);
+    Account account = accountService.registerAccount(accountName, emailAddress);
 
     assertThat(account.getName()).isEqualTo(expectedAccount.getName());
   }
 
   @Test
   public void addPlayer_SavesThePlayerToTheAccount() throws AccountNameTakenException {
-    Account account = accountService.createAccount(accountName, emailAddress);
+    Account account = accountService.registerAccount(accountName, emailAddress);
     int playerId = 23;
     ServerPlayer player = new ServerPlayer(playerId);
     assertThat(serverPlayerJpaRepository.findById(playerId)).isEmpty();
@@ -146,7 +146,7 @@ public class AccountServiceTest {
 
   @Test
   public void login_CreatesAndReturnsAnAccountConnection_WhenGivenAConnectionWithValidCredentials() throws AccountNameTakenException {
-    accountService.createAccount(accountName, emailAddress);
+    accountService.registerAccount(accountName, emailAddress);
     LoginRequestPacket loginRequestPacket = new LoginRequestPacket(accountName);
 
     Optional<AccountConnection> accountConnectionMaybe = accountService.login(mochaConnection, loginRequestPacket);
@@ -156,7 +156,7 @@ public class AccountServiceTest {
 
   @Test
   public void login_DoesNotDisconnect_WhenAccountsSuccessfullyAuthenticate() throws AccountNameTakenException {
-    accountService.createAccount(accountName, emailAddress);
+    accountService.registerAccount(accountName, emailAddress);
     LoginRequestPacket loginRequestPacket = new LoginRequestPacket(accountName);
 
     accountService.login(mochaConnection, loginRequestPacket);

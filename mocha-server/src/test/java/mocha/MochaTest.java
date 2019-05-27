@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 
 import mocha.account.AccountService;
-import mocha.account.CreateAccountRequestPacket;
+import mocha.account.RegisterAccountRequestPacket;
 import mocha.game.LoginRequestPacket;
 import mocha.game.TestGameLoop;
 import mocha.game.player.PlayerService;
@@ -71,7 +71,7 @@ public class MochaTest {
 
   public void registerAccount(MochaConnection mochaConnection, String accountName) throws DisconnectedException {
     String emailAddress = accountName + "@hyrule.com";
-    when(mochaConnection.readPacket()).thenReturn(new CreateAccountRequestPacket(accountName, emailAddress), new LoginRequestPacket(accountName));
+    when(mochaConnection.readPacket()).thenReturn(new RegisterAccountRequestPacket(accountName, emailAddress), new LoginRequestPacket(accountName));
     connectedEventHandler.handle(new ConnectedEvent(mochaConnection));
   }
 
