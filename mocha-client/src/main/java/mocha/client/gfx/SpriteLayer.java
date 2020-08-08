@@ -87,12 +87,14 @@ public class SpriteLayer {
   private Sprite getSpriteId(long now, Entity entity) {
     String spriteId = entity.getSpriteId();
 
-    Optional<Movement> movement = movementRepository.findById(entity.getId());
-    if (!movement.isPresent() || !movement.get().isMoving()) {
-      return spriteService.findById(spriteId);
+    Optional<Movement> movementMaybe = movementRepository.findById(entity.getId());
+    if (movementMaybe.isEmpty()) {
+      return spriteService.findById(spriteId, 0);
     }
 
+    Movement movement = movementMaybe.get();
     double frameId = now / RenderLoop.FRAME_LIFESPAN;
-    return frameId % 16 < 8 ? spriteService.findById(spriteId) : spriteService.getNext(spriteId);
+    int spriteIndex = 2 * movement.getDirection().ordinal() + (movement.isMoving() && frameId % 16 >= 8 ? 1 : 0);
+    return spriteService.findById(spriteId, spriteIndex);
   }
 }

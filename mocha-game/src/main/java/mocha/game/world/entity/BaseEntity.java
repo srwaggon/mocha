@@ -20,7 +20,7 @@ public class BaseEntity implements Entity {
   private boolean isBlocking = true;
   private Item leftHand;
   private Item rightHand;
-  private String spriteId = "/mocha/gfx/sprites/slime/slime0.png::0";
+  private String spriteId = "/mocha/gfx/sprites/girl.png";
   private double scale = 1.0;
   private Collision collision;
 

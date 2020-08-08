@@ -11,7 +11,7 @@ public class BaseMovement extends SimpleMovement {
 
   private final Map<Direction, Runnable> moveMap = Maps.newConcurrentMap();
   private int id;
-  Direction direction;
+  Direction direction = Direction.NORTH;
   int xOffset = 0;
   int yOffset = 0;
 
@@ -37,6 +37,7 @@ public class BaseMovement extends SimpleMovement {
   @Override
   public void handle(EntityMoveCommand moveCommand) {
     if (isStartingMove(moveCommand)) {
+      this.direction = moveCommand.getDirection();
       moveMap.get(moveCommand.getDirection()).run();
     }
 

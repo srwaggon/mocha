@@ -41,7 +41,7 @@ public class ItemSetup implements GameSetup {
 
   @Override
   public void run() {
-    ItemPrototype itemPrototype = new ItemPrototype(1, "Pickaxe", "/mocha/gfx/items/pickaxe0.png::0", ItemType.TOOL, "cool");
+    ItemPrototype itemPrototype = new ItemPrototype(1, "Pickaxe", "/mocha/gfx/items/pickaxe0.png", ItemType.TOOL, "cool");
     ItemPrototype pickaxe = itemPrototypeService.save(itemPrototype);
     Item serverPickaxe = new Item(1, pickaxe, 0, 0, 0);
     itemService.save(serverPickaxe);

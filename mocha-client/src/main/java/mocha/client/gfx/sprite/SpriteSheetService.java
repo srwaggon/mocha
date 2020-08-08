@@ -48,12 +48,8 @@ public class SpriteSheetService {
   }
 
   SpriteSheet findById(String path) {
-    Optional<SpriteSheet> maybeSpriteSheet = Optional.ofNullable(spriteSheetsByPath.get(path));
-    if (maybeSpriteSheet.isPresent()) {
-      return maybeSpriteSheet.get();
-    }
-    SpriteSheet spriteSheet = getSpriteSheetForPath(getFileForPath(path).getPath());
-    return spriteSheet;
+    return Optional.ofNullable(spriteSheetsByPath.get(path))
+        .orElseGet(() -> getSpriteSheetForPath(getFileForPath(path).getPath()));
   }
 
   private File getFileForPath(String path) {
