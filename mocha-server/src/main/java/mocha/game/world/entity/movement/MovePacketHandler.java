@@ -35,13 +35,11 @@ public class MovePacketHandler implements PacketHandler<MovePacket> {
 
   @Subscribe
   public void handle(MovePacket movePacket) {
-    log.info(movePacket.toString());
     EntityMoveCommand moveCommand = movePacket.getMoveCommand();
     Optional<Player> maybePlayer = accountService.getPlayer(account);
-    maybePlayer.ifPresent(player ->
-        playerService.getEntityForPlayer(player).ifPresent(entity -> {
-          moveCommand.setEntityId(entity.getId());
-          serverEventBus.post(moveCommand);
-        }));
+    maybePlayer.flatMap(playerService::getEntityForPlayer).ifPresent(entity -> {
+      moveCommand.setEntityId(entity.getId());
+      serverEventBus.post(moveCommand);
+    });
   }
 }

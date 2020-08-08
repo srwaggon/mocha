@@ -37,13 +37,13 @@ class StartMoveHandler implements GameKeyHandler {
       GameKey.getDirection(gameKeyEvent)
           .ifPresent(direction -> {
             Optional<Entity> playerEntity = playerService.findClientPlayerEntity();
-            playerEntity.ifPresent(entity -> {
-              EntityMoveCommand entityMoveCommand = buildEntityMoveCommand(entity, direction, true);
-              movementRepository.findById(entity.getId())
-                  .ifPresent(movement -> movement.handle(entityMoveCommand));
-              MovePacket movePacket = new MovePacket(entityMoveCommand);
-              clientEventBus.postSendPacketEvent(movePacket);
-            });
+            playerEntity.ifPresent(entity ->
+                movementRepository.findById(entity.getId()).ifPresent(movement -> {
+                  EntityMoveCommand entityMoveCommand = buildEntityMoveCommand(entity, direction, true);
+                  movement.handle(entityMoveCommand);
+                  MovePacket movePacket = new MovePacket(entityMoveCommand);
+                  clientEventBus.postSendPacketEvent(movePacket);
+                }));
           });
     }
 

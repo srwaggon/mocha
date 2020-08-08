@@ -16,7 +16,6 @@ import mocha.game.world.entity.command.RemoveEntityCommand;
 import mocha.game.world.entity.event.EntityAddedEvent;
 import mocha.game.world.entity.event.EntityRemovedEvent;
 import mocha.game.world.entity.event.EntityUpdatedEvent;
-import mocha.game.world.entity.movement.Movement;
 import mocha.game.world.entity.movement.command.EntityMoveCommand;
 import mocha.game.world.entity.movement.event.EntityMovementEvent;
 import mocha.shared.task.event.TaskEvent;
@@ -51,8 +50,8 @@ public class MochaEventBus extends EventBus {
     post(entityMoveCommand);
   }
 
-  public void postMoveEvent(Movement movement) {
-    post(new EntityMovementEvent(movement));
+  public void postMoveEvent(EntityMoveCommand entityMoveCommand) {
+    post(new EntityMovementEvent(entityMoveCommand));
   }
 
   public void postRemoveEntityCommand(Entity entity) {

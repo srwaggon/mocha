@@ -31,7 +31,7 @@ public class EntityMoveCommandHandler implements CommandHandler<EntityMoveComman
     movementRepository.findById(entityMoveCommand.getEntityId())
         .ifPresent(movement -> {
           movement.handle(entityMoveCommand);
-          eventBus.postMoveEvent(movement);
+          eventBus.postMoveEvent(entityMoveCommand);
         });
   }
 }

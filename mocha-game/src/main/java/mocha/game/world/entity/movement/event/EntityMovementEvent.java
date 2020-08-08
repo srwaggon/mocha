@@ -1,16 +1,16 @@
 package mocha.game.world.entity.movement.event;
 
 import mocha.game.event.MochaEvent;
-import mocha.game.world.entity.movement.Movement;
+import mocha.game.world.entity.movement.command.EntityMoveCommand;
 
 public class EntityMovementEvent implements MochaEvent {
-  private final Movement movement;
+  private EntityMoveCommand entityMoveCommand;
 
-  public EntityMovementEvent(Movement movement) {
-    this.movement = movement;
+  public EntityMovementEvent(EntityMoveCommand entityMoveCommand) {
+    this.entityMoveCommand = entityMoveCommand;
   }
 
-  public Movement getMovement() {
-    return movement;
+  public EntityMoveCommand getEntityMoveCommand() {
+    return entityMoveCommand;
   }
 }
