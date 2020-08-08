@@ -36,9 +36,13 @@ public class BaseMovement extends SimpleMovement {
 
   @Override
   public void handle(EntityMoveCommand moveCommand) {
+    Direction moveDirection = moveCommand.getDirection();
+    if (!isMoving()) {
+      this.direction = moveDirection;
+    }
+
     if (isStartingMove(moveCommand)) {
-      this.direction = moveCommand.getDirection();
-      moveMap.get(moveCommand.getDirection()).run();
+      moveMap.get(moveDirection).run();
     }
 
     if (isStoppingX(moveCommand)) {

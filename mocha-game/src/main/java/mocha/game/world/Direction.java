@@ -29,4 +29,12 @@ public enum Direction {
   public static Direction random() {
     return values()[(int) (count() * Math.random())];
   }
+
+  public boolean isOpposite(Direction direction) {
+    return this.opposite().equals(direction);
+  }
+
+  private Direction opposite() {
+    return values()[(ordinal() + 2) % Direction.count()];
+  }
 }

@@ -23,26 +23,22 @@ public class SlidingMovement extends BaseMovement {
 
   @Override
   public void up() {
-    this.direction = Direction.NORTH;
-    this.yOffset = direction.getYMultiplier();
+    this.yOffset = Direction.NORTH.getYMultiplier();
   }
 
   @Override
   public void down() {
-    this.direction = Direction.SOUTH;
-    this.yOffset = direction.getYMultiplier();
+    this.yOffset = Direction.SOUTH.getYMultiplier();
   }
 
   @Override
   public void left() {
-    this.direction = Direction.WEST;
-    this.xOffset = direction.getXMultiplier();
+    this.xOffset = Direction.WEST.getXMultiplier();
   }
 
   @Override
   public void right() {
-    this.direction = Direction.EAST;
-    this.xOffset = direction.getXMultiplier();
+    this.xOffset = Direction.EAST.getXMultiplier();
   }
 
   @Override
