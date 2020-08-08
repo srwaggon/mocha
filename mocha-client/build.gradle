@@ -13,7 +13,7 @@ buildscript {
 
 plugins {
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.7'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
 apply plugin: 'application'
@@ -30,8 +30,8 @@ javafx {
     modules = [ 'javafx.controls' ]
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 mainClassName = "mocha.Main"
 
