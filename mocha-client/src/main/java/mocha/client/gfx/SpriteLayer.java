@@ -93,8 +93,9 @@ public class SpriteLayer {
     }
 
     Movement movement = movementMaybe.get();
-    double frameId = now / RenderLoop.FRAME_LIFESPAN;
-    int spriteIndex = 2 * movement.getDirection().ordinal() + (movement.isMoving() && frameId % 16 >= 8 ? 1 : 0);
-    return spriteService.findById(spriteId, spriteIndex);
+    int directionFrame = 2 * movement.getDirection().ordinal();
+    int movementFrame = movement.isMoving() && now / RenderLoop.FRAME_LIFESPAN % 16 >= 8 ? 1 : 0;
+    int frameIndex = directionFrame + movementFrame;
+    return spriteService.findById(spriteId, frameIndex);
   }
 }
