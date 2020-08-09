@@ -1,5 +1,7 @@
 package mocha.game.world;
 
+import java.util.Arrays;
+
 public enum Direction {
   NORTH(0, -1),
   EAST(1, 0),
@@ -36,5 +38,24 @@ public enum Direction {
 
   private Direction opposite() {
     return values()[(ordinal() + 2) % Direction.count()];
+  }
+
+  public static Direction findBest(int xDiff, int yDiff) {
+    boolean xPreferred = Math.abs(xDiff) > Math.abs(yDiff);
+    int xMultiplier = (xPreferred ? 1 : 0) * getMultiplier(xDiff);
+    int yMultiplier = (xPreferred ? 0 : 1) * getMultiplier(yDiff);
+
+    return findBestByMultiplier(xMultiplier, yMultiplier);
+  }
+
+  public static Direction findBestByMultiplier(int xMultiplier, int yMultiplier) {
+    return Arrays.stream(values())
+        .filter(direction -> direction.getXMultiplier() == xMultiplier && direction.getYMultiplier() == yMultiplier)
+        .findFirst()
+        .orElse(Direction.NORTH);
+  }
+
+  private static int getMultiplier(int diff) {
+    return diff == 0 ? 0 : diff / Math.abs(diff);
   }
 }

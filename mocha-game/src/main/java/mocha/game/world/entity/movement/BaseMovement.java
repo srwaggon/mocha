@@ -37,8 +37,11 @@ public class BaseMovement extends SimpleMovement {
   @Override
   public void handle(EntityMoveCommand moveCommand) {
     Direction moveDirection = moveCommand.getDirection();
+
     if (!isMoving()) {
       this.direction = moveDirection;
+    }  if (this.isMoving() && this.direction.getXMultiplier() * xOffset == 0 && this.direction.getYMultiplier() * yOffset == 0) {
+      this.direction = Direction.findBest(this.xOffset, this.yOffset);
     }
 
     if (isStartingMove(moveCommand)) {
@@ -52,7 +55,6 @@ public class BaseMovement extends SimpleMovement {
     if (isStoppingY(moveCommand)) {
       this.yOffset = 0;
     }
-
   }
 
   private boolean isStoppingY(EntityMoveCommand moveCommand) {
